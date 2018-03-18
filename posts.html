@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <div id="components">
+    <!-- Post -->
+    </div>
+</div>
+
+<script src="jquery-3.1.1.min.js"></script>
+<script>
+
+    function addComponents() {
+
+        var dataNav = [{'website':{'name':'Twitter Clone'}}]
+        var navBarHtml = '<nav class="navbar navbar-light bg-light"><a class="navbar-brand webBrand" href="#">Fixed top</a></nav>';
+        var navData = {'webBrand':'website.name'};
+        var navComponent = {'data':dataNav,'html':navBarHtml,'dataStructure':navData}
+
+        var dataPosts = [{'user':{'image':'https://pbs.twimg.com/profile_images/471769007092019200/HKsWyZ54_400x400.jpeg','name':'Jeremy'},'post':{'text':'Check Out This Cool Photo I found!','image':'http://www.longrunexploration.com/upload/main_banner/2/05/banner.jpg'}},{'user':{'image':'https://media1.popsugar-assets.com/files/thumbor/W80K7GHPfO1etD_UuMWdtazY28o/fit-in/1024x1024/filters:format_auto-!!-:strip_icc-!!-/2017/08/31/609/n/1922398/51dff4a959a811242e61f0.92516557_edit_img_cover_file_17053399_1504185000/i/Celebrities-Who-Have-Donated-Hurricane-Harvey.jpg','name':'Leonardo'},'post':{'text':'Cool Website!','img':''}}];
+        var postHtml = '<div class="card"><img style="display:none;" class="card-img-top postImage" src=""><div class="card-body"><div><img style="display:inline; width:40px; margin:10px;" class="userImage" src="..."><h5 style="display:inline;" class="card-title userName">Card title</h5></div><p class="card-text postText">Some quick example text to build on the card title and make up the bulk of the cards content.</p><a href="#" class="btn btn-primary">Follow</a></div></div>';
+        var postData = {'userImage':'user.image','userName':'user.name','postText':'post.text','postImage':'post.image'}
+        var postComponent = {'data':dataPosts, 'html': postHtml, 'dataStructure':postData}
+
+        var components = [navComponent, postComponent];
+
+        var i = 0;
+        for (index in components) {
+            component = components[index];
+            for (dataIndex in component['data']) {
+                var htmlString = '<div id="component' + i + '">' + component['html'] + '</div>';
+                $('#components').append(htmlString)
+
+
+                for (key in component['dataStructure']) {
+
+                    var dataAccessArray = component['dataStructure'][key].split('.');
+                    var dataValue = component['data'][dataIndex];
+                    for (index in dataAccessArray) {
+                        dataValue = dataValue[dataAccessArray[index]];
+                    }
+                    console.log(dataAccessArray,dataValue);
+                    console.log('#component' + i + ' .' + key);
+                    if (dataValue != '') {
+                        var target = $('#component' + i + ' .' + key);
+
+                        if (target.is('img')) {
+                            target.attr('src',dataValue);
+                        }
+                        else {
+                            target.text(dataValue);
+                        }
+                        target.show();
+                    }
+                }
+                i += 1;
+            }
+        }
+    }
+
+    $(document).ready(function() {
+        addComponents();
+    });
+</script>
+
+</body>
+
+</html>
