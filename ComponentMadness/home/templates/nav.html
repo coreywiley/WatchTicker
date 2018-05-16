@@ -1,0 +1,92 @@
+<div class="container">
+      {% if 'addDescription' in request.path %}
+        <div style="background-color:white; z-index:10000; padding:20px;">
+      {% else %}
+        <div style="position:fixed; background-color:white; z-index:10000; padding:20px;">
+      {% endif %}
+        <br>
+        <div class="page-header">
+            <h1>Song: {{ song.name }} : {{incompleteSongs}} Songs Left To Complete</h1>
+        </div>
+        <br>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Go To Another Section
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {% if 'addGenre' in request.path %}
+            <a class="dropdown-item" href="#vocals">Vocals/CueType/SoundAlikes</a>
+            <a class="dropdown-item" href="#genreSelect">Genres</a>
+            <a class="dropdown-item" href="#newBPM">BPM</a>
+            {% if song.genre %}
+              <a class="dropdown-item" onclick="submitForm('/addCategories/{{song.id}}/#styles')">Styles</a>
+              <a class="dropdown-item" onclick="submitForm('/addCategories/{{song.id}}/#moods')">Moods</a>
+              <a class="dropdown-item" onclick="submitForm('/addCategories/{{song.id}}/#textures')">Textures</a>
+              <a class="dropdown-item" onclick="submitForm('/addCategories/{{song.id}}/#featuredInstruments')">Featured Instruments</a>
+              <a class="dropdown-item" onclick="submitForm('/addCategories/{{song.id}}/#eras')">Era/Region/Lyrical Theme</a>
+              <a class="dropdown-item" onclick="submitForm('/addDescription/{{song.id}}/')">Description</a>
+            {% endif %}
+
+          {% elif 'addCategories' in request.path %}
+            <a class="dropdown-item" onclick="submitForm('/addGenre/{{song.id}}/#vocals')">Vocals/CueType/SoundAlikes</a>
+            <a class="dropdown-item" onclick="submitForm('/addGenre/{{song.id}}/#genreSelect')">Genres</a>
+            <a class="dropdown-item" onclick="submitForm('/addGenre/{{song.id}}/#newBPM')">BPM</a>
+            <a class="dropdown-item" href="#styles">Styles</a>
+            <a class="dropdown-item" href="#moods">Moods</a>
+            <a class="dropdown-item" href="#textures">Textures</a>
+            <a class="dropdown-item" href="#featuredInstruments">Featured Instruments</a>
+            <a class="dropdown-item" href="#eras">Era/Region/Lyrical Theme</a>
+            <a class="dropdown-item" onclick="submitForm('/addDescription/{{song.id}}/')">Description</a>
+          {% elif 'addDescription' in request.path %}
+            <a class="dropdown-item" onclick="submitForm('/addGenre/{{song.id}}/#vocals')">Vocals/CueType/SoundAlikes</a>
+            <a class="dropdown-item" onclick="submitForm('/addGenre/{{song.id}}/#genreSelect')">Genres</a>
+            <a class="dropdown-item" onclick="submitForm('/addGenre/{{song.id}}/#newBPM')">BPM</a>
+            <a class="dropdown-item" onclick="submitForm('/addCategories/{{song.id}}/#styles')">Styles</a>
+            <a class="dropdown-item" onclick="submitForm('/addCategories/{{song.id}}/#moods')">Moods</a>
+            <a class="dropdown-item" onclick="submitForm('/addCategories/{{song.id}}/#textures')">Textures</a>
+            <a class="dropdown-item" onclick="submitForm('/addCategories/{{song.id}}/#featuredInstruments')">Featured Instruments</a>
+            <a class="dropdown-item" onclick="submitForm('/addCategories/{{song.id}}/#eras')">Era/Region/Lyrical Theme</a>
+          {% endif %}
+          <a class="dropdown-item" href="#save">Save</a>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<!--
+<div class="container">
+    <div style="position:fixed; background-color:white; z-index:10000; padding:20px;">
+        <br>
+        <div class="page-header">
+            <h1>Song: {{ song.name }} : {{incompleteSongs}} Songs Left To Complete</h1>
+        </div>
+        <br>
+        <ul class="nav nav-pills nav-fill">
+          <li class="nav-item">
+            <a class="nav-link" href="/addGenre/{{song.id}}/">Genre/BPM/Vocals/Cue Type/SoundAlikes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#styles">Styles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#moods">Moods</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#textures">Textures</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#featuredInstruments">Featured Instruments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#eras">Era/Region/Lyrical Theme</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#save">Save</a>
+          </li>
+        </ul>
+    </div>
+</div>
+-->
+
+

@@ -1,0 +1,45 @@
+{% extends "skeleton.html" %}
+
+<!-- Style in Head -->
+{% block style %}
+
+{% endblock %}
+
+<!-- Put in your page content -->
+{% block content %}
+
+{% include "header.html" %}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Home</li>
+      </ol>
+    </nav>
+    <h1>Apps and their Models</h1>
+
+    {% for app in appModels %}
+        <div class="page-header">
+            <h2>{{ app }}</h2>
+        </div>
+        <div class="list-group">
+            {% for model in modelNames %}
+                {% if model.1 == app %}
+                    <a href="/models/getModelValues/{{model.1}}/{{model.0}}/0/" class="list-group-item list-group-item-action">
+                    {{ model.0 }}
+                  </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+</div>
+
+{% include "footer.html" %}
+
+{% endblock %}
+
+<!-- Style in Body -->
+{% block script %}
+
+{% endblock %}

@@ -1,0 +1,17 @@
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="/projects/">TagTeam</a>
+  {% if request.user and request.user.is_authenticated %}
+  <ul class="navbar-nav">
+    {% if request.user and request.user.is_authenticated and request.user.is_superuser %}
+      <li class="nav-item active">
+        <a class="nav-link" href="/models/getModels/">Admin</a>
+      </li>
+    {% endif %}
+      <li class="nav-item active">
+        <a class="nav-link" href="/users/logOut/">Log Out</a>
+      </li>
+  </ul>
+  {% endif %}
+</nav>
+
+

@@ -1,0 +1,170 @@
+{% extends "skeleton.html" %}
+
+<!-- Style in Head -->
+{% block style %}
+
+{% endblock %}
+
+<!-- Put in your page content -->
+{% block content %}
+
+{% include "header.html" %}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/models/getModels/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/models/getModelValues/{{appLabel}}/{{modelName}}/0/">{{appLabel}} : {{modelName}}</a></li>
+        {% if instance %}
+            <li class="breadcrumb-item active" aria-current="page">{{instance.name}}</li>
+        {% else %}
+            <li class="breadcrumb-item active" aria-current="page">Add New</li>
+        {% endif %}
+
+      </ol>
+    </nav>
+
+    {% if instance %}
+        <h3>{{ modelName }} : {{ instance.name }}</h3>
+    {% else %}
+        <h3>{{ modelName }} : Add New</h3>
+    {% endif %}
+
+    {% if instance %}
+        <form method="post" action="/models/modelInstance/{{appLabel}}/{{modelName}}/{{instance.id}}/">
+    {% else %}
+        <form method="post" action="/models/modelInstance/{{appLabel}}/{{modelName}}/">
+    {% endif %}
+
+    <div class="list-group">
+        {% for field in fields %}
+            {% if field.0 == 'password' %}
+                <div class="form-group">
+                    <label for="{{field.0}}">{{field.0}}</label>
+                    <input type="password" class="form-control" id="{{field.0}}" name="{{field.0}}">
+                </div>
+            {% elif field.1 == 'CharField' or field.1 == 'TextField' %}
+                <div class="form-group">
+                    <label for="{{field.0}}">{{field.0}}</label>
+                    <input type="text" class="form-control" id="{{field.0}}" name="{{field.0}}" value="{{field.2}}">
+                </div>
+            {% elif field.1 == 'BooleanField' %}
+                <div class="form-group">
+                    <label for="{{field.0}}">{{field.0}}</label><br>
+                    <div class="form-group">
+                        <select id="{{field.0}}" class="form-control" name="{{field.0}}">
+                            {% if field.2 %}
+                                <option value="True" selected>True</option>
+                                <option value="False">False</option>
+                            {% else %}
+                                <option value="True">True</option>
+                                <option value="False" selected>False</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+            {% elif field.1 == 'IntegerField' %}
+                <div class="form-group">
+                    <label for="{{field.0}}">{{field.0}}</label>
+                    <input type="number" class="form-control" id="{{field.0}}" name="{{field.0}}" value="{{field.2}}">
+                </div>
+            {% elif field.1 == 'ForeignKey' %}
+                <div class="form-group">
+                    <label for="{{field.0}}">{{field.0}}</label><br>
+                    <div class="form-group">
+                        <select id="{{field.0}}" class="form-control" name="{{field.0}}">
+                            <option value="None">None</option>
+                            {% for foreignKey in field.3 %}
+                                <option value="{{foreignKey.0}}"
+                                {% if foreignKey.1 == field.2 %}
+                                        selected
+                                {% endif %}
+                                >{{foreignKey.1}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            {% elif field.1 == 'ManyToManyField' %}
+                <div class="form-group">
+                    <label for="{{field.0}}">{{field.0}}</label><br>
+                    <div class="form-group">
+                        <select multiple id="{{field.0}}" class="form-control" name="{{field.0}}[]">
+                            {% for foreignKey in field.3 %}
+                                <option value="{{foreignKey.0}}"
+                                {% if foreignKey.0 in field.2 %}
+                                        selected
+                                {% endif %}
+                                >{{foreignKey.1}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            {% endif %}
+
+
+        {% endfor %}
+    </div>
+    {% csrf_token %}
+    {% if instance %}
+        <input type="submit" class="btn btn-success" name="save" value="Save"></input>
+            <input type="submit" class="btn btn-success" name="addAnother" value="Save And Add Another"></input>
+        <p class="btn btn-danger" onclick="deleteInstance()">Delete</p>
+    {% else %}
+        <input type="submit" class="btn btn-success" name="save" value="Save"></input>
+            <input type="submit" class="btn btn-success" name="addAnother" value="Save And Add Another"></input>
+    {% endif %}
+        </form>
+
+            {% if links|length > 0 %}
+                {% for link in links %}
+                    <h3>{{link.0}}</h3>
+                        {% for object in link.2 %}
+                            <a href="/models/modelInstance/home/{{link.0}}/{{object.id}}">{{object.name}}</a><br>
+                        {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+            {% if not instance %}
+                <h2>Or upload a CSV of {{modelName}}.</h2>
+
+                <form method="post" action="/models/modelInstance/{{appLabel}}/{{modelName}}/" enctype="multipart/form-data" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="csv_file" class="col-md-3 col-sm-3 col-xs-12 control-label">File: </label>
+                        <div class="col-md-8">
+                            <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-3" style="margin-bottom:10px;">
+                             <button class="btn btn-primary"> <span class="glyphicon glyphicon-upload" style="margin-right:5px;"></span>Upload </button>
+                        </div>
+                    </div>
+                </form>
+            {% endif %}
+
+</div>
+
+{% include "footer.html" %}
+
+{% endblock %}
+
+<!-- Style in Body -->
+{% block script %}
+<script>
+function deleteInstance() {
+    $.ajax({
+        url: '/models/modelInstance/{{appLabel}}/{{modelName}}/{{instance.id}}/',
+        type: 'DELETE',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        dataType: 'json',
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+        success: function(result) {
+            window.location = '/models/getModelValues/{{appLabel}}/{{modelName}}/0/';
+        }
+    });
+    }
+
+
+</script>
+{% endblock %}

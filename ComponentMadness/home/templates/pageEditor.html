@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Editor</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <style>
+        .shyButton {
+            display:none;
+        }
+
+        .shyButton:hover {
+            display:block;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- the main page -->
+    <div class="container">
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#componentModal">
+          Add Component
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="componentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="componentModalLabel">Choose A Component</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body row" id="componentChooser">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="">Add Data To Component <div id="componentName"></div></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+                  <div id="componentData" style="padding:20px;">
+                    <div id="fields">
+                            <div id="inputFields">
+
+                            </div>
+                            OR
+
+                            <div class="form-group">
+                            <label for="dataUrl">Data URL</label>
+                                <small id="emailHelp" class="form-text text-muted">This will create components with the data from json.</small>
+                            <input type="text" class="form-control" id="dataUrl" aria-describedby="emailHelp" placeholder="http://...">
+                          </div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#componentModal').modal('toggle'); addComponent();">Save</button>
+                    </div>
+                </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="components">
+
+        </div>
+
+        <div id="save">
+              <div class="form-group">
+                <label for="name">Page Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="url">URL</label>
+                <input type="text" class="form-control" id="url" placeholder="pageEditor">
+              </div>
+              <button type="submit" class="btn btn-primary" onclick="savePage()">Submit</button>
+        </div>
+
+        <div id="model">
+            {% for model in modelDicts %}
+                <div class="model">
+                    <h3>{{model.name}}</h3>
+                    <div class="fields">
+                        <table class="table">
+                            <tr>
+                                <th>Name</th>
+                                <th>Field Type</th>
+                                <th>Default</th>
+                                <th>Blank</th>
+                                <th>Add/Delete</th>
+                            </tr>
+                            {% for field in model.fields %}
+                                <tr>
+                                    <td>{{field.name}}</td>
+                                    <td>{{field.fieldType}}</td>
+                                    <td>{{field.default}}</td>
+                                    <td>{{field.blank}}</td>
+                                    <td><a href="/modelInstance/home/Field/{{field.id}}/delete/" class="btn btn-danger">Delete Field</a></td>
+                                </tr>
+                            {% endfor %}
+
+                            <form action="/models/modelInstance/home/Field/" method="post">
+                                <tr>
+                                    <td><input type="text" name="name"></td>
+                                    <td>
+                                        <select name="fieldType">
+                                            <option value="AutoField">Id</option>
+                                            <option value="CharField">CharField</option>
+                                            <option value="ForeignKey">Foreign Key</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" name="default"></td>
+                                    <td>
+                                        <select name="blank">
+                                            <option value="True">True</option>
+                                            <option value="False">False</option>
+                                        </select>
+                                    </td>
+                                    <input type="hidden" name="model" value="{{model.id}}">
+                                    <td><input type="submit" class="btn btn-success" value="Add New Field"></td>
+                                </tr>
+                            </form>
+
+                        </table>
+                    <a href="/models/modelInstance/home/Model/{{model.id}}/delete/">Delete Model</a>
+                </div>
+            {% endfor %}
+            <form action="/models/modelInstance/home/Model/" method="POST">
+                <h3>Add New Model</h3>
+                <label>Name</label>
+                <br>
+                <input name="name" type="text">
+                <input type="submit" value="Add New Model" class="btn btn-success">
+            </form>
+
+        </div>
+
+
+    </div>
+
+
+    <script>
+        function openAddComponent() {
+            $('#componentChooser').hide();
+            $('#componentData').show();
+        }
+
+        var components = {{ componentList|safe }};
+
+        $(document).ready(function() {
+            var component;
+            var html;
+            for (index in components) {
+                component = components[index];
+                console.log(index,component);
+                html = '<div class="col-md-12"><div class="card"><div class="card-body"><h5 class="card-title">' + component['name'] + '</h5><p class="card-text">' + component['description'] + '</p><button class="btn btn-primary" name="' + component['name'] + '" onclick="setUpInputs(this);">Add Component</button></div></div></div>';
+                $('#componentChooser').append(html);
+            }
+        });
+
+    </script>
+
+    <script>
+    var pageComponents = [];
+    var componentName;
+    var detailedComponents = {{ detailedComponents|safe }};
+
+    function setUpInputs(component) {
+        componentName = $(component).attr('name');
+
+        $('#componentModal').modal('toggle');
+        $('#dataModal').modal('toggle');
+
+        componentData = detailedComponents[componentName]['dataStructure'];
+
+        $('#inputFields').empty();
+        var html;
+        for (i in componentData) {
+            html = '<div class="form-group"><label>' + i + '</label><input type="text" class="form-control" id="' + componentData[i].html_id + '" aria-describedby="emailHelp" placeholder=""></div>'
+            $('#inputFields').append(html);
+        }
+
+
+    }
+
+    function savePage() {
+
+        var name = $('#name').val();
+        var url = $('#url').val();
+        var data = {
+            components: pageComponents,
+          }
+        json_response = JSON.stringify(data);
+
+
+
+        $.ajax({
+          type: "POST",
+          url: "/pageEditor/",
+          data: {
+            name: name,
+            url: url,
+            componentData: json_response,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+           },
+          dataType: "json"
+        });
+
+    }
+
+
+    function addComponent() {
+
+        var componentDataValues = {};
+
+        var component = detailedComponents[componentName];
+
+        var dataUrl = $('#dataUrl').val();
+
+        if (dataUrl == "") {
+            for (key in component['dataStructure']) {
+                    var dataAccessArray = component['dataStructure'][key].html_id.split('-');
+                    var dataVal = $('#' + component['dataStructure'][key].html_id).val();
+                    console.log("Data!!");
+                    console.log(dataAccessArray);
+                    console.log(dataVal);
+
+                    if (!(dataAccessArray[0] in componentDataValues)) {
+                        componentDataValues[dataAccessArray[0]] = {};
+                    }
+
+                    componentDataValues[dataAccessArray[0]][dataAccessArray[1]] = dataVal;
+                    console.log("Results");
+                    console.log(componentDataValues[dataAccessArray[0]][dataAccessArray[1]]);
+            }
+
+            componentDataValues = [componentDataValues];
+            pageComponents.push({id:component.id, data:componentDataValues});
+            addComponentToPage(component, componentDataValues);
+        } else {
+            $.get(dataUrl, function (data) {
+                console.log("GET RETRIEVED");
+                console.log(data);
+                componentDataValues = data;
+                addComponentToPage(component, data);
+            });
+            pageComponents.push({id:component.id, data_url:dataUrl});
+        }
+    }
+
+    function addComponentToPage(component, componentDataValues) {
+        var i = 0;
+        console.log("Component Data Values");
+        console.log(componentDataValues);
+        console.log(component);
+
+        for (dataIndex in componentDataValues) {
+            var htmlString = '<div id="component' + i + '">' + component['html'] + '</div>';
+            $('#components').append(htmlString);
+
+            for (key in component['dataStructure']) {
+
+                var dataAccessArray = component['dataStructure'][key].html_id.split('-');
+                var dataValue = componentDataValues[dataIndex];
+                for (index in dataAccessArray) {
+                    dataValue = dataValue[dataAccessArray[index]];
+                }
+                console.log("Data Value");
+                console.log(dataValue);
+                if (dataValue != '') {
+
+                    console.log("Attribute To Change",component['dataStructure'][key]['attribute_to_change']);
+                    var target = $('#component' + i + ' .' + key);
+
+                    if (component['dataStructure'][key]['attribute_to_change'] == 'href') {
+                        var url = target.attr('href');
+                        url = url.replace('{% templatetag openvariable %}' + key + '{% templatetag closevariable %}', dataValue);
+                        target.attr('href', url);
+                    }
+                    else if (component['dataStructure'][key]['attribute_to_change'] == 'value') {
+                        target.val(dataValue);
+                    }
+                    else if (component['dataStructure'][key]['attribute_to_change'] == 'text') {
+                        target.text(dataValue);
+                    }
+                    else {
+                        target.attr("name", dataValue);
+                    }
+                    target.show();
+                }
+            }
+            i += 1;
+        }
+
+    }
+
+</script>
+</body>
+</html>

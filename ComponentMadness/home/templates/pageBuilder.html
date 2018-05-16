@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <div id="components">
+    <!-- Post -->
+    </div>
+</div>
+
+<script>
+    var components = {{ buildComponents|safe }};
+    var parameters = {{ parameters|safe }};
+    function addComponents() {
+
+        var i = 0;
+        for (index in components) {
+            component = components[index];
+
+            var data;
+            //if data url in component, do something different
+            if ("data_url" in component) {
+                var url = component["data_url"];
+
+                for (param in parameters) {
+                    if (url.indexOf(param) != -1) {
+                        url = url.replace(param, parameters[param]);
+                        console.log("Data URL",url);
+                    }
+                }
+
+                $.get(url, function (data) {
+                    i = addComponentToPage(component, data, i);
+                });
+            } else {
+                data = component['data'];
+                i = addComponentToPage(component,data, i);
+            }
+            i += 1;
+        }
+    }
+
+    function addComponentToPage(component, componentData, i) {
+        for (dataIndex in componentData) {
+            //console.log("Data Index",dataIndex);
+            var htmlString = '<div id="component' + i + '">' + component['html'] + '</div>';
+            $('#components').append(htmlString);
+
+            for (key in component['dataStructure']) {
+                //console.log("Key",key);
+
+                var dataAccessArray = component['dataStructure'][key].html_id.split('-');
+                //console.log("Data Access Array", dataAccessArray);
+                var dataValue = componentData[dataIndex];
+                //console.log("Data Value", dataValue);
+                for (index in dataAccessArray) {
+                    //console.log("Index",index);
+                    dataValue = dataValue[dataAccessArray[index]];
+                    //console.log("Data Value",dataValue);
+                }
+                //console.log(dataAccessArray,dataValue);
+                //console.log('#component' + i + ' .' + key);
+                if (dataValue != '') {
+                    if (dataValue in parameters) {
+                        dataValue = parameters[dataValue]
+                    }
+
+                    var target = $('#component' + i + ' .' + key);
+
+                    console.log("Attribute To Change",component['dataStructure'][key]['attribute_to_change']);
+                    if (component['dataStructure'][key]['attribute_to_change'] == 'href') {
+                        var url = target.attr('href');
+                        console.log("Component Key HREF", key);
+                        url = url.replace('{% templatetag openvariable %}' + key + '{% templatetag closevariable %}', dataValue);
+                        target.attr('href', url);
+                    }
+                    else if (component['dataStructure'][key]['attribute_to_change'] == 'value') {
+
+                        target.val(dataValue);
+                    }
+                    else if (component['dataStructure'][key]['attribute_to_change'] == 'text') {
+                        target.text(dataValue);
+                    }
+                    else {
+                        target.attr(component['dataStructure'][key]['attribute_to_change'], dataValue);
+                    }
+                    target.show();
+                }
+            }
+            i += 1;
+        }
+        return i;
+    }
+
+    $(document).ready(function() {
+        addComponents();
+    });
+</script>
+
+</body>
+
+</html>
+
+

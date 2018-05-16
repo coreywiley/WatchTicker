@@ -1,0 +1,53 @@
+{% extends "ex_static.html" %}
+{% load staticfiles %}
+
+{% block all %}
+
+<!DOCTYPE html>
+<html class="">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<title></title>
+	<!-- Loading Bootstrap -->
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+	<link href="{{ ex_static }}style/flat-ui.css{{v}}" rel="stylesheet">
+	<link href="{{ ex_static }}style/font-awesome.min.css{{v}}" rel="stylesheet">
+
+	<script>
+	</script>
+	{% block style %}
+	{% endblock %}
+</head>
+
+<body>
+{% block content %}
+{% endblock %}
+
+<div class='cover'>
+    <div class="cover-outer" onclick="popCoverContent()"></div>
+
+    <div class="floating-cover-content" style=""></div>
+
+    <div class='cover-inner'>
+        <div class='cover-content'>
+        </div>
+        <div class="close btn btn-danger" onclick="popCoverContent()"><span class="fa fa-times"></span></div>
+        {% csrf_token %}
+    </div>
+
+</div>
+
+<script src="{{ ex_static }}script/script.js{{v}}"></script>
+{% block script %}
+{% endblock %}
+
+</body>
+</html>
+
+{% endblock %}
