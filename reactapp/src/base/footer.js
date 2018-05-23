@@ -8,8 +8,8 @@ class Footer extends React.Component {
     render() {
 
         return (
-            <footer class="footer">
-                <div class="container">
+            <footer className="footer">
+                <div className="container">
                     <div style={{float:"right"}}>
                         <ul className="footer-list">
                             <li className=""><a href="/">HOME</a></li>
@@ -17,7 +17,7 @@ class Footer extends React.Component {
                     </div>
 
                     <div style={{textAlign: "center"}} >
-                        <span class="text-muted">Welcome to the bottom of the page</span>
+                        <span className="text-muted">Welcome to the bottom of the page</span>
                     </div>
 
                     <a href="/" style={{float: "left"}}>

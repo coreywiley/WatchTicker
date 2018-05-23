@@ -16,6 +16,11 @@ class Component(models.Model):
     def __str__(self):
         return u"{}".format(self.name)
 
+    def dict(self):
+        dict = self.__dict__
+        del dict['_state']
+        return dict
+
 class ComponentDataField(models.Model):
     id = models.AutoField(primary_key=True)
     component_id = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='componentDataFields')

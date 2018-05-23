@@ -16,6 +16,45 @@ import os
 
 #from user.views import my_login_required
 
+def Index(request, param = "", param2 = ""):
+    if request.META['HTTP_HOST'] == "localhost:8000":
+        #In development mode this connects to the live React Node server
+        html = requests.get("http://localhost:3000").content
+        html = html.replace('src="/static/js/bundle.js"', 'src="http://localhost:3000/static/js/bundle.js"')
+        return HttpResponse(html)
+
+    return render(request, "index.html", {})
+
+def Context(request):
+
+    return JsonResponse({}, status=200)
+
+
+def ListComponents(request):
+    components = Component.objects.values("id", "name", "description")
+    components = list(components)
+    print components
+
+    return JsonResponse({"components": components}, status=200)
+
+
+def ManageComponent(request, id):
+    if id == "0":
+        component = Component()
+        component.save()
+        return JsonResponse({"redirect": "/component/%s/" % (component.id)})
+
+    component = get_object_or_404(Component, pk = id)
+
+    if request.method == "POST":
+        component.name = request.POST.get('name', component.name)
+        component.description = request.POST.get('description', component.description)
+        component.html = request.POST.get('html', component.html)
+        component.save()
+
+    return JsonResponse({"component": component.dict()})
+
+
 def PageEditor(request):
     if request.method == "GET":
         components = Component.objects.filter()

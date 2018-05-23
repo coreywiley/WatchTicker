@@ -6,13 +6,17 @@ import ajaxWrapper from "./base/ajax.js";
 import Header from './base/header.js';
 import Footer from './base/footer.js';
 
+import Wrapper from './base/wrapper.js';
+import Home from './pages/home.js';
+import ComponentList from './pages/componentList.js';
+import ManageComponent from './pages/component.js';
+
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loaded: false,
-            feedback: undefined,
             csrf: undefined
         };
 
@@ -20,11 +24,12 @@ class App extends Component {
     }
 
     componentDidMount() {
-        ajaxWrapper("GET", "/", {}, this.ajaxCallback);
+        ajaxWrapper("GET", "/api/", {}, this.ajaxCallback);
     }
 
     ajaxCallback(value){
         console.log(value);
+        this.setState({loaded: true});
     }
 
     getURL(){
@@ -44,30 +49,22 @@ class App extends Component {
         var content = null;
         if (params[0] === ""){
             //Home page
+            content = <Home />
 
         } else if (params[0] === "components") {
-            if (params.length > 1){
-                //Single component page
-            } else {
-                //List components
-            }
+            //List components
+            content = <ComponentList />;
+        } else if (params[0] === "component") {
+            //Single component page
+            content = <ManageComponent id={params[1]} />;
         }
 
         return (
             <div className="App">
                 <Header />
-
-                <div class="content">
-                    <div className="row col-xs-12">
-                        <div className="container">
-                            <div className="row col-xs-12">
-
-                                {(this.props.loaded) ? content : loading}
-                            </div>
-                        </div>
-                    </div>
+                <div className="content">
+                    {(this.state.loaded) ? content : loading}
                 </div>
-
                 <Footer />
             </div>
         );
