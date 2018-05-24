@@ -17,7 +17,7 @@ class App extends Component {
         super(props);
         this.state = {
             loaded: false,
-            csrf: undefined
+            csrfmiddlewaretoken: undefined
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);

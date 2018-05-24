@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 function ajaxWrapper(type, url, data, returnFunc){
     if (type === "POST"){
-        data["csrfmiddlewaretoken"] = window.secretReactVars["CSRF"];
+        data["csrfmiddlewaretoken"] = window.secretReactVars["csrfmiddlewaretoken"];
     }
 
     url = "http://localhost:8000" + url;
