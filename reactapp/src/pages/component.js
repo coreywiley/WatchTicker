@@ -9,7 +9,7 @@ class ManageComponent extends Component {
         super(props);
         this.state = {
             loaded: false,
-            data: undefined
+            data: {name:'',description:'',html:''}
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
@@ -17,7 +17,12 @@ class ManageComponent extends Component {
     }
 
     componentDidMount() {
-        ajaxWrapper("GET", "/api/component/" + this.props.id + "/", {}, this.ajaxCallback);
+        if (this.props.id != 0) {
+            ajaxWrapper("GET", "/api/component/" + this.props.id + "/", {}, this.ajaxCallback);
+        }
+        else {
+            this.setState({loaded:true})
+        }
     }
 
     handleChange = (e) => {
@@ -32,7 +37,12 @@ class ManageComponent extends Component {
         console.log("Data", this.state.data.name);
         var data = {name: this.state.data.name, description: this.state.data.description, html: this.state.data.html}
         console.log(data);
-        ajaxWrapper("POST","/models/modelInstance/home/component/" + this.props.id + "/", data, this.formSubmitCallback)
+
+        if (this.props.id != 0) {
+            ajaxWrapper("POST","/models/getModelInstanceJson/home/component/" + this.props.id + "/", data, this.formSubmitCallback);
+        } else {
+            ajaxWrapper("POST","/models/getModelInstanceJson/home/component/", data, this.formSubmitCallback);
+        }
     }
 
     formSubmitCallback (value) {
