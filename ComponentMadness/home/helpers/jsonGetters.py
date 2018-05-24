@@ -1,30 +1,34 @@
 from django.apps import apps
 
 def getInstanceJson(appLabel,modelName,id):
-
+    #gets the model object, similiar to like Component of Component.objects.filter
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
 
+    #this is a catch for a variable in the url during testing. aka /getModelJson/components/{{request.id}}/
     if isinstance(id, str) and id.startswith("{{"):
         instance = model.objects.filter().first()
     else:
         instance = model.objects.filter(id=int(id)).first()
 
+    #gets the fields from the model
     modelFields = model._meta.get_fields()
     fields = []
     links = []
     jsonInstance = {}
     jsonInstance[modelName] = {}
 
+    #iterates through the models fields to create a list of fields in the form [field_name,field_type,field_value]
     for field in modelFields:
+        #auto created fields are foreign keys etc. from other objects. aka, related_name, not sure if ManyToManys are in here
         if field.auto_created:
             if field.get_internal_type() == 'ForeignKey':
                 currentRelated = [object for object in getattr(instance, field.related_name).all()]
                 links.append([field.name, field.get_internal_type(), currentRelated, None])
             continue
+
         if field.get_internal_type() not in ['ForeignKey', 'ManyToManyField']:
             fields.append([field.name, field.get_internal_type(), getattr(instance, field.name)])
         elif field.get_internal_type() == 'ForeignKey':
-
             foreignKeyObjectsQuery = field.related_model.objects.all()
             foreignKeyObjects = [[object.id, str(object)] for object in foreignKeyObjectsQuery]
             fields.append(
@@ -51,6 +55,8 @@ def getInstancesJson(appLabel, modelName, kwargs):
     links = []
     print ("KWARGS")
     print (kwargs)
+
+    #this gets all the fields for the model
     instance = model.objects.filter().first()
     for field in modelFields:
         if field.auto_created:
@@ -73,6 +79,7 @@ def getInstancesJson(appLabel, modelName, kwargs):
             currentRelated = [object.id for object in currentRelatedQuery]
             fields.append([field.name, field.get_internal_type(), currentRelated, foreignKeyObjects])
 
+    #gets instances queried by kwargs for a filtered list of the database
     instanceQuery = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', '')).objects.filter(**kwargs).order_by('-id')
     instances = []
     for instance in instanceQuery:
