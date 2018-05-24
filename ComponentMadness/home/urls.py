@@ -27,9 +27,6 @@ urlpatterns = [
     url(r'^users/',include('user.urls')),
     #url(r'^(?P<url>[a-zA-Z0-9]+)/$', PageDisplay, name='pageDisplay'),
 
-    #Django admin
-    url(r'^admin/', include(admin.site.urls)),
-
     #Catch statements for React
     url(r'^$', Index, name='index'),
     url(r'^(?P<param>\w+)/$', Index, name='index'),
