@@ -29,7 +29,9 @@ class App extends Component {
 
     ajaxCallback(value){
         console.log(value);
-        this.setState({loaded: true});
+        window.secretReactVars["csrfmiddlewaretoken"] = value.csrfmiddlewaretoken;
+        this.setState({loaded: true, csrfmiddlewaretoken: value.csrfmiddlewaretoken});
+
     }
 
     getURL(){
