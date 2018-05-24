@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseForbidden, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.apps import apps
+import django
 
 from home.models import Page, Component, ComponentDataField, PageComponent, Model, Field
 from user.views import my_login_required
@@ -26,8 +27,9 @@ def Index(request, param = "", param2 = ""):
     return render(request, "index.html", {})
 
 def Context(request):
-
-    return JsonResponse({}, status=200)
+    # Gather context and send it to React
+    csrfmiddlewaretoken = django.middleware.csrf.get_token(request)
+    return JsonResponse({'csrfmiddlewaretoken':csrfmiddlewaretoken}, status=200)
 
 
 def ListComponents(request):
