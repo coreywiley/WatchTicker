@@ -20,7 +20,7 @@ def Index(request, param = "", param2 = ""):
     if request.META['HTTP_HOST'] == "localhost:8000":
         #In development mode this connects to the live React Node server
         html = requests.get("http://localhost:3000").content
-        html = html.replace('src="/static/js/bundle.js"', 'src="http://localhost:3000/static/js/bundle.js"')
+        html = html.decode().replace('src="/static/js/bundle.js"', 'src="http://localhost:3000/static/js/bundle.js"')
         return HttpResponse(html)
 
     return render(request, "index.html", {})
@@ -33,7 +33,7 @@ def Context(request):
 def ListComponents(request):
     components = Component.objects.values("id", "name", "description")
     components = list(components)
-    print components
+    print (components)
 
     return JsonResponse({"components": components}, status=200)
 
