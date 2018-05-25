@@ -3,6 +3,17 @@ import React, { Component } from 'react';
 import ajaxWrapper from "../base/ajax.js";
 import Wrapper from '../base/wrapper.js';
 import $ from 'jquery';
+import Playground from "component-playground";
+import ReactDOM from "react-dom";
+
+const componentExample = 'class App extends React.Component { \
+  render() { \
+    return ( \
+     <p>Hello</p> \
+    ); \
+  } \
+} \
+ReactDOM.render(<App/>, mountNode);';
 
 class ManageComponent extends Component {
     constructor(props) {
@@ -85,6 +96,14 @@ class ManageComponent extends Component {
                     <input type="submit" className="btn btn-success" name="save" value="Save" onClick={this.formSubmit} />
                     <br/><br/>
 
+                   <div className="component-documentation">
+                    <Playground codeText={componentExample} noRender={false} scope={{React, ReactDOM}}/>
+                  </div>
+
+                  <div id='mountNode'>
+
+                  </div>
+
             </div>;
         }
 
@@ -95,3 +114,6 @@ class ManageComponent extends Component {
 }
 
 export default ManageComponent;
+
+
+
