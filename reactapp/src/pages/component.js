@@ -6,13 +6,14 @@ import $ from 'jquery';
 import Playground from "component-playground";
 import ReactDOM from "react-dom";
 
-const componentExample = 'class App extends React.Component { \
-  render() { \
-    return ( \
-     <p>Hello</p> \
-    ); \
-  } \
-} \
+const componentExample =
+'class App extends React.Component {\n\
+    render() { \n\
+        return ( \n\
+            <p>Hello</p> \n\
+        ); \n\
+    } \n\
+} \n\
 ReactDOM.render(<App/>, mountNode);';
 
 class ManageComponent extends Component {
@@ -50,14 +51,17 @@ class ManageComponent extends Component {
         console.log(data);
 
         if (this.props.id != 0) {
-            ajaxWrapper("POST","/models/getModelInstanceJson/home/component/" + this.props.id + "/", data, this.formSubmitCallback);
+            ajaxWrapper("POST","/models/getModelInstanceJson/home/component/" + this.props.id + "/", data, this.formSubmitCallback.bind(this));
         } else {
-            ajaxWrapper("POST","/models/getModelInstanceJson/home/component/", data, this.formSubmitCallback);
+            ajaxWrapper("POST","/models/getModelInstanceJson/home/component/", data, this.formSubmitCallback.bind(this));
         }
     }
 
     formSubmitCallback (value) {
         console.log(value);
+        if (this.props.id == 0){
+            window.location = "/api/component/" + value[0].component.id + "/";
+        }
     }
 
     ajaxCallback(value){
@@ -70,6 +74,10 @@ class ManageComponent extends Component {
 
     render() {
         var content = null;
+        var html = this.state.data.html;
+        if (html == ""){
+            html = componentExample;
+        }
 
         if (typeof(this.state.data) != "undefined"){
             var data = this.state.data;
@@ -90,15 +98,14 @@ class ManageComponent extends Component {
                     <br/>
 
                     <label>Source</label>
+                        <div className="component-documentation">
+                            <Playground codeText={html} noRender={false} scope={{React, ReactDOM}} />
+                        </div>
                     <textarea className="form-control" name="html" value={data.html} onChange={this.handleChange}></textarea>
                     <br/>
 
                     <input type="submit" className="btn btn-success" name="save" value="Save" onClick={this.formSubmit} />
                     <br/><br/>
-
-                   <div className="component-documentation">
-                    <Playground codeText={componentExample} noRender={false} scope={{React, ReactDOM}}/>
-                  </div>
 
                   <div id='mountNode'>
 
@@ -114,6 +121,3 @@ class ManageComponent extends Component {
 }
 
 export default ManageComponent;
-
-
-

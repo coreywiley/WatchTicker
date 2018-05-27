@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.apps import apps
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseForbidden, HttpResponseRedirect
 
-from home.helpers.jsonGetters import getInstanceJson, getInstancesJson
+from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson
 from user.views import staff_required
 from django.views.decorators.csrf import csrf_exempt
 
