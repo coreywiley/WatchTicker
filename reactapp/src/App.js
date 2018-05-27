@@ -9,7 +9,11 @@ import Footer from './base/footer.js';
 import Wrapper from './base/wrapper.js';
 import Home from './pages/home.js';
 import ComponentList from './pages/componentList.js';
-import ManageComponent from './pages/component.js';
+import ComponentManager from './pages/componentManager.js';
+
+import PageList from './pages/pageList.js';
+import PageManager from './pages/pageManager.js';
+
 
 
 class App extends Component {
@@ -58,7 +62,13 @@ class App extends Component {
             content = <ComponentList />;
         } else if (params[0] === "component") {
             //Single component page
-            content = <ManageComponent id={params[1]} />;
+            content = <ComponentManager id={params[1]} />;
+        } else if (params[0] === "pages") {
+            //List pages
+            content = <PageList />;
+        } else if (params[0] === "page") {
+            //Single page
+            content = <PageManager id={params[1]} />;
         }
 
         return (
