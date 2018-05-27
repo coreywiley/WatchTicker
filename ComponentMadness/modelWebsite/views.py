@@ -6,6 +6,7 @@ from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson
 from user.views import staff_required
 from django.views.decorators.csrf import csrf_exempt
 
+import os
 import csv
 import io
 
@@ -63,7 +64,7 @@ def getModelInstanceJson(request,appLabel,modelName,id=None):
 
     #page for adding a new instance
     if request.method == "GET" and not id:
-        instances = getInstancesJson(appLabel,modelName, parameters)
+        instances = getInstancesJson(appLabel, modelName, parameters)
 
     # edit or instance
     if request.method in ['PUT', 'POST']:
@@ -162,7 +163,7 @@ def deleteModelInstance(request,appLabel,modelName,id):
     return HttpResponseRedirect(request.GET['redirectLocation'])
 
 @csrf_exempt
-def getModelInstance(request,appLabel, modelName,id=None):
+def getModelInstance(request, appLabel, modelName, id=None):
     # single instance
     if request.method == "GET" and id:
         model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_',''))
@@ -362,4 +363,13 @@ def getModelInstance(request,appLabel, modelName,id=None):
             return HttpResponseRedirect('/models/modelInstance/' + appLabel + '/' + modelName.replace(' ','_') + '/' + str(instance.id) + '/')
 
 
+def writeComponents(request):
+    path = os.path.join(os.getcwd(), "..", "reactapp", "src", "library")
+    print (path)
+
+    filepath = os.path.join(path, "test.js")
+    with open(filepath, "wb") as file:
+        file.write("I am a test component".encode())
+
+    return HttpResponse("")
 
