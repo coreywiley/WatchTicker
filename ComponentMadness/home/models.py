@@ -23,7 +23,7 @@ class Component(models.Model):
 
 class ComponentDataField(models.Model):
     id = models.AutoField(primary_key=True)
-    component_id = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='componentDataFields')
+    component = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='componentDataFields')
     name = models.CharField(max_length=120, blank=True, default="")
     html_id = models.CharField(max_length=120, blank=True, default="")
     attribute_to_change = models.CharField(max_length=120, blank=True, default="value")
@@ -42,7 +42,7 @@ class Page(models.Model):
 class PageComponent(models.Model):
     id = models.AutoField(primary_key=True)
     component = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='pageComponent')
-    page_id = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='pageComponent')
+    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='pageComponent')
     data_url = models.CharField(max_length=120, blank=True, default="")
     data = JSONField(blank=True,default=dict())
     order = models.IntegerField()
@@ -63,7 +63,7 @@ class Post(models.Model):
     id = models.AutoField(primary_key=True)
     image = models.CharField(max_length=120, blank=True, default="")
     text = models.CharField(max_length=120, blank=True, default="")
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post')
 
     def __str__(self):
         return u"{}".format(self.id)
