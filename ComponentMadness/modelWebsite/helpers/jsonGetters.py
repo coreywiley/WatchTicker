@@ -57,7 +57,7 @@ def getInstancesJson(appLabel, modelName, kwargs):
     print (kwargs)
 
     #this gets all the fields for the model
-    instance = model.objects.filter().first()
+    instance = model()
     for field in modelFields:
         if field.auto_created:
             if field.get_internal_type() == 'ForeignKey':
@@ -67,10 +67,12 @@ def getInstancesJson(appLabel, modelName, kwargs):
         if field.get_internal_type() not in ['ForeignKey', 'ManyToManyField']:
             fields.append([field.name, field.get_internal_type(), getattr(instance, field.name)])
         elif field.get_internal_type() == 'ForeignKey':
-            foreignKeyObjects = getattr(instance, field.name)
+            #I'm getting an error with this variable. It doesn't get used later on??
+            foreignKeyObjects = []#getattr(instance, field.name)
             print ('FOREIGN OBJECTS')
             print (foreignKeyObjects)
-            fields.append([field.name, field.get_internal_type(), str(getattr(instance, field.name)), foreignKeyObjects, field.related_model._meta.app_label, field.related_model._meta.object_name.lower()])
+            fields.append([field.name, field.get_internal_type(), "",#str(getattr(instance, field.name)),
+                           foreignKeyObjects, field.related_model._meta.app_label, field.related_model._meta.object_name.lower()])
         elif field.get_internal_type() == 'ManyToManyField':
             foreignKeyObjectsQuery = field.related_model.objects.all()
             foreignKeyObjects = [[object.id, str(object)] for object in foreignKeyObjectsQuery]
@@ -78,7 +80,7 @@ def getInstancesJson(appLabel, modelName, kwargs):
             currentRelatedQuery = getattr(instance, field.name).all()
             currentRelated = [object.id for object in currentRelatedQuery]
             fields.append([field.name, field.get_internal_type(), currentRelated, foreignKeyObjects])
-
+    print (fields)
     #gets instances queried by kwargs for a filtered list of the database
     instanceQuery = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', '')).objects.filter(**kwargs).order_by('-id')
     instances = []
