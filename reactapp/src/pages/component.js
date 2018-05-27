@@ -5,6 +5,7 @@ import Wrapper from '../base/wrapper.js';
 import $ from 'jquery';
 import Playground from "component-playground";
 import ReactDOM from "react-dom";
+import Card from '../components/card.js';
 
 const componentExample =
 'class App extends React.Component {\n\
@@ -21,7 +22,9 @@ class ManageComponent extends Component {
         super(props);
         this.state = {
             loaded: false,
-            data: {name:'',description:'',html:''}
+            data: {name:'',description:'',html:''},
+            example: '<Header text="Hello" />',
+            scope: {React, ReactDOM, Card},
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
@@ -39,9 +42,13 @@ class ManageComponent extends Component {
 
     handleChange = (e) => {
        var name = e.target.getAttribute("name");
+       if (name == 'example') {
+        var newState = {example: e.target.value}
+       } else {
        var newState = {data:this.state.data}
        newState.data[name] = e.target.value;
-       console.log(newState);
+       }
+
        this.setState(newState);
     }
 
@@ -97,12 +104,18 @@ class ManageComponent extends Component {
                     <textarea className="form-control" name="description" value={data.description} onChange={this.handleChange}></textarea>
                     <br/>
 
-                    <label>Source</label>
-                        <div className="component-documentation">
-                            <Playground codeText={html} noRender={false} scope={{React, ReactDOM}} />
-                        </div>
+                    <label>React</label>
                     <textarea className="form-control" name="html" value={data.html} onChange={this.handleChange}></textarea>
                     <br/>
+
+                    <label>Example</label>
+                    <textarea className="form-control" name="example" value={this.state.example} onChange={this.handleChange}></textarea>
+                    <br/>
+
+                    <label>Render</label>
+                    <div className="component-documentation">
+                        <Playground codeText={this.state.data.html + ' ReactDOM.render(' + this.state.example + ', mountNode);'} noRender={false} scope={this.state.scope} />
+                    </div>
 
                     <input type="submit" className="btn btn-success" name="save" value="Save" onClick={this.formSubmit} />
                     <br/><br/>
