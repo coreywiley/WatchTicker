@@ -99,3 +99,5 @@ def dumpInstance(modelName, fields, instance):
             jsonInstance[field[5]] = foreignKeyDict[field[5]]
         else:
             jsonInstance[modelName][field[0]] = getattr(instance, field[0])
+
+    return jsonInstance
