@@ -14,8 +14,6 @@ def getInstanceJson(appLabel,modelName,id):
     modelFields = model._meta.get_fields()
     fields = []
     links = []
-    jsonInstance = {}
-    jsonInstance[modelName] = {}
 
     #iterates through the models fields to create a list of fields in the form [field_name,field_type,field_value]
     for field in modelFields:
@@ -41,10 +39,8 @@ def getInstanceJson(appLabel,modelName,id):
             currentRelated = [object.id for object in currentRelatedQuery]
             fields.append([field.name, field.get_internal_type(), currentRelated, foreignKeyObjects])
 
-    for field in fields:
-        print (field)
-        print (getattr(instance, field[0]))
-        jsonInstance[modelName][field[0]] = getattr(instance, field[0])
+    jsonInstance = dumpInstance(modelName, fields, instance)
+
     return [jsonInstance]
 
 def getInstancesJson(appLabel, modelName, kwargs):
@@ -85,16 +81,21 @@ def getInstancesJson(appLabel, modelName, kwargs):
     instanceQuery = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', '')).objects.filter(**kwargs).order_by('-id')
     instances = []
     for instance in instanceQuery:
-        jsonInstance = {}
-        jsonInstance[modelName] = {}
-        for field in fields:
-            print (field)
-            print (getattr(instance, field[0]))
-            if field[1] == 'ForeignKey':
-                foreignKeyDict = getInstanceJson(field[4], field[5], getattr(instance, field[0]).id)[0]
-                jsonInstance[field[5]] = foreignKeyDict[field[5]]
-            else:
-                jsonInstance[modelName][field[0]] = getattr(instance, field[0])
+        jsonInstance = dumpInstance(modelName, fields, instance)
         instances.append(jsonInstance)
 
     return instances
+
+
+def dumpInstance(modelName, fields, instance):
+    jsonInstance = {}
+    jsonInstance[modelName] = {}
+
+    for field in fields:
+        print (field)
+        print (getattr(instance, field[0]))
+        if field[1] == 'ForeignKey':
+            foreignKeyDict = getInstanceJson(field[4], field[5], getattr(instance, field[0]).id)[0]
+            jsonInstance[field[5]] = foreignKeyDict[field[5]]
+        else:
+            jsonInstance[modelName][field[0]] = getattr(instance, field[0])
