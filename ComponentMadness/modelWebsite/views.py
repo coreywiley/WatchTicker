@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 import os
 import csv
 import io
+import json
 
 
 def getModels(request):
@@ -68,92 +69,72 @@ def getModelInstanceJson(request,appLabel,modelName,id=None):
 
     # edit or instance
     if request.method in ['PUT', 'POST']:
+        # jsonData = json.loads(request.body)
+        model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
+
+        instance = model()
         if id:
-            # jsonData = json.loads(request.body)
-            model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
             instance = model.objects.filter(id=id).first()
-            modelFields = model._meta.get_fields()
-            if request.method == 'PUT':
-                requestFields = request.PUT
-            else:
-                requestFields = request.POST
 
-            for field in modelFields:
-                if field.name == 'password':
-                    if requestFields['password'] != '':
-                        instance.set_password(requestFields['password'])
-                elif field.get_internal_type() == 'BooleanField':
-                    if requestFields[field.name] in [False, 'False']:
-                        setattr(instance, field.name, False)
-                    else:
-                        setattr(instance, field.name, True)
-                elif field.get_internal_type() == 'ManyToManyField':
-                    if field.name + "[]" in requestFields:
-                        for foreignObject in getattr(instance, field.name).all():
-                            getattr(instance, field.name).remove(foreignObject.id)
-                        print(field.name)
-                        foreignKeyIds = [int(id) for id in requestFields.getlist(field.name + "[]")]
-                        print (foreignKeyIds)
-                        getattr(instance, field.name).add(
-                            *list(field.related_model.objects.filter(id__in=foreignKeyIds)))
-                elif field.name in requestFields:
-                    if field.get_internal_type() not in ['ForeignKey', 'ManyToManyField']:
-                        setattr(instance, field.name, requestFields[field.name])
-                    elif field.get_internal_type() == 'ForeignKey':
-                        if requestFields[field.name] not in [None, 'None']:
-                            setattr(instance, field.name + '_id', requestFields[field.name])
-                        else:
-                            setattr(instance, field.name, None)
-
-            instance.save()
-            instances = getInstanceJson(appLabel,modelName, id)
-
-        #if creating a new one
+        modelFields = model._meta.get_fields()
+        if request.method == 'PUT':
+            requestFields = request.PUT
         else:
-            # jsonData = json.loads(request.body)
-            model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
-            modelFields = model._meta.get_fields()
-            if request.method == 'PUT':
-                requestFields = request.PUT
-            else:
-                requestFields = request.POST
+            requestFields = request.POST
 
-            fieldValueDict = {}
+        for field in modelFields:
+            if field.name not in requestFields:
+                continue
+            if field.name == "id":
+                continue
 
-            for field in modelFields:
-                print (field.name)
-                if field.name in requestFields:
-                    if field.get_internal_type() == 'BooleanField':
-                        if requestFields[field.name] in [False, 'False']:
-                            fieldValueDict[field.name] = False
-                        else:
-                            fieldValueDict[field.name] = True
-                    elif field.get_internal_type() not in ['ForeignKey', 'ManyToManyField']:
-                        fieldValueDict[field.name] = requestFields[field.name]
-                    elif field.get_internal_type() == 'ForeignKey':
-                        if requestFields[field.name] not in [None, 'None']:
-                            fieldValueDict[field.name + '_id'] = requestFields[field.name]
-                        else:
-                            fieldValueDict[field.name] = None
+            print ("%s : %s : %s" % (field.get_internal_type(), field.name, requestFields[field.name]))
 
-            print ("Field Value Dict")
-            print (fieldValueDict)
-            instance = model(**fieldValueDict)
+            if field.get_internal_type() == 'TextField' and field.name == "data":
+                try:
+                    data = json.loads(requestFields[field.name])
+                    setattr(instance, field.name, data)
+                except:
+                    print ("No Valid JSON data found!")
+                    continue
 
-            instance.save()
+            elif field.get_internal_type() == 'BooleanField':
+                if requestFields[field.name] in [False, 'False']:
+                    setattr(instance, field.name, False)
+                else:
+                    setattr(instance, field.name, True)
 
-            for field in modelFields:
-                if field.get_internal_type() == 'ManyToManyField':
-                    if field.name + "[]" in requestFields:
-                        ids = [int(id) for id in requestFields.getlist(field.name + "[]")]
-                        getattr(instance, field.name).add(
-                            *list(field.related_model.objects.filter(id__in=ids).all()))
+            elif field.get_internal_type() not in ['ForeignKey', 'ManyToManyField']:
+                setattr(instance, field.name, requestFields[field.name])
 
-            instances = getInstanceJson(appLabel, modelName, instance.id)
+            elif field.get_internal_type() == 'ForeignKey':
+                if requestFields[field.name] not in [None, 'None']:
+                    setattr(instance, field.name + '_id', requestFields[field.name])
+                else:
+                    setattr(instance, field.name, None)
+
+        instance.save()
+
+        for field in modelFields:
+            if field.name not in requestFields:
+                continue
+
+            if field.name == 'password':
+                if requestFields['password'] != '':
+                    instance.set_password(requestFields['password'])
+
+            elif field.get_internal_type() == 'ManyToManyField' and field.name + "[]" in requestFields:
+                for foreignObject in getattr(instance, field.name).all():
+                    getattr(instance, field.name).remove(foreignObject.id)
+                print(field.name)
+                foreignKeyIds = [int(id) for id in requestFields.getlist(field.name + "[]")]
+                print (foreignKeyIds)
+                getattr(instance, field.name).add(
+                    *list(field.related_model.objects.filter(id__in=foreignKeyIds)))
+
+        instances = getInstanceJson(appLabel,modelName, instance.id)
 
     return JsonResponse(instances,safe=False)
-
-
 
 
 
