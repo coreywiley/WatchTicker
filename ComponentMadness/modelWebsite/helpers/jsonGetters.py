@@ -43,7 +43,7 @@ def dumpInstance(modelName, fields, instance):
         #print (getattr(instance, field[0]))
         if field[1] == 'ForeignKey':
             foreignKeyDict = getInstanceJson(field[4], field[5], getattr(instance, field[0]).id)[0]
-            jsonInstance[field[5]] = foreignKeyDict[field[5]]
+            jsonInstance[modelName][field[5]] = foreignKeyDict[field[5]]
         else:
             jsonInstance[modelName][field[0]] = getattr(instance, field[0])
 
