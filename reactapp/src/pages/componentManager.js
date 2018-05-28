@@ -5,30 +5,44 @@ import Wrapper from '../base/wrapper.js';
 import $ from 'jquery';
 import Playground from "component-playground";
 import ReactDOM from "react-dom";
-import Card from '../components/card.js';
+
 
 const componentExample =
-'class App extends React.Component {\n\
+'class Header extends React.Component {\n\
     render() { \n\
         return ( \n\
-            <p>Hello</p> \n\
+            <p>{this.props.text}</p> \n\
         ); \n\
     } \n\
-} \n\
-ReactDOM.render(<App/>, mountNode);';
+} \n';
+
+let componentPaths = {'Card':'card'}
+
 
 class ComponentManager extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loaded: false,
+            components: {React:React, ReactDOM:ReactDOM},
             data: {name:'',description:'',html:''},
             example: '<Header text="Hello" />',
-            scope: {React, ReactDOM, Card},
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
+    }
+
+    requireCardInRender =  async componentName => {
+        var components = this.state.components;
+        var component = this;
+        import('../components/' + componentPaths[componentName] + '.js')
+        .then(function(module) {
+            components[componentName] = module.default;
+            component.setState({components:components});
+
+            }
+        )
     }
 
     componentDidMount() {
@@ -94,7 +108,8 @@ class ComponentManager extends Component {
                 <h2>Manage Component</h2>
                 <a href="/components/" >back to list</a>
                 <br/><br/>
-
+                    <p className='btn btn-success' onClick={() => this.requireCardInRender('Card')}>Require Card Component</p>
+                    <br/>
 
                     <label>Name</label>
                     <input className="form-control" name="name" value={data.name} onChange={this.handleChange} />
@@ -105,7 +120,7 @@ class ComponentManager extends Component {
                     <br/>
 
                     <label>React</label>
-                    <textarea className="form-control" name="html" value={data.html} onChange={this.handleChange}></textarea>
+                    <textarea className="form-control" name="html" value={html} onChange={this.handleChange}></textarea>
                     <br/>
 
                     <label>Example</label>
@@ -114,7 +129,7 @@ class ComponentManager extends Component {
 
                     <label>Render</label>
                     <div className="component-documentation">
-                        <Playground codeText={this.state.data.html + ' ReactDOM.render(' + this.state.example + ', mountNode);'} noRender={false} scope={this.state.scope} />
+                        <Playground codeText={html + ' ReactDOM.render(' + this.state.example + ', mountNode);'} noRender={false} scope={this.state.components} />
                     </div>
 
                     <input type="submit" className="btn btn-success" name="save" value="Save" onClick={this.formSubmit} />
