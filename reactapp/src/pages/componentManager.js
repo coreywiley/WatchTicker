@@ -32,7 +32,7 @@ class ComponentManager extends Component {
     }
 
     componentDidMount() {
-        if (this.props.id != 0) {
+        if (this.props.id > -1) {
             ajaxWrapper("GET", "/api/component/" + this.props.id + "/", {}, this.ajaxCallback);
         }
         else {
@@ -57,7 +57,7 @@ class ComponentManager extends Component {
         var data = {name: this.state.data.name, description: this.state.data.description, html: this.state.data.html}
         console.log(data);
 
-        if (this.props.id != 0) {
+        if (this.props.id > -1) {
             ajaxWrapper("POST","/models/getModelInstanceJson/home/component/" + this.props.id + "/", data, this.formSubmitCallback.bind(this));
         } else {
             ajaxWrapper("POST","/models/getModelInstanceJson/home/component/", data, this.formSubmitCallback.bind(this));
@@ -66,7 +66,7 @@ class ComponentManager extends Component {
 
     formSubmitCallback (value) {
         console.log(value);
-        if (this.props.id == 0){
+        if (this.props.id == -1){
             window.location = "/api/component/" + value[0].component.id + "/";
         }
     }
