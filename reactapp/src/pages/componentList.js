@@ -36,7 +36,7 @@ class ComponentList extends Component {
 
             content.push(componentSmall);
         }
-        var componentSmall = <Card name="Something New?" description="Add A New Component" link="/component/0/" button="Create New" button_type="success" />;
+        var componentSmall = <Card name="Something New?" description="Add A New Component" link="/component/-1/" button="Create New" button_type="success" />;
 
         content.push(componentSmall);
 
