@@ -6,6 +6,8 @@ from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson
 from user.views import staff_required
 from django.views.decorators.csrf import csrf_exempt
 
+from home.models import Component
+
 import os
 import csv
 import io
@@ -348,9 +350,64 @@ def writeComponents(request):
     path = os.path.join(os.getcwd(), "..", "reactapp", "src", "library")
     print (path)
 
-    filepath = os.path.join(path, "test.js")
-    with open(filepath, "wb") as file:
-        file.write("I am a test component".encode())
+    components = Component.objects.all()
+
+    filepath = os.path.join(path, "index.js")
+    importNames = "";
+    with open(filepath, "w") as file:
+        for component in components:
+            file.write("import %s_ from './%s.js';\n" % (component.name, component.name.lower()))
+        for component in components:
+            file.write("export const %s = %s_;\n\n" % (component.name, component.name))
+            importNames += "%s, " % (component.name)
+    importNames = importNames[:-2]
+
+    for component in components:
+        filepath = os.path.join(path, "%s.js" % (component.name.lower()))
+        with open(filepath, "w") as file:
+            file.write("import React, { Component } from 'react';\n\n")
+            file.write(component.html)
+            file.write("\n\nexport default %s;\n" % (component.name))
+
+    path = os.path.join(os.getcwd(), "..", "reactapp", "src")
+    filepath = os.path.join(path, "compiler.js")
+    importString = "import {%s} from './library';\n\n" % (importNames)
+    with open(filepath, "w") as file:
+        file.write("import React, { Component } from 'react';\n")
+        file.write(importString)
+        start = """class Compiler extends Component {
+    render() {
+        var content = [];
+        for (var i=0; i<this.props.components.length; i++){
+            var pageComponent = this.props.components[i].pagecomponent;
+"""
+        file.write(start)
+
+        for component in components:
+            middle = """
+            if (pageComponent.component.name == "%s"){
+                content.push(
+                    <%s />
+                );
+            }
+""" % (component.name, component.name)
+
+            file.write(middle)
+
+        end = """
+        }
+
+        return (
+            <div>
+                {content}
+            </div>
+        );
+    }
+}
+
+export default Compiler;"""
+
+        file.write(end)
 
     return HttpResponse("")
 
