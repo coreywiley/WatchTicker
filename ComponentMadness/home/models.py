@@ -21,12 +21,11 @@ class Component(models.Model):
         del dict['_state']
         return dict
 
-class ComponentDataField(models.Model):
+class ComponentProps(models.Model):
     id = models.AutoField(primary_key=True)
     component = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='componentDataFields')
     name = models.CharField(max_length=120, blank=True, default="")
-    html_id = models.CharField(max_length=120, blank=True, default="")
-    attribute_to_change = models.CharField(max_length=120, blank=True, default="value")
+    type = models.CharField(max_length=120, blank=True, default="")
 
     def __str__(self):
         return u"{}".format(self.name)

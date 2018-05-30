@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.apps import apps
 import django
 
-from home.models import Page, Component, ComponentDataField, PageComponent, Model, Field
+from home.models import Page, Component, PageComponent, Model, Field
 from user.views import my_login_required
 
 
