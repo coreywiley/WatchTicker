@@ -26,9 +26,9 @@ def getModels(request):
         if model._meta.app_label not in appModels:
             appModels[model._meta.app_label] = []
 
-        appModels[model._meta.app_label].append([model._meta.verbose_name.replace(' ','_'), model._meta.app_label])
-        modelNames.append([model._meta.verbose_name.replace(' ','_'), model._meta.app_label])
-    return render(request,"getModels.html",{'appModels':appModels, 'modelNames':modelNames})
+        appModels[model._meta.app_label].append([model._meta.verbose_name.replace(' ', '_'), model._meta.app_label])
+        modelNames.append([model._meta.verbose_name.replace(' ', '_'), model._meta.app_label])
+    return render(request, "getModels.html", {'appModels': appModels, 'modelNames': modelNames})
 
 
 def getModelValues(request,appLabel, modelName,offset):
@@ -49,25 +49,21 @@ def getModelValues(request,appLabel, modelName,offset):
 
 
 def getModelInstanceJson(request,appLabel,modelName,id=None):
-    query_split = [x.split('=') for x in request.META['QUERY_STRING'].split('&')]
+    print ("Request : %s : %s" % (request.GET, request.GET['id']))
 
-    parameters = {}
-
-    if query_split[0][0] != '':
-        for param in query_split:
-            if 'id' in param[0]:
-                parameters[param[0]+'_id'] = int(param[1])
-            else:
-                parameters[param[0]] = param[1]
-    print ("PARAMETERS")
-    print (parameters)
     # single instance
-    if request.method == "GET" and id:
-        instances = getInstanceJson(appLabel, modelName, id)
+    if request.method == "GET":
+        parameters = request.GET.dict()
+        related = []
+        if 'related' in parameters:
+            related = parameters['related'].split(',')
+            del parameters['related']
 
-    #page for adding a new instance
-    if request.method == "GET" and not id:
-        instances = getInstancesJson(appLabel, modelName, parameters)
+        if id:
+            instances = getInstanceJson(appLabel, modelName, id, related=related)
+        #page for adding a new instance
+        elif not id:
+            instances = getInstancesJson(appLabel, modelName, parameters, related=related)
 
     # edit or instance
     if request.method in ['PUT', 'POST']:

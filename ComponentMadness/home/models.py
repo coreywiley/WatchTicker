@@ -40,8 +40,8 @@ class Page(models.Model):
 
 class PageComponent(models.Model):
     id = models.AutoField(primary_key=True)
-    component = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='pageComponent')
-    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='pageComponent')
+    component = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='pageComponents')
+    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='pageComponents')
     data_url = models.CharField(max_length=120, blank=True, default="")
     data = JSONField(blank=True,default=dict())
     order = models.IntegerField()
@@ -62,7 +62,7 @@ class Post(models.Model):
     id = models.AutoField(primary_key=True)
     image = models.CharField(max_length=120, blank=True, default="")
     text = models.CharField(max_length=120, blank=True, default="")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
 
     def __str__(self):
         return u"{}".format(self.id)
@@ -77,7 +77,7 @@ class Field(models.Model):
     fieldType = models.CharField(max_length=120, blank=True, default="")
     default = models.CharField(max_length=120, blank=True, default="")
     blank = models.BooleanField()
-    model = models.ForeignKey(Model, on_delete=models.CASCADE, null=True, related_name='field')
+    model = models.ForeignKey(Model, on_delete=models.CASCADE, null=True, related_name='fields')
 
 class View(models.Model):
     id = models.AutoField(primary_key=True)
