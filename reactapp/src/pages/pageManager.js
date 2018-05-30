@@ -41,7 +41,7 @@ class PageManager extends Component {
         this.setState({components: value});
     }
 
-    loadPageComponents(value){
+    loadPageComponents(value) {
         this.setState({pageComponents: value});
     }
 
@@ -108,9 +108,9 @@ class PageManager extends Component {
             components.push(componentSmall);
         }
         var pageComponents = [];
-        for (var i = 0; i < this.state.pageComponents.length; i++){
+        for (var i = 0; i < this.state.pageComponents.length; i++) {
             var data = this.state.pageComponents[i]['pagecomponent'];
-            var componentSmall = <Card name={data.name} description={data.description} onClick={this.editComponent.bind(this, data)} button='Edit' button_type="primary" />;
+            var componentSmall = <Card name={data.component.name} description={data.component.description} onClick={this.editComponent.bind(this, data)} button='Edit' button_type="primary" />;
 
             pageComponents.push(componentSmall);
         }
@@ -127,7 +127,7 @@ class PageManager extends Component {
         content =
         <div className="col-sm-12">
             <h2>Manage Page</h2>
-            <a href="/components/" >back to list</a>
+            <a href="/pages/" >back to list</a>
             <br/><br/>
 
             <label>Name</label>
