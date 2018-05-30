@@ -35,8 +35,7 @@ class Modal extends Component {
                         {this.props.content}
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary">Save changes</button>
-                        <button type="button" className="btn btn-secondary" onClick={this.props.onHide}>Close</button>
+                        {this.props.buttons}
                     </div>
                 </div>
                 </div>

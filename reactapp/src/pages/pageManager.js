@@ -86,6 +86,19 @@ class PageManager extends Component {
             activeComponent: data,
             showComponent: true});
     }
+    addComponentCallBack(data){
+        var pageComponents = this.state.pageComponents;
+        var index = -1
+        for (var i=0; i<pageComponents.length; i++){
+            if (pageComponents[i].id == data.pagecomponent.id){
+                index = i;
+            }
+        }
+        if (index > -1){pageComponents.splice(index, 1);}
+
+        pageComponents.push(data);
+        this.setState({pageComponents: pageComponents});
+    }
 
     editComponent(data){
         console.log(data);
@@ -103,14 +116,17 @@ class PageManager extends Component {
         var components = [];
         for (var i = 0; i < this.state.components.length; i++){
             var data = this.state.components[i]['component'];
-            var componentSmall = <Card name={data.name} description={data.description} onClick={this.addComponent.bind(this, data)} button='Add' button_type="primary" />;
+            var componentSmall = <Card name={data.name} description={data.description}
+                onClick={this.addComponent.bind(this, data)} button='Add' button_type="primary" />;
 
             components.push(componentSmall);
         }
         var pageComponents = [];
         for (var i = 0; i < this.state.pageComponents.length; i++) {
             var data = this.state.pageComponents[i]['pagecomponent'];
-            var componentSmall = <Card name={data.component.name} description={data.component.description} onClick={this.editComponent.bind(this, data)} button='Edit' button_type="primary" />;
+            var name = data.order + " : " + data.component.name;
+            var description = JSON.stringify(data.data);
+            var componentSmall = <Card name={name} description={description} onClick={this.editComponent.bind(this, data)} button='Edit' button_type="primary" />;
 
             pageComponents.push(componentSmall);
         }
@@ -118,7 +134,7 @@ class PageManager extends Component {
         var modal = null;
         if (this.state.activeComponent){
             modal = <PageComponentModal key={this.state.activePageComponent.id} component={this.state.activeComponent} data={this.state.activePageComponent}
-                show={this.state.showComponent} handleClose={this.hideComponent.bind(this)} />;
+                show={this.state.showComponent} handleClose={this.hideComponent.bind(this)} saveCallback={this.addComponentCallBack.bind(this)} />;
         }
 
         var content = null;
@@ -202,7 +218,8 @@ class PageComponentModal extends Component {
 
     formSubmitCallback (value) {
         console.log(value);
-
+        this.props.saveCallback(value[0]);
+        this.props.handleClose();
     }
 
     render() {
@@ -227,15 +244,17 @@ class PageComponentModal extends Component {
             <textarea className="form-control" name="data" value={data.data} onChange={this.handleChange} ></textarea>
             <br/>
 
-            <input type="submit" className="btn btn-success" name="save" value="Save" onClick={this.formSubmit.bind(this)} />
-            <br/><br/>
-
         </div>;
 
+        var buttons = [
+            <button onClick={this.formSubmit.bind(this)} type="button" className="btn btn-success">Save changes</button>,
+            <button type="button" className="btn btn-secondary" onClick={this.props.handleClose}>Close</button>
+        ];
 
         return (
-            <Modal show={this.props.show} title={title} content={content} onHide={this.props.handleClose}
-                handleChange={this.handleChange.bind(this)} formSubmit={this.formSubmit}/>
+            <Modal show={this.props.show} title={title} content={content} buttons={buttons}
+                onHide={this.props.handleClose} handleChange={this.handleChange.bind(this)}
+                formSubmit={this.formSubmit}/>
         );
     }
 }
