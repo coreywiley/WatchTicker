@@ -143,7 +143,7 @@ def getModelInstanceJson(request,appLabel,modelName,id=None):
 def deleteModelInstance(request,appLabel,modelName,id):
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_',''))
     model.objects.filter(id=id).delete()
-    return HttpResponseRedirect(request.GET['redirectLocation'])
+    return JsonResponse({'success':True})
 
 @csrf_exempt
 def getModelInstance(request, appLabel, modelName, id=None):
