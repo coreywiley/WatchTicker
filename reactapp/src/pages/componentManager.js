@@ -38,9 +38,8 @@ class ComponentManager extends Component {
         var component = this;
         import('../components/' + componentPaths[componentName] + '.js')
         .then(function(module) {
-            components[componentName] = module.default;
-            component.setState({components:components});
-
+                components[componentName] = module.default;
+                component.setState({components:components});
             }
         )
     }
@@ -57,10 +56,10 @@ class ComponentManager extends Component {
     handleChange = (e) => {
        var name = e.target.getAttribute("name");
        if (name == 'example') {
-        var newState = {example: e.target.value}
+           var newState = {example: e.target.value}
        } else {
-       var newState = {data:this.state.data}
-       newState.data[name] = e.target.value;
+           var newState = {data:this.state.data}
+           newState.data[name] = e.target.value;
        }
 
        this.setState(newState);
