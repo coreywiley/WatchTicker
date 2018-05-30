@@ -21,9 +21,9 @@ class Component(models.Model):
         del dict['_state']
         return dict
 
-class ComponentProps(models.Model):
+class ComponentProp(models.Model):
     id = models.AutoField(primary_key=True)
-    component = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='componentDataFields')
+    component = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='componentProps')
     name = models.CharField(max_length=120, blank=True, default="")
     type = models.CharField(max_length=120, blank=True, default="")
 
