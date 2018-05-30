@@ -33,7 +33,7 @@ class PageManager extends Component {
             this.setState({loaded:true});
         }
         ajaxWrapper("GET","/models/getModelInstanceJson/home/component/", {}, this.loadComponents.bind(this));
-        ajaxWrapper("GET","/models/getModelInstanceJson/home/pagecomponent/", {}, this.loadPageComponents.bind(this));
+        ajaxWrapper("GET","/models/getModelInstanceJson/home/pagecomponent/?page=" + this.props.id, {}, this.loadPageComponents.bind(this));
     }
 
     loadComponents(value) {
