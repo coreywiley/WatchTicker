@@ -83,6 +83,8 @@ class ComponentProp extends Component {
                 <option>Please Select A Type</option>
                 <option>String</option>
                 <option>Number</option>
+                <option>List</option>
+                <option>Dictionary</option>
                 <option>URL</option>
                 <option>Component</option>
                 <option>Other</option>
