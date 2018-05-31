@@ -49,16 +49,17 @@ def getModelValues(request,appLabel, modelName,offset):
 
 
 def getModelInstanceJson(request,appLabel,modelName,id=None):
-    print ("Request : %s : %s" % (request.GET, request.GET['id']))
+    print ("Request : %s" % (request.GET))
+
+    parameters = request.GET.dict()
+    related = []
+    if 'related' in parameters:
+        related = parameters['related'].split(',')
+        del parameters['related']
+    print ("Related : %s" % (related))
 
     # single instance
     if request.method == "GET":
-        parameters = request.GET.dict()
-        related = []
-        if 'related' in parameters:
-            related = parameters['related'].split(',')
-            del parameters['related']
-
         if id:
             instances = getInstanceJson(appLabel, modelName, id, related=related)
         #page for adding a new instance
@@ -130,7 +131,8 @@ def getModelInstanceJson(request,appLabel,modelName,id=None):
                 getattr(instance, field.name).add(
                     *list(field.related_model.objects.filter(id__in=foreignKeyIds)))
 
-        instances = getInstanceJson(appLabel,modelName, instance.id)
+        print ("Related : %s" % (related))
+        instances = getInstanceJson(appLabel, modelName, instance.id, related=related)
 
     return JsonResponse(instances,safe=False)
 
@@ -346,7 +348,7 @@ def writeComponents(request):
     path = os.path.join(os.getcwd(), "..", "reactapp", "src", "library")
     print (path)
 
-    components = Component.objects.all()
+    components = Component.objects.exclude(name__in = ['Test', "Dynamic Importer Example"]).all()
 
     filepath = os.path.join(path, "index.js")
     importNames = "";
@@ -354,7 +356,7 @@ def writeComponents(request):
         for component in components:
             file.write("import %s_ from './%s.js';\n" % (component.name, component.name.lower()))
         for component in components:
-            file.write("export const %s = %s_;\n\n" % (component.name, component.name))
+            file.write("export const %s = %s_;\n" % (component.name, component.name))
             importNames += "%s, " % (component.name)
     importNames = importNames[:-2]
 
@@ -371,22 +373,24 @@ def writeComponents(request):
     with open(filepath, "w") as file:
         file.write("import React, { Component } from 'react';\n")
         file.write(importString)
-        start = """class Compiler extends Component {
+        start = """
+class Compiler extends Component {
     render() {
         var content = [];
-        for (var i=0; i<this.props.components.length; i++){
-            var pageComponent = this.props.components[i].pagecomponent;
+        var page = this.props.page;
+        for (var i=0; i<page.pageComponents.length; i++){
+            var pageComponent = page.pageComponents[i].pagecomponent;
 """
         file.write(start)
 
         for component in components:
             middle = """
-            if (pageComponent.component.name == "%s"){
+            if (pageComponent.component_id == "%s"){
                 content.push(
-                    <%s />
+                    <%s {...pageComponent.data} />
                 );
             }
-""" % (component.name, component.name)
+""" % (component.id, component.name)
 
             file.write(middle)
 
