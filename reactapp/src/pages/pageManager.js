@@ -33,7 +33,14 @@ class PageManager extends Component {
             this.setState({loaded:true});
         }
         ajaxWrapper("GET","/models/getModelInstanceJson/home/component/", {}, this.loadComponents.bind(this));
-        ajaxWrapper("GET","/models/getModelInstanceJson/home/pagecomponent/?page=" + this.props.id, {}, this.loadPageComponents.bind(this));
+        ajaxWrapper("GET","/models/getModelInstanceJson/home/pagecomponent/?related=component&page=" + this.props.id, {}, this.loadPageComponents.bind(this));
+    }
+
+    ajaxCallback(value){
+        this.setState({
+            data: value[0].page,
+            loaded: true
+        });
     }
 
     loadComponents(value) {
@@ -55,7 +62,7 @@ class PageManager extends Component {
 
     formSubmit() {
         console.log("Data", this.state.data.name);
-        var data = {name: this.state.data.name, description: this.state.data.description, html: this.state.data.html}
+        var data = this.state.data;
         console.log(data);
 
         if (this.props.id > -1) {
@@ -72,13 +79,6 @@ class PageManager extends Component {
         }
     }
 
-    ajaxCallback(value){
-        this.setState({
-            data: value[0].page,
-            loaded: true
-        });
-    }
-
     addComponent(data){
         console.log(data);
         this.setState({
@@ -86,15 +86,17 @@ class PageManager extends Component {
             activeComponent: data,
             showComponent: true});
     }
+
     addComponentCallBack(data){
         var pageComponents = this.state.pageComponents;
         var index = -1
         for (var i=0; i<pageComponents.length; i++){
-            if (pageComponents[i].id == data.pagecomponent.id){
+            if (pageComponents[i].pagecomponent.id == data.pagecomponent.id){
                 index = i;
             }
         }
-        if (index > -1){pageComponents.splice(index, 1);}
+        if (index > -1){
+            pageComponents.splice(index, 1);}
 
         pageComponents.push(data);
         this.setState({pageComponents: pageComponents});
@@ -210,9 +212,9 @@ class PageComponentModal extends Component {
         var data = this.state.data;
         console.log(data);
         if (this.props.data.id > -1){
-            ajaxWrapper("POST","/models/getModelInstanceJson/home/pagecomponent/" + this.props.data.id + "/", data, this.formSubmitCallback.bind(this));
+            ajaxWrapper("POST","/models/getModelInstanceJson/home/pagecomponent/" + this.props.data.id + "/?related=component", data, this.formSubmitCallback.bind(this));
         } else {
-            ajaxWrapper("POST","/models/getModelInstanceJson/home/pagecomponent/", data, this.formSubmitCallback.bind(this));
+            ajaxWrapper("POST","/models/getModelInstanceJson/home/pagecomponent/?related=component", data, this.formSubmitCallback.bind(this));
         }
     }
 
