@@ -1,3 +1,4 @@
 .idea/
 venv/
 reactapp/src/library/
+reactapp/src/compiler.js
