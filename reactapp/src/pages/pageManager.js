@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import ajaxWrapper from "../base/ajax.js";
 import Wrapper from '../base/wrapper.js';
-import Card from '../components/card.js';
+import Card from '../library/card.js';
 import Modal from '../components/modal.js';
 
 import Playground from "component-playground";
