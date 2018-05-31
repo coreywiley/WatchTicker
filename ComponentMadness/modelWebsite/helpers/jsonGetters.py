@@ -12,7 +12,7 @@ def getInstanceJson(appLabel, modelName, id, related = []):
 
     fields = getModelFields(model)
 
-    jsonInstance = dumpInstance(modelName, fields, instance, related = [])
+    jsonInstance = dumpInstance(modelName, fields, instance, related)
 
     return [jsonInstance]
 
@@ -44,14 +44,14 @@ def dumpInstance(modelName, fields, instance, related = []):
                 if field[0] not in related:
                     continue
                 foreignKeyDict = getInstancesJson(field[2], field[3], instanceQuery=getattr(instance, field[0]).all())
-                jsonInstance[modelName][field[3]] = foreignKeyDict
+                jsonInstance[modelName][field[0]] = foreignKeyDict
 
             else:
                 if field[0] not in related:
-                    jsonInstance[modelName][field[3] + "_id"] = getattr(instance, field[0] + "_id")
+                    jsonInstance[modelName][field[0] + "_id"] = getattr(instance, field[0] + "_id")
                 else:
                     foreignKeyDict = getInstanceJson(field[2], field[3], getattr(instance, field[0]).id)[0]
-                    jsonInstance[modelName][field[3]] = foreignKeyDict[field[3]]
+                    jsonInstance[modelName][field[0]] = foreignKeyDict[field[3]]
 
         else:
             jsonInstance[modelName][field[0]] = getattr(instance, field[0])
