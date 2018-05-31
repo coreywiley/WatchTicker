@@ -8,6 +8,10 @@ import Modal from '../components/modal.js';
 import Playground from "component-playground";
 import ReactDOM from "react-dom";
 
+
+let componentList = ['Header','Header2','Button','Paragraph'];
+let renderComponents = {React:React, ReactDOM:ReactDOM}
+
 class PageManager extends Component {
     constructor(props) {
         super(props);
@@ -18,11 +22,13 @@ class PageManager extends Component {
             pageComponents: [],
             activePageComponent: null,
             activeComponent: null,
-            showComponent: false
+            showComponent: false,
+            renderComponents: renderComponents
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
+        this.requireComponentInRender = this.requireComponentInRender.bind(this);
     }
 
     componentDidMount() {
@@ -34,6 +40,26 @@ class PageManager extends Component {
         }
         ajaxWrapper("GET","/models/getModelInstanceJson/home/component/", {}, this.loadComponents.bind(this));
         ajaxWrapper("GET","/models/getModelInstanceJson/home/pagecomponent/?related=component&page=" + this.props.id, {}, this.loadPageComponents.bind(this));
+        this.requireComponentInRender(0);
+    }
+
+    requireComponentInRender(index) {
+        var component = this;
+        if (index < componentList.length) {
+            var componentName = componentList[index];
+            var filePath = componentName.toLowerCase();
+            import('../library/' + filePath + '.js')
+            .then(function(module) {
+                    renderComponents[componentName] = module.default;
+                    component.requireComponentInRender(index + 1)
+                }
+            )
+
+        }
+        else {
+            component.setState({renderComponents: renderComponents})
+        }
+
     }
 
     ajaxCallback(value){
@@ -124,14 +150,27 @@ class PageManager extends Component {
             components.push(componentSmall);
         }
         var pageComponents = [];
+        var componentRenders = '<p>Loading...</p>';
+        if (this.state.pageComponents.length > 0) {
+            componentRenders = '';
+        }
         for (var i = 0; i < this.state.pageComponents.length; i++) {
             var data = this.state.pageComponents[i]['pagecomponent'];
             var name = data.order + " : " + data.component.name;
             var description = JSON.stringify(data.data);
             var componentSmall = <Card name={name} description={description} onClick={this.editComponent.bind(this, data)} button='Edit' button_type="primary" />;
+            componentRenders += '<' + data.component.name + ' ';
+            for (var key in data.data) {
+                var propString = key + '={"' + data.data[key] + '"} '
+                componentRenders += propString
+            }
 
+            componentRenders += ' />';
             pageComponents.push(componentSmall);
         }
+        console.log("Component Renders",componentRenders)
+        var componentExample = 'class Preview extends React.Component { render() { return ( <div>' + componentRenders + '</div> ); } }';
+
 
         var modal = null;
         if (this.state.activeComponent){
@@ -171,6 +210,14 @@ class PageManager extends Component {
 
             <input type="submit" className="btn btn-success" name="save" value="Save" onClick={this.formSubmit} />
             <br/><br/>
+
+            <label>Render</label>
+            <div className="component-documentation">
+                <Playground codeText={componentExample + ' ReactDOM.render(<Preview />, mountNode);'} noRender={false} scope={this.state.renderComponents} />
+            </div>
+
+
+          <div id='mountNode'></div>
 
             {modal}
 
@@ -263,3 +310,18 @@ class PageComponentModal extends Component {
 
 
 export default PageManager;
+
+class Preview extends React.Component {
+ render() {
+  return (
+   <div>
+    <Header text={"I AM A TEST TITLE"} />
+    <Header 1={"BANANA"} />
+    <Paragraph />
+    <Header2 text={"This is a secondary title"} />
+    <Header2 text={"Third title?"} />
+    <Header text={"Why!"} />
+    </div>
+     );
+     }
+     }
