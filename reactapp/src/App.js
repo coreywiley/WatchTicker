@@ -3,6 +3,8 @@ import './App.css';
 
 import ajaxWrapper from "./base/ajax.js";
 
+import ClientApp from "./clientApp.js";
+
 import Header from './base/header.js';
 import Footer from './base/footer.js';
 
@@ -69,6 +71,8 @@ class App extends Component {
         } else if (params[0] === "page") {
             //Single page
             content = <PageManager id={params[1]} />;
+        } else if (params[0] == "app") {
+            content = <ClientApp path={params[1]} />;
         }
 
         return (
