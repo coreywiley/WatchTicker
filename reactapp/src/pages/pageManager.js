@@ -9,7 +9,7 @@ import Playground from "component-playground";
 import ReactDOM from "react-dom";
 
 
-let componentList = ['Header','Header2','Button','Paragraph'];
+let componentList = ['Header','Header2','Button','Paragraph','Card'];
 let renderComponents = {React:React, ReactDOM:ReactDOM}
 
 class PageManager extends Component {
@@ -310,18 +310,3 @@ class PageComponentModal extends Component {
 
 
 export default PageManager;
-
-class Preview extends React.Component {
- render() {
-  return (
-   <div>
-    <Header text={"I AM A TEST TITLE"} />
-    <Header 1={"BANANA"} />
-    <Paragraph />
-    <Header2 text={"This is a secondary title"} />
-    <Header2 text={"Third title?"} />
-    <Header text={"Why!"} />
-    </div>
-     );
-     }
-     }
