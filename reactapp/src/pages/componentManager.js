@@ -50,7 +50,7 @@ class ComponentProp extends Component {
 
         var data = {name: this.state.name, type: this.state.type, component: this.state.component}
 
-        if (this.props.id > -1) {
+        if (this.props.id) {
             ajaxWrapper("POST","/models/getModelInstanceJson/home/componentprop/" + this.props.id + "/", data, this.formSubmitCallback.bind(this));
         } else {
             ajaxWrapper("POST","/models/getModelInstanceJson/home/componentprop/", data, this.formSubmitCallback.bind(this));
@@ -126,7 +126,7 @@ class ComponentManager extends Component {
     }
 
     componentDidMount() {
-        if (this.props.id > -1) {
+        if (this.props.id) {
             ajaxWrapper("GET", "/models/getModelInstanceJson/home/component/" + this.props.id + "/", {}, this.ajaxCallback);
             this.refreshPropList();
         }
@@ -152,7 +152,7 @@ class ComponentManager extends Component {
         var data = {name: this.state.data.name, description: this.state.data.description, html: this.state.data.html}
         console.log(data);
 
-        if (this.props.id > -1) {
+        if (this.props.id) {
             ajaxWrapper("POST","/models/getModelInstanceJson/home/component/" + this.props.id + "/", data, this.formSubmitCallback.bind(this));
         } else {
             ajaxWrapper("POST","/models/getModelInstanceJson/home/component/", data, this.formSubmitCallback.bind(this));
@@ -161,7 +161,7 @@ class ComponentManager extends Component {
 
     formSubmitCallback (value) {
         console.log(value);
-        if (this.props.id == -1) {
+        if (this.props.id) {
             window.location = "/api/component/" + value[0].component.id + "/";
         }
     }

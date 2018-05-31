@@ -36,7 +36,7 @@ class PageList extends Component {
 
             content.push(pageSmall);
         }
-        var pageSmall = <Card name="Something New?" description="Add A New Page" link="/page/-1/" button="Create New" button_type="success" />;
+        var pageSmall = <Card name="Something New?" description="Add A New Page" link="/page/" button="Create New" button_type="success" />;
         content.push(pageSmall);
 
 
