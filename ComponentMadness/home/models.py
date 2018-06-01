@@ -12,6 +12,8 @@ class Component(models.Model):
     html = models.TextField(blank=True, default="")
     name = models.CharField(max_length=120, blank=True, default="")
     description = models.TextField(blank=True, default="")
+    example = models.TextField(blank=True, default="")
+    
 
     def __str__(self):
         return u"{}".format(self.name)
@@ -29,6 +31,15 @@ class ComponentProp(models.Model):
 
     def __str__(self):
         return u"{}".format(self.name)
+
+
+class ComponentRequirement(models.Model):
+    id = models.AutoField(primary_key=True)
+    component = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='componentRequirements')
+    importStatement = models.TextField(blank=True,default="")
+
+    def __str__(self):
+        return u"{}".format(self.importStatement)
 
 class Page(models.Model):
     id = models.AutoField(primary_key=True)

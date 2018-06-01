@@ -99,21 +99,89 @@ class ComponentProp extends Component {
     }
 }
 
+class ComponentRequirement extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: this.props.id,
+            component: this.props.component,
+            importStatement: this.props.importStatement,
+        };
+
+
+        this.handleChange = this.handleChange.bind(this);
+        this.formSubmit = this.formSubmit.bind(this);
+        this.formDelete = this.formDelete.bind(this);
+        this.formSubmitCallback = this.formSubmitCallback.bind(this);
+    }
+
+
+    handleChange = (e) => {
+       var name = e.target.getAttribute("name");
+       var newState = {}
+       newState[name] = e.target.value;
+       console.log("New State", newState)
+       this.setState(newState);
+    }
+
+    formSubmit() {
+        console.log("Data", this.state);
+
+        var data = {importStatement: this.state.importStatement, component: this.state.component}
+
+        if (this.props.id) {
+            ajaxWrapper("POST","/models/getModelInstanceJson/home/componentrequirement/" + this.props.id + "/", data, this.formSubmitCallback.bind(this));
+        } else {
+            ajaxWrapper("POST","/models/getModelInstanceJson/home/componentrequirement/", data, this.formSubmitCallback.bind(this));
+        }
+    }
+
+    formSubmitCallback (value) {
+        console.log(value);
+        this.setState({importStatement:''});
+        this.props.refreshRequirementList();
+    }
+
+    formDelete() {
+        ajaxWrapper("POST","/models/getModelInstanceJson/home/componentrequirement/" + this.props.id + "/delete/", {}, this.formSubmitCallback.bind(this));
+    }
+
+
+    render() {
+
+    return (
+        <div className="form-row">
+           <div className="form-group col-md-10">
+            <label>Import Statement: </label>
+            <input type="text" className="form-control" name="importStatement" onChange={this.handleChange} value={this.state.importStatement} />
+
+          </div>
+          <button type="submit" className="btn btn-primary col-md-1" onClick={this.formSubmit}>Save</button>
+          <button type="submit" className="btn btn-danger col-md-1" onClick={this.formDelete}>Delete</button>
+      </div>
+    )
+
+    }
+}
+
+
 class ComponentManager extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loaded: false,
             components: {React:React, ReactDOM:ReactDOM},
-            data: {name:'',description:'',html:''},
-            example: '<Header text="Hello" />',
+            data: {name:'',description:'',html:'', example:''},
             componentprops: [],
+            componentRequirements: [],
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
         this.ajaxPropsCallback = this.ajaxPropsCallback.bind(this);
+        this.ajaxReqsCallback = this.ajaxReqsCallback.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
         this.refreshPropList = this.refreshPropList.bind(this);
+        this.refreshRequirementList = this.refreshRequirementList.bind(this);
     }
 
     requireCardInRender =  async componentName => {
@@ -131,6 +199,7 @@ class ComponentManager extends Component {
         if (this.props.id) {
             ajaxWrapper("GET", "/models/getModelInstanceJson/home/component/" + this.props.id + "/", {}, this.ajaxCallback);
             this.refreshPropList();
+            this.refreshRequirementList();
         }
         else {
             this.setState({loaded:true})
@@ -139,19 +208,15 @@ class ComponentManager extends Component {
 
     handleChange = (e) => {
        var name = e.target.getAttribute("name");
-       if (name == 'example') {
-           var newState = {example: e.target.value}
-       } else {
-           var newState = {data:this.state.data}
-           newState.data[name] = e.target.value;
-       }
+       var newState = {data:this.state.data}
+       newState.data[name] = e.target.value;
 
        this.setState(newState);
     }
 
     formSubmit() {
         console.log("Data", this.state.data.name);
-        var data = {name: this.state.data.name, description: this.state.data.description, html: this.state.data.html}
+        var data = {name: this.state.data.name, description: this.state.data.description, html: this.state.data.html, example: this.state.data.example}
         console.log(data);
 
         if (this.props.id) {
@@ -182,8 +247,18 @@ class ComponentManager extends Component {
         })
     }
 
+    ajaxReqsCallback (value) {
+        this.setState({
+            componentRequirements: value,
+        })
+    }
+
     refreshPropList() {
         ajaxWrapper("GET", "/models/getModelInstanceJson/home/componentprop/?component=" + this.props.id, {}, this.ajaxPropsCallback);
+    }
+
+    refreshRequirementList() {
+        ajaxWrapper("GET", "/models/getModelInstanceJson/home/componentrequirement/?component=" + this.props.id, {}, this.ajaxReqsCallback);
     }
 
     render() {
@@ -191,6 +266,10 @@ class ComponentManager extends Component {
         var html = this.state.data.html;
         if (html == ""){
             html = componentExample;
+        }
+        var example = this.state.data.example;
+        if (example == "") {
+            example = '<Hello text="Hello!" />';
         }
 
         if (typeof(this.state.data) != "undefined"){
@@ -201,7 +280,15 @@ class ComponentManager extends Component {
                 let props = this.state.componentprops[index].componentprop;
                 propList.push(<ComponentProp key={props.id} {...props} component={this.props.id} refreshPropList={this.refreshPropList} />);
             }
-            propList.push(<ComponentProp key={-1} id={-1}  component={this.props.id} name={'Add The Prop Name'} type={'Please Select A Type'} refreshPropList={this.refreshPropList} />)
+            propList.push(<ComponentProp key={-1} id={-1} component={this.props.id} name={'Add The Prop Name'} type={'Please Select A Type'} refreshPropList={this.refreshPropList} />)
+
+            var reqList = [];
+            for (var index in this.state.componentRequirements) {
+                let props = this.state.componentRequirements[index].componentrequirement;
+                reqList.push(<ComponentRequirement key={props.id} {...props} component={this.props.id} refreshRequirementList={this.refreshRequirementList} />);
+            }
+            reqList.push(<ComponentRequirement key={-1} id={-1} component={this.props.id} importStatement={"import Something from '../library/something.js';"} refreshRequirementList={this.refreshRequirementList} />)
+
 
             content =
             <div className="col-sm-12">
@@ -219,6 +306,10 @@ class ComponentManager extends Component {
                     <textarea className="form-control" name="description" value={data.description} onChange={this.handleChange}></textarea>
                     <br/>
 
+                    <label>Requirement List</label>
+                    {reqList}
+                    <br/>
+
                     <label>React</label>
                     <textarea className="form-control" name="html" value={html} onChange={this.handleChange}></textarea>
                     <br/>
@@ -228,12 +319,12 @@ class ComponentManager extends Component {
                     <br/>
 
                     <label>Example</label>
-                    <textarea className="form-control" name="example" value={this.state.example} onChange={this.handleChange}></textarea>
+                    <textarea className="form-control" name="example" value={example} onChange={this.handleChange}></textarea>
                     <br/>
 
                     <label>Render</label>
                     <div className="component-documentation">
-                        <Playground codeText={html + ' ReactDOM.render(' + this.state.example + ', mountNode);'} noRender={false} scope={this.state.components} />
+                        <Playground codeText={html + ' ReactDOM.render(' + example + ', mountNode);'} noRender={false} scope={this.state.components} />
                     </div>
 
                     <input type="submit" className="btn btn-success" name="save" value="Save" onClick={this.formSubmit} />
