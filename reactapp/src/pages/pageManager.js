@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 
 import ajaxWrapper from "../base/ajax.js";
 import Wrapper from '../base/wrapper.js';
-import Card from '../library/card.js';
 import Modal from '../components/modal.js';
 
 import Playground from "component-playground";
 import ReactDOM from "react-dom";
+import Card from "../library/card.js";
+import Button from "../library/button.js";
 
-
-let componentList = ['Header','Header2','Button','Paragraph','Card'];
 let renderComponents = {React:React, ReactDOM:ReactDOM}
 
 class PageManager extends Component {
@@ -23,12 +22,15 @@ class PageManager extends Component {
             activePageComponent: null,
             activeComponent: null,
             showComponent: false,
-            renderComponents: renderComponents
+            renderComponents: renderComponents,
+            componentList: ['Card'],
+            render: false,
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
         this.requireComponentInRender = this.requireComponentInRender.bind(this);
+        this.toggleRender = this.toggleRender.bind(this);
     }
 
     componentDidMount() {
@@ -40,24 +42,27 @@ class PageManager extends Component {
         }
         ajaxWrapper("GET","/models/getModelInstanceJson/home/component/", {}, this.loadComponents.bind(this));
         ajaxWrapper("GET","/models/getModelInstanceJson/home/pagecomponent/?related=component&page=" + this.props.id, {}, this.loadPageComponents.bind(this));
-        this.requireComponentInRender(0);
     }
 
     requireComponentInRender(index) {
         var component = this;
-        if (index < componentList.length) {
-            var componentName = componentList[index];
+        console.log("Importing The Following Components", this.state.componentList);
+
+        if (index < this.state.componentList.length) {
+            var componentName = this.state.componentList[index];
+            if (componentName in renderComponents) {
+                component.requireComponentInRender(index + 1);
+            }
             var filePath = componentName.toLowerCase();
             import('../library/' + filePath + '.js')
             .then(function(module) {
                     renderComponents[componentName] = module.default;
-                    component.requireComponentInRender(index + 1)
+                    component.requireComponentInRender(index + 1);
                 }
             )
-
         }
         else {
-            component.setState({renderComponents: renderComponents})
+            component.setState({renderComponents: renderComponents},() => component.forceUpdate())
         }
 
     }
@@ -75,7 +80,15 @@ class PageManager extends Component {
     }
 
     loadPageComponents(value) {
-        this.setState({pageComponents: value});
+
+        var componentList = this.state.componentList;
+        for (var i in value) {
+            var componentName = value[i].pagecomponent.component.name;
+            if (componentList.indexOf(componentName) == -1 ) {
+                componentList.push(componentName);
+            }
+        }
+        this.setState({componentList:componentList, pageComponents: value}, () => this.requireComponentInRender(0))
     }
 
     handleChange = (e) => {
@@ -107,10 +120,18 @@ class PageManager extends Component {
 
     addComponent(data){
         console.log(data);
+        var componentList = this.state.componentList;
+        if (componentList.indexOf(data.name) == -1 ) {
+            componentList.push(data.name);
+
+        }
+
         this.setState({
             activePageComponent: {id: -1, 'component':data.id, 'page': this.props.id},
             activeComponent: data,
-            showComponent: true});
+            showComponent: true,
+            componentList:componentList},() => this.requireComponentInRender(0));
+
     }
 
     addComponentCallBack(data){
@@ -140,6 +161,10 @@ class PageManager extends Component {
         this.setState({showComponent: false});
     }
 
+    toggleRender() {
+        this.setState({render:!this.state.render});
+    }
+
     render() {
         var components = [];
         for (var i = 0; i < this.state.components.length; i++){
@@ -161,7 +186,17 @@ class PageManager extends Component {
             var componentSmall = <Card name={name} description={description} onClick={this.editComponent.bind(this, data)} button='Edit' button_type="primary" />;
             componentRenders += '<' + data.component.name + ' ';
             for (var key in data.data) {
-                var propString = key + '={"' + data.data[key] + '"} '
+                console.log("Key",key);
+                if (key == 'component') {
+                    var propString = key + '={' + data.data[key] + '} '
+                }
+                else if (key == 'extraInfo' || key == 'lastInstanceData') {
+                    console.log(key,data.data,data.data[key]);
+                    var propString = key + '={' + JSON.stringify(data.data[key]) + '} '
+                }
+                else {
+                    var propString = key + '={"' + data.data[key] + '"} '
+                }
                 componentRenders += propString
             }
 
@@ -171,7 +206,6 @@ class PageManager extends Component {
         console.log("Component Renders",componentRenders)
         var componentExample = 'class Preview extends React.Component { render() { return ( <div>' + componentRenders + '</div> ); } }';
 
-
         var modal = null;
         if (this.state.activeComponent){
             modal = <PageComponentModal key={this.state.activePageComponent.id} component={this.state.activeComponent} data={this.state.activePageComponent}
@@ -180,6 +214,13 @@ class PageManager extends Component {
 
         var content = null;
         var data = this.state.data;
+
+        var renderCode = '';
+        if (this.state.render == true) {
+            renderCode = <div className="component-documentation">
+                <Playground codeText={componentExample + ' ReactDOM.render(<Preview />, mountNode);'} noRender={false} scope={this.state.renderComponents} />
+            </div>;
+        }
 
         content =
         <div className="col-sm-12">
@@ -211,10 +252,8 @@ class PageManager extends Component {
             <input type="submit" className="btn btn-success" name="save" value="Save" onClick={this.formSubmit} />
             <br/><br/>
 
-            <label>Render</label>
-            <div className="component-documentation">
-                <Playground codeText={componentExample + ' ReactDOM.render(<Preview />, mountNode);'} noRender={false} scope={this.state.renderComponents} />
-            </div>
+            <label><Button type={'success'} text="Toggle Rendering" onClickHandler={this.toggleRender} /></label>
+            {renderCode}
 
 
           <div id='mountNode'></div>
