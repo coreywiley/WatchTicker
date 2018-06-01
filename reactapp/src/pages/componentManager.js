@@ -254,11 +254,11 @@ class ComponentManager extends Component {
     }
 
     refreshPropList() {
-        ajaxWrapper("GET", "/models/getModelInstanceJson/home/componentprop/?component=" + this.props.id, {}, this.ajaxPropsCallback);
+        ajaxWrapper("GET", "/models/getModelInstanceJson/home/componentprop/?order_by=id&component=" + this.props.id, {}, this.ajaxPropsCallback);
     }
 
     refreshRequirementList() {
-        ajaxWrapper("GET", "/models/getModelInstanceJson/home/componentrequirement/?component=" + this.props.id, {}, this.ajaxReqsCallback);
+        ajaxWrapper("GET", "/models/getModelInstanceJson/home/componentrequirement/?order_by=id&component=" + this.props.id, {}, this.ajaxReqsCallback);
     }
 
     render() {

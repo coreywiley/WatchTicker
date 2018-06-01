@@ -38,6 +38,11 @@ def getModelInstanceJson(request,appLabel,modelName,id=None):
     if 'related' in parameters:
         related = parameters['related'].split(',')
         del parameters['related']
+    order_by = []
+    if 'order_by' in parameters:
+        order_by = parameters['order_by'].split(',')
+        del parameters['order_by']
+
     print ("Related : %s" % (related))
 
     # single instance
@@ -46,7 +51,7 @@ def getModelInstanceJson(request,appLabel,modelName,id=None):
             instances = getInstanceJson(appLabel, modelName, id, related=related)
         #page for adding a new instance
         elif not id:
-            instances = getInstancesJson(appLabel, modelName, parameters, related=related)
+            instances = getInstancesJson(appLabel, modelName, parameters, related=related, order_by=order_by)
 
     # edit or instance
     if request.method in ['PUT', 'POST']:

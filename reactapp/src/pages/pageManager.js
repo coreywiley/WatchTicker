@@ -41,7 +41,7 @@ class PageManager extends Component {
             this.setState({loaded:true});
         }
         ajaxWrapper("GET","/models/getModelInstanceJson/home/component/", {}, this.loadComponents.bind(this));
-        ajaxWrapper("GET","/models/getModelInstanceJson/home/pagecomponent/?related=component&page=" + this.props.id, {}, this.loadPageComponents.bind(this));
+        ajaxWrapper("GET","/models/getModelInstanceJson/home/pagecomponent/?order_by=order&related=component&page=" + this.props.id, {}, this.loadPageComponents.bind(this));
     }
 
     requireComponentInRender(index) {

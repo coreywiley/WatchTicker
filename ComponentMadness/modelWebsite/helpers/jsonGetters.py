@@ -16,15 +16,16 @@ def getInstanceJson(appLabel, modelName, id, related = []):
 
     return [jsonInstance]
 
-def getInstancesJson(appLabel, modelName, kwargs = {}, related = [], instanceQuery=None):
+def getInstancesJson(appLabel, modelName, kwargs = {}, related = [], instanceQuery=None, order_by = ['-id']):
     # page for adding a new instance
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
     fields = getModelFields(model)
-
+    print ('Order By')
+    print (order_by)
     if not instanceQuery:
         print ("KWARGS : %s" % kwargs)
         #gets instances queried by kwargs for a filtered list of the database
-        instanceQuery = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', '')).objects.filter(**kwargs).order_by('-id')
+        instanceQuery = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', '')).objects.filter(**kwargs).order_by(*order_by)
 
     instances = []
     for instance in instanceQuery:
