@@ -31,32 +31,6 @@ def Context(request):
     csrfmiddlewaretoken = django.middleware.csrf.get_token(request)
     return JsonResponse({'csrfmiddlewaretoken':csrfmiddlewaretoken}, status=200)
 
-
-def ListComponents(request):
-    components = Component.objects.values("id", "name", "description")
-    components = list(components)
-    print (components)
-
-    return JsonResponse({"components": components}, status=200)
-
-
-def ManageComponent(request, id):
-    if id == "0":
-        component = Component()
-        component.save()
-        return JsonResponse({"redirect": "/component/%s/" % (component.id)})
-
-    component = get_object_or_404(Component, pk = id)
-
-    if request.method == "POST":
-        component.name = request.POST.get('name', component.name)
-        component.description = request.POST.get('description', component.description)
-        component.html = request.POST.get('html', component.html)
-        component.save()
-
-    return JsonResponse({"component": component.dict()})
-
-
 def PageEditor(request):
     if request.method == "GET":
         components = Component.objects.filter()

@@ -16,7 +16,7 @@ class ClientApp extends Component {
     }
 
     componentDidMount() {
-        ajaxWrapper("GET", "/models/getModelInstanceJson/home/page/?related=pageComponents", {}, this.ajaxCallback);
+        ajaxWrapper("GET", "/api/home/page/?related=pageComponents", {}, this.ajaxCallback);
     }
 
     ajaxCallback(value){

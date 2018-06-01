@@ -14,7 +14,7 @@ class ComponentList extends Component {
         var extraInfo = {'button_type':'primary', 'button':'Edit', 'link':'/component/{id}/'};
         return (
 
-            <List dataUrl={"/models/getModelInstanceJson/home/component/"} component={Card} objectName={'component'} extraInfo={extraInfo} lastInstanceData={lastInstanceData} />
+            <List dataUrl={"/api/home/component/"} component={Card} objectName={'component'} extraInfo={extraInfo} lastInstanceData={lastInstanceData} />
         );
     }
 }

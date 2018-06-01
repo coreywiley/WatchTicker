@@ -35,13 +35,13 @@ class PageManager extends Component {
 
     componentDidMount() {
         if (this.props.id > -1) {
-            ajaxWrapper("GET", "/models/getModelInstanceJson/home/page/" + this.props.id + "/", {}, this.ajaxCallback);
+            ajaxWrapper("GET", "/api/home/page/" + this.props.id + "/", {}, this.ajaxCallback);
         }
         else {
             this.setState({loaded:true});
         }
-        ajaxWrapper("GET","/models/getModelInstanceJson/home/component/", {}, this.loadComponents.bind(this));
-        ajaxWrapper("GET","/models/getModelInstanceJson/home/pagecomponent/?order_by=order&related=component&page=" + this.props.id, {}, this.loadPageComponents.bind(this));
+        ajaxWrapper("GET","/api/home/component/", {}, this.loadComponents.bind(this));
+        ajaxWrapper("GET","/api/home/pagecomponent/?order_by=order&related=component&page=" + this.props.id, {}, this.loadPageComponents.bind(this));
     }
 
     requireComponentInRender(index) {
@@ -105,9 +105,9 @@ class PageManager extends Component {
         console.log(data);
 
         if (this.props.id > -1) {
-            ajaxWrapper("POST","/models/getModelInstanceJson/home/page/" + this.props.id + "/", data, this.formSubmitCallback.bind(this));
+            ajaxWrapper("POST","/api/home/page/" + this.props.id + "/", data, this.formSubmitCallback.bind(this));
         } else {
-            ajaxWrapper("POST","/models/getModelInstanceJson/home/page/", data, this.formSubmitCallback.bind(this));
+            ajaxWrapper("POST","/api/home/page/", data, this.formSubmitCallback.bind(this));
         }
     }
 
@@ -298,9 +298,9 @@ class PageComponentModal extends Component {
         var data = this.state.data;
         console.log(data);
         if (this.props.data.id > -1){
-            ajaxWrapper("POST","/models/getModelInstanceJson/home/pagecomponent/" + this.props.data.id + "/?related=component", data, this.formSubmitCallback.bind(this));
+            ajaxWrapper("POST","/api/home/pagecomponent/" + this.props.data.id + "/?related=component", data, this.formSubmitCallback.bind(this));
         } else {
-            ajaxWrapper("POST","/models/getModelInstanceJson/home/pagecomponent/?related=component", data, this.formSubmitCallback.bind(this));
+            ajaxWrapper("POST","/api/home/pagecomponent/?related=component", data, this.formSubmitCallback.bind(this));
         }
     }
 

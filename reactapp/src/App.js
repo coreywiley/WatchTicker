@@ -30,7 +30,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        ajaxWrapper("GET", "/api/", {}, this.ajaxCallback);
+        ajaxWrapper("GET", "/csrfmiddlewaretoken/", {}, this.ajaxCallback);
     }
 
     ajaxCallback(value){

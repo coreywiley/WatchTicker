@@ -9,11 +9,8 @@ admin.autodiscover()
 
 urlpatterns = [
     #Get context
-    url(r'^api/$', Context, name='context'),
-    #Get avaliable components
-    url(r'^api/components/$', ListComponents, name='components'),
-    #Manage single component
-    url(r'^api/component/(?P<id>[0-9]+)/$', ManageComponent, name='component'),
+    url(r'^csrfmiddlewaretoken/$', Context, name='context'),
+
     #Run React build?
 
     #Get avaliable pages
@@ -22,7 +19,7 @@ urlpatterns = [
 
     #Get avaliable models
     #Manage single model
-    url(r'^models/',include('modelWebsite.urls')),
+    url(r'^api/',include('modelWebsite.urls')),
 
     url(r'^users/',include('user.urls')),
     #url(r'^(?P<url>[a-zA-Z0-9]+)/$', PageDisplay, name='pageDisplay'),
