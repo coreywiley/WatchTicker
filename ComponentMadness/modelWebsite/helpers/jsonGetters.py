@@ -40,18 +40,25 @@ def dumpInstance(modelName, fields, instance, related = []):
     jsonInstance[modelName] = {}
 
     for field in fields:
+        newRelated = []
+        for relation in related:
+            search = field[0] + "__"
+            if relation.startswith(search):
+                newRelated.append(relation[len(search):])
+
         if field[1] == 'ForeignKey':
             if type(getattr(instance, field[0])).__name__ == "RelatedManager":
                 if field[0] not in related:
                     continue
-                foreignKeyDict = getInstancesJson(field[2], field[3], instanceQuery=getattr(instance, field[0]).all())
+                foreignKeyDict = getInstancesJson(field[2], field[3], instanceQuery=getattr(instance, field[0]).all(),
+                                                  related = newRelated)
                 jsonInstance[modelName][field[0]] = foreignKeyDict
 
             else:
                 if field[0] not in related:
                     jsonInstance[modelName][field[0] + "_id"] = getattr(instance, field[0] + "_id")
                 else:
-                    foreignKeyDict = getInstanceJson(field[2], field[3], getattr(instance, field[0]).id)[0]
+                    foreignKeyDict = getInstanceJson(field[2], field[3], getattr(instance, field[0]).id, related = newRelated)[0]
                     jsonInstance[modelName][field[0]] = foreignKeyDict[field[3]]
 
         else:
