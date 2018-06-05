@@ -30,7 +30,7 @@ def getModels(request):
     return JsonResponse({'apps': appModels})
 
 
-def getModelInstanceJson(request,appLabel,modelName,id=None):
+def getModelInstanceJson(request, appLabel, modelName, id=None):
     print ("Request : %s" % (request.GET))
 
     parameters = request.GET.dict()
