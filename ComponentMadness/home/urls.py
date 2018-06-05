@@ -19,9 +19,9 @@ urlpatterns = [
 
     #Get avaliable models
     #Manage single model
-    url(r'^api/',include('modelWebsite.urls')),
+    url(r'^api/', include('modelWebsite.urls', namespace="api")),
 
-    url(r'^users/',include('user.urls')),
+    url(r'^users/', include('user.urls', namespace="user")),
     #url(r'^(?P<url>[a-zA-Z0-9]+)/$', PageDisplay, name='pageDisplay'),
 
     #Catch statements for React
