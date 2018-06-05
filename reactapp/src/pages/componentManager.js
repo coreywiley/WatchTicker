@@ -3,296 +3,106 @@ import React, { Component } from 'react';
 import ajaxWrapper from "../base/ajax.js";
 import Wrapper from '../base/wrapper.js';
 import $ from 'jquery';
-import Playground from "component-playground";
+
 import ReactDOM from "react-dom";
 import List from "../library/list.js";
-
+import Form from "../library/form.js";
+import Select from "../library/select.js";
+import TextInput from "../library/textinput.js";
+import TextArea from "../library/textarea.js";
+import ReactRender from "../library/reactrender.js";
 const componentExample =
-'class Header extends React.Component {\n\
-    render() { \n\
-        return ( \n\
-            <p>{this.props.text}</p> \n\
-        ); \n\
-    } \n\
-} \n';
-
+            'class Header extends React.Component {\n\
+                render() { \n\
+                    return ( \n\
+                        <p>{this.props.text}</p> \n\
+                    ); \n\
+                } \n\
+            } \n';
 let componentPaths = {'Card':'card'}
-
-
-class ComponentProp extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            id: this.props.id,
-            component: this.props.component,
-            name: this.props.name,
-            type: this.props.type,
-        };
-
-
-        this.handleChange = this.handleChange.bind(this);
-        this.formSubmit = this.formSubmit.bind(this);
-        this.formDelete = this.formDelete.bind(this);
-        this.formSubmitCallback = this.formSubmitCallback.bind(this);
-    }
-
-
-    handleChange = (e) => {
-       var name = e.target.getAttribute("name");
-       var newState = {}
-       newState[name] = e.target.value;
-       console.log("New State", newState)
-       this.setState(newState);
-    }
-
-    formSubmit() {
-        console.log("Data", this.state);
-
-        var data = {name: this.state.name, type: this.state.type, component: this.state.component}
-
-        if (this.props.id) {
-            ajaxWrapper("POST","/api/home/componentprop/" + this.props.id + "/", data, this.formSubmitCallback.bind(this));
-        } else {
-            ajaxWrapper("POST","/api/home/componentprop/", data, this.formSubmitCallback.bind(this));
-        }
-    }
-
-    formSubmitCallback (value) {
-        console.log(value);
-        this.setState({name:'Add The Prop Name', type:'Please Select A Type'});
-        this.props.refreshData();
-    }
-
-    formDelete() {
-        ajaxWrapper("POST","/api/home/componentprop/" + this.props.id + "/delete/", {}, this.formSubmitCallback.bind(this));
-    }
-
-
-    render() {
-
-    return (
-        <div className="form-row">
-           <div className="form-group col-md-5">
-            <label>Name: </label>
-            <input type="text" className="form-control" name="name" onChange={this.handleChange} value={this.state.name} />
-
-          </div>
-          <div className="form-group col-md-5">
-            <label>Type: </label>
-            <select name="type" onChange={this.handleChange} value={this.state.type}>
-                <option>Please Select A Type</option>
-                <option>String</option>
-                <option>Number</option>
-                <option>List</option>
-                <option>Dictionary</option>
-                <option>URL</option>
-                <option>Component</option>
-                <option>Other</option>
-            </select>
-
-          </div>
-          <button type="submit" className="btn btn-primary col-md-1" onClick={this.formSubmit}>Save</button>
-          <button type="submit" className="btn btn-danger col-md-1" onClick={this.formDelete}>Delete</button>
-      </div>
-    )
-
-    }
-}
-
-class ComponentRequirement extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            id: this.props.id,
-            component: this.props.component,
-            importStatement: this.props.importStatement,
-        };
-
-
-        this.handleChange = this.handleChange.bind(this);
-        this.formSubmit = this.formSubmit.bind(this);
-        this.formDelete = this.formDelete.bind(this);
-        this.formSubmitCallback = this.formSubmitCallback.bind(this);
-    }
-
-
-    handleChange = (e) => {
-       var name = e.target.getAttribute("name");
-       var newState = {}
-       newState[name] = e.target.value;
-       console.log("New State", newState)
-       this.setState(newState);
-    }
-
-    formSubmit() {
-        console.log("Data", this.state);
-
-        var data = {importStatement: this.state.importStatement, component: this.state.component}
-
-        if (this.props.id) {
-            ajaxWrapper("POST","/api/home/componentrequirement/" + this.props.id + "/", data, this.formSubmitCallback.bind(this));
-        } else {
-            ajaxWrapper("POST","/api/home/componentrequirement/", data, this.formSubmitCallback.bind(this));
-        }
-    }
-
-    formSubmitCallback (value) {
-        console.log(value);
-        this.setState({importStatement:''});
-        this.props.refreshData();
-    }
-
-    formDelete() {
-        ajaxWrapper("POST","/api/home/componentrequirement/" + this.props.id + "/delete/", {}, this.formSubmitCallback.bind(this));
-    }
-
-
-    render() {
-
-    return (
-        <div className="row">
-        <div className="form-row" style={{width:'100%'}}>
-           <div className="form-group col-md-10">
-            <label>Import Statement: </label>
-            <input type="text" className="form-control" name="importStatement" onChange={this.handleChange} value={this.state.importStatement} />
-
-          </div>
-          <button type="submit" className="btn btn-primary col-md-1" onClick={this.formSubmit}>Save</button>
-          <button type="submit" className="btn btn-danger col-md-1" onClick={this.formDelete}>Delete</button>
-          </div>
-      </div>
-
-    )
-
-    }
-}
 
 
 class ComponentManager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loaded: false,
-            components: {React:React, ReactDOM:ReactDOM, Component:Component},
-            data: {name:'',description:'',html:'', example:''},
+            loaded: true,
+            components: {React:React, ReactDOM: ReactDOM, Component:Component},
+            Form: {html:'', example:''},
         };
 
-        this.ajaxCallback = this.ajaxCallback.bind(this);
-        this.formSubmit = this.formSubmit.bind(this);
+        this.setGlobalState = this.setGlobalState.bind(this);
     }
 
-
-    componentDidMount() {
-        if (this.props.id) {
-            ajaxWrapper("GET", "/api/home/component/" + this.props.id + "/", {}, this.ajaxCallback);
-        }
-        else {
-            this.setState({loaded:true})
-        }
-    }
-
-    handleChange = (e) => {
-       var name = e.target.getAttribute("name");
-       var newState = {data:this.state.data}
-       newState.data[name] = e.target.value;
-
-       this.setState(newState);
-    }
-
-    formSubmit() {
-        console.log("Data", this.state.data.name);
-        var data = {name: this.state.data.name, description: this.state.data.description, html: this.state.data.html, example: this.state.data.example}
-        console.log(data);
-
-        if (this.props.id) {
-            ajaxWrapper("POST","/api/home/component/" + this.props.id + "/", data, this.formSubmitCallback.bind(this));
-        } else {
-            ajaxWrapper("POST","/api/home/component/", data, this.formSubmitCallback.bind(this));
-        }
-    }
-
-    formSubmitCallback (value) {
-        console.log(value);
-        if (this.props.id) {
-            window.location = "/component/" + value[0].component.id + "/";
-        }
-    }
-
-    ajaxCallback(value){
-
-        this.setState({
-            data: value[0].component,
-            loaded: true
-        });
+    setGlobalState(componentName,value) {
+        console.log("Global State Change",componentName,value);
+        var newState = {};
+        newState[componentName] = value;
+        this.setState(newState);
     }
 
     render() {
         var content = null;
-        var html = this.state.data.html;
-        if (html == ""){
-            html = componentExample;
+
+        var data = this.state.data;
+
+        let optionsList = ['String','Number','List','Dictionary','URL','Component','Function','Boolean','Other'];
+        let PropComponents = [TextInput, Select];
+        let PropComponentProps = [{'layout':'col-md-5', 'label':'Name','name':'name'},
+        {'layout':'col-md-5','label':'Type','name':'type','defaultoption':'Please Select A Type', 'options':optionsList}]
+        var dataMapping = {'row':true, 'objectName':'componentprop', 'setGlobalState':this.setGlobalState, 'components':PropComponents, 'componentProps':PropComponentProps, 'submitUrl':"/api/home/componentprop/{id}/", 'deleteUrl':"/api/home/componentprop/{id}/delete/", 'defaults':{"name":'{name}', 'type':'{type}', 'component': this.props.id}}
+        var lastInstanceData = {'row':true, 'setGlobalState':this.setGlobalState, 'components':PropComponents, 'componentProps':PropComponentProps, 'submitUrl':"/api/home/componentprop/", 'defaults':{'name':'Add The Prop Name', 'type':'Please Select A Type', 'component': this.props.id}}
+        var propList = <List title={<label>Props</label>} dataUrl={"/api/home/componentprop/?order_by=id&component=" + this.props.id} component={Form} objectName={'componentprop'} dataMapping={dataMapping} lastInstanceData={lastInstanceData} />;
+
+        let FormComponents = [TextInput];
+        let FormComponentProps = [{'layout':'col-md-10', 'label':'Import Statement','name':'importStatement'}]
+        dataMapping = {'objectName':'componentrequirement', 'setGlobalState':this.setGlobalState, 'importStatement': '{importStatement}', 'components':FormComponents, 'componentProps':FormComponentProps, 'submitUrl':"/api/home/componentrequirement/{id}/", 'deleteUrl':"/api/home/componentrequirement/{id}/delete/", 'defaults':{"importStatement":'{importStatement}', 'component': this.props.id}}
+        lastInstanceData = {'setGlobalState':this.setGlobalState, 'components':FormComponents, 'componentProps':FormComponentProps, 'submitUrl':"/api/home/componentrequirement/", 'defaults':{"importStatement":"import Something from '../library/something.js';", 'component': this.props.id}}
+        var reqList = <List title={<label>Requirement List</label>} dataUrl={"/api/home/componentrequirement/?order_by=id&component=" + this.props.id} component={Form} objectName={'componentrequirement'} dataMapping={dataMapping} lastInstanceData={lastInstanceData} />;
+
+        let Components = [TextInput, TextArea, TextArea, TextArea];
+        let ComponentProps = [{'label':'Name','name':'name'},{'label':'Description','name':'description'},{'label':'React','name':'html'},{'label':'Example','name':'example'},]
+
+        var submitUrl = "/api/home/component/";
+        var deleteUrl = null;
+        if (this.props.id) {
+            submitUrl = "/api/home/component/" + this.props.id + "/";
+            deleteUrl = "/api/home/component/" + this.props.id + "/delete/";
         }
-        var example = this.state.data.example;
-        if (example == "") {
-            example = '<Hello text="Hello!" />';
-        }
 
-        if (typeof(this.state.data) != "undefined"){
-            var data = this.state.data;
+        var componentForm = <Form components={Components} objectName={'component'} setGlobalState={this.setGlobalState} dataUrl={"/api/home/component/" + this.props.id + "/"} componentProps={ComponentProps} submitUrl={submitUrl} redirect={this.props.refreshData} deleteUrl={deleteUrl} defaults={{'name':'','description':'','html':componentExample,'example':'<Hello text="Hello!" />', 'component':this.props.id}}/>;
 
-            var lastInstanceData = {'name':'Add The Prop Name', 'type':'Please Select A Type', 'component': this.props.id};
-            var extraInfo = {component:this.props.id}
-            var propList = <List dataUrl={"/api/home/componentprop/?order_by=id&component=" + this.props.id} component={ComponentProp} objectName={'componentprop'} extraInfo={extraInfo} lastInstanceData={lastInstanceData} />;
+        var html = "class TextInput extends React.Component { \n\
+         render() {\n\
+                var layout = '';\n\
+                 if (this.props.layout) {\n\
+                    layout = this.props.layout;\n\
+                }\n\
+          return (\n\
+            <div className={'form-group ' + this.props.layout}>\n\
+            <label>{this.props.label}</label>\n\
+            <input type='text' className='form-control' name={this.props.name} onChange={this.props.handlechange} value={this.props.value} />\n\
+          </div>\n\
+      )\n\
+  }\n\
+  }";
+        content =
+        <div className="col-sm-12">
+            <h2>Manage Component</h2>
+            <a href="/components/" >back to list</a>
 
-            var lastInstanceData2 = {"importStatement":"import Something from '../library/something.js';", 'component': this.props.id};
-            var extraInfo2= {component:this.props.id}
-            var reqList = <List dataUrl={"/api/home/componentrequirement/?order_by=id&component=" + this.props.id} component={ComponentRequirement} objectName={'componentrequirement'} extraInfo={extraInfo2} lastInstanceData={lastInstanceData2} />;
+            {componentForm}
 
+            {reqList}
+            <br/>
 
-            content =
-            <div className="col-sm-12">
-                <h2>Manage Component</h2>
-                <a href="/components/" >back to list</a>
-                <br/><br/>
+            {propList}
+            <br/>
 
-                    <label>Name</label>
-                    <input className="form-control" name="name" value={data.name} onChange={this.handleChange} />
-                    <br/>
+            <ReactRender html={html} scope={this.state.components} example={this.state.Form.example} />
 
-                    <label>Description</label>
-                    <textarea className="form-control" name="description" value={data.description} onChange={this.handleChange}></textarea>
-                    <br/>
+        </div>;
 
-                    <label>Requirement List</label>
-                    {reqList}
-                    <br/>
-
-                    <label>React</label>
-                    <textarea className="form-control" name="html" value={html} onChange={this.handleChange}></textarea>
-                    <br/>
-
-                    <label>Props</label>
-                    {propList}
-                    <br/>
-
-                    <label>Example</label>
-                    <textarea className="form-control" name="example" value={example} onChange={this.handleChange}></textarea>
-                    <br/>
-
-                    <label>Render</label>
-                    <div className="component-documentation">
-                        <Playground codeText={html + ' ReactDOM.render(' + example + ', mountNode);'} noRender={false} scope={this.state.components} />
-                    </div>
-
-                    <input type="submit" className="btn btn-success" name="save" value="Save" onClick={this.formSubmit} />
-                    <br/><br/>
-
-                  <div id='mountNode'>
-
-                  </div>
-
-            </div>;
-        }
 
         return (
             <Wrapper loaded={this.state.loaded} content={content} />
