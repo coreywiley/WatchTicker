@@ -11,10 +11,9 @@ class PageList extends Component {
 
     render() {
         var lastInstanceData = {'name':"Something New?", 'description':"Add A New Page", 'link':"/page/", 'button':"Create New", 'button_type':"success"};
-        var extraInfo = {'button_type':'primary', 'button':'Edit', 'link':'/page/{id}/'};
+        var dataMapping = {'button_type':'primary', 'button':'Edit', 'link':'/page/{id}/'};
         return (
-
-            <List dataUrl={"/api/home/page/"} component={Card} objectName={'page'} extraInfo={extraInfo} lastInstanceData={lastInstanceData} />
+            <List dataUrl={"/api/home/page/"} component={Card} objectName={'page'} dataMapping={dataMapping} lastInstanceData={lastInstanceData} />
         );
     }
 }
