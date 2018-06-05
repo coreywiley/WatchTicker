@@ -1,31 +1,18 @@
 from django.apps import apps
 
-def getInstanceJson(appLabel, modelName, id, related = []):
+def getInstanceJson(appLabel, modelName, instance, related = []):
     #gets the model object, similiar to like Component of Component.objects.filter
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
-
-    #this is a catch for a variable in the url during testing. aka /getModelJson/components/{{request.id}}/
-    if isinstance(id, str) and id.startswith("{{"):
-        instance = model.objects.filter().first()
-    else:
-        instance = model.objects.filter(id=int(id)).first()
-
     fields = getModelFields(model)
 
     jsonInstance = dumpInstance(modelName, fields, instance, related)
 
     return [jsonInstance]
 
-def getInstancesJson(appLabel, modelName, kwargs = {}, related = [], instanceQuery=None, order_by = ['-id']):
+def getInstancesJson(appLabel, modelName, related = [], instanceQuery=None):
     # page for adding a new instance
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
     fields = getModelFields(model)
-    print ('Order By')
-    print (order_by)
-    if not instanceQuery:
-        print ("KWARGS : %s" % kwargs)
-        #gets instances queried by kwargs for a filtered list of the database
-        instanceQuery = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', '')).objects.filter(**kwargs).order_by(*order_by)
 
     instances = []
     for instance in instanceQuery:
@@ -46,6 +33,8 @@ def dumpInstance(modelName, fields, instance, related = []):
             if relation.startswith(search):
                 newRelated.append(relation[len(search):])
 
+        #print ("New Related : %s" % (newRelated))
+
         if field[1] == 'ForeignKey':
             if type(getattr(instance, field[0])).__name__ == "RelatedManager":
                 if field[0] not in related:
@@ -58,7 +47,7 @@ def dumpInstance(modelName, fields, instance, related = []):
                 if field[0] not in related:
                     jsonInstance[modelName][field[0] + "_id"] = getattr(instance, field[0] + "_id")
                 else:
-                    foreignKeyDict = getInstanceJson(field[2], field[3], getattr(instance, field[0]).id, related = newRelated)[0]
+                    foreignKeyDict = getInstanceJson(field[2], field[3], getattr(instance, field[0]), related = newRelated)[0]
                     jsonInstance[modelName][field[0]] = foreignKeyDict[field[3]]
 
         else:
@@ -87,8 +76,7 @@ def getModelFields(model):
         elif field.get_internal_type() == 'ForeignKey':
             #I'm getting an error with this variable. It doesn't get used later on??
             foreignKeyObjects = []#getattr(instance, field.name)
-            print ('FOREIGN OBJECTS')
-            print (foreignKeyObjects)
+
             fields.append([field.name, field.get_internal_type(), field.related_model._meta.app_label,
                            field.related_model._meta.object_name.lower()])
         elif field.get_internal_type() == 'ManyToManyField':
@@ -99,5 +87,4 @@ def getModelFields(model):
             currentRelated = [object.id for object in currentRelatedQuery]
             fields.append([field.name, field.get_internal_type(), currentRelated, foreignKeyObjects])
 
-    print (fields)
     return fields
