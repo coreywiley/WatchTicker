@@ -178,7 +178,7 @@ def writeComponents(request):
     for component in components:
         middle += """
         if (name == "%s"){
-            return <%s {...params} />;
+            return %s;
         }
         """ % (component.name, component.name)
     template = template.replace("{{RESOLVERS}}", middle)

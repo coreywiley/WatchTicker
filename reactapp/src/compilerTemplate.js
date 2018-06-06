@@ -3,11 +3,15 @@ import {{IMPORTS}} from './library';
 
 
 class Compiler extends Component {
-    resolveComponentsInProps(data){
-        var props = data.component.componentProps;
+    resolveComponentsInProps(pageComponent){
+        var props = pageComponent.component.componentProps;
+        var data = pageComponent.data;
+
         for (var i=0; i<props.length; i++) {
-            if (props[i].type == "Component"){
-                data[props[i].name] = this.getComponentByName(data[props[i].name], {});
+            var prop = props[i].componentprop;
+
+            if (prop.type == "Component"){
+                data[prop.name] = this.getComponentByName(data[prop.name], {});
             }
         }
         return data;
@@ -24,9 +28,10 @@ class Compiler extends Component {
             var pageComponent = page.pageComponents[i].pagecomponent;
 
             var data = this.resolveComponentsInProps(pageComponent);
+            let ComponentPointer = this.getComponentByName(pageComponent.component.name, pageComponent.data);
 
             content.push(
-                this.getComponentByName(pageComponent.component.name, pageComponent.data)
+                <ComponentPointer key={page.pageComponents[i].id} {...data} />
             );
 
         }
