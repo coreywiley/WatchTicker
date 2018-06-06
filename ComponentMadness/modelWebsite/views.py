@@ -159,51 +159,32 @@ def writeComponents(request):
     for component in components:
         filepath = os.path.join(path, "%s.js" % (component.name.lower()))
         with open(filepath, "w") as file:
-            file.write("import React, { Component } from 'react';\n\n")
+            file.write("import React, { Component } from 'react';\n")
+            for requirement in component.componentRequirements.all():
+                file.write(requirement.importStatement + '\n')
+
             file.write(component.html)
             file.write("\n\nexport default %s;\n" % (component.name))
 
     path = os.path.join(os.getcwd(), "..", "reactapp", "src")
+    templatepath = os.path.join(path, "compilerTemplate.js")
+    template = open(templatepath, "r").read()
+
     filepath = os.path.join(path, "compiler.js")
-    importString = "import {%s} from './library';\n\n" % (importNames)
-    with open(filepath, "w") as file:
-        file.write("import React, { Component } from 'react';\n")
-        file.write(importString)
-        start = """
-class Compiler extends Component {
-    render() {
-        var content = [];
-        var page = this.props.page;
-        for (var i=0; i<page.pageComponents.length; i++){
-            var pageComponent = page.pageComponents[i].pagecomponent;
-"""
-        file.write(start)
 
-        for component in components:
-            middle = """
-            if (pageComponent.component_id == "%s"){
-                content.push(
-                    <%s {...pageComponent.data} />
-                );
-            }
-""" % (component.id, component.name)
+    template = template.replace("{{IMPORTS}}", "{%s}" % (importNames))
 
-            file.write(middle)
-
-        end = """
+    middle = ""
+    for component in components:
+        middle += """
+        if (name == "%s"){
+            return <%s {...params} />;
         }
+        """ % (component.name, component.name)
+    template = template.replace("{{RESOLVERS}}", middle)
 
-        return (
-            <div>
-                {content}
-            </div>
-        );
-    }
-}
-
-export default Compiler;"""
-
-        file.write(end)
+    with open(filepath, "w") as file:
+        file.write(template)
 
     return HttpResponse("")
 
