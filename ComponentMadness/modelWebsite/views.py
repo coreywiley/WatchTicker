@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.apps import apps
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseForbidden, HttpResponseRedirect
 
-from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson
+from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, getModelFields
 from user.views import staff_required
 from django.views.decorators.csrf import csrf_exempt
 
@@ -14,21 +14,27 @@ import io
 import json
 
 
-def getModels(request):
-    modelNames = []
-    filter = None
-    if 'apps' in request.GET:
-        filter = request.GET['apps'].split(',')
-    appModels = {}
+def getApps(request):
+    djangoApps = []
+    for app in apps.get_app_configs():
+        djangoApps.append({'app':{'name':app.name}})
+
+    return JsonResponse(djangoApps, safe=False)
+
+def getModels(request,appLabel):
+    models = []
+
     for model in apps.get_models():
-        if filter and model._meta.app_label not in filter:
-            continue
-        if model._meta.app_label not in appModels:
-            appModels[model._meta.app_label] = []
-        appModels[model._meta.app_label].append(model._meta.verbose_name)
+        if model._meta.app_label == appLabel:
+            models.append({'model':{'name':model._meta.verbose_name}})
 
-    return JsonResponse({'apps': appModels})
+    return JsonResponse(models, safe=False)
 
+def getModelFieldsJson(request,appLabel,modelName):
+    print ("App Label", appLabel, "Model Name", modelName)
+    model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
+    modelFields = getModelFields(model)
+    return JsonResponse(modelFields, safe=False)
 
 def getModelInstanceJson(request, appLabel, modelName, id=None):
     print ("Request : %s" % (request.GET))
@@ -38,6 +44,7 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
     if 'related' in parameters:
         related = parameters['related'].split(',')
         del parameters['related']
+
     order_by = []
     if 'order_by' in parameters:
         order_by = parameters['order_by'].split(',')

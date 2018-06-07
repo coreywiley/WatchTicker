@@ -28,6 +28,8 @@ urlpatterns = [
     url(r'^$', Index, name='index'),
     url(r'^(?P<param>\w+)/$', Index, name='index'),
     url(r'^(?P<param>\w+)/(?P<param2>\w+)/$', Index, name='index'),
+    url(r'^(?P<param>\w+)/(?P<param2>\w+)/(?P<param3>\w+)/$', Index, name='index'),
+    url(r'^(?P<param>\w+)/(?P<param2>\w+)/(?P<param3>\w+)/(?P<param4>\w+)/$', Index, name='index'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

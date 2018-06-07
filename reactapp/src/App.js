@@ -16,7 +16,10 @@ import ComponentManager from './pages/componentManager.js';
 import PageList from './pages/pageList.js';
 import PageManager from './pages/pageManager.js';
 
-
+import AppList from './pages/appList.js';
+import ModelList from './pages/modelsList.js';
+import InstanceList from './pages/modelInstances.js';
+import Instance from './pages/instance.js';
 
 class App extends Component {
     constructor(props) {
@@ -51,7 +54,7 @@ class App extends Component {
     render() {
         console.log(this.props);
         var params = this.getURL();
-        console.log(params);
+        console.log("Params", params);
 
         var loading = <h1>Loading . . . </h1>;
         var content = null;
@@ -73,6 +76,18 @@ class App extends Component {
             content = <PageManager id={params[1]} />;
         } else if (params[0] == "app") {
             content = <ClientApp path={params[1]} />;
+        }
+        else if (params[0] == "appList") {
+            content = <AppList />;
+        }
+        else if (params[0] == "models") {
+            content = <ModelList app={params[1]} />
+        }
+        else if (params[0] == "modelInstances") {
+            content = <InstanceList app={params[1]} model={params[2]} />
+        }
+        else if (params[0] == "instance") {
+            content = <Instance app={params[1]} model={params[2]} id={params[3]} />
         }
 
         return (

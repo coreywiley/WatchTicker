@@ -38,6 +38,7 @@ def getInstancesJson(appLabel, modelName, kwargs = {}, related = [], instanceQue
 def dumpInstance(modelName, fields, instance, related = []):
     jsonInstance = {}
     jsonInstance[modelName] = {}
+    jsonInstance[modelName]['unicode'] = str(instance)
 
     for field in fields:
         newRelated = []
@@ -80,7 +81,7 @@ def getModelFields(model):
                 continue
 
             fields.append([field.name, field.get_internal_type(), field.related_model._meta.app_label,
-                field.related_model._meta.object_name.lower()])
+                field.related_model._meta.object_name.lower(), True])
 
         elif field.get_internal_type() not in ['ForeignKey', 'ManyToManyField']:
             fields.append([field.name, field.get_internal_type(), getattr(instance, field.name)])
@@ -90,14 +91,14 @@ def getModelFields(model):
             print ('FOREIGN OBJECTS')
             print (foreignKeyObjects)
             fields.append([field.name, field.get_internal_type(), field.related_model._meta.app_label,
-                           field.related_model._meta.object_name.lower()])
+                           field.related_model._meta.object_name.lower(), False])
         elif field.get_internal_type() == 'ManyToManyField':
             foreignKeyObjectsQuery = field.related_model.objects.all()
             foreignKeyObjects = [[object.id, str(object)] for object in foreignKeyObjectsQuery]
 
             currentRelatedQuery = getattr(instance, field.name).all()
             currentRelated = [object.id for object in currentRelatedQuery]
-            fields.append([field.name, field.get_internal_type(), currentRelated, foreignKeyObjects])
+            fields.append([field.name, field.get_internal_type(), currentRelated, foreignKeyObjects, False])
 
     print (fields)
     return fields

@@ -17,7 +17,7 @@ import os
 
 #from user.views import my_login_required
 
-def Index(request, param = "", param2 = ""):
+def Index(request, param = "", param2 = "", param3 = "", param4 = ""):
     if request.META['HTTP_HOST'] == "localhost:8000":
         #In development mode this connects to the live React Node server
         html = requests.get("http://localhost:3000").content
