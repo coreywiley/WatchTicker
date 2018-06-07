@@ -38,6 +38,7 @@ def getModelFieldsJson(request,appLabel,modelName):
 
 def getModelInstanceJson(request, appLabel, modelName, id=None):
     print ("Request : %s" % (request.GET))
+    model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
 
     parameters = request.GET.dict()
     related = []
@@ -55,10 +56,18 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
     # single instance
     if request.method == "GET":
         if id:
-            instances = getInstanceJson(appLabel, modelName, id, related=related)
+            #this is a catch for a variable in the url during testing. aka /getModelJson/components/{{request.id}}/
+            if isinstance(id, str) and id.startswith("{{"):
+                instance = model.objects.filter().first()
+            else:
+                instance = model.objects.filter(id=int(id)).prefetch_related(*related).first()
+
+            instances = getInstanceJson(appLabel, modelName, instance, related=related)
         #page for adding a new instance
         elif not id:
-            instances = getInstancesJson(appLabel, modelName, parameters, related=related, order_by=order_by)
+            #gets instances queried by kwargs for a filtered list of the database
+            instanceQuery = model.objects.filter(**parameters).prefetch_related(*related).order_by(*order_by)
+            instances = getInstancesJson(appLabel, modelName, instanceQuery = instanceQuery, related=related)
 
     # edit or instance
     if request.method in ['PUT', 'POST']:
@@ -126,7 +135,7 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
                     *list(field.related_model.objects.filter(id__in=foreignKeyIds)))
 
         print ("Related : %s" % (related))
-        instances = getInstanceJson(appLabel, modelName, instance.id, related=related)
+        instances = getInstanceJson(appLabel, modelName, instance, related=related)
 
     return JsonResponse(instances,safe=False)
 
@@ -157,51 +166,32 @@ def writeComponents(request):
     for component in components:
         filepath = os.path.join(path, "%s.js" % (component.name.lower()))
         with open(filepath, "w") as file:
-            file.write("import React, { Component } from 'react';\n\n")
+            file.write("import React, { Component } from 'react';\n")
+            for requirement in component.componentRequirements.all():
+                file.write(requirement.importStatement + '\n')
+
             file.write(component.html)
             file.write("\n\nexport default %s;\n" % (component.name))
 
     path = os.path.join(os.getcwd(), "..", "reactapp", "src")
+    templatepath = os.path.join(path, "compilerTemplate.js")
+    template = open(templatepath, "r").read()
+
     filepath = os.path.join(path, "compiler.js")
-    importString = "import {%s} from './library';\n\n" % (importNames)
-    with open(filepath, "w") as file:
-        file.write("import React, { Component } from 'react';\n")
-        file.write(importString)
-        start = """
-class Compiler extends Component {
-    render() {
-        var content = [];
-        var page = this.props.page;
-        for (var i=0; i<page.pageComponents.length; i++){
-            var pageComponent = page.pageComponents[i].pagecomponent;
-"""
-        file.write(start)
 
-        for component in components:
-            middle = """
-            if (pageComponent.component_id == "%s"){
-                content.push(
-                    <%s {...pageComponent.data} />
-                );
-            }
-""" % (component.id, component.name)
+    template = template.replace("{{IMPORTS}}", "{%s}" % (importNames))
 
-            file.write(middle)
-
-        end = """
+    middle = ""
+    for component in components:
+        middle += """
+        if (name == "%s"){
+            return %s;
         }
+        """ % (component.name, component.name)
+    template = template.replace("{{RESOLVERS}}", middle)
 
-        return (
-            <div>
-                {content}
-            </div>
-        );
-    }
-}
-
-export default Compiler;"""
-
-        file.write(end)
+    with open(filepath, "w") as file:
+        file.write(template)
 
     return HttpResponse("")
 
