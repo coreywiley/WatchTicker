@@ -75,7 +75,7 @@ class App extends Component {
             //Single page
             content = <PageManager id={params[1]} />;
         } else if (params[0] == "app") {
-            content = <ClientApp path={params[1]} />;
+            content = <ClientApp params={params.slice(1)} />;
         }
         else if (params[0] == "appList") {
             content = <AppList />;

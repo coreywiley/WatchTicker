@@ -12,17 +12,39 @@ class ClientApp extends Component {
             pages: []
         };
 
-        this.ajaxCallback = this.ajaxCallback.bind(this);
+        this.findCurrentPageAndContext = this.findCurrentPageAndContext.bind(this);
     }
 
     componentDidMount() {
-        ajaxWrapper("GET", "/api/home/page/?related=pageComponents,pageComponents__component,pageComponents__component__componentProps", {}, this.ajaxCallback);
+        ajaxWrapper("GET", "/api/home/page/?related=pageComponents,pageComponents__component,pageComponents__component__componentProps",
+            {}, this.findCurrentPageAndContext);
     }
 
-    ajaxCallback(value){
+    findCurrentPageAndContext(value){
         console.log(value);
-        window.secretReactVars["csrfmiddlewaretoken"] = value.csrfmiddlewaretoken;
-        this.setState({loaded: true, pages: value});
+        var page = undefined;
+        for (var i=0; i<value.length; i++){
+            var tempPage = value[i].page;
+            var params = tempPage.url.split('/');
+            if (params.length != this.props.params.length){
+                continue;
+            }
+
+            var matching = true;
+            var globalState = {};
+            for (var i=0; i<params.length; i++){
+                if (params[i].startsWith("{")){
+                    globalState[params[i].replace('{','').replace('}','')] = this.props.params[i];
+                } else if (params[i] != this.props.params[i]) {
+                    matching = false;
+                }
+            }
+            if (matching){
+                page = tempPage;
+            }
+        }
+
+        this.setState({loaded: true, pages: value, page: page, globalState: globalState});
     }
 
     render() {
@@ -30,11 +52,9 @@ class ClientApp extends Component {
 
         var loading = <h1>Loading . . . </h1>;
         var content = null;
-        for (var i=0; i<this.state.pages.length; i++){
-            var page = this.state.pages[i].page;
-            if (this.props.path == page.url){
-                content = <Compiler page={page} />;
-            }
+        var page = this.state.page;
+        if (typeof(page) != "undefined"){
+            content = <Compiler page={page} globalState={this.state.globalState} />;
         }
 
         return (
