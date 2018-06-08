@@ -17,6 +17,13 @@ class Compiler extends Component {
         return data;
     }
 
+    setGlobalState(componentName,value) {
+        console.log("Global State Change",componentName,value);
+        var newState = {};
+        newState[componentName] = value;
+        this.setState(newState);
+    }
+
     getComponentByName(name, params){
         {{RESOLVERS}}
     }
