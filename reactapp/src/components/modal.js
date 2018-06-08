@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import ajaxWrapper from "../base/ajax.js";
-
 
 class Modal extends Component {
 
@@ -14,12 +12,14 @@ class Modal extends Component {
             background: 'rgba(0,0,0,0.2)',
             zIndex: '1'
         };
+
         var modalStyle = {};
         var modalClass = "modal fade";
         if (this.props.show){
             modalClass += " show";
             modalStyle.display = "block";
         }
+
         return (
             <div className={modalClass} tabindex="-1" role="dialog" style={modalStyle} >
                 <div onClick={this.props.onHide} style={backgroundStyle}></div>
@@ -27,7 +27,7 @@ class Modal extends Component {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">{this.props.title}</h5>
-                        <button type="button" className="close" aria-label="Close" onClick={this.props.onHide}>
+                        <button type="button" className="close" aria-label="Close" onClick={() => this.props.setGlobalState(this.props.globalStateName,false)}>
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
