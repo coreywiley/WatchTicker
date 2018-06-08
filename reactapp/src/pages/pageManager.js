@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import ajaxWrapper from "../base/ajax.js";
 import Wrapper from '../base/wrapper.js';
-import Modal from '../components/modal.js';
+import Modal from '../library/modal.js';
 
 import Playground from "component-playground";
 import ReactDOM from "react-dom";
