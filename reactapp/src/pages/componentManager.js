@@ -46,7 +46,8 @@ class ComponentManager extends Component {
 
         var data = this.state.data;
 
-        let optionsList = ['String','Number','List','Dictionary','URL','Component','Function','Boolean','Other'];
+        let optionsList = [{'value':'String','text':'String'},{'value':'Number','text':'Number'},{'value':'List','text':'List'},{'value':'Dictionary','text':'Dictionary'},{'value':'URL','text':'URL'},{'value':'Component','text':'Component'},{'value':'Component List','text':'Component List'},{'value':'Function','text':'Function'},{'value':'Boolean','text':'Boolean'},{'value':'Other','text':'Other'}]
+
         let PropComponents = [TextInput, Select];
         let PropComponentProps = [{'layout':'col-md-5', 'label':'Name','name':'name'},
         {'layout':'col-md-5','label':'Type','name':'type','defaultoption':'Please Select A Type', 'options':optionsList}]
