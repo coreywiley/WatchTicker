@@ -3,8 +3,9 @@ import {{IMPORTS}} from './library';
 
 
 class Compiler extends Component {
-    componentDidMount() {
-        this.setState({...this.props.globalState});
+    constructor(props) {
+        super(props);
+        this.state = {...this.props.globalState};
     }
 
     resolveComponents(pageComponent){
@@ -22,8 +23,14 @@ class Compiler extends Component {
                 for (var j=0; j<data[prop.name].length; j++){
                     data[prop.name][j] = this.getComponentByName(data[prop.name][j], {});
                 }
-            } else if (prop.type == "String") {
-                data[prop.name] == this.parseGlobalData(prop.type, data[prop.name]);
+            } else if (prop.type == "Dictionary") {
+                for (var key in data[prop.name]) {
+                    if (typeof(data[prop.name][key]) == "string"){
+                        data[prop.name][key] = this.parseGlobalData(prop.type, data[prop.name][key]);
+                    }
+                }
+            } else if (prop.type == "String" || prop.type == "URL") {
+                data[prop.name] = this.parseGlobalData(prop.type, data[prop.name]);
             }
         }
         return data;
@@ -37,11 +44,11 @@ class Compiler extends Component {
         var cleaned = dataSplit[0];
         //Search through string pieces to find closing tag
         for (var i=1; i<dataSplit.length; i++){
-            var innerSplit = dataSplit.split('}');
+            var innerSplit = dataSplit[i].split('}');
             if (innerSplit.length > 1){
                 var variable = innerSplit[0];
-                if (variable.startsWith("GLOBAL")){
-                    var value = this.state[variable];
+                if (variable.startsWith("GLOBAL") && this.state && variable.replace("GLOBAL.",'') in this.state){
+                    var value = this.state[variable.replace("GLOBAL.",'')];
                     cleaned += value + innerSplit[1];
                 } else {
                     cleaned += "{"+variable+"}" + innerSplit[1];
