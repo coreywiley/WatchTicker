@@ -19,8 +19,8 @@ class Compiler extends Component {
             if (prop.type == "Component"){
                 data[prop.name] = this.getComponentByName(data[prop.name], {});
             } else if (prop.type == "Component List"){
-                for (var i=0; i<data[prop.name].length; i++){
-                    data[prop.name][i] = this.getComponentByName(data[prop.name][i], {});
+                for (var j=0; j<data[prop.name].length; j++){
+                    data[prop.name][j] = this.getComponentByName(data[prop.name][j], {});
                 }
             } else if (prop.type == "String") {
                 data[prop.name] == this.parseGlobalData(prop.type, data[prop.name]);

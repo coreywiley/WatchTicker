@@ -32,10 +32,10 @@ class ClientApp extends Component {
 
             var matching = true;
             var globalState = {};
-            for (var i=0; i<params.length; i++){
-                if (params[i].startsWith("{")){
-                    globalState[params[i].replace('{','').replace('}','')] = this.props.params[i];
-                } else if (params[i] != this.props.params[i]) {
+            for (var j=0; j<params.length; j++){
+                if (params[j].startsWith("{")){
+                    globalState[params[j].replace('{','').replace('}','')] = this.props.params[j];
+                } else if (params[j] != this.props.params[j]) {
                     matching = false;
                 }
             }
