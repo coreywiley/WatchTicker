@@ -26,7 +26,7 @@ def getModels(request,appLabel):
 
     for model in apps.get_models():
         if model._meta.app_label == appLabel:
-            models.append({'model':{'name':model._meta.verbose_name}})
+            models.append({'model':{'name':model.__name__}})
 
     return JsonResponse(models, safe=False)
 
