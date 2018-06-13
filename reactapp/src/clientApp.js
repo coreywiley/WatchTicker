@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ajaxWrapper from "./base/ajax.js";
-
 import Compiler from "./compiler.js";
 
 
@@ -9,15 +8,33 @@ class ClientApp extends Component {
         super(props);
         this.state = {
             loaded: false,
+            components: [],
+            componentsByName: [],
             pages: []
         };
-
-        this.findCurrentPageAndContext = this.findCurrentPageAndContext.bind(this);
     }
 
     componentDidMount() {
-        ajaxWrapper("GET", "/api/home/page/?related=pageComponents,pageComponents__component,pageComponents__component__componentProps",
-            {}, this.findCurrentPageAndContext);
+        ajaxWrapper("GET", "/api/home/component/?related=componentProps",
+            {}, this.saveComponentData.bind(this));
+    }
+
+    saveComponentData(value){
+        var components = {};
+        var componentsByName = {};
+
+        for (var i in value){
+            components[value[i].component.id] = value[i].component;
+            componentsByName[value[i].component.name] = value[i].component;
+        }
+
+        this.setState({
+            components: components,
+            componentsByName: componentsByName
+        });
+
+        ajaxWrapper("GET", "/api/home/page/?related=pageComponents",
+            {}, this.findCurrentPageAndContext.bind(this));
     }
 
     findCurrentPageAndContext(value){
@@ -41,10 +58,16 @@ class ClientApp extends Component {
             }
             if (matching){
                 page = tempPage;
+                break;
             }
         }
 
-        this.setState({loaded: true, pages: value, page: page, globalState: globalState});
+        this.setState({
+            loaded: true,
+            pages: value,
+            page: page,
+            globalState: globalState
+        });
     }
 
     render() {
@@ -54,7 +77,9 @@ class ClientApp extends Component {
         var content = null;
         var page = this.state.page;
         if (typeof(page) != "undefined"){
-            content = <Compiler page={page} globalState={this.state.globalState} />;
+            content = <Compiler page={page} globalState={this.state.globalState}
+                components={this.state.components}
+                componentsByName={this.state.componentsByName} />;
         }
 
         return (

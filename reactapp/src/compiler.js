@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {{IMPORTS}} from './library';
+import getComponent from './componentResolver.js';
 
 
 class Compiler extends Component {
@@ -8,32 +8,49 @@ class Compiler extends Component {
         this.state = {...this.props.globalState};
     }
 
-    resolveComponents(pageComponent){
+    resolvePageComponent(pageComponent){
         var pageComponent = JSON.parse(pageComponent);
-
-        var props = pageComponent.component.componentProps;
+        var props = this.props.components[pageComponent.component_id].componentProps;
         var data = pageComponent.data;
+
+        data = this.findComponents(props, data);
+        return data;
+    }
+
+    findComponents(props, startData){
+        var endData = JSON.parse(JSON.stringify(startData));
 
         for (var i=0; i<props.length; i++) {
             var prop = props[i].componentprop;
+            if (!(prop.name in startData)){
+                continue;
+            }
 
-            if (prop.type == "Component"){
-                data[prop.name] = this.getComponentByName(data[prop.name], {});
+            if (prop.name == "dataMapping"){
+                var newProps = this.props.componentsByName[startData['component']].componentProps;
+                var newData = startData[prop.name];
+                endData[prop.name] = this.findComponents(newProps, newData);
+
+            } else if (prop.type == "Component"){
+                endData[prop.name] = getComponent("name", startData[prop.name]);
+
             } else if (prop.type == "Component List"){
-                for (var j=0; j<data[prop.name].length; j++){
-                    data[prop.name][j] = this.getComponentByName(data[prop.name][j], {});
+                for (var j=0; j<startData[prop.name].length; j++){
+                    endData[prop.name][j] = getComponent("name", startData[prop.name][j]);
                 }
+
             } else if (prop.type == "Dictionary") {
-                for (var key in data[prop.name]) {
-                    if (typeof(data[prop.name][key]) == "string"){
-                        data[prop.name][key] = this.parseGlobalData(prop.type, data[prop.name][key]);
+                for (var key in startData[prop.name]) {
+                    if (typeof(startData[prop.name][key]) == "string"){
+                        endData[prop.name][key] = this.parseGlobalData(prop.type, startData[prop.name][key]);
                     }
                 }
+
             } else if (prop.type == "String" || prop.type == "URL") {
-                data[prop.name] = this.parseGlobalData(prop.type, data[prop.name]);
+                endData[prop.name] = this.parseGlobalData(prop.type, startData[prop.name]);
             }
         }
-        return data;
+        return endData;
     }
 
     parseGlobalData(type, data) {
@@ -68,21 +85,17 @@ class Compiler extends Component {
         this.setState(newState);
     }
 
-    getComponentByName(name, params){
-        {{RESOLVERS}}
-    }
-
     render() {
         var content = [];
         var page = this.props.page;
         for (var i=0; i<page.pageComponents.length; i++){
             var pageComponent = page.pageComponents[i].pagecomponent;
 
-            var data = this.resolveComponents(JSON.stringify(pageComponent));
-            let ComponentPointer = this.getComponentByName(pageComponent.component.name, pageComponent.data);
+            var data = this.resolvePageComponent(JSON.stringify(pageComponent));
+            let ComponentPointer = getComponent("id", pageComponent.component_id);
 
             content.push(
-                <ComponentPointer key={page.pageComponents[i].id} {...data} />
+                <ComponentPointer key={page.pageComponents[i].id} setGlobalState={this.setGlobalState.bind(this)} {...data} />
             );
 
         }

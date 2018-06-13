@@ -1,4 +1,5 @@
 .idea/
 venv/
 reactapp/src/library/
-reactapp/src/compiler.js
+
+reactapp/src/componentResolver\.js

@@ -167,29 +167,29 @@ def writeComponents(request):
         filepath = os.path.join(path, "%s.js" % (component.name.lower()))
         with open(filepath, "w") as file:
             file.write("import React, { Component } from 'react';\n")
+            file.write("import resolveVariables from '../base/resolver.js';\n")
+
             for requirement in component.componentRequirements.all():
                 file.write(requirement.importStatement + '\n')
 
+            file.write("\n")
             file.write(component.html)
             file.write("\n\nexport default %s;\n" % (component.name))
 
     path = os.path.join(os.getcwd(), "..", "reactapp", "src")
-    templatepath = os.path.join(path, "compilerTemplate.js")
+    templatepath = os.path.join(path, "componentResolverTemplate.js")
     template = open(templatepath, "r").read()
-
-    filepath = os.path.join(path, "compiler.js")
+    nameResolvers = ""
+    idResolvers = ""
+    for component in components:
+        nameResolvers += '    if (name == "%s"){return %s;}\n' % (component.name, component.name)
+        idResolvers += '    if (id == "%s"){return %s;}\n' % (component.id, component.name)
 
     template = template.replace("{{IMPORTS}}", "{%s}" % (importNames))
+    template = template.replace("{{NAMERESOLVERS}}", nameResolvers)
+    template = template.replace("{{IDRESOLVERS}}", idResolvers)
 
-    middle = ""
-    for component in components:
-        middle += """
-        if (name == "%s"){
-            return %s;
-        }
-        """ % (component.name, component.name)
-    template = template.replace("{{RESOLVERS}}", middle)
-
+    filepath = os.path.join(path, "componentResolver.js")
     with open(filepath, "w") as file:
         file.write(template)
 
