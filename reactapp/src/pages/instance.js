@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import ajaxWrapper from "../base/ajax.js";
-import List from '../library/list.js';
-import Link from '../library/link.js';
-import TextInput from '../library/textinput.js';
-import Select from '../library/select.js';
 import Wrapper from '../base/wrapper.js';
+import getComponent from '../componentResolver.js';
 
-import Form from "../library/form.js";
-
-let ComponentDict = {'AutoField':TextInput, 'CharField':TextInput,'ForeignKey':Select};
+let ComponentDict = {
+    'AutoField': "TextInput",
+    'CharField': "TextInput",
+    'ForeignKey': "Select",
+    'IntegerField': "TextInput",
+    'TextField': "TextArea"
+};
 
 class Instance extends Component {
 
@@ -37,7 +38,11 @@ class Instance extends Component {
                 auto_created = value[index][4]
             }
             if (!auto_created) {
-                Components.push(ComponentDict[fieldType]);
+                if (typeof(ComponentDict[fieldType]) == "undefined"){
+                    console.log("FIELD TYPE NOT FOUND!!!!!!! " + fieldType);
+                }
+                Components.push(getComponent("name", ComponentDict[fieldType]));
+
                 var props;
                 if (fieldType == 'ForeignKey') {
                     props = {'label':fieldName, 'name':fieldName + '_id'}
@@ -57,7 +62,8 @@ class Instance extends Component {
     }
 
     render() {
-
+        var Form = getComponent("name", "Form");
+        
         var submitUrl = "/api/" + this.props.app + "/" + this.props.model + "/" + this.props.id + "/";
         var deleteUrl = submitUrl + "delete/";
         var content = <Form components={this.state.Components} objectName={this.props.model} dataUrl={submitUrl} componentProps={this.state.ComponentProps} submitUrl={submitUrl} deleteUrl={deleteUrl} defaults={this.state.defaults} />
