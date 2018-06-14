@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import getComponent from './componentResolver.js';
+import Wrapper from './base/wrapper.js';
 
 
 class Compiler extends Component {
@@ -88,22 +89,25 @@ class Compiler extends Component {
     render() {
         var content = [];
         var page = this.props.page;
-        for (var i=0; i<page.pageComponents.length; i++){
-            var pageComponent = page.pageComponents[i].pagecomponent;
+        var components = Object.assign([], page.pageComponents);
+        components.sort(function(a, b){
+            return a['pagecomponent']['order'] - b['pagecomponent']['order'];
+        });
+
+        for (var i=0; i<components.length; i++){
+            var pageComponent = components[i].pagecomponent;
 
             var data = this.resolvePageComponent(JSON.stringify(pageComponent));
             let ComponentPointer = getComponent("id", pageComponent.component_id);
 
             content.push(
-                <ComponentPointer key={page.pageComponents[i].id} setGlobalState={this.setGlobalState.bind(this)} {...data} />
+                <ComponentPointer key={components[i].id} setGlobalState={this.setGlobalState.bind(this)} {...data} />
             );
 
         }
 
         return (
-            <div>
-                {content}
-            </div>
+            <Wrapper loaded={true} content={content} />
         );
     }
 }
