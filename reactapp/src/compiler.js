@@ -26,7 +26,7 @@ class Compiler extends Component {
                 continue;
             }
 
-            if (prop.name == "dataMapping"){
+            if (prop.name == "dataMapping" || prop.name == "lastInstanceData"){
                 var newProps = this.props.componentsByName[startData['component']].componentProps;
                 var newData = startData[prop.name];
                 endData[prop.name] = this.findComponents(newProps, newData);
