@@ -30,24 +30,34 @@ function fillData(tempStr, data) {
     if (typeof tempStr != 'string') {
         return tempStr;
     }
-    var start = tempStr.indexOf('{');
-    var end = tempStr.indexOf('}');
-    if (start > -1 && end > start) {
-        var variable = tempStr.substring(start+1,end).split('.');
-        var value = data;
-        for (var i in variable){
-            var miniVar = variable[i];
-            value = value[miniVar];
-        }
 
-        var replaceString = '{' + tempStr.substring(start+1,end) + '}';
-        if (typeof value == 'object') {
-            tempStr = tempStr.replace(replaceString,JSON.stringify(value));
+    var dataSplit = tempStr.split('{');
+    //Add initial text to output
+    var cleaned = dataSplit[0];
+    //Search through string pieces to find closing tag
+    for (var i=1; i<dataSplit.length; i++){
+        var innerSplit = dataSplit[i].split('}');
+        if (innerSplit.length > 1){
+            var variable = innerSplit[0].split('.');
+            var value = data;
+
+            for (var j in variable){
+                var miniVar = variable[j];
+                value = value[miniVar];
+            }
+
+            if (typeof value == 'object') {
+                cleaned += JSON.stringify(value) + innerSplit[1];
+            } else {
+                cleaned += value + innerSplit[1];
+            }
+
         } else {
-            tempStr = tempStr.replace(replaceString, value);
+            cleaned += innerSplit[0];
         }
     }
-    return tempStr;
+
+    return cleaned;
 }
 
 
