@@ -59,9 +59,29 @@ class PageManager extends Component {
             title={"Page Component"} components={pageComponentComponents} componentProps={pageComponentComponentProps}
             submitUrl={pageComponentSubmitUrl} deleteUrl={pageComponentDeleteUrl} defaults={pageComponentDefaults}/>;
 
-         var modal = <Modal show={this.state.activePageComponent.modal} title={title} content={content}
-             setGlobalState={this.setGlobalState} globalStateName={'activePageComponent'} />
+        var dataMapping = {
+    		"globalStateName": "activePageComponent",
+    		"title": "Page Component",
 
+    		"components": [TextInput, TextInput, TextArea],
+    		"componentProps": [
+    			{"label":"Order","name":"order"},
+    			{"label":"Data Url","name":"data_url"},
+    			{"label":"Data","name":"data"}
+    		],
+    		"submitUrl": "/api/home/pagecomponent/" + this.state.activePageComponent.id + "/?related=component",
+    		"deleteUrl": "/api/home/pagecomponent/" + this.state.activePageComponent.id + "/delete/",
+    		"defaults": {
+    			"modal": false,
+    			"order": this.state.activePageComponent.order,
+    			"data_url": this.state.activePageComponent.data_url,
+    			"data": this.state.activePageComponent.data,
+    			"pagecomponent_id": this.state.activePageComponent.id
+    		}
+    	}
+
+         var modal = <Modal show={this.state.activePageComponent.modal} title={title} component={Form} dataMapping={dataMapping}
+             setGlobalState={this.setGlobalState} globalStateName={'activePageComponent'} resolveData={false} />
 
         var content = null;
         var data = this.state.data;
@@ -94,7 +114,7 @@ class PageManager extends Component {
             component={Card} objectName={'component'} dataMapping={componentListDataMapping} />
 
         var pageComponentListDataMapping = {
-            'name':['component','name'], 'description':'{data}',
+            'name':'{component.name}', 'description':'{data}',
             'button':'Edit', 'button_type':'primary', 'onClick':this.setGlobalState,
             'globalStateName':'activePageComponent', 'id':'{id}', 'data':'{data}','order':'{order}',
             'data_url':'{data_url}', 'modal':true
