@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+ import React, { Component } from 'react';
 import getComponent from './componentResolver.js';
 import Wrapper from './base/wrapper.js';
 
@@ -7,6 +7,7 @@ class Compiler extends Component {
     constructor(props) {
         super(props);
         this.state = {...this.props.globalState};
+        this.state['setGlobalState'] = this.setGlobalState.bind(this);
     }
 
     resolvePageComponent(pageComponent){
@@ -27,34 +28,48 @@ class Compiler extends Component {
                 continue;
             }
 
-            if (prop.name == "dataMapping" || prop.name == "lastInstanceData"){
-                var newProps = this.props.componentsByName[startData['component']].componentProps;
-                var newData = startData[prop.name];
-                endData[prop.name] = this.findComponents(newProps, newData);
-
-            } else if (prop.type == "Component"){
+            if (prop.type == "Component"){
                 endData[prop.name] = getComponent("name", startData[prop.name]);
 
             } else if (prop.type == "Component List"){
                 for (var j=0; j<startData[prop.name].length; j++){
                     endData[prop.name][j] = getComponent("name", startData[prop.name][j]);
                 }
-
-            } else if (prop.type == "Dictionary") {
-                for (var key in startData[prop.name]) {
-                    if (typeof(startData[prop.name][key]) == "string"){
-                        endData[prop.name][key] = this.parseGlobalData(prop.type, startData[prop.name][key]);
-                    }
+            } else if (prop.type == "Dictionary" || prop.type == "List") {
+                if (prop.name == "dataMapping" || prop.name == "lastInstanceData"){
+                    var newProps = this.props.componentsByName[startData['component']].componentProps;
+                    var newData = startData[prop.name];
+                    endData[prop.name] = this.findComponents(newProps, newData);
+                } else {
+                    endData[prop.name] = this.diveDeeper(startData[prop.name]);
                 }
 
-            } else if (prop.type == "String" || prop.type == "URL") {
+            } else {
                 endData[prop.name] = this.parseGlobalData(prop.type, startData[prop.name]);
             }
         }
         return endData;
     }
 
+    diveDeeper(data){
+        var value = {};
+        for (var key in data) {
+            if (typeof(data[key]) == "string"){
+                value[key] = this.parseGlobalData('', data[key]);
+            } else if (typeof(data[key]) == "object"){
+                value[key] = this.diveDeeper(data[key]);
+            }
+        }
+
+        return value;
+    }
+
+
     parseGlobalData(type, data) {
+        if (typeof data != 'string') {
+            return data;
+        }
+        
         console.log("Parsing Gobal Var", data, type);
         //Split string into pieces using the variable starting char
         var dataSplit = data.split('{');
@@ -64,12 +79,28 @@ class Compiler extends Component {
         for (var i=1; i<dataSplit.length; i++){
             var innerSplit = dataSplit[i].split('}');
             if (innerSplit.length > 1){
-                var variable = innerSplit[0];
-                if (variable.startsWith("GLOBAL") && this.state && variable.replace("GLOBAL.",'') in this.state){
-                    var value = this.state[variable.replace("GLOBAL.",'')];
-                    cleaned += value + innerSplit[1];
+                var variable = innerSplit[0].split('.');
+
+                if (variable == ["GLOBAL", "setGlobalState"]){
+                    cleaned = this.state.setGlobalState;
+
+                } else if (variable[0] == "GLOBAL"){
+                    var value = this.state;
+                    for (var j=1; j<variable.length; j++){
+                        if (variable[j] in value){
+                            value = value[variable[j]];
+                        } else {
+                            value = '';
+                            break;
+                        }
+                    }
+                    if (cleaned == "" && innerSplit[1] == ""){
+                        cleaned = value;
+                    } else {
+                        cleaned += value + innerSplit[1];
+                    }
                 } else {
-                    cleaned += "{"+variable+"}" + innerSplit[1];
+                    cleaned += "{"+innerSplit[0]+"}" + innerSplit[1];
                 }
             } else {
                 cleaned += innerSplit[0];
