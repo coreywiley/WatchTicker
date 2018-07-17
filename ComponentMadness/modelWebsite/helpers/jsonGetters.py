@@ -17,7 +17,8 @@ def getInstancesJson(appLabel, modelName, related = [], instanceQuery=None):
     instances = []
     for instance in instanceQuery:
         jsonInstance = dumpInstance(modelName, fields, instance, related = related)
-        instances.append(jsonInstance)
+        if jsonInstance not in instances:
+            instances.append(jsonInstance)
 
     return instances
 
@@ -35,9 +36,13 @@ def dumpInstance(modelName, fields, instance, related = []):
                 newRelated.append(relation[len(search):])
 
         #print ("New Related : %s" % (newRelated))
-
-        if field[1] == 'ForeignKey':
-            if type(getattr(instance, field[0])).__name__ == "RelatedManager":
+        if field[1] in ['ForeignKey','ManyToManyField']:
+            try:
+                getattr(instance, field[0])
+            except Exception as e:
+                print (e)
+                continue
+            if type(getattr(instance, field[0])).__name__ in ['ManyRelatedManager',"RelatedManager"]:
                 if field[0] not in related:
                     continue
                 foreignKeyDict = getInstancesJson(field[2], field[3], instanceQuery=getattr(instance, field[0]).all(),
@@ -46,10 +51,14 @@ def dumpInstance(modelName, fields, instance, related = []):
 
             else:
                 if field[0] not in related:
-                    jsonInstance[modelName][field[0] + "_id"] = getattr(instance, field[0] + "_id")
+                    if field[1] == 'ForeignKey':
+                        jsonInstance[modelName][field[0] + "_id"] = getattr(instance, field[0] + "_id")
+                    else:
+                        jsonInstance[modelName][field[0]] = getattr(instance, field[0])
                 else:
-                    foreignKeyDict = getInstanceJson(field[2], field[3], getattr(instance, field[0]), related = newRelated)[0]
-                    jsonInstance[modelName][field[0]] = foreignKeyDict[field[3]]
+                    if field[1] == 'ForeignKey':
+                        foreignKeyDict = getInstanceJson(field[2], field[3], getattr(instance, field[0]), related = newRelated)[0]
+                        jsonInstance[modelName][field[0]] = foreignKeyDict[field[3]]
 
         else:
             jsonInstance[modelName][field[0]] = getattr(instance, field[0])
@@ -64,8 +73,11 @@ def getModelFields(model):
 
     instance = model()
     modelFields = model._meta.get_fields()
+
     for field in modelFields:
+
         if field.auto_created:
+
             if field.get_internal_type() != 'ForeignKey':
                 continue
 
@@ -74,18 +86,8 @@ def getModelFields(model):
 
         elif field.get_internal_type() not in ['ForeignKey', 'ManyToManyField']:
             fields.append([field.name, field.get_internal_type(), getattr(instance, field.name)])
-        elif field.get_internal_type() == 'ForeignKey':
-            #I'm getting an error with this variable. It doesn't get used later on??
-            foreignKeyObjects = []#getattr(instance, field.name)
-
+        elif field.get_internal_type() in ['ForeignKey','ManyToManyField']:
             fields.append([field.name, field.get_internal_type(), field.related_model._meta.app_label,
                            field.related_model._meta.object_name.lower(), False])
-        elif field.get_internal_type() == 'ManyToManyField':
-            foreignKeyObjectsQuery = field.related_model.objects.all()
-            foreignKeyObjects = [[object.id, str(object)] for object in foreignKeyObjectsQuery]
-
-            currentRelatedQuery = getattr(instance, field.name).all()
-            currentRelated = [object.id for object in currentRelatedQuery]
-            fields.append([field.name, field.get_internal_type(), currentRelated, foreignKeyObjects, False])
 
     return fields
