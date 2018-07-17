@@ -5,7 +5,6 @@ function ajaxWrapper(type, url, data, returnFunc){
         data["csrfmiddlewaretoken"] = window.secretReactVars["csrfmiddlewaretoken"];
     }
 
-    url = "http://localhost:8000" + url;
 
     $.ajax({
         type: type,
