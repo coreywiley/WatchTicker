@@ -6,10 +6,11 @@ import Link from '../library/link.js';
 class AppList extends Component {
 
     render() {
-        var dataMapping = {'link':'/models/{name}/', 'text':'{name}'};
+        var dataMapping = {'link':'/models/{name}/', 'text':'{name}', 'cssClass':"list-group-item"};
         return (
-
-            <List dataUrl={"/api/getApps/"} title={'Apps'} component={Link} objectName={'app'} dataMapping={dataMapping} />
+            <div className="container list-group">
+                <List dataUrl={"/api/getApps/"} title={'Apps'} component={Link} objectName={'app'} dataMapping={dataMapping} />
+            </div>
         );
     }
 }
