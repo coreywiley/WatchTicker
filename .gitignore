@@ -2,3 +2,4 @@
 venv/
 
 reactapp/src/componentResolver\.js
+npm-debug.log
