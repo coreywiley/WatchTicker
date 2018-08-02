@@ -21,12 +21,18 @@ import ModelList from './pages/modelsList.js';
 import InstanceList from './pages/modelInstances.js';
 import Instance from './pages/instance.js';
 
+import LogIn from './pages/logIn.js';
+import Projects from './pages/projects.js';
+import Question from './pages/question.js';
+import Test from './pages/test.js';
+
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loaded: false,
-            csrfmiddlewaretoken: undefined
+            csrfmiddlewaretoken: undefined,
+            User:{'user_id':'', 'user_name':'', 'user_shorthand':''}
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
@@ -36,10 +42,37 @@ class App extends Component {
         ajaxWrapper("GET", "/csrfmiddlewaretoken/", {}, this.ajaxCallback);
     }
 
+    logOut() {
+        console.log("Log Out")
+        localStorage.removeItem('user_name')
+        localStorage.removeItem('user_id')
+        localStorage.removeItem('user_shorthand')
+        window.location.href = '/login/';
+    }
+
     ajaxCallback(value){
         console.log(value);
         window.secretReactVars["csrfmiddlewaretoken"] = value.csrfmiddlewaretoken;
-        this.setState({loaded: true, csrfmiddlewaretoken: value.csrfmiddlewaretoken});
+        var user_name = localStorage.getItem('user_name')
+        var user_id = localStorage.getItem('user_id')
+        var user_shorthand = localStorage.getItem('user_shorthand')
+        if (user_name && user_id) {
+            if (window.location.href.indexOf('login') > -1) {
+                window.location.href = '/projects/';
+            }
+            else {
+                this.setState({loaded: true, csrfmiddlewaretoken: value.csrfmiddlewaretoken, User: {'user_id':user_id, 'user_name':user_name, 'user_shorthand':user_shorthand}});
+            }
+        }
+        else {
+            if (window.location.href.indexOf('login') > -1) {
+                this.setState({loaded: true, csrfmiddlewaretoken: value.csrfmiddlewaretoken});
+            }
+            else {
+                window.location.href = '/login/';
+            }
+
+        }
 
     }
 
@@ -86,17 +119,25 @@ class App extends Component {
         else if (params[0] == "modelInstances") {
             content = <InstanceList app={params[1]} model={params[2]} />
         }
+        else if (params[0] == "login") {
+            content = <LogIn />
+        }
+        else if (params[0] == "projects") {
+            content = <Projects user_name={this.state.User.user_name} logOut={this.logOut} />
+        }
+        else if (params[0] == "question") {
+            content = <Question question_id={params[1]} logOut={this.logOut} user_name={this.state.User.user_name} user_short_name={this.state.User.user_shorthand} />
+        }
+        else if (params[0] == "test") {
+            content = <Test logOut={this.logOut} project_id={params[1]} />
+        }
         else if (params[0] == "instance") {
             content = <Instance app={params[1]} model={params[2]} id={params[3]} />
         }
 
         return (
             <div className="App">
-                <Header />
-                <div className="content">
-                    {(this.state.loaded) ? content : loading}
-                </div>
-                <Footer />
+                <Wrapper content={content} loaded={this.state.loaded} />
             </div>
         );
     }

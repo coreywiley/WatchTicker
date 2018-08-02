@@ -24,6 +24,12 @@ urlpatterns = [
     url(r'^users/', include('user.urls', namespace="user")),
     #url(r'^(?P<url>[a-zA-Z0-9]+)/$', PageDisplay, name='pageDisplay'),
 
+    url(r'^authenticate/$', logIn, name='logIn'),
+    url(r'^getProjects/$', getProjects, name='getProjects'),
+    url(r'^getQuestions/(?P<project_id>\w+)/$', getQuestions, name='getQuestions'),
+    url(r'^getQuestion/(?P<question_id>\w+)/$', getQuestion, name='getQuestion'),
+    url(r'^submitGrade/(?P<question_id>\w+)/$', submitGrade, name='submitGrade'),
+
     #Catch statements for React
     url(r'^$', Index, name='index'),
     url(r'^(?P<param>\w+)/$', Index, name='index'),

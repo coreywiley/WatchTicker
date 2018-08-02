@@ -15,8 +15,9 @@ import Paragraph from '../library/paragraph.js';
 import RadioButton from '../library/radiobutton.js';
 import TextArea from '../library/textarea.js';
 import Header from '../library/header.js';
+import ProjectCard from '../projectLibrary/projectCard.js';
 
-class Home extends Component {
+class Test extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,19 +31,16 @@ class Home extends Component {
 
     render() {
         var props = {"css":{"text-align":"center"}, "ComponentList":"[Image,Button]", "ComponentProps":[{'src':'./static/images/MathematicsAnex.PNG'}, {'type':'success','text':'Log In'}], "fluid":false};
-        var name = <div><img src='./static/images/AnexLogo.PNG' height="30" width="30" /><strong> ANEX</strong></div>;
-        var data ={'ComponentList':[Header, Paragraph,Header,RadioButton,Header,TextArea],'ComponentProps':[{'size':4,'text':'Response'},{'text':'22!'},{'size':4,'text':'Analysis'},{'value':'0','name':'grade'},{'size':4,'text':'Comments'},{'name':'comments','value':''}]};
+        var name = <div><img src='../../static/images/AnexLogo.PNG' height="30" width="30" /><strong>ANEX</strong></div>;
+        var data ={'ComponentList':[Header, Paragraph,Header,RadioButton,Header,TextArea],'ComponentProps':[{'size':4,'text':'Response'},{'text':'22!'},{'size':4,'text':'Grade'},{'value':'0','name':'grade'},{'size':4,'text':'Comments'},{'name':'comments','value':''}]};
+        var title = <Header size={2} text={'Questions:'} />
         var content =
         <div>
-            <Image src={'./static/images/MathematicsAnex.PNG'} />
-
-            <div className="col-md-4"></div>
-            <div className="col-md-4"><Form row={false} defaults={['']} submitUrl={'/api/mathLogin'} components={[TextInput]} componentProps={[{'value':'','placeholder':'Username', 'name':'username'}]} /></div>
-            <div className="col-md-4"></div>
-
+            <NavBar nameLink={'/projects/'} name={name} links={[['#','Analyst: ' + this.props.user_name],['/projects/','Projects']]} logOut={this.props.logOut} />
+            <div className="container">
+                <List component={ProjectCard} title={title} setGlobalState={this.setGlobalState} objectName={'question'} dataUrl={'/getQuestions/' + this.props.project_id + '/'} dataMapping={{'id':'{id}','responses': '{totalResponse}', 'grades':'{totalGrades}', 'description':'{question_text}','name':'{name}', 'link':'/question/{id}/', 'button_type':'primary', 'button':'Start Analyzing'}} />
+            </div>
         </div>;
-
-
 
         return (
             <Wrapper loaded={this.state.loaded}  content={content} />
@@ -50,4 +48,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default Test;

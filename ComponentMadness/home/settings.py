@@ -44,7 +44,7 @@ TEMPLATES = [
     },
 ]
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'api.mathanex.jthiesen1.webfactional.com']
 
 
 # Application definition

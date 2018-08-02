@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ajaxWrapper from "./base/ajax.js";
 import Compiler from "./compiler.js";
+import Wrapper from "./base/wrapper.js";
 
 
 class ClientApp extends Component {
@@ -83,9 +84,7 @@ class ClientApp extends Component {
         }
 
         return (
-            <div>
-                {(this.state.loaded) ? content : loading}
-            </div>
+            <Wrapper content={content} loaded={this.state.loaded} />
         );
     }
 }

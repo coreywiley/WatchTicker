@@ -21,7 +21,10 @@ function ajaxWrapper(type, url, data, returnFunc){
             returnFunc(value);
         },
         error: function(xhr, status, error) {
+            console.log("Ajax Failure")
             console.log(xhr.responseText);
+            console.log(status)
+            console.log(error)
         }
     });
 }

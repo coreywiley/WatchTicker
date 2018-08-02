@@ -6,8 +6,9 @@ import django
 
 from home.models import Page, Component, PageComponent, Model, Field
 from user.views import my_login_required
+import home.helpers.googleSheets as gsheets
 
-
+import datetime
 import time
 import requests
 import csv
@@ -24,7 +25,9 @@ def Index(request, param = "", param2 = "", param3 = "", param4 = ""):
         html = html.decode().replace('src="/static/js/bundle.js"', 'src="http://localhost:3000/static/js/bundle.js"')
         return HttpResponse(html)
 
-    return render(request, "index.html", {})
+    html = requests.get("http://mathapp.jthiesen1.webfactional.com").content
+    html = html.decode().replace('src="/static/js/bundle.js"', 'src="http://mathapp.jthiesen1.webfactional.com/static/js/bundle.js"')
+    return HttpResponse(html)
 
 def Context(request):
     # Gather context and send it to React
@@ -155,6 +158,133 @@ def PageDisplay(request, url):
             modelDict[field.model_id]['fields'].append(fieldItems)
 
     return render(request, 'pageBuilder.html',{'buildComponents': buildComponents, 'parameters':parameters, 'modelDict':modelDict})
+
+
+def logIn(request):
+    email = request.POST['email']
+    users = gsheets.get('Users')
+    for user in users:
+        if user[1] == email:
+            return JsonResponse({'user_id':user[0], 'user_name': user[2] + ' ' + user[3], 'user_shorthand':user[4]})
+    return JsonResponse({'error':'User Not Found'})
+
+def getProjects(request):
+    projects = gsheets.get('Projects')
+    questions = gsheets.get('Questions')
+    responses = gsheets.get('Responses')
+    grades = gsheets.get('Grades')
+
+    questionDict = {}
+    for response in responses:
+        if response[1] not in questionDict:
+            questionDict[response[1]] = {'responses':0,'grades':0}
+        questionDict[response[1]]['responses'] += 1
+
+    for grade in grades:
+        questionDict[grade[2]]['grades'] += 1
+
+    projectDict = {}
+    for question in questions:
+        if question[1] not in projectDict:
+            projectDict[question[1]] = []
+        projectDict[question[1]].append(questionDict[question[2]])
+
+    projectList = []
+    print (projectDict)
+    for project in projects:
+        totalResponses = 0
+        totalGrades = 0
+        for question in projectDict[str(project[0])]:
+            totalResponses += question['responses']
+            totalGrades += question['grades']
+
+        projectList.append({'project':{'id':project[0],'name':project[2],'totalResponse':totalResponses, 'totalGrades':totalGrades}})
+    return JsonResponse(projectList, safe=False)
+
+def getQuestions(request, project_id):
+    questions = gsheets.get('Questions')
+    responses = gsheets.get('Responses')
+    grades = gsheets.get('Grades')
+
+    questionDict = {}
+    for response in responses:
+        if response[1] not in questionDict:
+            questionDict[response[1]] = {'responses': 0, 'grades': 0}
+        questionDict[response[1]]['responses'] += 1
+
+    for grade in grades:
+        questionDict[grade[2]]['grades'] += 1
+
+    questionList = []
+    print (questionDict)
+    for question in questions:
+        if question[1] == project_id:
+            questionList.append({'question':{'id':question[0], 'project_id':question[1], 'name':question[2], 'question_text':question[3], 'options':question[4].split(','), 'totalResponse':questionDict[question[2]]['responses'], 'totalGrades':questionDict[question[2]]['grades']}})
+
+    return JsonResponse(questionList, safe=False)
+
+def getQuestion(request,question_id):
+    questions = gsheets.get('Questions')
+    responses = gsheets.get('Responses')
+    grades = gsheets.get('Grades')
+
+    question = questions[int(question_id)-1]
+
+    questionDict = {'id': question[0], 'project_id': question[1], 'name': question[2],
+                                      'question_text': question[3], 'options': question[4].split(',')}
+
+    ungradedResponses = []
+    gradedResponses = []
+
+    studentsGraded = []
+    for grade in grades:
+        if grade[2] == question[2]:
+            gradeDict = {'id':grade[0],'date':grade[1],'question_name':grade[2],'user_short_name':grade[3],'student_id':grade[4],'student_response':grade[5],'user_score':grade[6]}
+            if len(grade) == 8:
+                gradeDict['user_comment'] = grade[7]
+            else:
+                gradeDict['user_comment'] = ''
+            gradedResponses.append({'response':None,'grade':gradeDict,'student_id':grade[4]})
+            studentsGraded.append(grade[4])
+
+    for response in responses:
+        responseDict = {'id':response[0], 'question_name':response[1],'student_id':response[2],'student_response':response[3]}
+        if response[1] == question[2]:
+            if response[2] in studentsGraded:
+                for gradedResponse in gradedResponses:
+                    if gradedResponse['student_id'] == response[2]:
+                        gradedResponse['response'] = responseDict
+            else:
+                ungradedResponses.append({'response':responseDict,'grade':None})
+
+    allResponses = gradedResponses + ungradedResponses
+    return JsonResponse({'question':questionDict,'responses':allResponses, 'currentIndex': len(gradedResponses)})
+
+def submitGrade(request, question_id):
+    student_id = request.POST['student_id']
+    student_response = request.POST['student_response']
+    user_id = request.POST['user_id']
+    user_comment = request.POST['user_comment']
+    user_score = request.POST['user_score']
+    question_name = request.POST['question_name']
+    now = datetime.datetime.now().strftime('%m/%d/%Y %H:%M:%S')
+
+    #check to see if response already graded
+    grades = gsheets.get('Grades')
+    grade_id = None
+    for grade in grades:
+        if grade[2] == question_name and grade[4] == student_id and grade[3] == user_id:
+            grade_id = grade[0]
+            break
+
+    if grade_id:
+        gsheets.put('Grades',[now,question_name,user_id,student_id,student_response,user_score,user_comment], grade_id)
+    else:
+        gsheets.post('Grades', [now, question_name, user_id, student_id, student_response, user_score, user_comment])
+
+    return JsonResponse({'success':True})
+
+
 
 
 
