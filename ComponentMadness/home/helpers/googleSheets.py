@@ -9,7 +9,7 @@ SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 print (os.getcwd())
 
 creds = ServiceAccountCredentials.from_json_keyfile_name(
-    'D:\Rogue\MathAnex\ComponentMadness/home/helpers/client_secret.json', scopes=['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive'])
+    os.getcwd() + '/home/helpers/client_secret.json', scopes=['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive'])
 
 #creds = ServiceAccountCredentials.from_json_keyfile_name(
 #    '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/helpers/client_secret.json', scopes=['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive'])
