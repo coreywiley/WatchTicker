@@ -163,9 +163,6 @@ LOGGING = {
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-        'cannabis_menu.menu.permissions.IsntGetOrIsAuthenticated',
-        'cannabis_menu.menu.permissions.IsGetOrIsAuthenticated',
-        'cannabis_menu.menu.permissions.IsPostOrIsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
