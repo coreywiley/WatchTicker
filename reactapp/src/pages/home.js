@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Wrapper from '../base/wrapper.js';
+import Wrapper from 'base/wrapper.js';
 
 import Container from '../library/container.js';
 import Button from '../library/button.js';

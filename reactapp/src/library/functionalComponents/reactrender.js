@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import resolveVariables from '../base/resolver.js';
+import resolveVariables from 'base/resolver.js';
 import Playground from "component-playground";
 
 class ReactRender extends Component {

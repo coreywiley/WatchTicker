@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import resolveVariables from '../base/resolver.js';
-import ajaxWrapper from "../base/ajax.js";
+import resolveVariables from 'base/resolver.js';
+import ajaxWrapper from "base/ajax.js";
 
 class Select extends Component {
     constructor(props) {

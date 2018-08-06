@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import ajaxWrapper from "../base/ajax.js";
-import Wrapper from '../base/wrapper.js';
-import Card from '../library/card.js';
-import List from '../library/list.js';
+import ajaxWrapper from "base/ajax.js";
+import Wrapper from 'base/wrapper.js';
+import Card from 'library/displayComponents/card.js';
+import List from 'library/functionalComponents/list.js';
 
 
 

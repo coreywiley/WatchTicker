@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 
-import ajaxWrapper from "../base/ajax.js";
-import Wrapper from '../base/wrapper.js';
-import Modal from '../library/modal.js';
+import ajaxWrapper from "base/ajax.js";
+import Wrapper from 'base/wrapper.js';
+import Modal from 'library/functionalComponents/modal.js';
 
 import Playground from "component-playground";
 import ReactDOM from "react-dom";
-import Card from "../library/card.js";
-import Button from "../library/button.js";
-import TextInput from "../library/textinput.js";
-import TextArea from "../library/textarea.js";
-import Form from "../library/form.js";
-import List from "../library/list.js";
+import Card from "library/displayComponents/card.js";
+import Button from "library/displayComponents/button.js";
+import TextInput from "library/formComponents/textinput.js";
+import TextArea from "library/formComponents/textarea.js";
+import Form from "library/formComponents/form.js";
+import List from "library/functionalComponents/list.js";
 
 class PageManager extends Component {
     constructor(props) {

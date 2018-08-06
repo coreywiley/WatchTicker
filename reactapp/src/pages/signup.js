@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import ajaxWrapper from "../base/ajax.js";
-import Wrapper from '../base/wrapper.js';
+import ajaxWrapper from "base/ajax.js";
+import Wrapper from 'base/wrapper.js';
 import getComponent from '../componentResolver.js';
 
-import Form from '../library/form.js';
-import TextInput from '../library/textinput.js';
-import FileInput from '../library/fileinput.js';
-import HiddenInput from '../library/hiddeninput.js';
-import PasswordInput from '../library/passwordinput.js';
+import Form from 'library/form.js';
+import TextInput from 'library/textinput.js';
+import FileInput from 'library/fileinput.js';
+import HiddenInput from 'library/hiddeninput.js';
+import PasswordInput from 'library/passwordinput.js';
 
 class SignUp extends Component {
     constructor(props) {
