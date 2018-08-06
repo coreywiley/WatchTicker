@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import ajaxWrapper from "../base/ajax.js";
-import Wrapper from '../base/wrapper.js';
+import ajaxWrapper from "base/ajax.js";
+import Wrapper from 'base/wrapper.js';
 import getComponent from '../componentResolver.js';
 
-import StripeMain from '../library/stripemain.js';
+import StripeMain from 'library/stripemain.js';
 
 
 class StripePayment extends Component {

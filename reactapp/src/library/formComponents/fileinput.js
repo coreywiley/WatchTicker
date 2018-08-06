@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import resolveVariables from '../base/resolver.js';
-import Image from './image.js';
-import ajaxWrapperFile from '../base/ajaxFile.js';
-import ajaxWrapper from "../base/ajax.js";
+import resolveVariables from 'base/resolver.js';
+import Image from '../displayComponents/image.js';
+import ajaxWrapperFile from 'base/ajaxFile.js';
+import ajaxWrapper from "base/ajax.js";
 
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
-import Card from './card.js';
+import Card from '../displayComponents/card.js';
 
 
 const SortableItem = SortableElement(({value, removeImage}) =>
@@ -192,4 +192,3 @@ class FileInput extends Component {
 }
 
 export default FileInput;
-

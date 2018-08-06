@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import ajaxWrapper from "../base/ajax.js";
-import Wrapper from '../base/wrapper.js';
+import ajaxWrapper from "base/ajax.js";
+import Wrapper from 'base/wrapper.js';
 import getComponent from '../componentResolver.js';
-import Form from '../library/form.js';
-import NumberInput from '../library/numberinput.js';
-import BooleanInput from '../library/booleaninput.js';
+import {Form, NumberInput, BooleanInput} from 'library';
 
 let ComponentDict = {
     'AutoField': "TextInput",

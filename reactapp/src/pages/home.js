@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Wrapper from '../base/wrapper.js';
+import Wrapper from 'base/wrapper.js';
 
 class Home extends Component {
     constructor(props) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import resolveVariables from '../base/resolver.js';
-import ajaxWrapper from '../base/ajax.js';
-import Wrapper from '../base/wrapper.js';
+import resolveVariables from 'base/resolver.js';
+import ajaxWrapper from 'base/ajax.js';
+import Wrapper from 'base/wrapper.js';
 
 class List extends Component {
     constructor(props) {

@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 
-import ajaxWrapper from "../base/ajax.js";
-import Wrapper from '../base/wrapper.js';
+import ajaxWrapper from "base/ajax.js";
+import Wrapper from 'base/wrapper.js';
 import $ from 'jquery';
 
 import ReactDOM from "react-dom";
-import List from "../library/list.js";
-import Form from "../library/form.js";
-import Select from "../library/select.js";
-import TextInput from "../library/textinput.js";
-import TextArea from "../library/textarea.js";
-import ReactRender from "../library/reactrender.js";
+import {List, Form, Select, TextInput, TextArea, ReactRender} from "library";
+
 const componentExample =
             'class Header extends React.Component {\n\
                 render() { \n\
@@ -58,7 +54,7 @@ class ComponentManager extends Component {
         let FormComponents = [TextInput];
         let FormComponentProps = [{'layout':'col-md-10', 'label':'Import Statement','name':'importStatement'}]
         dataMapping = {'objectName':'componentrequirement', 'setGlobalState':this.setGlobalState, 'importStatement': '{importStatement}', 'components':FormComponents, 'componentProps':FormComponentProps, 'submitUrl':"/api/home/componentrequirement/{id}/", 'deleteUrl':"/api/home/componentrequirement/{id}/delete/", 'defaults':{"importStatement":'{importStatement}', 'component': this.props.id}}
-        lastInstanceData = {'setGlobalState':this.setGlobalState, 'components':FormComponents, 'componentProps':FormComponentProps, 'submitUrl':"/api/home/componentrequirement/", 'defaults':{"importStatement":"import Something from '../library/something.js';", 'component': this.props.id}}
+        lastInstanceData = {'setGlobalState':this.setGlobalState, 'components':FormComponents, 'componentProps':FormComponentProps, 'submitUrl':"/api/home/componentrequirement/", 'defaults':{"importStatement":"import Something from 'library/something.js';", 'component': this.props.id}}
         var reqList = <List title={<label>Requirement List</label>} dataUrl={"/api/home/componentrequirement/?order_by=id&component=" + this.props.id} component={Form} objectName={'componentrequirement'} dataMapping={dataMapping} lastInstanceData={lastInstanceData} />;
 
         let Components = [TextInput, TextArea, TextArea, TextArea];

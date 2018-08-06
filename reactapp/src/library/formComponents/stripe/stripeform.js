@@ -1,7 +1,7 @@
 // CheckoutForm.js
 import React from 'react';
 import {injectStripe} from 'react-stripe-elements';
-import ajaxWrapper from '../base/ajax.js';
+import ajaxWrapper from 'base/ajax.js';
 
 import StripeCard from './stripecard.js';
 
