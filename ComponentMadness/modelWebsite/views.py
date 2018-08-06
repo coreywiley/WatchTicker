@@ -152,3 +152,110 @@ def deleteModelInstance(request,appLabel,modelName,id):
     return JsonResponse({'success':True})
 
 
+
+
+def writeComponents(request):
+    filepath = os.path.join(os.getcwd(), "..", "reactapp", "src", "library")
+    print (filepath)
+
+    #components = Component.objects.exclude(name__in = ['Test', "Dynamic Importer Example"]).all()
+    components = getFilesFromFolder(filepath)
+
+    filepath = os.path.join(filepath, "index.js")
+    importNames = "";
+    with open(filepath, "w") as file:
+        for f in components:
+            folder = components[f]
+            for key in folder:
+                path = folder[key]
+                if type(path) == dict:
+                    for key2 in path:
+                        file.write("import %s_ from '%s';\n" % (key2, path[key2]))
+                else:
+                    file.write("import %s_ from '%s';\n" % (key, path))
+
+        for f in components:
+            folder = components[f]
+            for key in folder:
+                if type(folder[key]) == dict:
+                    for key2 in folder[key]:
+                        file.write("export const %s = %s_;\n" % (key2, key2))
+                        importNames += "%s, " % (key2)
+                else:
+                    file.write("export const %s = %s_;\n" % (key, key))
+                    importNames += "%s, " % (key)
+    importNames = importNames[:-2]
+
+    """
+    for component in components:
+        filepath = os.path.join(path, "%s.js" % (component.name.lower()))
+        with open(filepath, "w") as file:
+            file.write("import React, { Component } from 'react';\n")
+            file.write("import resolveVariables from '../base/resolver.js';\n")
+
+            for requirement in component.componentRequirements.all():
+                file.write(requirement.importStatement + '\n')
+
+            file.write("\n")
+            file.write(component.html)
+            file.write("\n\nexport default %s;\n" % (component.name))
+    """
+
+    filepath = os.path.join(os.getcwd(), "..", "reactapp", "src")
+    templatepath = os.path.join(filepath, "componentResolverTemplate.js")
+    template = open(templatepath, "r").read()
+    nameResolvers = ""
+    idResolvers = ""
+    for f in components:
+        folder = components[f]
+        for key in folder:
+            path = folder[key]
+            if type(path) == dict:
+                for key2 in path:
+                    nameResolvers += '    if (name == "%s"){return %s;}\n' % (key2, key2)
+                    idResolvers += '    if (id == "%s"){return %s;}\n' % (key2, key2)
+            else:
+                nameResolvers += '    if (name == "%s"){return %s;}\n' % (key, key)
+                idResolvers += '    if (id == "%s"){return %s;}\n' % (key, key)
+
+    template = template.replace("{{IMPORTS}}", "{%s}" % (importNames))
+    template = template.replace("{{NAMERESOLVERS}}", nameResolvers)
+    template = template.replace("{{IDRESOLVERS}}", idResolvers)
+
+    filepath = os.path.join(filepath, "componentResolver.js")
+    with open(filepath, "w") as file:
+        file.write(template)
+
+    return HttpResponse("")
+
+
+import pprint
+
+def getFilesFromFolder(folder):
+    #Read a folder file system into python as a dictionary
+    entries = {}
+
+    for file in os.listdir(folder):
+        #Avoid Word temp files
+        if file.startswith("~"):
+            continue
+
+        if file == 'index.js':
+            continue
+
+        path = folder + "\\" + file
+        if os.path.isfile(path):
+            #Add file to dictionary with full path as the value
+            key = file.replace('.js', '').capitalize()
+            value = './%s' % (path.split('reactapp\\src\\library\\')[-1].replace('\\', '/'))
+
+            entries[key] = value
+
+        elif os.path.isdir(path):
+            #Add a folder and recursivly search its children
+            entries[file] = getFilesFromFolder(path)
+
+    pp = pprint.PrettyPrinter()
+    pp.pprint(entries)
+
+    return entries
