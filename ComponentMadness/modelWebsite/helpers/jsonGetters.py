@@ -29,6 +29,9 @@ def dumpInstance(modelName, fields, instance, related = []):
     jsonInstance[modelName]['unicode'] = str(instance)
 
     for field in fields:
+        if field[0] == 'password':
+            continue
+
         newRelated = []
         for relation in related:
             search = field[0] + "__"
