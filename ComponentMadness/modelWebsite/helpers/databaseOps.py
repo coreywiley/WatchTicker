@@ -12,6 +12,8 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
     for field in modelFields:
         if field.get_internal_type() == 'ManyToManyField' and field.name + '[]' in requestFields:
             pass
+        elif field.get_internal_type() == 'ManyToManyField' and field.name + '[]__remove' in requestFields:
+            pass
         elif field.name not in requestFields:
             continue
         if field.name == "id":
@@ -44,16 +46,30 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
                 setattr(instance, field.name, None)
 
         elif field.get_internal_type() == 'ManyToManyField':
-            items = json.loads(requestFields[field.name + '[]'])
-            foreignModel = apps.get_model(app_label=appLabel, model_name=field.name)
+            add = True
+            if field.name + '[]' in requestFields:
+                items = json.loads(requestFields[field.name + '[]'])
+            elif field.name + '[]__remove' in requestFields:
+                items = json.loads(requestFields[field.name + '[]__remove'])
+                add = False
+
+            foreignModel = apps.get_model(app_label=field.related_model._meta.app_label, model_name=field.related_model._meta.object_name)
+
+            if field.name + '__clear' in requestFields:
+                print ('clear!')
+                getattr(instance, field.name).clear()
+
             for item in items:
                 foreignInstance = foreignModel.objects.filter(id=int(item)).first()
                 print ("Check", item, foreignInstance)
-                getattr(instance, field.name).add(foreignInstance)
+                if add:
+                    getattr(instance, field.name).add(foreignInstance)
+                else:
+                    getattr(instance, field.name).remove(foreignInstance)
 
+    print ('Saving Instance')
     instance.save()
     instance = model.objects.filter(id=instance.id).first()
-    print ("Instance ID", instance.id)
 
     for field in modelFields:
         if field.name not in requestFields:
