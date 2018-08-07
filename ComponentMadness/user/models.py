@@ -33,6 +33,7 @@ class UserManager(BaseUserManager):
         return u
 
 class User(AbstractBaseUser):
+    id = models.AutoField(primary_key=True)
     email = models.EmailField(_('email address'), max_length=254, unique=True, db_index=True)
     type = models.CharField(max_length=7, choices = (('User','User'),('Parent','Parent')), default='User')
     imageUrl = models.CharField(max_length=120, blank=True, default="")
@@ -42,7 +43,7 @@ class User(AbstractBaseUser):
     is_staff = models.BooleanField(
         _('staff status'), default=False, help_text=_('Designates whether the user can log into this admin site.'))
     is_active = models.BooleanField(
-        _('active'), default=False,
+        _('active'), default=True,
         help_text=_('Designates whether this user should be treated as active. Unselect this instead of deleting '
                     'accounts.'))
     
