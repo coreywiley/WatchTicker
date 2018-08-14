@@ -1,23 +1,42 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
 
+//Example
+//var questionName = 'Question: ' + this.state.question.name;
+//var questionText = {'text': this.state.question.text}
+//var responseName = 'Response ' + this.state.answer.id;
+//var responseText = {'text':this.state.answer.response}
+//<Accordion names={[questionName, responseName]} open={[true,true]} ComponentList={[Paragraph, Paragraph]} ComponentProps={[questionText, responseText]} multiple={true} />
+
+
 class Accordion extends React.Component {
 
     render() {
+
+
         var accordionSections = []
         for (var index in this.props.names) {
             var Component = this.props.ComponentList[index];
             var ComponentProps = this.props.ComponentProps[index];
+            var dataParent = '#accordion';
+            if (this.props.multiple == true) {
+              dataParent = '#accordion-' + index;
+            }
+            var collapsed = 'collapsed';
+            if (this.props.open[index] == true) {
+              var collapsed = '';
+            }
+
 
             var card = <div><div className="card-header" id={"heading" + index}>
                 <h5 className="mb-0">
-                    <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target={"#collapse" + index} aria-expanded="true" aria-controls={"collapse" + index}>
+                    <button className={'btn btn-link ' + collapsed} type="button" data-toggle="collapse" data-target={"#collapse" + index} aria-expanded="true" aria-controls={"collapse" + index}>
                           {this.props.names[index]}
                     </button>
                   </h5>
                 </div>
                 <div className="card">
-                <div id={"collapse" + index} className="collapse" aria-labelledby={"heading" + index} data-parent="#accordion">
+                <div id={"collapse" + index} className={collapsed} aria-labelledby={"heading" + index} data-parent={dataParent}>
                   <div className="card-body">
                         <Component {...ComponentProps} />
                   </div>

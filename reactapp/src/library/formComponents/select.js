@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
 import ajaxWrapper from "base/ajax.js";
+import {Button} from 'library';
 
 class Select extends Component {
     constructor(props) {
@@ -13,6 +14,8 @@ class Select extends Component {
         }
 
         this.optionsCallback = this.optionsCallback.bind(this);
+        this.handlechange = this.handlechange.bind(this);
+        this.removeSelection = this.removeSelection.bind(this);
     }
 
     componentDidMount() {
@@ -43,16 +46,53 @@ class Select extends Component {
         this.setState({options:options})
     }
 
+    handlechange = (e) => {
+
+      var selection = e.target.value;
+      var newState = {}
+      if (this.props.multiple == true) {
+        var value = this.props.value;
+        var index = value.indexOf(selection);
+        if (index == -1) {
+          value.push(selection)
+        }
+        newState[this.props.name] = value;
+      }
+      else {
+        newState[this.props.name] = selection;
+      }
+      console.log("New State",newState);
+       this.props.setFormState(newState);
+    }
+
+    removeSelection(selection) {
+      var value = this.props.value;
+      var index = value.indexOf(selection);
+      console.log("Value", typeof value, value)
+      value.splice(index,1);
+      console.log("Value",value)
+      var newState = {}
+      newState[this.props.name] = value;
+      this.props.setFormState(newState);
+    }
+
     render() {
         var layout = '';
         if (this.props.layout) {
             layout = this.props.layout;
         }
 
-        var value = this.props.value;
-        if (value == '') {
-            console.log('HERE!!!')
-            value = this.props.defaultoption;
+        if (this.props.multiple == true) {
+            var value = this.props.value;
+            if (value.length == 0) {
+              value = this.props.defaultoption;
+            }
+        }
+        else {
+          var value = this.props.value;
+          if (value == '') {
+              value = this.props.defaultoption;
+          }
         }
 
         if (this.props.defaultoption in this.state.options) {
@@ -66,10 +106,23 @@ class Select extends Component {
             options.push(<option key={index} value={this.state.options[index]['value']}>{this.state.options[index]['text']}</option>)
         }
 
+        var multipleSelections = []
+
+        if (this.props.multiple == true) {
+          var optionsDict = {}
+          for (var index in this.state.options) {
+            optionsDict[this.state.options[index]['value']] = this.state.options[index]['text']
+          }
+          for (var index in value) {
+            multipleSelections.push(<Button key={this.props.name + '-' + index} clickHandler={() => this.removeSelection(value[index])} type={'danger'} text={optionsDict[value[index]]} />)
+          }
+        }
+
         return (
             <div className={"form-group " + this.props.layout}>
                 <label>{this.props.label}</label><br />
-                <select className="form-control" name={this.props.name} onChange={this.props.handlechange} value={value}>
+                {multipleSelections}
+                <select className="form-control" name={this.props.name} onChange={this.handlechange} value={value}>
                     {options}
                 </select>
             </div>

@@ -6,12 +6,8 @@ import Modal from 'library/functionalComponents/modal.js';
 
 import Playground from "component-playground";
 import ReactDOM from "react-dom";
-import Card from "library/displayComponents/card.js";
-import Button from "library/displayComponents/button.js";
-import TextInput from "library/formComponents/textinput.js";
-import TextArea from "library/formComponents/textarea.js";
-import Form from "library/formComponents/form.js";
-import List from "library/functionalComponents/list.js";
+
+import {Card, Button, TextInput, TextArea, Form, List} from 'library';
 
 class PageManager extends Component {
     constructor(props) {
