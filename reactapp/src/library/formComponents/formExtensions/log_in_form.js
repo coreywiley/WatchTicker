@@ -31,13 +31,13 @@ class LogInForm extends Component {
     }
 
     formSubmitCallback (value) {
-
+        console.log("Value",value)
         if ('error' in value) {
             this.setState({error:value['error']})
         }
         else {
-            localStorage.setItem('user_id', value['user_id']);
-            localStorage.setItem('user_name', value['user_name']);
+          console.log("User",value);
+            localStorage.setItem('token', value['user']['id']);
             if (localStorage.getItem('redirect')) {
                 var redirect = localStorage.getItem('redirect');
                 localStorage.removeItem('redirect')

@@ -8,22 +8,16 @@ from home.views import *
 admin.autodiscover()
 
 urlpatterns = [
-    #Get context
-    url(r'^csrfmiddlewaretoken/$', Context, name='context'),
-
-    #Run React build?
-
     #Get avaliable pages
-    #Manage single page
-    url(r'^pageEditor/$', PageEditor, name='pageEditor'),
 
     #Get avaliable models
-    #Manage single model
+    #modelWesbite app to create rest api
     url(r'^api/', include('modelWebsite.urls', namespace="api")),
 
+    #user imports
     url(r'^users/', include('user.urls', namespace="user")),
-    #url(r'^(?P<url>[a-zA-Z0-9]+)/$', PageDisplay, name='pageDisplay'),
-
+    url(r'^nextInQueue/(?P<question_id>\w+)/(?P<user_id>\w+)/$', NextInQueue, name='queue'),
+    url(r'^nextInTrialQueue/(?P<question_id>\w+)/(?P<user_id>\w+)/$', NextInTrialQueue, name='queue'),
     #Catch statements for React
     url(r'^$', Index, name='index'),
     url(r'^(?P<param>\w+)/$', Index, name='index'),

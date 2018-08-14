@@ -11,12 +11,12 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
 
     for field in modelFields:
         if field.get_internal_type() == 'ManyToManyField' and field.name + '[]' in requestFields:
-            pass
-        elif field.get_internal_type() == 'ManyToManyField' and field.name + '[]__remove' in requestFields:
+            continue
+        elif field.get_internal_type() == 'ManyToManyField' and (field.name + '[]__remove' in requestFields or field.name + '__clear' in requestFields):
             pass
         elif field.name not in requestFields:
             continue
-        if field.name == "id":
+        if field.name in ["id","password"]:
             continue
 
         if field.get_internal_type() == 'TextField' and field.name == "data":
@@ -37,6 +37,8 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
                 setattr(instance, field.name, True)
 
         elif field.get_internal_type() not in ['ForeignKey', 'ManyToManyField']:
+            if field.get_internal_type() == 'DateTimeField' and requestFields[field.name] == '':
+                continue
             setattr(instance, field.name, requestFields[field.name])
 
         elif field.get_internal_type() == 'ForeignKey':
@@ -61,29 +63,26 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
 
             for item in items:
                 foreignInstance = foreignModel.objects.filter(id=int(item)).first()
-                print ("Check", item, foreignInstance)
                 if add:
                     getattr(instance, field.name).add(foreignInstance)
                 else:
                     getattr(instance, field.name).remove(foreignInstance)
 
-    print ('Saving Instance')
+    if 'password' in requestFields and requestFields['password'] != '':
+        instance.set_password(requestFields['password'])
+
     instance.save()
     instance = model.objects.filter(id=instance.id).first()
 
+
     for field in modelFields:
-        if field.name not in requestFields:
-            continue
 
-        if field.name == 'password':
-            if requestFields['password'] != '':
-                instance.set_password(requestFields['password'])
-
-        elif field.get_internal_type() == 'ManyToManyField' and field.name + "[]" in requestFields:
-            for foreignObject in getattr(instance, field.name).all():
-                getattr(instance, field.name).remove(foreignObject.id)
-            print(field.name)
-            foreignKeyIds = [int(id) for id in requestFields.getlist(field.name + "[]")]
+        if field.get_internal_type() == 'ManyToManyField' and field.name + "[]" in requestFields:
+            print ('Woohoo!')
+            getattr(instance, field.name).clear()
+            print(field.name, requestFields[field.name+'[]'])
+            items = json.loads(requestFields[field.name + '[]'])
+            foreignKeyIds = [int(id) for id in items]
             print (foreignKeyIds)
             getattr(instance, field.name).add(
                 *list(field.related_model.objects.filter(id__in=foreignKeyIds)))

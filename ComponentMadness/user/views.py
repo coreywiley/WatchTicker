@@ -2,12 +2,15 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponseForbidden, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django import forms
+from django.forms.models import model_to_dict
 
 from django.conf import settings
 from user.models import UserManager, User
 import json
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, permission_classes
 
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 def my_login_required(function):
     def wrapper(request, *args, **kw):
@@ -25,8 +28,14 @@ def staff_required(function):
             return function(request, *args, **kw)
     return wrapper
 
-@csrf_exempt
-def SignUp(request):
+def GetUser(request):
+    email = request.POST['email']
+    password = request.POST['password']
+
+
+    user = authenticate(username=email, password=password)
+    if not user:
+        return JsonResponse({'error':'No user found.'})
 
     if request.method == "POST":
         email = request.POST['email']
@@ -34,7 +43,7 @@ def SignUp(request):
         passwordCheck = request.POST['passwordCheck']
         imageUrl = request.POST['imageUrl']
         redirect = request.POST['redirectLocation']
-
+        print ('hi')
         userCheck = User.objects.filter(email=email).first()
         if userCheck:
             return HttpResponseRedirect(request.META.HTTP_REFERER + '?error=Email already taken.')
@@ -84,11 +93,4 @@ def UserLogin(request):
             pass
             # Return a 'disabled account' error message
     else:
-        print ('No User')
-        return HttpResponseRedirect(request.META.HTTP_REFERER + '?error=Cannot Find User')
-
-
-def UserLogout(request):
-    logout(request)
-    return HttpResponseRedirect('/')
-
+        return JsonResponse({'user':model_to_dict(user)})

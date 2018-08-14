@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.apps import apps
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseForbidden, HttpResponseRedirect
+import django
+from django.conf import settings
 
 from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, getModelFields
 from user.views import staff_required
@@ -11,7 +13,13 @@ import os
 import csv
 import io
 import json
+import sendgrid
+from sendgrid.helpers.mail import *
 
+def CSRFMiddlewareToken(request):
+    # Gather context and send it to React
+    csrfmiddlewaretoken = django.middleware.csrf.get_token(request)
+    return JsonResponse({'csrfmiddlewaretoken':csrfmiddlewaretoken}, status=200)
 
 def getApps(request):
     djangoApps = []
@@ -65,6 +73,16 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
         preferences__has = parameters['preferences__has'].split(',')
         del parameters['preferences__has']
 
+    limit = 0
+    if 'limit' in parameters:
+        limit = int(parameters['limit'])
+        del parameters['limit']
+
+    count = False
+    if 'count' in parameters:
+        count = True
+        del parameters['count']
+
     print (values_list)
     print ("Parameters",parameters)
 
@@ -97,6 +115,8 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
                     query = model.objects.filter(**parameters).values_list(*values_list).prefetch_related(*related).order_by(*order_by)
                 else:
                     query = model.objects.filter(**parameters).values_list(*values_list,flat=True).prefetch_related(*related).order_by(*order_by)
+                if limit > 0:
+                    query = query[:limit]
                 for instance in query:
                     instancesData.append(instance)
                 instances = {}
@@ -110,7 +130,10 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
                 if len(amenities__has) > 0:
                     for item in amenities__has:
                         instanceQuery = instanceQuery.filter(amenities=item)
-
+                if limit > 0:
+                    instanceQuery = instanceQuery[:limit]
+                if count:
+                    return JsonResponse({'count':instanceQuery.count()})
                 instances = getInstancesJson(appLabel, modelName, instanceQuery = instanceQuery, related=related)
 
     # edit or instance
@@ -124,7 +147,6 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
         else:
             requestFields = request.POST
 
-        print ('Request Fields',requestFields)
         if 'multiple' in requestFields:
             instances = []
             items = json.loads(requestFields[requestFields['multiple']])
@@ -134,8 +156,46 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
                 for key in requestFields.keys():
                     newFields[key] = requestFields[key]
                 instances.append(insert(appLabel, modelName, modelFields,newFields, id = id, related=related))
+        elif 'csv_file' in request.FILES:
+            try:
+                print ("CSV FILE")
+                instances = []
+                csv_file = request.FILES["csv_file"]
+                if not csv_file.name.endswith('.csv'):
+                    print ("ERROR")
+                # if file is too large, return
+                if csv_file.multiple_chunks():
+                    print ("ERROR")
+
+                file_data = csv_file.read().decode("utf-8")
+                lines = file_data.split("\n")
+                # loop over the lines and save them in db. If error , store as string and then display
+                i = 0
+                titles = {}
+
+                for line in lines:
+                    if i == 0:
+                        i = 1
+                        fields = line.split(",")
+                        for x in range(len(fields)):
+                            titles[x] = fields[x].strip()
+                        continue
+
+                    fieldData = line.split(",")
+                    newFields = {}
+                    blankLine = True
+                    for x in range(len(fields)):
+                        newFields[titles[x]] = fieldData[x].strip()
+                        if newFields[titles[x]] != '':
+                            blankLine = False
+                    if not blankLine:
+                        print (newFields)
+                        instances.append(insert(appLabel, modelName, modelFields, newFields, id=id, related=related))
+            except Exception as e:
+                print ("ERROR")
+                instances = ['ERROR']
         else:
-            print ('Not There!')
+            print (1)
             instances = insert(appLabel, modelName, modelFields,requestFields, id = id, related=related)
 
 
@@ -259,3 +319,144 @@ def getFilesFromFolder(folder):
     pp.pprint(entries)
 
     return entries
+
+
+
+def PageEditor(request):
+    if request.method == "GET":
+        components = Component.objects.filter()
+        componentDataFields = ComponentDataField.objects.filter()
+
+        componentList = []
+        detailedComponents = {}
+        for component in components:
+            temp = {'id': component.id, 'name':component.name,'description':component.description, 'fields':[]}
+            tempData = {}
+            for dataField in componentDataFields:
+                print (dataField.component_id_id)
+                print (component.name)
+                if dataField.component_id_id == component.id:
+                    temp['fields'].append({'name':dataField.name})
+                    tempData[dataField.name] = {'html_id':dataField.html_id, 'attribute_to_change':dataField.attribute_to_change}
+            detailedComponents[component.name] = {'id':component.id,'html':component.html,'dataStructure':tempData}
+            componentList.append(temp)
+
+        fieldDict = {}
+        for field in Field.objects.all():
+            if field.model_id not in fieldDict:
+                fieldDict[field.model_id] = []
+            tempField = {'name':field.name,'id':field.id,'fieldType':field.fieldType,'default':field.default,'blank':field.blank,'model_id':field.model_id}
+            fieldDict[field.model_id].append(tempField)
+
+        modelDicts = []
+        for model in Model.objects.all():
+            modelDicts.append({'name':model.name, 'id':model.id, 'fields': fieldDict[model.id]})
+            print (fieldDict[model.id])
+
+        return render(request, 'pageEditor.html', {'componentList':componentList, 'detailedComponents':detailedComponents, 'modelDicts':modelDicts})
+
+
+    elif request.method == "POST":
+        #some sort of saving
+
+        requestData = json.loads(request.POST['componentData'])
+        name = request.POST['name']
+        url = request.POST['url']
+        components = requestData['components']
+
+        page = Page()
+        page.name = name
+        page.url = url
+        page.save()
+
+
+        i = 0
+        for component in components:
+            componentCheck = Component.objects.filter(id=int(component['id'])).first()
+            tempComponent = PageComponent()
+            tempComponent.page_id = page
+            tempComponent.component_id = componentCheck
+            tempComponent.order = i
+            i += 1
+
+            if 'data_url' in component and component['data_url'] != '':
+                tempComponent.data_url = component['data_url']
+
+            if 'data' in component and component['data'] != {}:
+                tempComponent.data = component['data']
+
+            tempComponent.save()
+        return JsonResponse({'success':True})
+
+
+def PageDisplay(request, url):
+    user = None
+    if request.user.is_authenticated:
+        user = request.user
+
+
+    query_split = [x.split('=') for x in request.META['QUERY_STRING'].split('&')]
+
+    parameters = {}
+
+    if query_split[0][0] != '':
+        for param in query_split:
+            parameters['{{'+param[0]+'}}'] = param[1]
+
+    if user and '{{userId}}' not in parameters:
+        parameters['{{userId}}'] = user.id
+
+    page = Page.objects.filter(url=url).first()
+
+    pageComponents = PageComponent.objects.filter(page_id=page.id).order_by('order')
+
+    componentDataFields = ComponentDataField.objects.filter()
+
+    buildComponents = []
+    for pageComponent in pageComponents:
+        print ("I'm Here!!")
+        component = Component.objects.filter(id=pageComponent.component_id_id).first()
+        temp = {'name': component.name, 'description': component.description, 'fields': []}
+        tempData = {}
+        for dataField in componentDataFields:
+            if dataField.component_id_id == component.id:
+                temp['fields'].append({'name': dataField.name})
+                tempData[dataField.name] = {'html_id':dataField.html_id,'attribute_to_change':dataField.attribute_to_change}
+
+        if pageComponent.data_url != '':
+            buildComponents.append({'html': component.html, 'dataStructure': tempData, 'data_url':pageComponent.data_url})
+        else:
+            if isinstance(pageComponent.data, str):
+                jsonStr = pageComponent.data.replace("'",'"')
+                jsonObj = json.loads(jsonStr)
+            else:
+                jsonObj = pageComponent.data
+            buildComponents.append({'html': component.html, 'dataStructure': tempData, 'data': jsonObj})
+
+
+        models = Model.objects.all()
+        fields = Field.objects.all()
+
+        modelDict = {}
+        for model in models:
+            modelDict[model.id] = {'id':model.id, 'name':model.name, 'fields':[]}
+
+        for field in fields:
+            fieldItems = {'id':field.id, 'name': field.name, 'fieldType':field.fieldType, 'default': field.default, 'blank':field.blank}
+            modelDict[field.model_id]['fields'].append(fieldItems)
+
+    return render(request, 'pageBuilder.html',{'buildComponents': buildComponents, 'parameters':parameters, 'modelDict':modelDict})
+
+def SendEmail(request):
+    # using SendGrid's Python Library
+    # https://github.com/sendgrid/sendgrid-python
+    print (request)
+    sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
+    from_email = Email(request.POST['from_email'])
+    to_email = Email(request.POST['to_email'])
+    subject = request.POST['subject']
+    content = Content("text/plain", request.POST['text'])
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+
+    return JsonResponse({'status_code':str(response.status_code), 'body':str(response.body), 'headers':str(response.headers)})

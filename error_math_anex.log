@@ -1,0 +1,331 @@
+[Mon Aug 13 23:38:02.694459 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064] mod_wsgi (pid=45973): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:38:02.694580 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064] mod_wsgi (pid=45973): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:38:02.696882 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064] Traceback (most recent call last):
+[Mon Aug 13 23:38:02.696982 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:38:02.696992 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]     application = get_wsgi_application()
+[Mon Aug 13 23:38:02.697003 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:38:02.697008 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]     django.setup(set_prefix=False)
+[Mon Aug 13 23:38:02.697016 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:38:02.697021 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:38:02.697029 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 89, in populate
+[Mon Aug 13 23:38:02.697033 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]     app_config = AppConfig.create(entry)
+[Mon Aug 13 23:38:02.697041 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/config.py", line 116, in create
+[Mon Aug 13 23:38:02.697045 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]     mod = import_module(mod_path)
+[Mon Aug 13 23:38:02.697053 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]   File "/usr/local/lib/python3.6/importlib/__init__.py", line 126, in import_module
+[Mon Aug 13 23:38:02.697057 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]     return _bootstrap._gcd_import(name[level:], package, level)
+[Mon Aug 13 23:38:02.697065 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]   File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+[Mon Aug 13 23:38:02.697072 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]   File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+[Mon Aug 13 23:38:02.697080 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064]   File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+[Mon Aug 13 23:38:02.697111 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:41064] ModuleNotFoundError: No module named 'rest_framework'
+[Mon Aug 13 23:38:08.686964 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:43366] mod_wsgi (pid=45973): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:38:08.687262 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:43366] mod_wsgi (pid=45973): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:38:08.687456 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:43366] Traceback (most recent call last):
+[Mon Aug 13 23:38:08.687513 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:43366]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:38:08.687537 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:43366]     application = get_wsgi_application()
+[Mon Aug 13 23:38:08.687551 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:43366]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:38:08.687557 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:43366]     django.setup(set_prefix=False)
+[Mon Aug 13 23:38:08.687566 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:43366]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:38:08.687571 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:43366]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:38:08.687579 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:43366]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:38:08.687584 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:43366]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:38:08.687611 2018] [wsgi:error] [pid 45973:tid 140395762808576] [remote 127.0.0.1:43366] RuntimeError: populate() isn't reentrant
+[Mon Aug 13 23:39:31.735315 2018] [mpm_worker:notice] [pid 41591:tid 140395949590400] AH00298: SIGHUP received.  Attempting to restart
+Exception ignored in: <object repr() failed>
+Traceback (most recent call last):
+  File "/home/jthiesen1/lib/python3.6/PIL/Image.py", line 587, in __del__
+NameError: name 'hasattr' is not defined
+[Mon Aug 13 23:39:31.841629 2018] [mpm_worker:notice] [pid 41591:tid 140395949590400] AH00292: Apache/2.4.33 (Unix) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Mon Aug 13 23:39:31.841660 2018] [core:notice] [pid 41591:tid 140395949590400] AH00094: Command line: '/home/jthiesen1/webapps/math_anex/apache2/bin/httpd.worker -f /home/jthiesen1/webapps/math_anex/apache2/conf/httpd.conf'
+[Mon Aug 13 23:39:46.364026 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790] mod_wsgi (pid=19366): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:39:46.364099 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790] mod_wsgi (pid=19366): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:39:46.365022 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790] Traceback (most recent call last):
+[Mon Aug 13 23:39:46.365080 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:39:46.365086 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]     application = get_wsgi_application()
+[Mon Aug 13 23:39:46.365094 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:39:46.365098 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]     django.setup(set_prefix=False)
+[Mon Aug 13 23:39:46.365104 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:39:46.365107 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:39:46.365113 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 89, in populate
+[Mon Aug 13 23:39:46.365126 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]     app_config = AppConfig.create(entry)
+[Mon Aug 13 23:39:46.365133 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/config.py", line 116, in create
+[Mon Aug 13 23:39:46.365136 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]     mod = import_module(mod_path)
+[Mon Aug 13 23:39:46.365142 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]   File "/usr/local/lib/python3.6/importlib/__init__.py", line 126, in import_module
+[Mon Aug 13 23:39:46.365145 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]     return _bootstrap._gcd_import(name[level:], package, level)
+[Mon Aug 13 23:39:46.365150 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]   File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+[Mon Aug 13 23:39:46.365156 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]   File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+[Mon Aug 13 23:39:46.365161 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790]   File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+[Mon Aug 13 23:39:46.365184 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47790] ModuleNotFoundError: No module named 'rest_framework'
+[Mon Aug 13 23:39:46.445883 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47952] mod_wsgi (pid=19366): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:39:46.445968 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47952] mod_wsgi (pid=19366): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:39:46.446139 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47952] Traceback (most recent call last):
+[Mon Aug 13 23:39:46.446191 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47952]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:39:46.446198 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47952]     application = get_wsgi_application()
+[Mon Aug 13 23:39:46.446209 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47952]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:39:46.446214 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47952]     django.setup(set_prefix=False)
+[Mon Aug 13 23:39:46.446222 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47952]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:39:46.446227 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47952]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:39:46.446235 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47952]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:39:46.446240 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47952]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:39:46.446263 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:47952] RuntimeError: populate() isn't reentrant
+[Mon Aug 13 23:39:54.789382 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50250] mod_wsgi (pid=19366): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:39:54.789490 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50250] mod_wsgi (pid=19366): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:39:54.789702 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50250] Traceback (most recent call last):
+[Mon Aug 13 23:39:54.789777 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50250]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:39:54.789786 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50250]     application = get_wsgi_application()
+[Mon Aug 13 23:39:54.789799 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50250]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:39:54.789805 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50250]     django.setup(set_prefix=False)
+[Mon Aug 13 23:39:54.789815 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50250]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:39:54.789821 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50250]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:39:54.789831 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50250]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:39:54.789837 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50250]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:39:54.789867 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50250] RuntimeError: populate() isn't reentrant
+[Mon Aug 13 23:39:54.837724 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50260] mod_wsgi (pid=19366): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:39:54.837775 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50260] mod_wsgi (pid=19366): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:39:54.837908 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50260] Traceback (most recent call last):
+[Mon Aug 13 23:39:54.837967 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50260]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:39:54.837979 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50260]     application = get_wsgi_application()
+[Mon Aug 13 23:39:54.837989 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50260]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:39:54.837994 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50260]     django.setup(set_prefix=False)
+[Mon Aug 13 23:39:54.838001 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50260]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:39:54.838005 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50260]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:39:54.838012 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50260]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:39:54.838017 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50260]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:39:54.838050 2018] [wsgi:error] [pid 19366:tid 140395762808576] [remote 127.0.0.1:50260] RuntimeError: populate() isn't reentrant
+[Mon Aug 13 23:45:50.690369 2018] [mpm_worker:notice] [pid 41591:tid 140395949590400] AH00298: SIGHUP received.  Attempting to restart
+Exception ignored in: <object repr() failed>
+Traceback (most recent call last):
+  File "/home/jthiesen1/lib/python3.6/PIL/Image.py", line 587, in __del__
+NameError: name 'hasattr' is not defined
+[Mon Aug 13 23:45:50.794628 2018] [mpm_worker:notice] [pid 41591:tid 140395949590400] AH00292: Apache/2.4.33 (Unix) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Mon Aug 13 23:45:50.794655 2018] [core:notice] [pid 41591:tid 140395949590400] AH00094: Command line: '/home/jthiesen1/webapps/math_anex/apache2/bin/httpd.worker -f /home/jthiesen1/webapps/math_anex/apache2/conf/httpd.conf'
+[Mon Aug 13 23:45:54.315802 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482] mod_wsgi (pid=33922): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:45:54.315880 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482] mod_wsgi (pid=33922): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:45:54.316955 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482] Traceback (most recent call last):
+[Mon Aug 13 23:45:54.317015 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:45:54.317021 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]     application = get_wsgi_application()
+[Mon Aug 13 23:45:54.317037 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:45:54.317041 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]     django.setup(set_prefix=False)
+[Mon Aug 13 23:45:54.317046 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:45:54.317050 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:45:54.317056 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 89, in populate
+[Mon Aug 13 23:45:54.317060 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]     app_config = AppConfig.create(entry)
+[Mon Aug 13 23:45:54.317065 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/config.py", line 116, in create
+[Mon Aug 13 23:45:54.317069 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]     mod = import_module(mod_path)
+[Mon Aug 13 23:45:54.317074 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]   File "/usr/local/lib/python3.6/importlib/__init__.py", line 126, in import_module
+[Mon Aug 13 23:45:54.317078 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]     return _bootstrap._gcd_import(name[level:], package, level)
+[Mon Aug 13 23:45:54.317083 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]   File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+[Mon Aug 13 23:45:54.317089 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]   File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+[Mon Aug 13 23:45:54.317095 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482]   File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+[Mon Aug 13 23:45:54.317133 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47482] ModuleNotFoundError: No module named 'rest_framework'
+[Mon Aug 13 23:45:54.376544 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47632] mod_wsgi (pid=33922): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:45:54.376618 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47632] mod_wsgi (pid=33922): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:45:54.376808 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47632] Traceback (most recent call last):
+[Mon Aug 13 23:45:54.376868 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47632]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:45:54.376876 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47632]     application = get_wsgi_application()
+[Mon Aug 13 23:45:54.376888 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47632]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:45:54.376894 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47632]     django.setup(set_prefix=False)
+[Mon Aug 13 23:45:54.376903 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47632]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:45:54.376909 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47632]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:45:54.376918 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47632]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:45:54.376924 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47632]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:45:54.376963 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:47632] RuntimeError: populate() isn't reentrant
+[Mon Aug 13 23:45:56.756462 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48260] mod_wsgi (pid=33922): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:45:56.756524 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48260] mod_wsgi (pid=33922): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:45:56.756673 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48260] Traceback (most recent call last):
+[Mon Aug 13 23:45:56.756726 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48260]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:45:56.756732 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48260]     application = get_wsgi_application()
+[Mon Aug 13 23:45:56.756740 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48260]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:45:56.756744 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48260]     django.setup(set_prefix=False)
+[Mon Aug 13 23:45:56.756751 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48260]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:45:56.756755 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48260]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:45:56.756775 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48260]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:45:56.756780 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48260]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:45:56.756801 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48260] RuntimeError: populate() isn't reentrant
+[Mon Aug 13 23:45:56.814169 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48274] mod_wsgi (pid=33922): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:45:56.814402 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48274] mod_wsgi (pid=33922): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:45:56.814515 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48274] Traceback (most recent call last):
+[Mon Aug 13 23:45:56.814553 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48274]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:45:56.814559 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48274]     application = get_wsgi_application()
+[Mon Aug 13 23:45:56.814566 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48274]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:45:56.814570 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48274]     django.setup(set_prefix=False)
+[Mon Aug 13 23:45:56.814576 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48274]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:45:56.814580 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48274]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:45:56.814586 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48274]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:45:56.814589 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48274]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:45:56.814605 2018] [wsgi:error] [pid 33922:tid 140395762808576] [remote 127.0.0.1:48274] RuntimeError: populate() isn't reentrant
+[Mon Aug 13 23:46:08.480662 2018] [mpm_worker:notice] [pid 41591:tid 140395949590400] AH00298: SIGHUP received.  Attempting to restart
+Exception ignored in: <object repr() failed>
+Traceback (most recent call last):
+  File "/home/jthiesen1/lib/python3.6/PIL/Image.py", line 587, in __del__
+NameError: name 'hasattr' is not defined
+[Mon Aug 13 23:46:08.585330 2018] [mpm_worker:notice] [pid 41591:tid 140395949590400] AH00292: Apache/2.4.33 (Unix) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Mon Aug 13 23:46:08.585356 2018] [core:notice] [pid 41591:tid 140395949590400] AH00094: Command line: '/home/jthiesen1/webapps/math_anex/apache2/bin/httpd.worker -f /home/jthiesen1/webapps/math_anex/apache2/conf/httpd.conf'
+[Mon Aug 13 23:46:10.217871 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160] mod_wsgi (pid=36665): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:46:10.217954 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160] mod_wsgi (pid=36665): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:46:10.218788 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160] Traceback (most recent call last):
+[Mon Aug 13 23:46:10.218854 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:46:10.218860 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]     application = get_wsgi_application()
+[Mon Aug 13 23:46:10.218867 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:46:10.218871 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]     django.setup(set_prefix=False)
+[Mon Aug 13 23:46:10.218877 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:46:10.218880 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:46:10.218885 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 89, in populate
+[Mon Aug 13 23:46:10.218889 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]     app_config = AppConfig.create(entry)
+[Mon Aug 13 23:46:10.218894 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/config.py", line 116, in create
+[Mon Aug 13 23:46:10.218897 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]     mod = import_module(mod_path)
+[Mon Aug 13 23:46:10.218903 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]   File "/usr/local/lib/python3.6/importlib/__init__.py", line 126, in import_module
+[Mon Aug 13 23:46:10.218906 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]     return _bootstrap._gcd_import(name[level:], package, level)
+[Mon Aug 13 23:46:10.218911 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]   File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+[Mon Aug 13 23:46:10.218917 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]   File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+[Mon Aug 13 23:46:10.218922 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160]   File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+[Mon Aug 13 23:46:10.218953 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52160] ModuleNotFoundError: No module named 'rest_framework'
+[Mon Aug 13 23:46:10.267241 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52288] mod_wsgi (pid=36665): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:46:10.267289 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52288] mod_wsgi (pid=36665): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:46:10.267403 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52288] Traceback (most recent call last):
+[Mon Aug 13 23:46:10.267443 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52288]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:46:10.267448 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52288]     application = get_wsgi_application()
+[Mon Aug 13 23:46:10.267456 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52288]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:46:10.267468 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52288]     django.setup(set_prefix=False)
+[Mon Aug 13 23:46:10.267475 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52288]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:46:10.267479 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52288]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:46:10.267486 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52288]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:46:10.267489 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52288]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:46:10.267506 2018] [wsgi:error] [pid 36665:tid 140395762808576] [remote 127.0.0.1:52288] RuntimeError: populate() isn't reentrant
+[Mon Aug 13 23:47:59.316827 2018] [mpm_worker:notice] [pid 41591:tid 140395949590400] AH00295: caught SIGTERM, shutting down
+Exception ignored in: <object repr() failed>
+Traceback (most recent call last):
+  File "/home/jthiesen1/lib/python3.6/PIL/Image.py", line 587, in __del__
+NameError: name 'hasattr' is not defined
+[Mon Aug 13 23:48:11.518316 2018] [mpm_worker:notice] [pid 5890:tid 140306528720768] AH00292: Apache/2.4.33 (Unix) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Mon Aug 13 23:48:11.518494 2018] [core:notice] [pid 5890:tid 140306528720768] AH00094: Command line: '/home/jthiesen1/webapps/math_anex/apache2/bin/httpd.worker -f /home/jthiesen1/webapps/math_anex/apache2/conf/httpd.conf'
+[Mon Aug 13 23:48:16.764423 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480] mod_wsgi (pid=5893): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:48:16.764528 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480] mod_wsgi (pid=5893): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:48:16.765387 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480] Traceback (most recent call last):
+[Mon Aug 13 23:48:16.765443 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:48:16.765449 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]     application = get_wsgi_application()
+[Mon Aug 13 23:48:16.765457 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:48:16.765461 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]     django.setup(set_prefix=False)
+[Mon Aug 13 23:48:16.765467 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:48:16.765471 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:48:16.765477 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 89, in populate
+[Mon Aug 13 23:48:16.765480 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]     app_config = AppConfig.create(entry)
+[Mon Aug 13 23:48:16.765486 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/config.py", line 116, in create
+[Mon Aug 13 23:48:16.765502 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]     mod = import_module(mod_path)
+[Mon Aug 13 23:48:16.765509 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]   File "/usr/local/lib/python3.6/importlib/__init__.py", line 126, in import_module
+[Mon Aug 13 23:48:16.765512 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]     return _bootstrap._gcd_import(name[level:], package, level)
+[Mon Aug 13 23:48:16.765518 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]   File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+[Mon Aug 13 23:48:16.765523 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]   File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+[Mon Aug 13 23:48:16.765529 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480]   File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+[Mon Aug 13 23:48:16.765551 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33480] ModuleNotFoundError: No module named 'rest_framework'
+[Mon Aug 13 23:48:16.816280 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33642] mod_wsgi (pid=5893): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:48:16.816353 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33642] mod_wsgi (pid=5893): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:48:16.816553 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33642] Traceback (most recent call last):
+[Mon Aug 13 23:48:16.816611 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33642]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:48:16.816619 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33642]     application = get_wsgi_application()
+[Mon Aug 13 23:48:16.816629 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33642]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:48:16.816635 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33642]     django.setup(set_prefix=False)
+[Mon Aug 13 23:48:16.816645 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33642]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:48:16.816650 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33642]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:48:16.816659 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33642]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:48:16.816664 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33642]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:48:16.816690 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:33642] RuntimeError: populate() isn't reentrant
+[Mon Aug 13 23:48:19.016325 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34308] mod_wsgi (pid=5893): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:48:19.016407 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34308] mod_wsgi (pid=5893): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:48:19.016615 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34308] Traceback (most recent call last):
+[Mon Aug 13 23:48:19.016687 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34308]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:48:19.016712 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34308]     application = get_wsgi_application()
+[Mon Aug 13 23:48:19.016726 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34308]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:48:19.016733 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34308]     django.setup(set_prefix=False)
+[Mon Aug 13 23:48:19.016743 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34308]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:48:19.016749 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34308]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:48:19.016759 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34308]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:48:19.016764 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34308]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:48:19.016793 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34308] RuntimeError: populate() isn't reentrant
+[Mon Aug 13 23:48:19.065775 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34324] mod_wsgi (pid=5893): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:48:19.065842 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34324] mod_wsgi (pid=5893): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:48:19.066031 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34324] Traceback (most recent call last):
+[Mon Aug 13 23:48:19.066089 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34324]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:48:19.066096 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34324]     application = get_wsgi_application()
+[Mon Aug 13 23:48:19.066106 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34324]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:48:19.066112 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34324]     django.setup(set_prefix=False)
+[Mon Aug 13 23:48:19.066120 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34324]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:48:19.066125 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34324]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:48:19.066134 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34324]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:48:19.066139 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34324]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:48:19.066164 2018] [wsgi:error] [pid 5893:tid 140306341938944] [remote 127.0.0.1:34324] RuntimeError: populate() isn't reentrant
+[Mon Aug 13 23:55:07.893528 2018] [mpm_worker:notice] [pid 5890:tid 140306528720768] AH00295: caught SIGTERM, shutting down
+Exception ignored in: <object repr() failed>
+Traceback (most recent call last):
+  File "/home/jthiesen1/lib/python3.6/PIL/Image.py", line 587, in __del__
+NameError: name 'hasattr' is not defined
+[Mon Aug 13 23:55:10.961733 2018] [mpm_worker:notice] [pid 30561:tid 139706791188352] AH00292: Apache/2.4.33 (Unix) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Mon Aug 13 23:55:10.961901 2018] [core:notice] [pid 30561:tid 139706791188352] AH00094: Command line: '/home/jthiesen1/webapps/math_anex/apache2/bin/httpd.worker -f /home/jthiesen1/webapps/math_anex/apache2/conf/httpd.conf'
+[Mon Aug 13 23:55:14.886779 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068] mod_wsgi (pid=30564): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:55:14.886875 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068] mod_wsgi (pid=30564): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:55:14.887772 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068] Traceback (most recent call last):
+[Mon Aug 13 23:55:14.887830 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:55:14.887835 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]     application = get_wsgi_application()
+[Mon Aug 13 23:55:14.887843 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:55:14.887847 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]     django.setup(set_prefix=False)
+[Mon Aug 13 23:55:14.887853 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:55:14.887857 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:55:14.887863 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 89, in populate
+[Mon Aug 13 23:55:14.887867 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]     app_config = AppConfig.create(entry)
+[Mon Aug 13 23:55:14.887872 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/config.py", line 116, in create
+[Mon Aug 13 23:55:14.887876 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]     mod = import_module(mod_path)
+[Mon Aug 13 23:55:14.887881 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]   File "/usr/local/lib/python3.6/importlib/__init__.py", line 126, in import_module
+[Mon Aug 13 23:55:14.887885 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]     return _bootstrap._gcd_import(name[level:], package, level)
+[Mon Aug 13 23:55:14.887891 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]   File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+[Mon Aug 13 23:55:14.887897 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]   File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+[Mon Aug 13 23:55:14.887902 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068]   File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+[Mon Aug 13 23:55:14.887925 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52068] ModuleNotFoundError: No module named 'rest_framework'
+[Mon Aug 13 23:55:14.937816 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52216] mod_wsgi (pid=30564): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:55:14.937886 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52216] mod_wsgi (pid=30564): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:55:14.938101 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52216] Traceback (most recent call last):
+[Mon Aug 13 23:55:14.938167 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52216]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:55:14.938175 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52216]     application = get_wsgi_application()
+[Mon Aug 13 23:55:14.938187 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52216]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:55:14.938193 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52216]     django.setup(set_prefix=False)
+[Mon Aug 13 23:55:14.938202 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52216]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:55:14.938208 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52216]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:55:14.938217 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52216]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:55:14.938223 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52216]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:55:14.938249 2018] [wsgi:error] [pid 30564:tid 139706604406528] [remote 127.0.0.1:52216] RuntimeError: populate() isn't reentrant
+[Mon Aug 13 23:56:46.025834 2018] [mpm_worker:notice] [pid 30561:tid 139706791188352] AH00295: caught SIGTERM, shutting down
+Exception ignored in: <object repr() failed>
+Traceback (most recent call last):
+  File "/home/jthiesen1/lib/python3.6/PIL/Image.py", line 587, in __del__
+NameError: name 'hasattr' is not defined
+[Mon Aug 13 23:56:46.795712 2018] [mpm_worker:notice] [pid 44058:tid 140328825210752] AH00292: Apache/2.4.33 (Unix) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Mon Aug 13 23:56:46.795840 2018] [core:notice] [pid 44058:tid 140328825210752] AH00094: Command line: '/home/jthiesen1/webapps/math_anex/apache2/bin/httpd.worker -f /home/jthiesen1/webapps/math_anex/apache2/conf/httpd.conf'
+[Mon Aug 13 23:56:51.880619 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558] mod_wsgi (pid=44062): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:56:51.880707 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558] mod_wsgi (pid=44062): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:56:51.881769 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558] Traceback (most recent call last):
+[Mon Aug 13 23:56:51.881825 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:56:51.881831 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]     application = get_wsgi_application()
+[Mon Aug 13 23:56:51.881837 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:56:51.881841 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]     django.setup(set_prefix=False)
+[Mon Aug 13 23:56:51.881847 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:56:51.881863 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:56:51.881870 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 89, in populate
+[Mon Aug 13 23:56:51.881873 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]     app_config = AppConfig.create(entry)
+[Mon Aug 13 23:56:51.881878 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/config.py", line 90, in create
+[Mon Aug 13 23:56:51.881881 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]     module = import_module(entry)
+[Mon Aug 13 23:56:51.881886 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]   File "/usr/local/lib/python3.6/importlib/__init__.py", line 126, in import_module
+[Mon Aug 13 23:56:51.881890 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]     return _bootstrap._gcd_import(name[level:], package, level)
+[Mon Aug 13 23:56:51.881895 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]   File "<frozen importlib._bootstrap>", line 994, in _gcd_import
+[Mon Aug 13 23:56:51.881900 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]   File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+[Mon Aug 13 23:56:51.881905 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558]   File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+[Mon Aug 13 23:56:51.881923 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50558] ModuleNotFoundError: No module named 'corsheaders'
+[Mon Aug 13 23:56:51.935502 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50686] mod_wsgi (pid=44062): Failed to exec Python script file '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:56:51.935555 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50686] mod_wsgi (pid=44062): Exception occurred processing WSGI script '/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py'.
+[Mon Aug 13 23:56:51.935709 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50686] Traceback (most recent call last):
+[Mon Aug 13 23:56:51.935768 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50686]   File "/home/jthiesen1/webapps/math_anex/ComponentMadness/home/wsgi.py", line 14, in <module>
+[Mon Aug 13 23:56:51.935775 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50686]     application = get_wsgi_application()
+[Mon Aug 13 23:56:51.935785 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50686]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/core/wsgi.py", line 12, in get_wsgi_application
+[Mon Aug 13 23:56:51.935790 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50686]     django.setup(set_prefix=False)
+[Mon Aug 13 23:56:51.935799 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50686]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/__init__.py", line 24, in setup
+[Mon Aug 13 23:56:51.935804 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50686]     apps.populate(settings.INSTALLED_APPS)
+[Mon Aug 13 23:56:51.935812 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50686]   File "/home/jthiesen1/webapps/math_anex/lib/python3.6/Django-2.0.6-py3.6.egg/django/apps/registry.py", line 81, in populate
+[Mon Aug 13 23:56:51.935818 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50686]     raise RuntimeError("populate() isn't reentrant")
+[Mon Aug 13 23:56:51.935858 2018] [wsgi:error] [pid 44062:tid 140328638428928] [remote 127.0.0.1:50686] RuntimeError: populate() isn't reentrant
