@@ -36,9 +36,7 @@ class User(AbstractBaseUser):
     id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=120, blank=True, default="")
     last_name = models.CharField(max_length=120, blank=True, default="")
-    phone = models.CharField(max_length=120, blank=True, default="")
-    job = models.CharField(max_length=120, blank=True, default="")
-    location = models.CharField(max_length=120, blank=True, default="")
+
     email = models.EmailField(_('email address'), max_length=254, unique=True, db_index=True)
     type = models.CharField(max_length=7, choices = (('User','User'),('Parent','Parent')), default='User')
     imageUrl = models.CharField(max_length=120, blank=True, default="")
