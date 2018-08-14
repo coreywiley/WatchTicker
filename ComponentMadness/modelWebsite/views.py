@@ -140,8 +140,46 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
                 for key in requestFields.keys():
                     newFields[key] = requestFields[key]
                 instances.append(insert(appLabel, modelName, modelFields,newFields, id = id, related=related))
+        elif 'csv_file' in request.FILES:
+            try:
+                print ("CSV FILE")
+                instances = []
+                csv_file = request.FILES["csv_file"]
+                if not csv_file.name.endswith('.csv'):
+                    print ("ERROR")
+                # if file is too large, return
+                if csv_file.multiple_chunks():
+                    print ("ERROR")
+
+                file_data = csv_file.read().decode("utf-8")
+                lines = file_data.split("\n")
+                # loop over the lines and save them in db. If error , store as string and then display
+                i = 0
+                titles = {}
+
+                for line in lines:
+                    if i == 0:
+                        i = 1
+                        fields = line.split(",")
+                        for x in range(len(fields)):
+                            titles[x] = fields[x].strip()
+                        continue
+
+                    fieldData = line.split(",")
+                    newFields = {}
+                    blankLine = True
+                    for x in range(len(fields)):
+                        newFields[titles[x]] = fieldData[x].strip()
+                        if newFields[titles[x]] != '':
+                            blankLine = False
+                    if not blankLine:
+                        print (newFields)
+                        instances.append(insert(appLabel, modelName, modelFields, newFields, id=id, related=related))
+            except Exception as e:
+                print ("ERROR")
+                instances = ['ERROR']
         else:
-            print ('Not There!')
+            print (1)
             instances = insert(appLabel, modelName, modelFields,requestFields, id = id, related=related)
 
 
