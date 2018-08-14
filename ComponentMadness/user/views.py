@@ -34,7 +34,7 @@ def SignUp(request):
         passwordCheck = request.POST['passwordCheck']
         imageUrl = request.POST['imageUrl']
         redirect = request.POST['redirectLocation']
-
+        print ('hi')
         userCheck = User.objects.filter(email=email).first()
         if userCheck:
             return HttpResponseRedirect(request.META.HTTP_REFERER + '?error=Email already taken.')
