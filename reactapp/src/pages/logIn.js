@@ -31,7 +31,7 @@ class LogIn extends Component {
 
             <div className="row">
                 <div className="col-md-4"></div>
-                <div className="col-md-4"><LogInForm row={false} defaults={['']} submitUrl={'/authenticate/'} components={[TextInput]} componentProps={[{'value':'','placeholder':'Email', 'name':'email'}]} /></div>
+                <div className="col-md-4"><LogInForm redirectUrl={'/projects/'} defaults={['','']} submitUrl={'/users/authenticate-user/'} components={[TextInput, PasswordInput]} componentProps={[{'value':'','placeholder':'Email', 'name':'email','label':'Email'},{'value':'','placeholder':'Password', 'name':'password'}]} /></div>
                 <div className="col-md-4"></div>
             </div>
 

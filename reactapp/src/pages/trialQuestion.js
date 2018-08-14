@@ -20,7 +20,7 @@ class Question extends Component {
             answers: [],
             currentIndex:0,
             open:[true,true],
-            conflicts:[],
+            grade:-1,
         };
 
         this.getQuestionData = this.getQuestionData.bind(this);
@@ -30,7 +30,7 @@ class Question extends Component {
         this.analysesCallback = this.analysesCallback.bind(this);
         this.nextInQueue = this.nextInQueue.bind(this);
         this.questionCallback = this.questionCallback.bind(this);
-        this.conflictCheck = this.conflictCheck.bind(this);
+        this.getGrade = this.getGrade.bind(this);
         this.getQuestionData();
     }
 
@@ -54,18 +54,38 @@ class Question extends Component {
     }
 
     nextInQueue() {
-      ajaxWrapper("GET", "/nextInQueue/"+ this.props.question_id + "/" + this.props.user_id + "/", {}, this.questionCallback)
+      ajaxWrapper("GET", "/nextInTrialQueue/"+ this.props.question_id + "/" + this.props.user_id + "/", {}, this.questionCallback)
+      if (this.state.currentIndex > 19) {
+        ajaxWrapper("GET", "/api/home/analysis/?limit=10&answer__question=" + this.props.question_id + "&user=" + this.props.user_id + "&related=answer&order_by=-id", {}, this.getGrade)
+      }
     }
 
+    getGrade(result) {
+      console.log("Get Grade")
+      var grade = 0
+      for (var index in result) {
+        var analysis = result[index]['analysis']
+        var answer = analysis['answer']
+        if (analysis['score'] == answer['admin_answer']) {
+          grade += 1;
+        }
+      }
+      if (grade > -1) {
+        window.location.href = '/passed/' + this.props.question_id + '/';
+      }
+      else {
+        this.setState({grade:grade})
+      }
+    }
 
     questionCallback(value) {
         if (value['error']) {
-          window.location.href = '/projects/';
+          window.location.href = '/failed/' + this.props.question_id;
         }
         else {
           console.log("Return Value!", value);
           var newState = {}
-          var answers = this.state.answers
+          var answers = this.state.answers;
 
           newState['loaded'] = true;
           newState['question'] = value['question']
@@ -82,45 +102,7 @@ class Question extends Component {
         console.log("Save Grade",data);
         var answers = this.state.answers
         answers[this.state.currentIndex]['analysis'] = data;
-        this.setState({'answers':answers}, () => ajaxWrapper('GET','/api/home/answer/' + data.answer_id + '/?related=analyses,analyses__user', {}, this.conflictCheck))
-    }
-
-    conflictCheck(result) {
-      console.log("Conflict",result)
-      var answer_id = result[0]['answer']['id']
-      var analyses = result[0]['answer']['analyses']
-      if (analyses.length > 1) {
-        var match = true;
-        var currentScore = '';
-        var users = [];
-        for (var index in analyses) {
-          users.push(analyses[index]['analysis']['user']['email'])
-          if (currentScore == '') {
-            currentScore = analyses[index]['analysis']['score']
-          }
-          else {
-            if (currentScore != analyses[index]['analysis']['score']) {
-              match = false;
-            }
-          }
-        }
-
-        if (match == true) {
-          ajaxWrapper('POST', '/api/home/answer/' + answer_id + '/', {'admin_answer':currentScore, 'completed_analyses':analyses.length}, console.log)
-        }
-        else {
-          ajaxWrapper('POST', '/api/home/answer/' + answer_id + '/', {'admin_answer':'', 'completed_analyses':analyses.length, 'analysis_conflict':true}, console.log)
-          for (var index in users) {
-            ajaxWrapper('POST','/api/email/', {'subject':'A Student Response Is In Conflict', 'text':'One of your answers was in conflict with another anaylst. Resolve it here: http://localhost:8000/conflict/' + answer_id + '/', 'from_email':'jeremy.thiesen1@gmail.com','to_email':users[index]}, console.log)
-          }
-          var conflicts = this.state.conflicts;
-          conflicts.push(answer_id);
-          this.setState({'conflicts':conflicts})
-        }
-      }
-      else {
-        ajaxWrapper('POST','/api/home/answer/' + answer_id + '/', {'completed_analyses':1}, console.log)
-      }
+        this.setState({'answers':answers})
     }
 
     changeCurrentIndex(value) {
@@ -129,7 +111,13 @@ class Question extends Component {
         var currentIndex = this.state.currentIndex;
         var newValue = currentIndex + value;
         if (newValue > this.state.answers.length - 1) {
-            this.nextInQueue();
+          console.log("Test",newValue,this.state.answers.length);
+            if (newValue == 10 && this.state.answers.length == 10) {
+              window.location.href = '/trialTest/' + this.props.question_id + '/';
+            }
+            else {
+              this.nextInQueue();
+            }
         }
         else if (newValue > -1) {
             this.setState({currentIndex: newValue, open:[false,true]})
@@ -154,17 +142,9 @@ class Question extends Component {
             </div>;
         }
 
-        var conflicts = this.state.conflicts;
-        if (conflicts.length > 0) {
-          var text = []
-          text.push(<Paragraph text={"You've got some conflicts that need resolving. Check the following links."} />)
-          for (var index in conflicts) {
-            text.push(<Link target='_blank' link={'/conflict/' + conflicts[index] + '/'} text={'Conflict on Answer ' + conflicts[index]} />)
-          }
-          var conflictDiv = <Alert type={'danger'} text={text} />
-        }
-        else {
-          var conflictDiv = <div></div>;
+        var grade = <div></div>
+        if (this.state.grade != -1) {
+          grade = <Alert type={'danger'} text={'Your grade is too low to pass. Keep trying. Current: ' + this.state.grade + '/10. Needed: 7/10'} />
         }
 
         var paragraphProps = {'text': this.state.question.text}
@@ -197,6 +177,13 @@ class Question extends Component {
 
             gradeContainerProps['student_response'] = this.state.answers[this.state.currentIndex]['response']
             gradeContainerProps['student_id'] = this.state.answers[this.state.currentIndex]['sid']
+            if (this.state.currentIndex < 10) {
+              console.log("Admin Shit");
+              gradeContainerProps['admin_answer'] = this.state.answers[this.state.currentIndex]['admin_answer']
+              gradeContainerProps['admin_comment'] = this.state.answers[this.state.currentIndex]['admin_comment']
+              console.log("Answer",this.state.answers[this.state.currentIndex])
+              console.log("Grade Container",gradeContainerProps)
+            }
             gradeContainerProps['key'] = this.state.currentIndex;
         } else {
             gradeContainerProps['user_score'] = '';
@@ -214,10 +201,10 @@ class Question extends Component {
             <div className="container" style={css}>
                 <Accordion names={[questionName]} open={[true]} ComponentList={[Paragraph]} ComponentProps={[paragraphProps]} />
                 {responseName}
+                {grade}
                 <Swipeable onSwipedRight={() => this.changeCurrentIndex(-1)} onSwipedLeft={() => this.changeCurrentIndex(1)} >
                 <GradeContainer {...gradeContainerProps} />
                 </Swipeable>
-                {conflictDiv}
             </div>
         </div>;
 

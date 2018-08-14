@@ -1,21 +1,9 @@
 import React, { Component } from 'react';
 
 import Wrapper from '../base/wrapper.js';
-
-import Container from '../library/container.js';
-import Button from '../library/button.js';
-import Image from '../library/image.js';
-import Form from '../library/form.js';
-import TextInput from '../library/textinput.js';
-import NavBar from '../library/navbar.js';
-import List from '../library/list.js';
-import Link from '../library/link.js';
-import Accordion from '../library/accordion.js';
-import Paragraph from '../library/paragraph.js';
-import RadioButton from '../library/radiobutton.js';
-import TextArea from '../library/textarea.js';
-import Header from '../library/header.js';
+import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header} from 'library';
 import ProjectCard from '../projectLibrary/projectCard.js';
+import Nav from '../projectLibrary/nav.js';
 
 class Test extends Component {
     constructor(props) {
@@ -34,11 +22,15 @@ class Test extends Component {
         var name = <div><img src='../../static/images/AnexLogo.PNG' height="30" width="30" /><strong>ANEX</strong></div>;
         var data ={'ComponentList':[Header, Paragraph,Header,RadioButton,Header,TextArea],'ComponentProps':[{'size':4,'text':'Response'},{'text':'22!'},{'size':4,'text':'Grade'},{'value':'0','name':'grade'},{'size':4,'text':'Comments'},{'name':'comments','value':''}]};
         var title = <Header size={2} text={'Questions:'} />
+        var link = '/question/{id}/'
+        if (this.props.project_id == 10) {
+          link = '/referenceGuide/{id}/';
+        }
         var content =
         <div>
-            <NavBar nameLink={'/projects/'} name={name} links={[['#','Analyst: ' + this.props.user_name],['/projects/','Projects']]} logOut={this.props.logOut} />
+            <Nav token={this.props.user_id} logOut={this.props.logOut} />
             <div className="container">
-                <List component={ProjectCard} title={title} setGlobalState={this.setGlobalState} objectName={'question'} dataUrl={'/getQuestions/' + this.props.project_id + '/'} dataMapping={{'id':'{id}','responses': '{totalResponse}', 'grades':'{totalGrades}', 'description':'{question_text}','name':'{name}', 'link':'/question/{id}/', 'button_type':'primary', 'button':'Start Analyzing'}} />
+                <List component={ProjectCard} title={title} setGlobalState={this.setGlobalState} objectName={'question'} dataUrl={'/api/home/question/?test=' + this.props.project_id} dataMapping={{'id':'{id}','progress':true, 'responses': 'None', 'grades':'None', 'description':'{text}','name':'{name}', 'question_id':'{id}', 'link':link, 'conflict_link':'/conflicts/{id}/', 'button_type':'primary', 'button':'Start Analyzing'}} />
             </div>
         </div>;
 
