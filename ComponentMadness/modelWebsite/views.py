@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.apps import apps
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseForbidden, HttpResponseRedirect
+import django
+from django.conf import settings
 
 from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, getModelFields
 from user.views import staff_required
@@ -71,6 +73,16 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
         preferences__has = parameters['preferences__has'].split(',')
         del parameters['preferences__has']
 
+    limit = 0
+    if 'limit' in parameters:
+        limit = int(parameters['limit'])
+        del parameters['limit']
+
+    count = False
+    if 'count' in parameters:
+        count = True
+        del parameters['count']
+
     print (values_list)
     print ("Parameters",parameters)
 
@@ -103,6 +115,8 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
                     query = model.objects.filter(**parameters).values_list(*values_list).prefetch_related(*related).order_by(*order_by)
                 else:
                     query = model.objects.filter(**parameters).values_list(*values_list,flat=True).prefetch_related(*related).order_by(*order_by)
+                if limit > 0:
+                    query = query[:limit]
                 for instance in query:
                     instancesData.append(instance)
                 instances = {}
@@ -116,7 +130,10 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
                 if len(amenities__has) > 0:
                     for item in amenities__has:
                         instanceQuery = instanceQuery.filter(amenities=item)
-
+                if limit > 0:
+                    instanceQuery = instanceQuery[:limit]
+                if count:
+                    return JsonResponse({'count':instanceQuery.count()})
                 instances = getInstancesJson(appLabel, modelName, instanceQuery = instanceQuery, related=related)
 
     # edit or instance
@@ -130,7 +147,6 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
         else:
             requestFields = request.POST
 
-        print ('Request Fields',requestFields)
         if 'multiple' in requestFields:
             instances = []
             items = json.loads(requestFields[requestFields['multiple']])
