@@ -51,7 +51,7 @@ class PasswordInput extends Component {
             <div>
               <div className={"form-group " + this.props.layout}>
                 <label>Password</label>
-                <input type="password" className="form-control" name="password" onChange={(e) => {this.verifyPassword(e); this.props.handlechange(e)}} value={this.state.password} />
+                <input type="password" className="form-control" name="password" placeholder={this.props.placeholder} onChange={(e) => {this.verifyPassword(e); this.props.handlechange(e)}} value={this.state.password} />
               </div>
               {passwordConfirm}
             </div>

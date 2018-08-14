@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
+import {Button} from 'library';
 
 class NavBar extends React.Component {
 
@@ -9,6 +10,13 @@ class NavBar extends React.Component {
             for (var index in this.props.links) {
                 links.push(<li key={index} className="nav-item"><a className="nav-link" href={this.props.links[index][0]}>{this.props.links[index][1]}</a></li>)
             }
+        }
+
+        var logOut = <div></div>
+        if (this.props.logOut) {
+          logOut = <div className="form-inline">
+            <Button type={'danger'} text={'Log Out'} clickHandler={this.props.logOut} />
+          </div>
         }
 
         return (
@@ -22,6 +30,8 @@ class NavBar extends React.Component {
                   {links}
                 </ul>
               </div>
+              {logOut}
+
             </nav>
         );
     }

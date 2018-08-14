@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
 import ajaxWrapper from "base/ajax.js";
 
+//Example
+//var answerProps = {'name':'response', 'value':''}
+//var defaults = {'response':'', 'question':this.props.question_id, 'sid':this.props.user_id}
+//var submitUrl = '/api/home/answer/';
+//var redirectUrl = '/referenceGuide/' + this.props.question_id + '/';
+//<Form components={[TextArea]} first={true} componentProps={[answerProps]} submitUrl={submitUrl} defaults={defaults} redirectUrl={redirectUrl}/>
+
 class Form extends Component {
     constructor(props) {
         super(props);

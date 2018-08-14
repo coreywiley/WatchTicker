@@ -49,7 +49,7 @@ class List extends Component {
     }
 
     ajaxCallback(value) {
-        console.log(value);
+        console.log("List Callback", value);
         this.setState({componentData:value, loaded:true})
     }
 
@@ -64,7 +64,7 @@ class List extends Component {
         if (this.state.componentData.length > 0) {
             for (var i = 0; i < this.state.componentData.length; i++) {
                 var data = this.state.componentData[i][this.props.objectName];
-
+                console.log("Data",data, this.props.objectName);
                 var componentInstance;
                 if (this.props.dataMapping) {
                     var dataMapping = {...this.props.dataMapping};
@@ -82,7 +82,7 @@ class List extends Component {
             }
         }
         else if (this.props.lastInstanceData == undefined) {
-            var noDataMessage = 'None Found';
+            var noDataMessage = 'No ' + this.props.objectName + 's Found';
             if (this.props.noDataMessage) {
                 noDataMessage = this.props.noDataMessage;
             }
