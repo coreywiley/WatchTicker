@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {List, Link} from 'library';
-import Nav from '../projectLibrary/nav.js';
+import Nav from 'projectLibrary/nav.js';
 
 class ModelList extends Component {
 

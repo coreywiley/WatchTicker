@@ -80,6 +80,7 @@ class LogInForm extends Component {
                 {components}
                 {buttons}
                 <small className="form-text">Not a user yet? <a href="/signUp/">Sign Up Here</a></small>
+                <small className="form-text">Forgot your password? <a href="/passwordResetRequest/">Reset Password</a></small>
                 {error}
             </div>
         )

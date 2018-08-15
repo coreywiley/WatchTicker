@@ -16,8 +16,7 @@ urlpatterns = [
 
     #user imports
     url(r'^users/', include('user.urls', namespace="user")),
-    url(r'^nextInQueue/(?P<question_id>\w+)/(?P<user_id>\w+)/$', NextInQueue, name='queue'),
-    url(r'^nextInTrialQueue/(?P<question_id>\w+)/(?P<user_id>\w+)/$', NextInTrialQueue, name='queue'),
+
     #Catch statements for React
     url(r'^$', Index, name='index'),
     url(r'^(?P<param>\w+)/$', Index, name='index'),

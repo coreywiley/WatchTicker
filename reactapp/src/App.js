@@ -9,33 +9,26 @@ import Header from './base/header.js';
 import Footer from './base/footer.js';
 
 import Wrapper from './base/wrapper.js';
-import Home from './pages/home.js';
-import ComponentList from './pages/componentList.js';
-import ComponentManager from './pages/componentManager.js';
 
-import PageList from './pages/pageList.js';
-import PageManager from './pages/pageManager.js';
+import ComponentList from './pages/admin/componentList.js';
+import ComponentManager from './pages/admin/componentManager.js';
 
-import AppList from './pages/appList.js';
-import ModelList from './pages/modelsList.js';
-import InstanceList from './pages/modelInstances.js';
-import Instance from './pages/instance.js';
-import InstanceTable from './pages/modelInstancesTable.js';
+import PageList from './pages/admin/pageList.js';
+import PageManager from './pages/admin/pageManager.js';
 
-import LogIn from './pages/logIn.js';
-import SignUp from './pages/signUp.js';
-import Projects from './pages/projects.js';
-import Question from './pages/question.js';
-import Test from './pages/test.js';
-import AnswerQuestion from './pages/answerQuestion.js';
-import ReferenceGuide from './pages/referenceGuide.js';
-import TrialQuestion from './pages/trialQuestion.js';
-import TrialTest from './pages/trialTest.js';
-import Passed from './pages/passed.js';
-import Failed from './pages/trialTest.js';
+import AppList from './pages/admin/appList.js';
+import ModelList from './pages/admin/modelsList.js';
+import InstanceList from './pages/admin/modelInstances.js';
+import Instance from './pages/admin/instance.js';
+import InstanceTable from './pages/admin/modelInstancesTable.js';
 
-import Conflicts from './pages/conflicts.js';
-import Conflict from './pages/conflict.js';
+import Home from './pages/scaffold/home.js';
+import LogIn from './pages/scaffold/logIn.js';
+import SignUp from './pages/scaffold/signUp.js';
+import LoggedIn from './pages/scaffold/loggedIn.js';
+import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
+import PasswordReset from './pages/scaffold/passwordReset.js';
+
 
 class App extends Component {
     constructor(props) {
@@ -72,13 +65,9 @@ class App extends Component {
             }
         }
         else {
-            if (window.location.href.indexOf('login') > -1 || window.location.href.indexOf('signUp') > -1) {
-                this.setState({loaded: true, csrfmiddlewaretoken: value.csrfmiddlewaretoken});
-            }
-            else {
-                window.location.href = '/login/';
-            }
+          this.setState({loaded:true,csrfmiddlewaretoken: value.csrfmiddlewaretoken})
         }
+
     }
 
     getURL() {
@@ -100,74 +89,50 @@ class App extends Component {
             //Home page
             content = <Home />
 
-        } else if (params[0] === "components") {
+        } else if (params[0].toLowerCase() === "components") {
             //List components
             content = <ComponentList />;
-        } else if (params[0] === "component") {
+        } else if (params[0].toLowerCase() === "component") {
             //Single component page
             content = <ComponentManager id={params[1]} />;
-        } else if (params[0] === "pages") {
+        } else if (params[0].toLowerCase() === "pages") {
             //List pages
             content = <PageList />;
-        } else if (params[0] === "page") {
+        } else if (params[0].toLowerCase() === "page") {
             //Single page
             content = <PageManager id={params[1]} />;
-        } else if (params[0] == "app") {
+        } else if (params[0].toLowerCase() == "app") {
             content = <ClientApp params={params.slice(1)} />;
         }
-        else if (params[0] == "appList") {
+        else if (params[0].toLowerCase() == "appList") {
             content = <AppList user_id={this.state.token} logOut={this.logOut}/>;
         }
-        else if (params[0] == "models") {
+        else if (params[0].toLowerCase() == "models") {
             content = <ModelList app={params[1]} user_id={this.state.token} logOut={this.logOut}/>
         }
-        else if (params[0] == "modelInstances") {
+        else if (params[0].toLowerCase() == "modelInstances") {
             content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token} logOut={this.logOut}/>
         }
-        else if (params[0] == "modelInstancesTable") {
+        else if (params[0].toLowerCase() == "modelInstancesTable") {
             content = <InstanceTable app={params[1]} model={params[2]} logOut={this.logOut}/>
         }
-        else if (params[0] == "instance") {
+        else if (params[0].toLowerCase() == "instance") {
             content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token} logOut={this.logOut}/>
         }
-        else if (params[0] == "login") {
+        else if (params[0].toLowerCase() == "login") {
             content = <LogIn />
         }
-        else if (params[0] == "signUp") {
+        else if (params[0].toLowerCase() == "signup") {
             content = <SignUp />
         }
-        else if (params[0] == "projects") {
-            content = <Projects user_id={this.state.token} logOut={this.logOut} />
+        else if (params[0].toLowerCase() == "loggedin") {
+            content = <LoggedIn  logOut={this.logOut} />
         }
-        else if (params[0] == "question") {
-            content = <Question question_id={params[1]} user_id={this.state.token} logOut={this.logOut} user_name={this.state.User.user_name} user_short_name={this.state.User.user_shorthand} />
+        else if (params[0].toLowerCase() == "passwordresetrequest") {
+            content = <PasswordResetRequest />
         }
-        else if (params[0] == "test") {
-            content = <Test logOut={this.logOut} user_id={this.state.token} project_id={params[1]} />
-        }
-        else if (params[0] == 'answerQuestion') {
-          content = <AnswerQuestion question_id={params[1]} user_id={this.state.token} />
-        }
-        else if (params[0] == 'referenceGuide') {
-          content = <ReferenceGuide question_id={params[1]} user_id={this.state.token} />
-        }
-        else if (params[0] == 'trialQuestion') {
-          content = <TrialQuestion question_id={params[1]} user_id={this.state.token} />
-        }
-        else if (params[0] == 'trialTest') {
-          content = <TrialTest question_id={params[1]} user_id={this.state.token} />
-        }
-        else if (params[0] == 'passed') {
-          content = <Passed question_id={params[1]} user_id={this.state.token} />
-        }
-        else if (params[0] == 'failed') {
-          content = <Failed question_id={params[1]} user_id={this.state.token} />
-        }
-        else if (params[0] == "conflict") {
-            content = <Conflict answer_id={params[1]} user_id={this.state.token} logOut={this.logOut} />
-        }
-        else if (params[0] == "conflicts") {
-            content = <Conflicts logOut={this.logOut} user_id={this.state.token} question_id={params[1]} />
+        else if (params[0].toLowerCase() == "passwordreset") {
+            content = <PasswordReset  user_id={params[1]} />
         }
 
 

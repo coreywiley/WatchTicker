@@ -114,9 +114,9 @@ DATABASES = {
     'default': {
         'CONN_MAX_AGE': 0,
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'math_anex',
-        'USER': 'math_anex',
-        'PASSWORD': 'A(^J;af7XK\qJ+Z4',
+        'NAME': 'componentmadness',
+        'USER': 'madness',
+        'PASSWORD': 'thisissparta',
         'HOST': '127.0.0.1',
         'PORT': '5432'
     }

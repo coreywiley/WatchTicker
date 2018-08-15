@@ -37,33 +37,10 @@ def GetUser(request):
     if not user:
         return JsonResponse({'error':'No user found.'})
 
-    if request.method == "POST":
-        email = request.POST['email']
-        password = request.POST['password']
-        passwordCheck = request.POST['passwordCheck']
-        imageUrl = request.POST['imageUrl']
-        redirect = request.POST['redirectLocation']
-        print ('hi')
-        userCheck = User.objects.filter(email=email).first()
-        if userCheck:
-            return HttpResponseRedirect(request.META.HTTP_REFERER + '?error=Email already taken.')
-        if password != passwordCheck:
-            return HttpResponseRedirect(request.META.HTTP_REFERER + '?error=Passwords Dont Match.')
+    else:
+        return JsonResponse({'user':{'id':user.id}})
 
-        userManager = UserManager()
-        userManager.create_user(email=email, password=password, imageUrl=imageUrl)
-        user = authenticate(email=email, password=password)
 
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect(redirect)
-                # Redirect to a success page.
-            else:
-                pass
-                # Return a 'disabled account' error message
-
-        return HttpResponseRedirect(redirect)
 
 @csrf_exempt
 def UserLogin(request):
