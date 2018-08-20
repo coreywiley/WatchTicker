@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Wrapper from 'base/wrapper.js';
+import Nav from 'projectLibrary/loggedOutNav.js';
 
 import {
     Container, Button, Image, TextInput, NavBar,
@@ -25,9 +26,9 @@ class LogIn extends Component {
       var content =
         <div className="container">
             <div className="row">
-                <div className="col-md-4"></div>
-                <div className="col-md-4"><LogInForm redirectUrl={'/loggedIn/'} defaults={['','']} submitUrl={'/users/authenticate-user/'} components={[TextInput, PasswordInput]} componentProps={[{'value':'','placeholder':'Email', 'name':'email','label':'Email'},{'value':'','placeholder':'Password', 'name':'password'}]} /></div>
-                <div className="col-md-4"></div>
+
+                <LogInForm redirectUrl={'/dashboard/'} defaults={['','']} submitUrl={'/users/authenticate-user/'} components={[TextInput, PasswordInput]} componentProps={[{'value':'','placeholder':'Email', 'name':'email','label':'Email'},{'value':'','placeholder':'Password', 'name':'password'}]} />
+
             </div>
 
         </div>;
@@ -35,7 +36,10 @@ class LogIn extends Component {
 
 
         return (
-            <Wrapper loaded={this.state.loaded}  content={content} />
+          <div>
+          <Nav />
+          <Wrapper loaded={true} content={content} />
+          </div>
         );
     }
 }

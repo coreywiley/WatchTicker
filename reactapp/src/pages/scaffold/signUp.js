@@ -3,6 +3,7 @@ import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 
 import {Form, TextInput, Select, PasswordInput, Navbar} from 'library';
+import Nav from 'projectLibrary/loggedOutNav.js';
 
 class SignUp extends Component {
     constructor(props) {
@@ -20,19 +21,19 @@ class SignUp extends Component {
             window.location.href = redirect;
         }
         else {
-            window.location.href = '/loggedIn/';
+            window.location.href = '/dashboard/';
         }
     }
 
     render() {
-        var Components = [TextInput,TextInput,TextInput, PasswordInput];
+        var Components = [TextInput, PasswordInput];
         var first_name_props = {'value':'','name':'first_name','label':'First Name:','placeholder': 'First Name'}
         var last_name_props = {'value':'','name':'last_name','label':'Last Name:','placeholder': 'Last Name'}
-        var email_props = {'value':'','name':'email','label':'Email:','placeholder': 'component@madness.com'}
+        var email_props = {'value':'','name':'email','label':'Email:','placeholder': 'emoji@slider.com'}
         var password_props = {'confirm_password':true};
 
-        var ComponentProps = [first_name_props, last_name_props, email_props, password_props];
-        var defaults = {'first_name':'','last_name':'', 'email':'', 'password':'','type':'User'};
+        var ComponentProps = [email_props, password_props];
+        var defaults = {'email':'', 'password':'','type':'User'};
 
         var submitUrl = "/api/user/user/";
 
@@ -43,7 +44,10 @@ class SignUp extends Component {
 
 
         return (
+            <div>
+            <Nav />
             <Wrapper loaded={true} content={content} />
+            </div>
              );
     }
 }
