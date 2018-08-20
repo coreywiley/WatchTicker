@@ -10,6 +10,7 @@ function error(xhr, status, erro) {
 function ajaxWrapper(type, url, data, returnFunc){
     if (type === "POST"){
         data["csrfmiddlewaretoken"] = window.secretReactVars["csrfmiddlewaretoken"];
+        console.log("CSRF", data['csrfmiddlewaretoken'])
     }
     console.log("Url",url);
       $.ajax({

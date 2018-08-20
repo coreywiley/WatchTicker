@@ -19,7 +19,6 @@ class LogInForm extends Component {
        var newState = {};
        newState[name] = e.target.value;
        console.log("handlechange",name,newState)
-
         this.setState(newState);
     }
 
