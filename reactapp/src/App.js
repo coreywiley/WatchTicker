@@ -1,27 +1,24 @@
 import React, { Component } from 'react';
 import './App.css';
-
 import ajaxWrapper from "./base/ajax.js";
 
-import ClientApp from "./clientApp.js";
-
-import Header from './base/header.js';
-import Footer from './base/footer.js';
-
-import Wrapper from './base/wrapper.js';
-
+//Component Madness
 import ComponentList from './pages/admin/componentList.js';
 import ComponentManager from './pages/admin/componentManager.js';
-
 import PageList from './pages/admin/pageList.js';
 import PageManager from './pages/admin/pageManager.js';
 
+//Admin
 import AppList from './pages/admin/appList.js';
 import ModelList from './pages/admin/modelsList.js';
 import InstanceList from './pages/admin/modelInstances.js';
 import Instance from './pages/admin/instance.js';
 import InstanceTable from './pages/admin/modelInstancesTable.js';
 
+//Scaffolding
+import Header from './base/header.js';
+import Footer from './base/footer.js';
+import Wrapper from './base/wrapper.js';
 import Home from './pages/scaffold/home.js';
 import LogIn from './pages/scaffold/logIn.js';
 import SignUp from './pages/scaffold/signUp.js';
@@ -29,12 +26,19 @@ import LoggedIn from './pages/scaffold/loggedIn.js';
 import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
 import PasswordReset from './pages/scaffold/passwordReset.js';
 
+//Project Pages
+import EmojiSliderEditor from './pages/emojiSliderEditor.js';
+import EmojiSliderViewer from './pages/viewslider.js';
+import EmojiSliderDetails from './pages/sliderDetails.js';
+import Dashboard from './pages/dashboard.js';
+import NewDomain from './pages/newDomain.js';
+import Domain from './pages/domain.js';
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loaded: false,
+            loaded: true,
             csrfmiddlewaretoken: undefined,
             User:{'user_id':'', 'user_name':'', 'user_shorthand':''}
         };
@@ -47,7 +51,6 @@ class App extends Component {
     }
 
     logOut() {
-        console.log("Log Out")
         localStorage.removeItem('token')
         window.location.href = '/login/';
     }
@@ -88,7 +91,6 @@ class App extends Component {
         if (params[0] === ""){
             //Home page
             content = <Home />
-
         } else if (params[0].toLowerCase() === "components") {
             //List components
             content = <ComponentList />;
@@ -101,8 +103,6 @@ class App extends Component {
         } else if (params[0].toLowerCase() === "page") {
             //Single page
             content = <PageManager id={params[1]} />;
-        } else if (params[0].toLowerCase() == "app") {
-            content = <ClientApp params={params.slice(1)} />;
         }
         else if (params[0].toLowerCase() == "appList") {
             content = <AppList user_id={this.state.token} logOut={this.logOut}/>;
@@ -133,6 +133,24 @@ class App extends Component {
         }
         else if (params[0].toLowerCase() == "passwordreset") {
             content = <PasswordReset  user_id={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "slider") {
+            content = <EmojiSliderViewer  slider={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "sliderdetails") {
+            content = <EmojiSliderDetails  slider={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "slidereditor") {
+            content = <EmojiSliderEditor user_id={this.state.token} domain={params[1]} slider={params[2]} />
+        }
+        else if (params[0].toLowerCase() == "dashboard") {
+            content = <Dashboard user_id={this.state.token} />
+        }
+        else if (params[0].toLowerCase() == "newdomain") {
+            content = <NewDomain user_id={this.state.token} />
+        }
+        else if (params[0].toLowerCase() == "domain") {
+            content = <Domain user_id={this.state.token} domain={params[1]} />
         }
 
 

@@ -4,14 +4,18 @@
   "private": true,
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "chart.js": "^1.1.1",
     "component-playground": "^3.1.2",
     "jquery": "^3.3.1",
     "react": "^16.3.2",
+    "react-chartjs": "^1.2.0",
+    "react-color": "^2.14.1",
     "react-dom": "^16.3.2",
     "react-easy-swipe": "0.0.16",
     "react-scripts": "1.1.4",
     "react-swipe-component": "^2.1.0",
-    "react-swipeable": "^4.3.0"
+    "react-swipeable": "^4.3.0",
+    "react-vendor-prefix": "0.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -114,9 +114,9 @@ DATABASES = {
     'default': {
         'CONN_MAX_AGE': 0,
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'componentmadness',
-        'USER': 'madness',
-        'PASSWORD': 'thisissparta',
+        'NAME': 'emoji',
+        'USER': 'emoji',
+        'PASSWORD': '.c@*9U%xk@2?E=_w',
         'HOST': '127.0.0.1',
         'PORT': '5432'
     }
