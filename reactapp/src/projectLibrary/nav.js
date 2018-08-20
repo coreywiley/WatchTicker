@@ -9,11 +9,11 @@ class Nav extends React.Component {
     }
 
     render() {
-        var name = <div><img src='../../static/images/AnexLogo.PNG' height="30" width="30" /><strong>ANEX</strong></div>;
-        var links = [['#','Analyst:'],['/projects/','Projects']];
+        var name = <div><img style={{'marginRight':'10px'}} src='https://cdn.shopify.com/s/files/1/1061/1924/files/Money_Face_Emoji.png?9898922749706957214' height="30" width="30" /><strong>Emoji Slider</strong></div>;
+        var links = [['/dashboard/','Dashboard']];
 
         return (
-            <Navbar nameLink={'/projects/'} name={name} links={links} logOut={this.props.logOut} />
+            <Navbar nameLink={'/'} name={name} links={links} logOut={this.props.logOut} />
         );
     }
 }
