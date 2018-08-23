@@ -3,6 +3,7 @@ import Wrapper from 'base/wrapper.js';
 import {Container, Button, Image, Form, TextInput, Navbar, List, Card, Header} from 'library';
 import Nav from 'projectLibrary/nav.js';
 import ajaxWrapper from 'base/ajax.js';
+import Sidebar from 'projectLibrary/sidebar.js';
 
 class Domain extends Component {
     constructor(props) {
@@ -31,8 +32,9 @@ class Domain extends Component {
       if (this.props.user_id) {
         return (
           <div>
-          <Nav />
           <div className="container">
+
+            <Sidebar domain={this.props.domain} user={this.props.user_id} />
             <Header size={2} text={this.state.name} />
             <List dataUrl={"/api/home/emojislider/?domain=" + this.props.domain} component={Card} objectName={'emojislider'} dataMapping={dataMapping} lastInstanceData={lastInstanceData} />
           </div>
@@ -42,7 +44,7 @@ class Domain extends Component {
       else {
         return (
           <div>
-            <Nav />
+            
           </div>
         );
       }

@@ -51,6 +51,7 @@ class App extends Component {
     }
 
     logOut() {
+        console.log("Log Out");
         localStorage.removeItem('token')
         window.location.href = '/login/';
     }
@@ -94,7 +95,11 @@ class App extends Component {
         } else if (params[0].toLowerCase() === "components") {
             //List components
             content = <ComponentList />;
-        } else if (params[0].toLowerCase() === "component") {
+        }
+        else if (params[0].toLowerCase() === "logout") {
+            this.logOut();
+        }
+        else if (params[0].toLowerCase() === "component") {
             //Single component page
             content = <ComponentManager id={params[1]} />;
         } else if (params[0].toLowerCase() === "pages") {
@@ -104,13 +109,13 @@ class App extends Component {
             //Single page
             content = <PageManager id={params[1]} />;
         }
-        else if (params[0].toLowerCase() == "appList") {
+        else if (params[0].toLowerCase() == "applist") {
             content = <AppList user_id={this.state.token} logOut={this.logOut}/>;
         }
         else if (params[0].toLowerCase() == "models") {
             content = <ModelList app={params[1]} user_id={this.state.token} logOut={this.logOut}/>
         }
-        else if (params[0].toLowerCase() == "modelInstances") {
+        else if (params[0].toLowerCase() == "modelinstances") {
             content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "modelInstancesTable") {
@@ -138,16 +143,16 @@ class App extends Component {
             content = <EmojiSliderViewer  slider={params[1]} />
         }
         else if (params[0].toLowerCase() == "sliderdetails") {
-            content = <EmojiSliderDetails  slider={params[1]} />
+            content = <EmojiSliderDetails user_id={this.state.token} domain={params[1]} slider={params[2]} logOut={this.logOut} />
         }
         else if (params[0].toLowerCase() == "slidereditor") {
-            content = <EmojiSliderEditor user_id={this.state.token} domain={params[1]} slider={params[2]} />
+            content = <EmojiSliderEditor user_id={this.state.token} domain={params[1]} slider={params[2]} logOut={this.logOut} />
         }
         else if (params[0].toLowerCase() == "dashboard") {
-            content = <Dashboard user_id={this.state.token} />
+            content = <Dashboard user_id={this.state.token} logOut={this.logOut} />
         }
         else if (params[0].toLowerCase() == "newdomain") {
-            content = <NewDomain user_id={this.state.token} />
+            content = <NewDomain user_id={this.state.token} logOut={this.logOut} />
         }
         else if (params[0].toLowerCase() == "domain") {
             content = <Domain user_id={this.state.token} domain={params[1]} />

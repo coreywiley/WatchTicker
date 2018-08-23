@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Wrapper from 'base/wrapper.js';
 import {Container, Button, Image, Form, TextInput, Navbar, List, Card, Header} from 'library';
 import Nav from 'projectLibrary/nav.js';
-
+import Sidebar from 'projectLibrary/sidebar.js';
 class Dashboard extends Component {
     constructor(props) {
         super(props);
@@ -20,9 +20,10 @@ class Dashboard extends Component {
         return (
           <div>
           <Nav />
-          <div className="container">
-            <Header size={2} text={'Domains'} />
-            <List dataUrl={"/api/home/domain/?user=" + this.props.user_id} component={Card} objectName={'domain'} dataMapping={dataMapping} lastInstanceData={lastInstanceData} />
+          <Sidebar domain={"None"} user={this.props.user_id} />
+          <div className="container" style={{'marginTop':'100px'}}>
+            <Header size={2} text={'Welcome To Slide Moji'} />
+            <p>To Get Started Add A New Domain On The Left</p>
           </div>
           </div>
         );

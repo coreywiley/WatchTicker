@@ -3,7 +3,8 @@ import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 
 import {Form, TextInput, Select, PasswordInput, Navbar} from 'library';
-import Nav from 'projectLibrary/loggedOutNav.js';
+import Nav from 'projectLibrary/nav.js';
+import Sidebar from 'projectLibrary/loggedOutSidebar.js';
 
 class SignUp extends Component {
     constructor(props) {
@@ -37,7 +38,7 @@ class SignUp extends Component {
 
         var submitUrl = "/api/user/user/";
 
-        var content = <div className="container">
+        var content = <div className="container" style={{'marginTop':'100px'}}>
                 <h2>Sign Up</h2>
                 <Form components={Components} redirect={this.logIn} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
         </div>;
@@ -46,6 +47,7 @@ class SignUp extends Component {
         return (
             <div>
             <Nav />
+            <Sidebar />
             <Wrapper loaded={true} content={content} />
             </div>
              );

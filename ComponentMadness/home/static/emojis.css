@@ -1515,3 +1515,12 @@
 .flag-for-england::before { content:'\01F3F4'; }
 .flag-for-scotland::before { content:'\01F3F4'; }
 .flag-for-wales::before { content:'\01F3F4'; }
+
+
+.progress .progress-bar {
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+  transition: none;
+  }

@@ -4,6 +4,7 @@ import Wrapper from 'base/wrapper.js';
 
 import {Form, TextInput, Select, PasswordInput, Navbar, Header} from 'library';
 import Nav from 'projectLibrary/nav.js';
+import Sidebar from 'projectLibrary/sidebar.js';
 
 class NewDomain extends Component {
 
@@ -17,18 +18,27 @@ class NewDomain extends Component {
 
         var submitUrl = "/api/home/domain/";
 
-        var content = <div className="container">
+        var content = <div className="container" style={{'marginTop':'100px'}}>
                 <Header size={2} text={'Add New Domain'} />
                 <Form components={Components} redirectUrl={'/dashboard/'} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
         </div>;
 
-
-        return (
-            <div>
+        if (this.props.user_id) {
+          return (
+              <div>
               <Nav />
-              <Wrapper loaded={true} content={content} />
-            </div>
-             );
+                <Sidebar domain={"New"} user={this.props.user_id} logOut={this.props.logOut} />
+                <Wrapper loaded={true} content={content} />
+              </div>
+               );
+        }
+        else {
+          return (
+              <div>
+              </div>
+               );
+        }
+
     }
 }
 export default NewDomain;

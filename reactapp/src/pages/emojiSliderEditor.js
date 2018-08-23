@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Wrapper from 'base/wrapper.js';
 import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Select, ColorPicker, EmojiList, EmojiSlider} from 'library';
 import ajaxWrapper from 'base/ajax.js';
+import Nav from 'projectLibrary/nav.js';
+import Sidebar from 'projectLibrary/sidebar.js';
 
 class EmojiSliderEditor extends Component {
     constructor(props) {
@@ -20,6 +22,7 @@ class EmojiSliderEditor extends Component {
         };
         this.setGlobalState = this.setGlobalState.bind(this);
         this.getSliderData = this.getSliderData.bind(this);
+        this.redirect = this.redirect.bind(this);
     }
 
     setGlobalState(name, value) {
@@ -30,7 +33,7 @@ class EmojiSliderEditor extends Component {
 
     componentDidMount() {
       if (this.props.slider) {
-        ajaxWrapper('GET','/api/home/emojislider/', {}, this.getSliderData)
+        ajaxWrapper('GET','/api/home/emojislider/' + this.props.slider + '/', {}, this.getSliderData)
       }
       else {
         this.setState({'loaded':true})
@@ -44,6 +47,12 @@ class EmojiSliderEditor extends Component {
         emojiForm[index] = slider[index]
       }
       this.setState({loaded:true, emojiForm: emojiForm})
+    }
+
+    redirect(result) {
+      console.log("Result",result);
+      var url = '/sliderDetails/' + this.props.domain + '/' + result[0]['emojislider']['id'] + '/';
+      window.location.href = url;
     }
 
     render() {
@@ -72,14 +81,28 @@ class EmojiSliderEditor extends Component {
 
       var redirectUrl = '/domain/' + this.props.domain + '/';
 
-        return (
-          <div className="container">
+      var content =<div className="container" style={{'marginTop':'50px'}}>
           <EmojiSlider {...this.state.emojiForm} />
-          <div >
-          <Form components={Components} submitUrl={submitUrl} redirectUrl={redirectUrl} autoSetGlobalState={true} first={true} globalStateName={'emojiForm'} setGlobalState={this.setGlobalState} componentProps={ComponentProps} defaults={this.state.emojiForm} />
+            <div >
+              <Form components={Components} submitUrl={submitUrl} redirect={this.redirect} autoSetGlobalState={true} first={true} globalStateName={'emojiForm'} setGlobalState={this.setGlobalState} componentProps={ComponentProps} defaults={this.state.emojiForm} />
+            </div>
           </div>
-          </div>
-        );
+
+          if (this.props.user_id) {
+            return (
+                <div>
+                  <Nav />
+                  <Sidebar domain={this.props.domain} user={this.props.user_id} logOut={this.props.logOut} />
+                  <Wrapper loaded={true} content={content} />
+                </div>
+                 );
+          }
+          else {
+            return (
+                <div>
+                </div>
+            );
+          }
     }
 }
 

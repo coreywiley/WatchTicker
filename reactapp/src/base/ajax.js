@@ -1,10 +1,10 @@
 import $ from 'jquery';
 
-function error(xhr, status, erro) {
+function handleerror(xhr, status, erro) {
   console.log("Ajax Failure")
   console.log(xhr.responseText);
   console.log(status)
-  console.log(error)
+  console.log(erro)
 }
 
 function ajaxWrapper(type, url, data, returnFunc){
@@ -24,7 +24,7 @@ function ajaxWrapper(type, url, data, returnFunc){
               returnFunc(value);
           },
           error: function(xhr, status, error) {
-              error(xhr,status,error)
+              handleerror(xhr,status,error)
           }
       });
 

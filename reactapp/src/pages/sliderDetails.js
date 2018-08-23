@@ -3,6 +3,8 @@ import Wrapper from 'base/wrapper.js';
 import {Container, Button, Image, Form, TextInput, Navbar, List, Table, Accordion, Paragraph, RadioButton, TextArea, Header, Select, ColorPicker, EmojiList, EmojiSlider} from 'library';
 import ajaxWrapper from 'base/ajax.js';
 import Nav from 'projectLibrary/nav.js';
+import Sidebar from 'projectLibrary/sidebar.js';
+
 var LineChart = require("react-chartjs").Line;
 
 class EmojiSliderDetails extends Component {
@@ -22,8 +24,12 @@ class EmojiSliderDetails extends Component {
             impressionsByDay: [0,0,0,0,0,0,0],
             clicksByDay: [0,0,0,0,0,0,0],
             slidesByDay: [0,0,0,0,0,0,0],
+            uniquesByDay: [0,0,0,0,0,0,0],
             slides: [],
             slideAverage: 0,
+            totalSlides: 0,
+            totalImpressions: 0,
+            totalUniques: 0,
             dates: [],
         };
         this.getSliderData = this.getSliderData.bind(this);
@@ -61,20 +67,31 @@ class EmojiSliderDetails extends Component {
 
     impressionsData(result) {
       var impressionsByDay = [0,0,0,0,0,0,0]
+      var uniquesByDay = [0,0,0,0,0,0,0]
+      var ipList = []
+      var totalImpressions = 0;
+      var totalUniques = 0;
       var dates = this.state.dates;
       for (var index in result) {
         var impression = result[index]['sliderimpressions']
         var date = impression['date'].substring(0,10);
         var dateIndex = dates.indexOf(date);
         impressionsByDay[dateIndex] += 1;
+        totalImpressions += 1;
+        if (ipList.indexOf(impression.ip) == -1) {
+          ipList.push(impression.ip);
+          uniquesByDay[dateIndex] += 1;
+          totalUniques += 1;
+        }
       }
-      this.setState({impressionsByDay:impressionsByDay})
+      this.setState({impressionsByDay:impressionsByDay, uniquesByDay:uniquesByDay, totalImpressions:totalImpressions, totalUniques:totalUniques})
     }
 
     answersData(result) {
       var clicksByDay = [0,0,0,0,0,0,0]
       var slidesByDay = [0,0,0,0,0,0,0]
       var slides = []
+      var totalSlides = 0;
       var slideTotal = 0;
       var dates = this.state.dates;
       for (var index in result) {
@@ -88,10 +105,11 @@ class EmojiSliderDetails extends Component {
           slidesByDay[dateIndex] += 1;
           slides.push([date,answer['ip'],answer['value']]);
           slideTotal += answer['value']
+          totalSlides += 1
         }
       }
       var slideAverage = Math.floor(slideTotal/slides.length)
-      this.setState({slideAverage: slideAverage, slides:slides, slidesByDay:slidesByDay, clicksByDay:clicksByDay, loaded: true})
+      this.setState({slideAverage: slideAverage, slides:slides,totalSlides:totalSlides, slidesByDay:slidesByDay, clicksByDay:clicksByDay, loaded:true})
     }
 
     getSliderData(result) {
@@ -108,34 +126,45 @@ class EmojiSliderDetails extends Component {
       var data = {
         labels: this.state.dates,
         datasets: [{
+            fillColor:"rgba(255,255,255,0)",
+
             data: this.state.impressionsByDay,
-            fillColor:"rgba(220,220,220,0.2)",
             label:"Impressions By Day",
-            pointColor:"rgba(220,220,220,1)",
+            pointColor:"#ff6384",
             pointHighlightFill:"#fff",
-            pointHighlightStroke:"rgba(220,220,220,1)",
+            pointHighlightStroke:"#ff6384",
             pointStrokeColor:"#fff",
-            strokeColor:"rgba(220,220,220,1)"
+            strokeColor:"#ff6384",
           },
           {
+              fillColor:"rgba(255,255,255,0)",
+              data: this.state.uniquesByDay,
+              label:"Uniques By Day",
+              pointColor:"#36a2eb",
+              pointHighlightFill:"#fff",
+              pointHighlightStroke:"#36a2eb",
+              pointStrokeColor:"#fff",
+              strokeColor:"#36a2eb",
+            },
+          {
+            fillColor:"rgba(255,255,255,0)",
             data: this.state.clicksByDay,
-            fillColor:"rgba(151,187,205,0.2)",
             label:"Clicks By Day",
-            pointColor:"rgba(151,187,205,1)",
+            pointColor:"#33cab9",
             pointHighlightFill:"#fff",
-            pointHighlightStroke:"rgba(151,187,205,1)",
+            pointHighlightStroke:"#33cab9",
             pointStrokeColor:"#fff",
-            strokeColor:"rgba(151,187,205,1)"
+            strokeColor:"#33cab9",
           },
           {
+            fillColor:"rgba(255,255,255,0)",
             data: this.state.slidesByDay,
-            fillColor:"rgba(255,140,0,0.2)",
             label:"Slides By Day",
-            pointColor:"rgba(255,69,0,1)",
+            pointColor:"#9966ff",
             pointHighlightFill:"#fff",
-            pointHighlightStroke:"rgba(255,69,0,1)",
+            pointHighlightStroke:"#9966ff",
             pointStrokeColor:"#fff",
-            strokeColor:"rgba(255,69,0,1)"
+            strokeColor:"#9966ff",
           }
 
 
@@ -155,37 +184,138 @@ class EmojiSliderDetails extends Component {
                            fontSize: 40
                         }
                   }]
-              }
+              },
+              elements: {line:{fill:false}}
       };
 
       if (this.state.loaded == true) {
         var canvas_width = document.getElementById('body').getBoundingClientRect().width;
       var content = <div>
       <EmojiSlider {...this.state.emojiForm} handleStart={this.sliderStart} handleStop={this.sliderStop} live={false} width={this.state.slideAverage} />
-      <Button href={'/sliderEditor/' + this.state.emojiForm.domain + '/' + this.props.slider + '/'} text={"Edit Slider"} type={'primary'} />
+      <div style={{'textAlign':'center'}}>
+      <Button href={'/sliderEditor/' + this.state.emojiForm.domain_id + '/' + this.props.slider + '/'} text={"Edit Slider"} type={'primary'} />
+      </div>
       <Header size={4} text={'HTML Code'} />
-      <Paragraph text={'<iframe src="http://emoji.jthiesen1.webfactional.com/slider/' + this.props.slider + '/" width="' + this.state.emojiForm.width + '" frameBorder="0" seamless>Browser not compatible.</iframe>'} />
+      <Paragraph text={'<iframe src="https://slidemoji.com/slider/' + this.props.slider + '/" width="' + this.state.emojiForm.width + '" frameBorder="0" height="300px" seamless>Browser not compatible.</iframe>'} />
 
-      <Header size={2} text={'Slider Data'} />
-      <LineChart data={data} options={options} width={canvas_width} />
-
+      <div className="card">
+            <div className="card-header">
+                <h5 className="card-title">Slider Data</h5>
+              </div>
       <Table headers={['Date','IP','Value']} data={this.state.slides} />
+      </div>
       </div>
     }
     else {
       var content=<div></div>
     }
 
-        return (
-          <div>
-          <Nav />
-          <div id="body" className="container">
+    if (this.props.user_id) {
+      var sidebar = <Sidebar domain={this.props.domain} user={this.props.user_id} />;
+    }
+    else {
+      var sidebar = <div></div>
+    }
+    if (this.state.loaded == true) {
+      var lineChart = <LineChart data={data} options={options} width={canvas_width*.9} height={canvas_width*.9/3} />
+    }
+    else {
+      var lineChart = <div></div>
+    }
 
-              <Wrapper content={content} loaded={this.state.loaded} />
-          </div>
-          </div>
+      return (
+        <div style={{'backgroundColor':'#f5f6fa'}}>
+        <Nav />
+        {sidebar}
+        <div className="container" style={{'marginTop':'50px'}}>
+        <div className="main-content">
+          <div className="row">
 
-        );
+
+
+
+
+            <div className="col-md-4">
+              <div className="card card-body">
+                <div className="flexbox">
+                    <span className="fw-400">Total Uniques</span><br />
+                    <span>
+                      <span className="fs-18 ml-1">{this.state.totalUniques}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div className="col-md-4">
+                <div className="card card-body">
+                  <div className="flexbox">
+                      <span className="fw-400">Total Slides</span><br />
+                      <span>
+                        <span className="fs-18 ml-1">{this.state.totalSlides}</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <div className="col-md-4">
+                  <div className="card card-body">
+                    <div className="flexbox">
+                        <span className="fw-400">Total Impressions</span><br />
+                        <span>
+                          <span className="fs-18 ml-1">{this.state.totalImpressions}</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+
+
+
+
+
+            <div className="col-md-12" id="body">
+              <div className="card">
+                <div className="card-header">
+                  <h5 className="card-title"><strong>Engagement</strong></h5>
+                </div>
+
+                <div className="card-body">
+                  <ul className="list-inline text-center gap-items-4 mb-30">
+                    <li className="list-inline-item">
+                      <i className="fas fa-circle" style={{"color": "#33cab9"}}></i>
+                      <span>Clicks</span>
+                    </li>
+                    <li className="list-inline-item">
+                      <i className="fas fa-circle" style={{"color": "#9966ff"}}></i>
+                      <span>Slides</span>
+                    </li>
+                    <li className="list-inline-item">
+                      <i className="fas fa-circle" style={{"color": "#36a2eb"}}></i>
+                      <span>Uniques</span>
+                    </li>
+                    <li className="list-inline-item">
+                      <i className="fas fa-circle" style={{"color": "#ff6384"}}></i>
+                      <span>Impressions</span>
+                    </li>
+                  </ul>
+
+                  {lineChart}
+                </div>
+              </div>
+            </div>
+            </div>
+            </div>
+            <Wrapper content={content} loaded={this.state.loaded} />
+
+        </div>
+        </div>
+           );
     }
 }
 

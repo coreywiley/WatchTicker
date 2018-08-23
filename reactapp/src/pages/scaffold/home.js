@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import Wrapper from 'base/wrapper.js';
 
 import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header} from 'library';
-import Nav from 'projectLibrary/loggedOutNav.js';
+import Nav from 'projectLibrary/nav.js';
+import Sidebar from 'projectLibrary/loggedOutSidebar.js';
 
 class Home extends Component {
     constructor(props) {
@@ -19,7 +20,7 @@ class Home extends Component {
 
     render() {
       var content =
-      <div className="container">
+      <div className="container" style={{'marginTop':'100px'}}>
             <div className="jumbotron">
               <h1>Emoji Slider!</h1>
               <p className="lead">Get instant engagement with your polls and questions using an emoji slider.</p>
@@ -48,6 +49,7 @@ class Home extends Component {
         return (
           <div>
           <Nav />
+          <Sidebar />
           <Wrapper loaded={true} content={content} />
           </div>
         );
