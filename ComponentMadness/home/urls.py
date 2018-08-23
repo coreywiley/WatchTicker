@@ -16,6 +16,7 @@ urlpatterns = [
 
     #user imports
     url(r'^users/', include('user.urls', namespace="user")),
+    #url('.well-known/acme-challenge/z7Y0o3le2Po40wHvRqo156azux1C4t33oqJPw3BRczs', ),
 
     #Catch statements for React
     url(r'^$', Index, name='index'),

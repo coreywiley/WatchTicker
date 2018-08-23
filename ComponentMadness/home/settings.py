@@ -143,8 +143,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/static/images/'
 
-STATIC_ROOT = ""
-MEDIA_ROOT = ""
+STATIC_ROOT = "/home/jthiesen1/webapps/emoji_api/ComponentMadness/home/static/"
+MEDIA_ROOT = "/home/jthiesen1/webapps/emoji_api/ComponentMadness/home/static/images/"
 
 
 

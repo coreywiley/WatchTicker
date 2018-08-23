@@ -29,7 +29,7 @@ def staff_required(function):
     return wrapper
 
 def GetUser(request):
-    email = request.POST['email']
+    email = request.POST['email'].lower()
     password = request.POST['password']
 
 
