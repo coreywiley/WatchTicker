@@ -43,6 +43,7 @@ def getModelFieldsJson(request,appLabel,modelName):
     modelFields = getModelFields(model)
     return JsonResponse(modelFields, safe=False)
 
+@csrf_exempt
 def getModelInstanceJson(request, appLabel, modelName, id=None):
     print ("Request : %s" % (request.GET))
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
@@ -210,8 +211,6 @@ def deleteModelInstance(request,appLabel,modelName,id):
     model.objects.filter(id=id).delete()
 
     return JsonResponse({'success':True})
-
-
 
 
 def writeComponents(request):

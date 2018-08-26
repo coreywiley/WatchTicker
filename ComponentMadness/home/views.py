@@ -14,9 +14,10 @@ import csv
 
 import json
 import os
-
+from django.views.decorators.clickjacking import xframe_options_exempt
 #from user.views import my_login_required
 
+@xframe_options_exempt
 def Index(request, param = "", param2 = "", param3 = "", param4 = ""):
     if request.META['HTTP_HOST'] == "localhost:8000":
         #In development mode this connects to the live React Node server
