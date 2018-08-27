@@ -9,6 +9,9 @@ from user.views import staff_required
 from django.views.decorators.csrf import csrf_exempt
 from modelWebsite.helpers.databaseOps import insert
 
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+
 import os
 import csv
 import io
@@ -21,7 +24,10 @@ def CSRFMiddlewareToken(request):
     csrfmiddlewaretoken = django.middleware.csrf.get_token(request)
     return JsonResponse({'csrfmiddlewaretoken':csrfmiddlewaretoken}, status=200)
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def getApps(request):
+    print (request.user)
     djangoApps = []
     for app in apps.get_app_configs():
         djangoApps.append({'app':{'name':app.name}})

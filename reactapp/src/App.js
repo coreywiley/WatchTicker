@@ -104,7 +104,7 @@ class App extends Component {
         } else if (params[0].toLowerCase() == "app") {
             content = <ClientApp params={params.slice(1)} />;
         }
-        else if (params[0].toLowerCase() == "appList") {
+        else if (params[0].toLowerCase() == "applist") {
             content = <AppList user_id={this.state.token} logOut={this.logOut}/>;
         }
         else if (params[0].toLowerCase() == "models") {

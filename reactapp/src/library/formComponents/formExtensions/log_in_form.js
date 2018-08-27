@@ -37,7 +37,9 @@ class LogInForm extends Component {
         }
         else {
           console.log("User",value);
-            localStorage.setItem('token', value['user']['id']);
+            localStorage.setItem('token', value['access']);
+            localStorage.setItem('refresh_token', value['refresh'])
+            localStorage.setItem('token_time', new Date())
             if (localStorage.getItem('redirect')) {
                 var redirect = localStorage.getItem('redirect');
                 localStorage.removeItem('redirect')

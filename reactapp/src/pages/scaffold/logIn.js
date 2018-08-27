@@ -26,16 +26,13 @@ class LogIn extends Component {
         <div className="container">
             <div className="row">
                 <div className="col-md-4"></div>
-                <div className="col-md-4"><LogInForm redirectUrl={'/loggedIn/'} defaults={['','']} submitUrl={'/users/authenticate-user/'} components={[TextInput, PasswordInput]} componentProps={[{'value':'','placeholder':'Email', 'name':'email','label':'Email'},{'value':'','placeholder':'Password', 'name':'password'}]} /></div>
+                <div className="col-md-4"><LogInForm redirectUrl={'/loggedIn/'} defaults={['','']} submitUrl={'/users/token/'} components={[TextInput, PasswordInput]} componentProps={[{'value':'','placeholder':'Email', 'name':'email','label':'Email'},{'value':'','placeholder':'Password', 'name':'password'}]} /></div>
                 <div className="col-md-4"></div>
             </div>
-
         </div>;
 
-
-
         return (
-            <Wrapper loaded={this.state.loaded}  content={content} />
+            <Wrapper loaded={this.state.loaded} content={content} />
         );
     }
 }

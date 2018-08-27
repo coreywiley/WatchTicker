@@ -9,8 +9,8 @@ from user.models import UserManager, User
 import json
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
-
 from rest_framework.permissions import IsAuthenticated
+
 # Create your views here.
 def my_login_required(function):
     def wrapper(request, *args, **kw):
@@ -28,18 +28,10 @@ def staff_required(function):
             return function(request, *args, **kw)
     return wrapper
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def GetUser(request):
-    email = request.POST['email']
-    password = request.POST['password']
-
-
-    user = authenticate(username=email, password=password)
-    if not user:
-        return JsonResponse({'error':'No user found.'})
-
-    else:
-        return JsonResponse({'user':{'id':user.id}})
-
+    return JsonResponse({'id':request.user.id})
 
 
 @csrf_exempt
