@@ -32,11 +32,16 @@ def dumpInstance(modelName, fields, instance, related = []):
         if field[0] == 'password':
             continue
 
+        countReturn = False
         newRelated = []
         for relation in related:
             search = field[0] + "__"
             if relation.startswith(search):
                 newRelated.append(relation[len(search):])
+
+                #Flags wether to return a count value for ManytoMany fields
+                if relation[len(search):] == "count":
+                    countReturn = True
 
         #print ("New Related : %s" % (newRelated))
         if field[1] in ['ForeignKey','ManyToManyField']:
@@ -46,11 +51,15 @@ def dumpInstance(modelName, fields, instance, related = []):
                 print (e)
                 continue
             if type(getattr(instance, field[0])).__name__ in ['ManyRelatedManager',"RelatedManager"]:
-                if field[0] not in related:
+                if field[0] not in related and field[0] + "__count" not in related:
                     continue
-                foreignKeyDict = getInstancesJson(field[2], field[3], instanceQuery=getattr(instance, field[0]).all(),
-                                                  related = newRelated)
-                jsonInstance[modelName][field[0]] = foreignKeyDict
+
+                if countReturn:
+                    jsonInstance[modelName][field[0]] = getattr(instance, field[0]).count()
+                else:
+                    foreignKeyDict = getInstancesJson(field[2], field[3], instanceQuery=getattr(instance, field[0]).all(),
+                                                      related = newRelated)
+                    jsonInstance[modelName][field[0]] = foreignKeyDict
 
             else:
                 if field[0] not in related:
