@@ -144,8 +144,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/static/images/'
 
-STATIC_ROOT = ""
-MEDIA_ROOT = ""
+STATIC_ROOT = "static/"
+MEDIA_ROOT = "static/images/"
 
 
 LOGGING = {
