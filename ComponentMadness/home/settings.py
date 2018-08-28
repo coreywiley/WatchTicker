@@ -115,9 +115,9 @@ DATABASES = {
     'default': {
         'CONN_MAX_AGE': 0,
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'componentmadness',
-        'USER': 'madness',
-        'PASSWORD': 'thisissparta',
+        'NAME': 'eecodesearch_pgql',
+        'USER': 'eecode',
+        'PASSWORD': 'eecodeadmin',
         'HOST': '127.0.0.1',
         'PORT': '5432'
     }
@@ -146,7 +146,6 @@ MEDIA_URL = '/static/images/'
 
 STATIC_ROOT = ""
 MEDIA_ROOT = ""
-
 
 
 LOGGING = {
