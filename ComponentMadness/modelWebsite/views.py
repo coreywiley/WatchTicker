@@ -92,6 +92,8 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
     print (values_list)
     print ("Parameters",parameters)
 
+
+    excluded = {}
     for parameter in parameters:
         if ',' in parameters[parameter]:
             parameters[parameter] = parameters[parameter].split(',')
@@ -99,6 +101,10 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             parameters[parameter] = True
         elif parameters[parameter] == 'false':
             parameters[parameter] = False
+
+        if parameter.startswith("exclude__"):
+            excluded[parameter.replace("exclude__","")] = parameters[parameter]
+            del parameters[parameter]
 
     print ("Related : %s" % (related))
 
@@ -118,9 +124,9 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             if len(values_list) == 1:
                 instancesData = []
                 if len(values_list) > 1:
-                    query = model.objects.filter(**parameters).values_list(*values_list).prefetch_related(*related).order_by(*order_by)
+                    query = model.objects.filter(**parameters).exclude(**excluded).values_list(*values_list).prefetch_related(*related).order_by(*order_by)
                 else:
-                    query = model.objects.filter(**parameters).values_list(*values_list,flat=True).prefetch_related(*related).order_by(*order_by)
+                    query = model.objects.filter(**parameters).exclude(**excluded).values_list(*values_list,flat=True).prefetch_related(*related).order_by(*order_by)
                 if limit > 0:
                     query = query[:limit]
                 for instance in query:
@@ -128,7 +134,7 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
                 instances = {}
                 instances[modelName] = instancesData
             else:
-                instanceQuery = model.objects.filter(**parameters).prefetch_related(*related).order_by(*order_by)
+                instanceQuery = model.objects.filter(**parameters).exclude(**excluded).prefetch_related(*related).order_by(*order_by)
                 if len(preferences__has) > 0:
                     print ('Preferences_Has')
                     for item in preferences__has:
