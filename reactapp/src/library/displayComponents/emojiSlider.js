@@ -92,10 +92,15 @@ class EmojiSlider extends Component {
         fontSize:"40px",
       }
 
+        var classCss = 'bubble you';
+        if (this.state.width > 50) {
+          classCss = 'bubble right';
+        }
+
         var emojiIcon = <div>
         <Draggable axis="x" onStart={this.handleStart} onDrag={this.handleDrag} onStop={this.handleStop} bounds={{left:-50, right:this.state.total_width - 50}} defaultPosition={{x:-50,y:0}} >
           <div className={this.props.emoji} style={draggableStyle}><div className={"chat " + this.state.hidden}>
-            <div class="bubble you">{this.state.chatText}</div>
+            <div class={classCss}>{this.state.chatText}</div>
           </div></div>
           </Draggable></div>;
         if (this.state.animate == true) {
@@ -104,7 +109,7 @@ class EmojiSlider extends Component {
           var emojiIcon = <div>
           <Draggable axis="x" onStart={this.handleStart} onDrag={this.handleDrag} onStop={this.handleStop} bounds={{left:-50, right:this.state.total_width - 50}} defaultPosition={position} position={position}>
             <div className={this.props.emoji} style={draggableStyle} position={position}><div className={"chat " + this.state.hidden}>
-              <div class="bubble you">{this.state.chatText}</div>
+              <div class={classCss}>{this.state.chatText}</div>
             </div></div>
             </Draggable></div>;
         }
@@ -112,7 +117,7 @@ class EmojiSlider extends Component {
           var emojiIcon = <Draggable axis="none" bounds={{left:-50, right:this.state.total_width - 50}} defaultPosition={{x:-50 + this.state.total_width*this.props.width/100,y:0}} >
 
             <div className={this.props.emoji} style={draggableStyle}><div className={"chat " + this.state.hidden}>
-              <div class="bubble you">{this.state.chatText}</div>
+              <div class={classCss}>{this.state.chatText}</div>
             </div></div>
             </Draggable>;
           progressBarStyle = {"width": this.props.width + "%", 'backgroundColor': this.props.progress_bar_color}

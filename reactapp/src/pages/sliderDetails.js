@@ -196,7 +196,7 @@ class EmojiSliderDetails extends Component {
       <Button href={'/sliderEditor/' + this.state.emojiForm.domain_id + '/' + this.props.slider + '/'} text={"Edit Slider"} type={'primary'} />
       </div>
       <Header size={4} text={'HTML Code'} />
-      <Paragraph text={'<iframe src="https://slidemoji.com/slider/' + this.props.slider + '/" width="' + this.state.emojiForm.width + '" frameBorder="0" height="300px" seamless>Browser not compatible.</iframe>'} />
+      <Paragraph text={'<iframe src="https://slidemoji.com/slider/' + this.props.slider + '/" width="' + this.state.emojiForm.width + '" frameBorder="0" height="300px" scrolling="no" seamless>Browser not compatible.</iframe>'} />
 
       <div className="card">
             <div className="card-header">
