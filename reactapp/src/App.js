@@ -29,6 +29,8 @@ import LoggedIn from './pages/scaffold/loggedIn.js';
 import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
 import PasswordReset from './pages/scaffold/passwordReset.js';
 
+import CodeViewer from './pages/codeViewer.js';
+
 
 class App extends Component {
     constructor(props) {
@@ -79,6 +81,9 @@ class App extends Component {
     }
 
     render() {
+        var logOut = null;
+        if (this.state.token){ logOut = this.logOut}
+
         console.log(this.props);
         var params = this.getURL();
         console.log("Params", params);
@@ -105,19 +110,19 @@ class App extends Component {
             content = <ClientApp params={params.slice(1)} />;
         }
         else if (params[0].toLowerCase() == "applist") {
-            content = <AppList user_id={this.state.token} logOut={this.logOut}/>;
+            content = <AppList user_id={this.state.token} logOut={logOut}/>;
         }
         else if (params[0].toLowerCase() == "models") {
-            content = <ModelList app={params[1]} user_id={this.state.token} logOut={this.logOut}/>
+            content = <ModelList app={params[1]} user_id={this.state.token} logOut={logOut}/>
         }
         else if (params[0].toLowerCase() == "modelInstances") {
-            content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token} logOut={this.logOut}/>
+            content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token} logOut={logOut}/>
         }
         else if (params[0].toLowerCase() == "modelInstancesTable") {
-            content = <InstanceTable app={params[1]} model={params[2]} logOut={this.logOut}/>
+            content = <InstanceTable app={params[1]} model={params[2]} logOut={logOut}/>
         }
         else if (params[0].toLowerCase() == "instance") {
-            content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token} logOut={this.logOut}/>
+            content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token} logOut={logOut}/>
         }
         else if (params[0].toLowerCase() == "login") {
             content = <LogIn />
@@ -126,7 +131,7 @@ class App extends Component {
             content = <SignUp />
         }
         else if (params[0].toLowerCase() == "loggedin") {
-            content = <LoggedIn  logOut={this.logOut} />
+            content = <LoggedIn  logOut={logOut} />
         }
         else if (params[0].toLowerCase() == "passwordresetrequest") {
             content = <PasswordResetRequest />
@@ -135,10 +140,15 @@ class App extends Component {
             content = <PasswordReset  user_id={params[1]} />
         }
 
+        else if (params[0].toLowerCase() == "viewer") {
+            content = <CodeViewer user_id={this.state.token} />
+        }
+
 
         return (
             <div className="App">
-                <Wrapper content={content} loaded={this.state.loaded} />
+                <Wrapper token={this.state.token} navbar={true} logOut={logOut}
+                    content={content} loaded={this.state.loaded} />
             </div>
         );
     }
