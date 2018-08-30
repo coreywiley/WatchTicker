@@ -19,13 +19,10 @@ class Home extends Component {
     render() {
       var content =
         <div>
-          <p>Welcome Home!</p>
-          <Button href={'/signUp/'} text={"Sign Up"} type={'success'} />
-          <Button href={'/logIn/'} text={"Log In"} type={'primary'} />
         </div>;
 
         return (
-            <Wrapper loaded={this.state.loaded}  content={content} />
+            <Wrapper token={this.props.user_id} loaded={this.state.loaded}  content={content} />
         );
     }
 }
