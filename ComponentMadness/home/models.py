@@ -15,18 +15,8 @@ class Page(models.Model):
     def __str__(self):
         return u"{}".format(self.number)
 
-
-class Article(models.Model):
-    name = models.CharField(default = "", max_length=200, null = False)
-    pages = models.ManyToManyField(Page, blank=True, related_name='articles')
-
-    text = models.TextField(default = "")
-
-
-class Section(models.Model):
-    name = models.CharField(default="", max_length=200, null=False)
-
-    text = models.TextField(default = "")
+    class Meta:
+        ordering = ['number']
 
 
 class Tag(models.Model):
@@ -37,6 +27,23 @@ class Synonym(models.Model):
     name = models.CharField(default="", max_length=200, null=False)
 
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name='synonyms')
+
+
+class Article(models.Model):
+    name = models.CharField(default = "", max_length=200, null = False)
+
+    startPage = models.ForeignKey(Page, on_delete=models.CASCADE, blank=False, related_name='articles')
+    endPage = models.ForeignKey(Page, on_delete=models.CASCADE, blank=False, related_name='articleEndings')
+
+    text = models.TextField(default = "")
+
+    tags = models.ManyToManyField(Tag, blank=True, related_name='tags')
+
+
+class Section(models.Model):
+    name = models.CharField(default="", max_length=200, null=False)
+
+    text = models.TextField(default = "")
 
 
 class Search(models.Model):
