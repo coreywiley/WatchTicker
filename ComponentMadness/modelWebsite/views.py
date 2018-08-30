@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.apps import apps
+from django.db.models import Q
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseForbidden, HttpResponseRedirect
 import django
 from django.conf import settings
@@ -69,16 +70,6 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
         values_list = parameters['values_list'].split(',')
         del parameters['values_list']
 
-    amenities__has = []
-    if 'amenities__has' in parameters:
-        amenities__has = parameters['amenities__has'].split(',')
-        del parameters['amenities__has']
-
-    preferences__has = []
-    if 'preferences__has' in parameters:
-        preferences__has = parameters['preferences__has'].split(',')
-        del parameters['preferences__has']
-
     limit = 0
     if 'limit' in parameters:
         limit = int(parameters['limit'])
@@ -92,8 +83,9 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
     print (values_list)
     print ("Parameters",parameters)
 
-
     excluded = {}
+    orFilters = None
+    newParameters = parameters.copy()
     for parameter in parameters:
         if ',' in parameters[parameter]:
             parameters[parameter] = parameters[parameter].split(',')
@@ -103,8 +95,16 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             parameters[parameter] = False
 
         if parameter.startswith("exclude__"):
-            excluded[parameter.replace("exclude__","")] = parameters[parameter]
-            del parameters[parameter]
+            excluded[parameter.replace("exclude__", "")] = parameters[parameter]
+            del newParameters[parameter]
+        elif parameter.startswith("or__"):
+            if not orFilters:
+                orFilters = Q(**{parameter.replace("or__", ""): parameters[parameter]})
+            else:
+                orFilters.add(Q(**{parameter.replace("or__", ""): parameters[parameter]}), Q.OR)
+            del newParameters[parameter]
+
+    parameters = newParameters
 
     print ("Related : %s" % (related))
 
@@ -118,38 +118,38 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
                 instance = model.objects.filter(id=int(id)).prefetch_related(*related).first()
 
             instances = getInstanceJson(appLabel, modelName, instance, related=related)
-        #page for adding a new instance
-        elif not id:
+
+        else:
             #gets instances queried by kwargs for a filtered list of the database
-            if len(values_list) == 1:
+            instanceQuery = model.objects.filter(**parameters)
+            if orFilters:
+                instanceQuery = instanceQuery.filter(orFilters)
+
+            instanceQuery = instanceQuery.exclude(**excluded).prefetch_related(*related).order_by(*order_by)
+
+            if len(values_list) > 1:
+                instanceQuery = instanceQuery.values_list(*values_list)
+            elif len(values_list) == 1:
+                instanceQuery = instanceQuery.values_list(*values_list, flat=True)
+
+            if limit > 0:
+                instanceQuery = instanceQuery[:limit]
+
+            if count:
+                return JsonResponse({'count': instanceQuery.count()})
+
+
+            if len(values_list) > 0:
                 instancesData = []
-                if len(values_list) > 1:
-                    query = model.objects.filter(**parameters).exclude(**excluded).values_list(*values_list).prefetch_related(*related).order_by(*order_by)
-                else:
-                    query = model.objects.filter(**parameters).exclude(**excluded).values_list(*values_list,flat=True).prefetch_related(*related).order_by(*order_by)
-                if limit > 0:
-                    query = query[:limit]
                 for instance in query:
                     instancesData.append(instance)
                 instances = {}
                 instances[modelName] = instancesData
             else:
-                instanceQuery = model.objects.filter(**parameters).exclude(**excluded).prefetch_related(*related).order_by(*order_by)
-                if len(preferences__has) > 0:
-                    print ('Preferences_Has')
-                    for item in preferences__has:
-                        instanceQuery = instanceQuery.filter(preferences=item)
-                if len(amenities__has) > 0:
-                    for item in amenities__has:
-                        instanceQuery = instanceQuery.filter(amenities=item)
-                if limit > 0:
-                    instanceQuery = instanceQuery[:limit]
-                if count:
-                    return JsonResponse({'count':instanceQuery.count()})
                 instances = getInstancesJson(appLabel, modelName, instanceQuery = instanceQuery, related=related)
 
     # edit or instance
-    if request.method in ['PUT', 'POST']:
+    elif request.method in ['PUT', 'POST']:
         # jsonData = json.loads(request.body)
         model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
 
