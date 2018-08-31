@@ -10,21 +10,28 @@ class CodeViewer extends Component {
         super(props);
         this.state = {
             loaded: true,
-            page: 0,
-            offset: 10,
-            step: 10,
+            page: 0, offset: 10, step: 10,
             pages: {},
-            scroll: 0,
-            loadingPages: false,
-            up: false
+            scroll: 0, loadingPages: false, up: false,
+            tags: [], searchString: "", searchResults: []
         };
+    }
 
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
         this.getPages(this.state.page, this.state.offset);
+        this.getTags();
+        this.searchCode();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
     }
 
     setGlobalState() {
 
     }
+
 
     getPages(page, offset) {
       ajaxWrapper("GET",  "/api/home/page/?number__gte="+ page +"&number__lt="+ offset, {}, this.loadPages.bind(this));
@@ -47,12 +54,35 @@ class CodeViewer extends Component {
         });
     }
 
-    componentDidMount() {
-        window.addEventListener('scroll', this.handleScroll.bind(this), { passive: true })
+
+    getTags(page, offset) {
+      ajaxWrapper("GET",  "/api/home/tag/?related=synonyms", {}, this.loadTags.bind(this));
     }
 
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll);
+    loadTags(result) {
+        this.setState({tags: result});
+    }
+
+
+    searchCode(){
+        var url = "/api/home/article/?";
+        var tags = this.state.tags;
+        var tagNames = "";
+        if (this.state.searchString != ""){tagNames += this.state.searchString + ","};
+
+        for (var i=0; i<tags.length; i++){
+            tagNames += tags[i] + ",";
+        }
+        tagNames = tagNames.slice(0, -1);
+
+        url += "or__tags__name__in="+ tagNames +"&";
+        url += "or__tags__synonyms__name__in="+ tagNames +"&";
+        url += "or__text__icontains__splitme="+ tagNames +"&";
+        ajaxWrapper("GET",  url, {}, this.loadSearch.bind(this));
+    }
+
+    loadSearch(result){
+        this.setState({searchResults: result});
     }
 
     handleScroll(event) {
