@@ -5,12 +5,15 @@ from jsonfield import JSONField
 from user.models import User
 # Create your models here.
 
+class LargeText(models.Model):
+    text = models.TextField(default="")
+
 
 class Page(models.Model):
     name = models.CharField(default = "", max_length=200, null = False)
     number = models.IntegerField(default = 0)
 
-    text = models.TextField(default = "")
+    text = models.ForeignKey(LargeText, on_delete=models.CASCADE)
 
     def __str__(self):
         return u"{}".format(self.number)
@@ -35,9 +38,10 @@ class Article(models.Model):
     startPage = models.ForeignKey(Page, on_delete=models.CASCADE, blank=False, related_name='articles')
     endPage = models.ForeignKey(Page, on_delete=models.CASCADE, blank=False, related_name='articleEndings')
 
-    text = models.TextField(default = "")
+    html = models.ForeignKey(LargeText, on_delete=models.CASCADE, related_name='htmlArticles')
+    text = models.ForeignKey(LargeText, on_delete=models.CASCADE, related_name='textArticles')
 
-    tags = models.ManyToManyField(Tag, blank=True, related_name='tags')
+    tags = models.ManyToManyField(Tag, blank=True, related_name='articles')
 
 
 class Section(models.Model):
@@ -50,5 +54,6 @@ class Search(models.Model):
     query = models.CharField(default="", max_length=200, null=False)
 
     results = JSONField(blank=True, default=dict())
+
 
 

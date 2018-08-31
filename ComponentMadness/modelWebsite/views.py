@@ -65,6 +65,11 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
         order_by = parameters['order_by'].split(',')
         del parameters['order_by']
 
+    only = []
+    if 'only' in parameters:
+        only = parameters['only'].split(',')
+        del parameters['only']
+
     values_list = []
     if 'values_list' in parameters:
         values_list = parameters['values_list'].split(',')
@@ -81,7 +86,8 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
         del parameters['count']
 
     print (values_list)
-    print ("Parameters",parameters)
+    print ("Parameters", parameters)
+    print ("Only", only)
 
     excluded = {}
     orFilters = None
@@ -98,10 +104,13 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             excluded[parameter.replace("exclude__", "")] = parameters[parameter]
             del newParameters[parameter]
         elif parameter.startswith("or__"):
-            if not orFilters:
-                orFilters = Q(**{parameter.replace("or__", ""): parameters[parameter]})
+            if parameter.endswith("__splitme"):
+                key = parameter.replace("or__", "").replace("__splitme", "")
+                for value in parameters[parameter]:
+                    orFilters = addOrFilter(orFilters, key, value)
             else:
-                orFilters.add(Q(**{parameter.replace("or__", ""): parameters[parameter]}), Q.OR)
+                orFilters = addOrFilter(orFilters, parameter.replace("or__", ""), parameters[parameter])
+
             del newParameters[parameter]
 
     parameters = newParameters
@@ -125,7 +134,7 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             if orFilters:
                 instanceQuery = instanceQuery.filter(orFilters)
 
-            instanceQuery = instanceQuery.exclude(**excluded).prefetch_related(*related).order_by(*order_by)
+            instanceQuery = instanceQuery.exclude(**excluded).prefetch_related(*related).order_by(*order_by).only(*only)
 
             if len(values_list) > 1:
                 instanceQuery = instanceQuery.values_list(*values_list)
@@ -146,7 +155,7 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
                 instances = {}
                 instances[modelName] = instancesData
             else:
-                instances = getInstancesJson(appLabel, modelName, instanceQuery = instanceQuery, related=related)
+                instances = getInstancesJson(appLabel, modelName, instanceQuery = instanceQuery, related=related, only=only)
 
     # edit or instance
     elif request.method in ['PUT', 'POST']:
@@ -214,6 +223,15 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
 
     return JsonResponse(instances,safe=False)
 
+
+
+def addOrFilter(orFilters, key, value):
+    if not orFilters:
+        orFilters = Q(**{key.replace("or__", ""): value})
+    else:
+        orFilters.add(Q(**{key.replace("or__", ""): value}), Q.OR)
+
+    return orFilters
 
 
 def deleteModelInstance(request,appLabel,modelName,id):
