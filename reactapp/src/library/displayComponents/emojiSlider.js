@@ -8,7 +8,7 @@ import Draggable, {DraggableCore} from 'react-draggable'; // Both at the same ti
 class EmojiSlider extends Component {
     constructor(props) {
       super(props);
-      this.state = {'total_width':0, width:0, 'bubble':this.props.live, 'hidden':'', 'chatText':'Slide To Answer', 'animate':true, 'increase':true, 'wait':false, 'wait_time':0}
+      this.state = {'total_width':0, width:0, 'bubble':this.props.live, 'hidden':'', 'chatText':'Slide To Answer', 'animate':true, 'increase':true, 'wait':false, 'wait_time':0, 'submitted':false}
 
 
 
@@ -77,7 +77,7 @@ class EmojiSlider extends Component {
       if (this.props.handleStop) {
         this.props.handleStop(this.state.width);
       }
-      this.setState({'hidden': '', 'chatText':'Awesome!'})
+      this.setState({'hidden': '', 'chatText':'Awesome!', 'submitted':true})
 
     }
 
@@ -97,8 +97,11 @@ class EmojiSlider extends Component {
           classCss = 'bubble right';
         }
 
+        var axis = "x";
+
+
         var emojiIcon = <div>
-        <Draggable axis="x" onStart={this.handleStart} onDrag={this.handleDrag} onStop={this.handleStop} bounds={{left:-50, right:this.state.total_width - 50}} defaultPosition={{x:-50,y:0}} >
+        <Draggable axis={axis} disabled={this.state.submitted} onStart={this.handleStart} onDrag={this.handleDrag} onStop={this.handleStop} bounds={{left:-50, right:this.state.total_width - 50}} defaultPosition={{x:-50,y:0}} >
           <div className={this.props.emoji} style={draggableStyle}><div className={"chat " + this.state.hidden}>
             <div class={classCss}>{this.state.chatText}</div>
           </div></div>
@@ -107,7 +110,7 @@ class EmojiSlider extends Component {
           var position = {x: Math.floor(this.state.width*this.state.total_width/100) - 50,y:0}
           console.log(position)
           var emojiIcon = <div>
-          <Draggable axis="x" onStart={this.handleStart} onDrag={this.handleDrag} onStop={this.handleStop} bounds={{left:-50, right:this.state.total_width - 50}} defaultPosition={position} position={position}>
+          <Draggable axis={axis} disabled={this.state.submitted} onStart={this.handleStart} onDrag={this.handleDrag} onStop={this.handleStop} bounds={{left:-50, right:this.state.total_width - 50}} defaultPosition={position} position={position}>
             <div className={this.props.emoji} style={draggableStyle} position={position}><div className={"chat " + this.state.hidden}>
               <div class={classCss}>{this.state.chatText}</div>
             </div></div>
