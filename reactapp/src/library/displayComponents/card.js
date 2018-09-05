@@ -36,7 +36,7 @@ class Card extends React.Component {
               {image}
               <div className="card-body">
                 <h5 className="card-title">{this.props.name}</h5>
-                <p className="card-text">{this.props.description}</p>
+                <div className="card-text">{this.props.description}</div>
                 {button}
               </div>
             </div>

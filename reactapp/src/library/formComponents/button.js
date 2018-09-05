@@ -7,13 +7,13 @@ class Button extends React.Component {
       this.click = this.click.bind(this);
     }
 
-    click() {
+    click(e) {
       console.log("Clicked");
       if (this.props.href) {
         window.location.href = this.props.href;
       }
       else if (this.props.clickHandler) {
-        this.props.clickHandler();
+        this.props.clickHandler(e);
       }
     }
 
@@ -24,7 +24,7 @@ class Button extends React.Component {
         css = this.props.css;
       }
         return (
-            <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>
+            <button className={"btn " + type} onClick={this.click} num={this.props.num} style={css}>{this.props.text}</button>
         );
     }
 }

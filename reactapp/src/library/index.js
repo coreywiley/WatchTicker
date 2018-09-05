@@ -29,6 +29,7 @@ import StripeForm_ from './formComponents/stripe/stripeform.js';
 import StripeMain_ from './formComponents/stripe/stripemain.js';
 import TextArea_ from './formComponents/textarea.js';
 import TextInput_ from './formComponents/textinput.js';
+import TextAutocomplete_ from './formComponents/textautocomplete.js';
 
 import Accordion_ from './functionalComponents/accordion.js';
 import Container_ from './functionalComponents/container.js';
@@ -62,6 +63,7 @@ export const StripeForm = StripeForm_;
 export const StripeMain = StripeMain_;
 export const TextArea = TextArea_;
 export const TextInput = TextInput_;
+export const TextAutocomplete = TextAutocomplete_;
 export const Accordion = Accordion_;
 export const Container = Container_;
 export const Link = Link_;
