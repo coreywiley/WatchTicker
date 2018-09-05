@@ -28,7 +28,7 @@ def dumpInstance(modelName, fields, instance, related = [], only = []):
     jsonInstance[modelName] = {}
     jsonInstance[modelName]['unicode'] = str(instance)
 
-    print ("Dumping")
+    #print ("Dumping")
     for field in fields:
         if len(only) > 0 and field[0] not in only:
             continue
@@ -71,7 +71,11 @@ def dumpInstance(modelName, fields, instance, related = [], only = []):
             else:
                 if field[0] not in related:
                     if field[1] == 'ForeignKey':
+                        if field[4]:
+                            continue
+
                         jsonInstance[modelName][field[0] + "_id"] = getattr(instance, field[0] + "_id")
+
                     elif field[1] == "ManyToManyField":
                         continue
                     else:
@@ -85,6 +89,7 @@ def dumpInstance(modelName, fields, instance, related = [], only = []):
         else:
             jsonInstance[modelName][field[0]] = getattr(instance, field[0])
 
+    jsonInstance[modelName]['id'] = getattr(instance, 'id')
     return jsonInstance
 
 
@@ -97,9 +102,8 @@ def getModelFields(model):
     modelFields = model._meta.get_fields()
 
     for field in modelFields:
-
+        #print (type(field).__name__, field.name, field.auto_created)
         if field.auto_created:
-
             if field.get_internal_type() != 'ForeignKey':
                 continue
 
@@ -112,4 +116,5 @@ def getModelFields(model):
             fields.append([field.name, field.get_internal_type(), field.related_model._meta.app_label,
                            field.related_model._meta.object_name.lower(), False])
 
+    print (fields)
     return fields

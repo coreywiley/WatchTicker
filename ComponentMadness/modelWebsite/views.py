@@ -57,22 +57,22 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
     parameters = request.GET.dict()
     related = []
     if 'related' in parameters:
-        related = parameters['related'].split(',')
+        related = [x for x in parameters['related'].split(',') if x != ""]
         del parameters['related']
 
     order_by = []
     if 'order_by' in parameters:
-        order_by = parameters['order_by'].split(',')
+        order_by = [x for x in parameters['order_by'].split(',') if x != ""]
         del parameters['order_by']
 
     only = []
     if 'only' in parameters:
-        only = parameters['only'].split(',')
+        only = [x for x in parameters['only'].split(',') if x != ""]
         del parameters['only']
 
     values_list = []
     if 'values_list' in parameters:
-        values_list = parameters['values_list'].split(',')
+        values_list = [x for x in parameters['values_list'].split(',') if x != ""]
         del parameters['values_list']
 
     limit = 0
@@ -94,7 +94,7 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
     newParameters = parameters.copy()
     for parameter in parameters:
         if ',' in parameters[parameter]:
-            parameters[parameter] = parameters[parameter].split(',')
+            parameters[parameter] = [x for x in parameters[parameter].split(',') if x != ""]
         if parameters[parameter] == 'true':
             parameters[parameter] = True
         elif parameters[parameter] == 'false':
@@ -167,6 +167,8 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             requestFields = request.PUT
         else:
             requestFields = request.POST
+
+        print ("POST Payload:", requestFields)
 
         if 'multiple' in requestFields:
             instances = []

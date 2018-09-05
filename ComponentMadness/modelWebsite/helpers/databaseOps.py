@@ -3,7 +3,8 @@ from django.apps import apps
 from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, getModelFields
 
 def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]):
-    print ('Here')
+    print ('::databaseOps:insert')
+
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
     instance = model()
     if id:
@@ -18,6 +19,7 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
             continue
         if field.name in ["id","password"]:
             continue
+
 
         if field.get_internal_type() == 'TextField' and field.name == "data":
             try:
@@ -74,14 +76,16 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
     instance.save()
     instance = model.objects.filter(id=instance.id).first()
 
-
+    #This section needs __remove and __clear included
     for field in modelFields:
+        print ("Found M2M Field:", field)
 
         if field.get_internal_type() == 'ManyToManyField' and field.name + "[]" in requestFields:
             print ('Woohoo!')
             getattr(instance, field.name).clear()
             print(field.name, requestFields[field.name+'[]'])
             items = json.loads(requestFields[field.name + '[]'])
+            print (items)
             foreignKeyIds = [int(id) for id in items]
             print (foreignKeyIds)
             getattr(instance, field.name).add(
