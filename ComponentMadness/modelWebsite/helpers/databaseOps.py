@@ -82,7 +82,7 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
 
         if field.get_internal_type() == 'ManyToManyField' and field.name + "[]" in requestFields:
             print ('Woohoo!')
-            getattr(instance, field.name).clear()
+            #getattr(instance, field.name).clear()
             print(field.name, requestFields[field.name+'[]'])
             items = json.loads(requestFields[field.name + '[]'])
             print (items)
