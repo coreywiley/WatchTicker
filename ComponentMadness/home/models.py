@@ -38,10 +38,13 @@ class Article(models.Model):
     startPage = models.ForeignKey(Page, on_delete=models.CASCADE, blank=False, related_name='articles')
     endPage = models.ForeignKey(Page, on_delete=models.CASCADE, blank=False, related_name='articleEndings')
 
-    html = models.ForeignKey(LargeText, on_delete=models.CASCADE, related_name='htmlArticles')
-    text = models.ForeignKey(LargeText, on_delete=models.CASCADE, related_name='textArticles')
+    html = models.ForeignKey(LargeText, null=True, on_delete=models.CASCADE, related_name='htmlArticles')
+    text = models.ForeignKey(LargeText, null=True, on_delete=models.CASCADE, related_name='textArticles')
 
     tags = models.ManyToManyField(Tag, blank=True, related_name='articles')
+
+    class Meta:
+        ordering = ['id']
 
 
 class Section(models.Model):

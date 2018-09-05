@@ -7,7 +7,7 @@ from home.models import *
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        self.loadPages()
+        #self.loadPages()
         self.loadArticles()
 
 
@@ -18,6 +18,7 @@ class Command(BaseCommand):
         print ("Existing pages : %s" % (pages.count()))
         article = None
         nextArticle = None
+        articleHTML = ""
         articleText = ""
         done = False
 
@@ -31,8 +32,9 @@ class Command(BaseCommand):
                     done = True
                     if article:
                         article.endPage = page
-                        article.html = LargeText.objects.create(text=str(articleText))
-                        article.text = LargeText.objects.create(text=articleText.text)
+                        article.html = LargeText.objects.create(text=articleHTML)
+                        article.text = LargeText.objects.create(text=articleText)
+                        articleHTML = ""
                         articleText = ""
                         article.save()
                         print ("Saved : %s" % (article.name))
@@ -42,8 +44,9 @@ class Command(BaseCommand):
                 if 'h20' in div.get("class") and div.text.startswith('ARTICLE'):
                     if article:
                         article.endPage = page
-                        article.html = LargeText.objects.create(text=str(articleText))
-                        article.text = LargeText.objects.create(text=articleText.text)
+                        article.html = LargeText.objects.create(text=articleHTML)
+                        article.text = LargeText.objects.create(text=articleText)
+                        articleHTML = ""
                         articleText = ""
                         article.save()
                         print ("Saved : %s" % (article.name))
@@ -51,7 +54,8 @@ class Command(BaseCommand):
                     article = Article.objects.create(name = div.text, startPage = page, endPage = page)
 
                 else:
-                    articleText += str(div)
+                    articleHTML += str(div)
+                    articleText += div.text
 
             if done:
                 print ("Completed")
