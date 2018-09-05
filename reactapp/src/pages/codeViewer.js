@@ -90,7 +90,13 @@ class CodeViewer extends Component {
     }
 
     loadTags(result) {
-        this.setState({tags: result});
+        var tags = {};
+        for (var i in result){
+            var tag = result[i].tag;
+            tags[tag.id] = tag;
+        }
+
+        this.setState({tags: tags});
     }
 
     updateSearch(e) {
@@ -102,37 +108,28 @@ class CodeViewer extends Component {
     addTag(e) {
         var done = false;
         var tags = this.state.selectedTags;
-        var tag = e.target.innerHTML;
+        var tagId = e.currentTarget.getAttribute('num');
+        var tagText = e.currentTarget.innerText;
+        var tag = this.state.tags[tagId];
 
-        for (var i=0; i<this.state.tags.length; i++){
-            var newTag = this.state.tags[i];
-            if (tag == newTag.tag.name){
-                tags.push(newTag);
-                done = true;
-            }
-            for (var j=0; j<newTag.tag.synonyms.length; j++){
-                if (tag == newTag.tag.synonyms[j].synonym.name){
-                    newTag.tag.synonymSelected = tag;
-                    tags.push(newTag);
-                    done = true;
-                    break;
-                }
-            }
-            if (done){ break;}
+        if (tagText != tag.name){
+            tag.synonymSelected = tagText;
         }
+        tags.push(tag);
 
         this.setState({
             selectedTags: tags,
             searchString: ""
         });
     }
+
     removeTag(e){
         var newTags = [];
-        var tag = e.target.innerText.split(':')[0];
+        var tagId = e.currentTarget.getAttribute('num');
 
         for (var i=0; i<this.state.selectedTags.length; i++){
             var newTag = this.state.selectedTags[i];
-            if (tag != newTag.tag.name){
+            if (tagId != newTag.id){
                 newTags.push(newTag);
             }
         }
@@ -149,7 +146,7 @@ class CodeViewer extends Component {
         var tagNames = "";
         if (this.state.searchString != ""){tagNames += this.state.searchString + ","};
         for (var i=0; i<tags.length; i++){
-            tagNames += tags[i].tag.name + ",";
+            tagNames += tags[i].name + ",";
         }
 
         if (tagNames.length > 0){
@@ -221,6 +218,8 @@ class CodeViewer extends Component {
             <AdminSidebar tags={this.state.tags}
                 jumpToPage={this.jumpToPage.bind(this)}
             />
+
+            <AdminTagSidebar />
         </div>;
 
         return (
@@ -261,7 +260,7 @@ class Sidebar extends Component {
             position: "fixed",
             top: "67px",
             right: "0px",
-            width: "50%",
+            width: this.state.width,
             background: "white",
             boxShadow: 'rgba(0, 0, 0, 0.2) -2px 2px 5px'
         }
@@ -274,7 +273,7 @@ class Sidebar extends Component {
         var openerStyle = {
             position: 'absolute',
             top: '10px',
-            right: '920px',
+            right: this.state.width,
             padding: '10px',
             background: 'white',
             borderTopLeftRadius: '10px',
@@ -287,29 +286,25 @@ class Sidebar extends Component {
             <button className="btn btn-info" onClick={this.toggle.bind(this)}>{toggleText}</button>
         </div>
 
-        var tagNames = [];
-        for (var i=0; i<this.props.tags.length; i++){
-            var tag = this.props.tags[i].tag;
+        var tagNames = {};
+        for (var key in this.props.tags){
+            var tag = this.props.tags[key];
 
-            tagNames.push(tag.name);
+            tagNames[tag.name] = tag.id;
             for (var j=0; j<tag.synonyms.length; j++){
-                tagNames.push(tag.synonyms[j].synonym.name);
+                tagNames[tag.synonyms[j].synonym.name + " ("+ tag.name +")"] = tag.id;
             }
         }
 
         var tags = [];
         var selectedTags = null;
         for (var i=0; i<this.props.selectedTags.length; i++){
-            var tag = this.props.selectedTags[i].tag;
+            var tag = this.props.selectedTags[i];
             var text = tag.name;
             if (tag.synonymSelected){
-                var text =
-                <div>
-                    <b>{tag.name}</b>:<br/>
-                    <span>{tag.synonymSelected}</span>
-                </div>;
+                var text = tag.synonymSelected;
             }
-            tags.push(<Button type="info" text={text} clickHandler={this.props.removeTag} />);
+            tags.push(<Button type="info" text={text} num={tag.id} clickHandler={this.props.removeTag} />);
         }
         if (tags.length > 0){
             selectedTags =
@@ -324,12 +319,12 @@ class Sidebar extends Component {
 
         var results = [];
         var resultList = null;
-        for (var i=0; i<this.props.searchResults.length; i++){
+        for (var i in this.props.searchResults){
             var article = this.props.searchResults[i].article;
             var result = {page: article.startPage_id, texts: [], tags: []};
 
-            for (var j=0; j<this.props.selectedTags.length; j++){
-                var tag = this.props.selectedTags[j].tag;
+            for (var j in this.props.selectedTags){
+                var tag = this.props.selectedTags[j];
                 var index = article.text.text.indexOf(tag.name);
                 if (index > -1){
                     var text = article.text.text.slice(index-10, index+200);
@@ -343,8 +338,8 @@ class Sidebar extends Component {
                     );
                 }
 
-                for (var j=0; j<article.tags.length; j++){
-                    var articleTag = article.tags[j].tag;
+                for (var k in article.tags){
+                    var articleTag = article.tags[k].tag;
                     if (articleTag.name == tag.name) {
                         result.tags.push(tag.name);
                     }
@@ -353,7 +348,7 @@ class Sidebar extends Component {
 
             if (result.tags.length > 0) {
                 var tagText = [];"Matched Tags: ";
-                for (var j=0; j<result.tags.length; j++){
+                for (var j in result.tags){
                     tagText.push(<Button text={result.tags[j]} />);
                 }
                 result.texts.unshift(<div style={{padding:"10px 0px"}}>
@@ -385,17 +380,16 @@ class Sidebar extends Component {
                 <div className="container" style={{height: this.state.height, overflow: "scroll"}}>
                     <br/>
                     <h3>Search</h3>
-
-                    <div>
-                        <div>Search one or more items</div>
-                        <TextAutocomplete options={tagNames} name="search"
+                    <form autoComplete="new-password">
+                        <TextAutocomplete label="Search one or more items"
+                            options={tagNames} name="search"
                             value={this.props.searchString}
                             handlechange={this.props.updateSearch}
                             autocompleteSelect={this.props.addTag}
                             placeholder="Air Conditioning"
                         />
                         <br/>
-                    </div>
+                    </form>
 
                     {selectedTags}
 
@@ -473,18 +467,10 @@ class AdminSidebar extends Component {
 
     addArticleTag(e) {
         var id = this.state.article.article.id;
-        var name = e.currentTarget.innerText;
-        var tagIds = [];
-        for (var i in this.props.tags){
-            var tag = this.props.tags[i].tag;
-            if (tag.name == name){
-                tagIds.push(tag.id);
-                break;
-            }
-        }
+        var tagId = e.currentTarget.getAttribute('num');
 
         var data = {
-            "tags[]": JSON.stringify(tagIds)
+            "tags[]": JSON.stringify([tagId])
         };
         ajaxWrapper("POST",  "/api/home/article/" + id + '/?related=tags&', data, this.addTagResponse.bind(this));
     }
@@ -497,7 +483,19 @@ class AdminSidebar extends Component {
     }
 
     removeArticleTag(e) {
+        var id = this.state.article.article.id;
+        var tagId = e.currentTarget.getAttribute('num');
 
+        var data = {
+            "tags[]__remove": JSON.stringify([tagId])
+        };
+        ajaxWrapper("POST",  "/api/home/article/" + id + '/?related=tags&', data, this.removeTagResponse.bind(this));
+    }
+    removeTagResponse(result) {
+        this.setState({
+            searchString: "",
+            article: result[0]
+        });
     }
 
     render() {
@@ -505,7 +503,7 @@ class AdminSidebar extends Component {
             position: "fixed",
             top: "67px",
             right: "0px",
-            width: "50%",
+            width: this.state.width,
             background: "white",
             boxShadow: 'rgba(0, 0, 0, 0.2) -2px 2px 5px'
         }
@@ -518,7 +516,7 @@ class AdminSidebar extends Component {
         var openerStyle = {
             position: 'absolute',
             top: '100px',
-            right: '920px',
+            right: this.state.width,
             padding: '10px',
             background: 'white',
             borderTopLeftRadius: '10px',
@@ -531,13 +529,13 @@ class AdminSidebar extends Component {
             <button className="btn btn-info" onClick={this.toggle.bind(this)}>{toggleText}</button>
         </div>
 
-        var tagNames = [];
-        for (var i=0; i<this.props.tags.length; i++){
-            var tag = this.props.tags[i].tag;
+        var tagNames = {};
+        for (var key in this.props.tags){
+            var tag = this.props.tags[key];
 
-            tagNames.push(tag.name);
+            tagNames[tag.name] = tag.id;
             for (var j=0; j<tag.synonyms.length; j++){
-                tagNames.push(tag.synonyms[j].synonym.name);
+                tagNames[tag.synonyms[j].synonym.name + " ("+ tag.name +")"] = tag.id;
             }
         }
 
@@ -552,13 +550,9 @@ class AdminSidebar extends Component {
                 var tag = this.state.article.article.tags[i].tag;
                 var text = tag.name;
                 if (tag.synonymSelected){
-                    var text =
-                    <div>
-                        <b>{tag.name}</b>:<br/>
-                        <span>{tag.synonymSelected}</span>
-                    </div>;
+                    var text = tag.synonymSelected;
                 }
-                tags.push(<Button type="info" text={text} clickHandler={this.removeArticleTag.bind(this)} />);
+                tags.push(<Button type="info" text={text} num={tag.id} clickHandler={this.removeArticleTag.bind(this)} />);
             }
         }
 
@@ -569,7 +563,7 @@ class AdminSidebar extends Component {
             options.push({'text': name, 'value': name});
         }
         if (this.state.articles.length > 0){
-            select = <Select name='article' options={options} setFormState={this.chooseArticle.bind(this)} />;
+            select = <Select label="Choose Article to Edit" name='article' options={options} setFormState={this.chooseArticle.bind(this)} />;
         }
 
         return (
@@ -577,18 +571,17 @@ class AdminSidebar extends Component {
                 {opener}
                 <div className="container" style={{height: this.state.height, overflow: "scroll"}}>
                     <br/>
-                    <h3>Search Tags</h3>
+                    <h3>Admin: Article Tags</h3>
 
                     <div>
-                        Choose Article to Edit
                         {select}
                         {jumpToPage}
-                        <br/>
+                        <br/><br/>
                     </div>
 
                     <div>
-                        <div>Search for tags to add.</div>
-                        <TextAutocomplete options={tagNames} name="search"
+                        <TextAutocomplete label="Search for tags to add."
+                            options={tagNames} name="search"
                             value={this.state.searchString}
                             handlechange={this.updateSearch.bind(this)}
                             autocompleteSelect={this.addArticleTag.bind(this)}
@@ -596,8 +589,202 @@ class AdminSidebar extends Component {
                     </div>
 
                     <div>
-                        <div>Current Tags:</div>
+                        <div>Current Tags: (click to remove)</div>
                         {tags}
+                    </div>
+
+                    <br/>
+                </div>
+            </div>
+        );
+    }
+}
+
+class AdminTagSidebar extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            tags: [],
+            tag: null,
+            tagName: "",
+            open: false,
+            height: "0px",
+            synonymName: ""
+        };
+    }
+
+    componentDidMount() {
+        var height = String(window.outerHeight - 67) + "px";
+        var width = String(window.outerWidth * .5) + "px";
+        this.setState({
+            height: height,
+            width: width
+        });
+
+        this.getTags();
+    }
+
+    toggle() {
+        if (this.state.open){
+            this.setState({ open: false});
+        } else {
+            this.setState({ open: true});
+        }
+    }
+
+    getTags() {
+      ajaxWrapper("GET",  "/api/home/tag/?related=synonyms", {}, this.loadTags.bind(this));
+    }
+    loadTags(result) {
+        var tags = {};
+        for (var key in result){
+            tags[result[key].tag.id] = result[key].tag;
+        }
+        this.setState({
+            tags: tags
+        });
+    }
+
+    updateTag(e) {
+        this.setState({
+            tagName: e.target.value
+        });
+    }
+    updateSynonym(e) {
+        this.setState({
+            synonymName: e.target.value
+        });
+    }
+
+    chooseTag(e) {
+        var tag = this.state.tags[e['tag']];
+
+        this.setState({
+            tag: tag
+        });
+    }
+
+    createTag() {
+        var data = {
+            name: this.state.tagName
+        }
+        ajaxWrapper("POST",  "/api/home/tag/?related=synonyms", data, this.createTagResponse.bind(this));
+    }
+    createTagResponse(result) {
+        var tags = this.state.tags;
+        tags[result[0].tag.id] = result[0].tag;
+
+        this.setState({
+            tag: result[0].tag,
+            tags: tags,
+            tagName: ""
+        });
+    }
+
+    addSynonym(e) {
+        var id = this.state.tag.id;
+        var synonym = this.state.synonymName;
+
+        var data = {
+            name: synonym,
+            tag: id
+        };
+        ajaxWrapper("POST",  "/api/home/synonym/", data, this.refreshTag.bind(this));
+    }
+
+    removeSynonym(e) {
+        var id = this.state.tag.id;
+        var synonymId = e.currentTarget.getAttribute('num');
+
+        ajaxWrapper("GET",  "/api/home/synonym/" + synonymId + '/delete/', {}, this.refreshTag.bind(this));
+    }
+    refreshTag(result) {
+        ajaxWrapper("GET",  "/api/home/tag/" + this.state.tag.id + '/?related=synonyms', {}, this.refreshTagCallback.bind(this));
+    }
+    refreshTagCallback(result) {
+        this.setState({
+            tag: result[0].tag,
+            synonymName: ""
+        });
+    }
+
+    render() {
+        var position = {
+            position: "fixed",
+            top: "67px",
+            right: "0px",
+            width: this.state.width,
+            background: "white",
+            boxShadow: 'rgba(0, 0, 0, 0.2) -2px 2px 5px'
+        }
+        var toggleText = "Close";
+        if (!this.state.open){
+            position['right'] = "-" + this.state.width;
+            toggleText = "Admin Tags";
+        }
+
+        var openerStyle = {
+            position: 'absolute',
+            top: '180px',
+            right: this.state.width,
+            padding: '10px',
+            background: 'white',
+            borderTopLeftRadius: '10px',
+            borderBottomLeftRadius: '10px',
+            boxShadow: 'rgba(0, 0, 0, 0.3) -4px 2px 5px'
+        }
+
+        var opener =
+        <div style={openerStyle}>
+            <button className="btn btn-info" onClick={this.toggle.bind(this)}>{toggleText}</button>
+        </div>
+
+        var options = [];
+        var select = null;
+        for (var key in this.state.tags){
+            var tag = this.state.tags[key];
+            options.push({'text': tag.name, 'value': tag.id});
+        }
+        if (options.length > 0){
+            if (this.state.tag){ var value = {value: this.state.tag.id};}
+            select = <Select {...value} label="Choose Tag to Edit" name='tag' options={options} setFormState={this.chooseTag.bind(this)} />;
+        }
+
+        var synonyms = [];
+        if (this.state.tag){
+            for (var i in this.state.tag.synonyms){
+                var synonym = this.state.tag.synonyms[i].synonym;
+                var text = synonym.name;
+                synonyms.push(<Button type="info" text={text} num={synonym.id} clickHandler={this.removeSynonym.bind(this)} />);
+            }
+        }
+        return (
+            <div style={position} >
+                {opener}
+                <div className="container" style={{height: this.state.height, overflow: "scroll"}}>
+                    <br/>
+                    <h3>Admin: Tags</h3>
+
+                    <div>
+                        {select}
+                        <br/>
+                    </div>
+
+                    <div>
+                        <TextInput label="Type tag to add" value={this.state.tagName} handlechange={this.updateTag.bind(this)} />
+                        <Button text="Add" clickHandler={this.createTag.bind(this)} />
+                    </div>
+
+                    <div>
+                        <br/>
+                        <TextInput label="Type synonym to add" value={this.state.synonymName} handlechange={this.updateSynonym.bind(this)} />
+                        <Button text="Add" clickHandler={this.addSynonym.bind(this)} />
+                    </div>
+
+                    <div>
+                        <br/>
+                        <div>Current Synonyms: (click to remove)</div>
+                        {synonyms}
                     </div>
 
                     <br/>

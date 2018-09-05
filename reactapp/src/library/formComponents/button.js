@@ -8,13 +8,14 @@ class Button extends React.Component {
     }
 
     click(e) {
-      console.log("Clicked");
-      if (this.props.href) {
-        window.location.href = this.props.href;
-      }
-      else if (this.props.clickHandler) {
-        this.props.clickHandler(e);
-      }
+        e.preventDefault();
+        console.log("Clicked");
+        if (this.props.href) {
+            window.location.href = this.props.href;
+        }
+        else if (this.props.clickHandler) {
+            this.props.clickHandler(e);
+        }
     }
 
     render() {
