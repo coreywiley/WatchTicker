@@ -11,6 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
+from modelWebsite.helpers.jsonGetters import getInstanceJson
+
 # Create your views here.
 def my_login_required(function):
     def wrapper(request, *args, **kw):
@@ -31,7 +33,12 @@ def staff_required(function):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def GetUser(request):
-    return JsonResponse({'id':request.user.id})
+    userData = {}
+
+    if request.user.is_authenticated:
+        userData = getInstanceJson('user', 'user', request.user)[0]['user']
+
+    return JsonResponse(userData)
 
 
 @csrf_exempt
