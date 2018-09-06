@@ -53,11 +53,16 @@ class EmojiSlider extends Component {
       }
     }
 
+    updateDimensions() {
+      var width = document.getElementById('progress').getBoundingClientRect().width;
+      this.setState({'total_width':width})
+    }
+
     componentDidMount() {
       var width = document.getElementById('progress').getBoundingClientRect().width;
-      console.log("Total Width",width)
       this.setState({'total_width':width})
       this.interval = setInterval(() => this.animate(), 20);
+      window.addEventListener("resize", this.updateDimensions.bind(this));
     }
 
     handleStart() {
@@ -108,7 +113,15 @@ class EmojiSlider extends Component {
           </Draggable></div>;
         if (this.state.animate == true) {
           var position = {x: Math.floor(this.state.width*this.state.total_width/100) - 50,y:0}
-          console.log(position)
+          var emojiIcon = <div>
+          <Draggable axis={axis} disabled={this.state.submitted} onStart={this.handleStart} onDrag={this.handleDrag} onStop={this.handleStop} bounds={{left:-50, right:this.state.total_width - 50}} defaultPosition={position} position={position}>
+            <div className={this.props.emoji} style={draggableStyle} position={position}><div className={"chat " + this.state.hidden}>
+              <div class={classCss}>{this.state.chatText}</div>
+            </div></div>
+            </Draggable></div>;
+        }
+        else if (this.state.submitted == true) {
+          var position = {x: Math.floor(this.state.width*this.state.total_width/100) - 50,y:0}
           var emojiIcon = <div>
           <Draggable axis={axis} disabled={this.state.submitted} onStart={this.handleStart} onDrag={this.handleDrag} onStop={this.handleStop} bounds={{left:-50, right:this.state.total_width - 50}} defaultPosition={position} position={position}>
             <div className={this.props.emoji} style={draggableStyle} position={position}><div className={"chat " + this.state.hidden}>

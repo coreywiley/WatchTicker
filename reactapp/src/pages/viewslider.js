@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Wrapper from 'base/wrapper.js';
 import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Select, ColorPicker, EmojiList, EmojiSlider} from 'library';
 import ajaxWrapper from 'base/ajax.js';
-
+import $ from 'jquery';
 
 class EmojiSliderViewer extends Component {
     constructor(props) {
@@ -25,9 +25,18 @@ class EmojiSliderViewer extends Component {
         this.sliderStart = this.sliderStart.bind(this);
     }
 
+    updateDimensions() {
+      console.log("Width",$(window).width())
+      this.setState({'width':$(window).width()})
+    }
+
     componentDidMount() {
       ajaxWrapper('GET','/api/home/emojislider/' + this.props.slider + '/', {}, this.getSliderData)
+
+            this.setState({'width':$(window).width()})
     }
+
+
 
     getSliderData(result) {
       var slider = result[0]['emojislider'];
@@ -73,7 +82,7 @@ class EmojiSliderViewer extends Component {
 
       var content = <EmojiSlider {...this.state.emojiForm} handleStart={this.sliderStart} handleStop={this.sliderStop} />;
         return (
-          <div>
+          <div id="slider_parent">
               <Wrapper content={content} loaded={this.state.loaded} />
           </div>
 
