@@ -47,6 +47,23 @@ class Article(models.Model):
         ordering = ['id']
 
 
+class Chapter(models.Model):
+    name = models.CharField(default = "", max_length=200, null = False)
+    number = models.CharField(default="", max_length=200, null=False)
+
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, blank=False, related_name='chapters')
+    startPage = models.ForeignKey(Page, on_delete=models.CASCADE, blank=False, related_name='chapters')
+    endPage = models.ForeignKey(Page, on_delete=models.CASCADE, blank=False, related_name='chapterEndings')
+
+    html = models.ForeignKey(LargeText, null=True, on_delete=models.CASCADE, related_name='htmlChapters')
+    text = models.ForeignKey(LargeText, null=True, on_delete=models.CASCADE, related_name='textChapters')
+
+    tags = models.ManyToManyField(Tag, blank=True, related_name='chapters')
+
+    class Meta:
+        ordering = ['id']
+
+
 class Section(models.Model):
     name = models.CharField(default="", max_length=200, null=False)
 

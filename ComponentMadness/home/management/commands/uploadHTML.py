@@ -8,7 +8,84 @@ from home.models import *
 class Command(BaseCommand):
     def handle(self, *args, **options):
         #self.loadPages()
-        self.loadArticles()
+        #self.loadArticles()
+        self.loadChapters()
+
+
+    def loadChapters(self):
+        Chapter.objects.all().delete()
+
+        articles = Article.objects
+        print ("Existing articles : %s" % (articles.count()))
+
+
+        for article in articles.filter().prefetch_related('html').all():
+            pages = Page.objects.filter(
+                number__gte = article.startPage.number,
+                number__lte = article.endPage.number
+            ).prefetch_related('text').all()
+
+            articlePrefix = article.name.split(' ')[-1] + "."
+            chapter = None
+            nextChapter = None
+            chapterHTML = ""
+            chapterText = ""
+            done = False
+
+            print ("Working on article : %s" % (article.name))
+
+            for page in pages:
+
+                print ("Working on page : %s" % (page.number))
+
+                parsedHtml = BeautifulSoup(page.text.text, features="html.parser")
+                contentDivs = parsedHtml.find('div', attrs={'class': 'pc'}).find_all('div', attrs={'class': 't'})
+
+                for div in contentDivs:
+                    if 'h20' in div.get("class") and div.text.startswith('ARTICLE') and div.text != article.name:
+                        done = True
+                        break
+
+                    if 'ff17' in div.get("class") and div.text.startswith(articlePrefix):
+                        if len(div.text.split(' ')) == 1:
+                            continue
+
+                        if chapter:
+                            chapter.endPage = page
+                            chapter.html = LargeText.objects.create(text=chapterHTML)
+                            chapter.text = LargeText.objects.create(text=chapterText)
+                            chapterHTML = ""
+                            chapterText = ""
+                            chapter.save()
+                            print ("Saved : %s" % (chapter.name))
+
+                        chapter = Chapter.objects.create(
+                            number=div.text.split(" ")[0],
+                            name=div.text,
+                            article=article,
+                            startPage=page,
+                            endPage=page
+                        )
+                        chapterHTML = str(div)
+                        chapterText = div.text
+
+                    else:
+                        chapterHTML += str(div)
+                        chapterText += div.text
+
+                if done:
+                    break
+
+            if chapter:
+                chapter.endPage = chapter.startPage
+                chapter.html = LargeText.objects.create(text=chapterHTML)
+                chapter.text = LargeText.objects.create(text=chapterText)
+                chapterHTML = ""
+                chapterText = ""
+                chapter.save()
+                print ("Saved : %s :: %s" % (chapter.number, chapter.name))
+
+            print ("Completed")
 
 
     def loadArticles(self):
@@ -51,7 +128,13 @@ class Command(BaseCommand):
                         article.save()
                         print ("Saved : %s" % (article.name))
 
-                    article = Article.objects.create(name = div.text, startPage = page, endPage = page)
+                    article = Article.objects.create(
+                        name = div.text,
+                        startPage = page,
+                        endPage = page
+                    )
+                    articleHTML = str(div)
+                    articleText = div.text
 
                 else:
                     articleHTML += str(div)
