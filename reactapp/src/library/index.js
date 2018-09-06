@@ -38,6 +38,7 @@ import List_ from './functionalComponents/list.js';
 import Modal_ from './functionalComponents/modal.js';
 import Navbar_ from './functionalComponents/navbar.js';
 import ReactRender_ from './functionalComponents/reactrender.js';
+import Sidebar_ from './functionalComponents/sidebar.js';
 
 export const Button = Button_;
 export const ButtonGroup = ButtonGroup_;
@@ -71,6 +72,7 @@ export const List = List_;
 export const Modal = Modal_;
 export const Navbar = Navbar_;
 export const ReactRender = ReactRender_;
+export const Sidebar = Sidebar_;
 export const Progress = Progress_;
 export const ImageInput = ImageInput_;
 export const Table = Table_;

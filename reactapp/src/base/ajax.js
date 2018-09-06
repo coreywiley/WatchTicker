@@ -11,17 +11,20 @@ function ajaxWrapper(type, url, data, returnFunc){
     if (type === "POST") {
         data["csrfmiddlewaretoken"] = window.secretReactVars["csrfmiddlewaretoken"];
     }
+
     var auth_token = '';
+    var beforeSend = null;
     if (localStorage.getItem('token')) {
-      auth_token = 'Bearer ' + localStorage.getItem('token')
+        auth_token = 'Bearer ' + localStorage.getItem('token');
+        beforeSend = function(request) {
+            request.setRequestHeader('Authorization', auth_token);
+        }
     }
 
       $.ajax({
           type: type,
           url: url,
-          beforeSend: function(request) {
-            request.setRequestHeader('Authorization', auth_token)
-          },
+          beforeSend: beforeSend,
           data: data,
           statusCode: {
             200: function(value) {
@@ -60,7 +63,13 @@ function refreshToken(type, url, data, returnFunc){
               ajaxWrapper(type, url, data, returnFunc)
           },
           error: function(xhr, status, error) {
-              error(xhr,status,error)
+              if (xhr.status == 401){
+                  console.log('Refresh Token Expired')
+                  localStorage.removeItem('token')
+                  localStorage.removeItem('refresh_token')
+                  window.location.href = '/login/';
+              }
+              //error(xhr,status,error)
           }
       });
 

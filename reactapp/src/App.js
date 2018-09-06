@@ -38,7 +38,7 @@ class App extends Component {
         this.state = {
             loaded: false,
             csrfmiddlewaretoken: undefined,
-            User:{'user_id':'', 'user_name':'', 'user_shorthand':''}
+            user:{}
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
@@ -46,6 +46,23 @@ class App extends Component {
 
     componentDidMount() {
         ajaxWrapper("GET", "/api/csrfmiddlewaretoken/", {}, this.ajaxCallback);
+        ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));
+
+        var token = localStorage.getItem('token');
+        if (token) {
+            this.setState({token: token});
+            if (window.location.href.indexOf('login') > -1) {
+                window.location.href = '/viewer/';
+            }
+        } else if (window.location.href.indexOf('login') == -1) {
+            window.location.href = '/login/';
+        }
+    }
+
+    loadUser(result){
+        this.setState({
+            user: result
+        });
     }
 
     logOut() {
@@ -57,19 +74,11 @@ class App extends Component {
     ajaxCallback(value) {
         console.log(value);
         window.secretReactVars["csrfmiddlewaretoken"] = value.csrfmiddlewaretoken;
-        var token = localStorage.getItem('token')
-        if (token) {
-            if (window.location.href.indexOf('login') > -1) {
-                window.location.href = '/projects/';
-            }
-            else {
-                this.setState({loaded: true, csrfmiddlewaretoken: value.csrfmiddlewaretoken, token: token});
-            }
-        }
-        else {
-          this.setState({loaded:true,csrfmiddlewaretoken: value.csrfmiddlewaretoken})
-        }
 
+        this.setState({
+            loaded: true,
+            csrfmiddlewaretoken: value.csrfmiddlewaretoken
+        });
     }
 
     getURL() {
@@ -81,12 +90,14 @@ class App extends Component {
     }
 
     render() {
-        var logOut = null;
-        if (this.state.token){ logOut = this.logOut}
-
         console.log(this.props);
         var params = this.getURL();
         console.log("Params", params);
+
+        var logOut = null;
+        if (this.state.token){
+            logOut = this.logOut;
+        }
 
         var loading = <h1>Loading . . . </h1>;
         var content = null;
@@ -141,7 +152,7 @@ class App extends Component {
         }
 
         else if (params[0].toLowerCase() == "viewer") {
-            content = <CodeViewer user_id={this.state.token} />
+            content = <CodeViewer user={this.state.user} />
         }
 
 
