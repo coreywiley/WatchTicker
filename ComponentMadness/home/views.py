@@ -28,3 +28,18 @@ def Index(request, param = "", param2 = "", param3 = "", param4 = ""):
     html = requests.get("http://mathapp.jthiesen1.webfactional.com").content
     html = html.decode().replace('src="/static/js/bundle.js"', 'src="http://mathapp.jthiesen1.webfactional.com/static/js/bundle.js"')
     return HttpResponse(html)
+
+def Error(request):
+    print (1/0)
+
+def ErrorPage(request):
+    return JsonResponse({'error':'error'})
+
+def NotFoundHandler(request):
+    return JsonResponse({'error':'Cant find page.'})
+
+def PermissionDenied(request):
+    return JsonResponse({'error':'Permission Denied'})
+
+def BadRequest(request):
+    return JsonResponse({'error':'Bad Request'})

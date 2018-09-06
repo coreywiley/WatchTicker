@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 
-from home.views import *
+from home.views import Index, Error
 admin.autodiscover()
 
 urlpatterns = [
@@ -16,7 +16,7 @@ urlpatterns = [
 
     #user imports
     url(r'^users/', include('user.urls', namespace="user")),
-
+    url(r'^error/', Error),
     #Catch statements for React
     url(r'^$', Index, name='index'),
     url(r'^(?P<param>\w+)/$', Index, name='index'),
@@ -27,3 +27,7 @@ urlpatterns = [
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
+handler404 = 'home.views.NotFoundHandler'
+handler500 = 'home.views.ErrorPage'
+handler403 = 'home.views.PermissionDenied'
+handler400 = 'home.views.BadRequest'
