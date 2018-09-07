@@ -54,7 +54,7 @@ class App extends Component {
             if (window.location.href.indexOf('login') > -1) {
                 window.location.href = '/viewer/';
             }
-        } else if (window.location.href.indexOf('login') == -1) {
+        } else if (window.location.href.indexOf('login') == -1 || window.location.href.indexOf('signup') == -1) {
             window.location.href = '/login/';
         }
     }
@@ -103,7 +103,7 @@ class App extends Component {
         var content = null;
         if (params[0] === ""){
             //Home page
-            content = <Home />
+            content = <CodeViewer user={this.state.user} />;
 
         } else if (params[0].toLowerCase() === "components") {
             //List components
@@ -124,35 +124,35 @@ class App extends Component {
             content = <AppList user_id={this.state.token} logOut={logOut}/>;
         }
         else if (params[0].toLowerCase() == "models") {
-            content = <ModelList app={params[1]} user_id={this.state.token} logOut={logOut}/>
+            content = <ModelList app={params[1]} user_id={this.state.token} logOut={logOut}/>;
         }
         else if (params[0].toLowerCase() == "modelInstances") {
-            content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token} logOut={logOut}/>
+            content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token} logOut={logOut}/>;
         }
         else if (params[0].toLowerCase() == "modelInstancesTable") {
-            content = <InstanceTable app={params[1]} model={params[2]} logOut={logOut}/>
+            content = <InstanceTable app={params[1]} model={params[2]} logOut={logOut}/>;
         }
         else if (params[0].toLowerCase() == "instance") {
-            content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token} logOut={logOut}/>
+            content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token} logOut={logOut}/>;
         }
         else if (params[0].toLowerCase() == "login") {
-            content = <LogIn />
+            content = <LogIn />;
         }
         else if (params[0].toLowerCase() == "signup") {
-            content = <SignUp />
+            content = <SignUp />;
         }
         else if (params[0].toLowerCase() == "loggedin") {
-            content = <LoggedIn  logOut={logOut} />
+            content = <LoggedIn  logOut={logOut} />;
         }
         else if (params[0].toLowerCase() == "passwordresetrequest") {
-            content = <PasswordResetRequest />
+            content = <PasswordResetRequest />;
         }
         else if (params[0].toLowerCase() == "passwordreset") {
-            content = <PasswordReset  user_id={params[1]} />
+            content = <PasswordReset  user_id={params[1]} />;
         }
 
         else if (params[0].toLowerCase() == "viewer") {
-            content = <CodeViewer user={this.state.user} />
+            content = <CodeViewer user={this.state.user} />;
         }
 
 

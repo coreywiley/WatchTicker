@@ -17,9 +17,10 @@ class CodeViewer extends Component {
             pageMeta: {},
             page: 0, offset: 5, step: 5,
             pages: {}, tags: [],
-            scroll: 0, loadingPages: false, up: false,
+            loadingPages: false, up: false,
             selectedTags: [], searchString: "", searchResults: [],
-            resultList: null
+            resultList: null,
+            selected: false,
         };
     }
 
@@ -246,6 +247,9 @@ class CodeViewer extends Component {
         }
     }
 
+    selected(e) {
+        this.setState({selected: true});
+    }
 
     handleScroll(event) {
         // do something like call `this.setState`
@@ -270,8 +274,6 @@ class CodeViewer extends Component {
                 loadingPages: true
             });
         }
-
-        this.setState({scroll: window.scrollY});
     }
 
 
@@ -300,26 +302,30 @@ class CodeViewer extends Component {
             </div>;
         }
 
-        var content =
-        <div>
+        var content = <SelectionScreen selected={this.selected.bind(this)} />;
+
+        if (this.state.selected){
+            content =
             <div>
-                {pages}
-            </div>
+                <div>
+                    {pages}
+                </div>
 
-            <SearchSidebar
-                tags={this.state.tags}
-                tagNames={tagNames}
-                selectedTags={this.state.selectedTags}
-                searchString={this.state.searchString}
-                updateSearch={this.updateSearch.bind(this)}
-                addTag={this.addTag.bind(this)}
-                removeTag={this.removeTag.bind(this)}
-                searchCode={this.searchCode.bind(this)}
-                results={this.state.searchResults}
-            />
+                <SearchSidebar
+                    tags={this.state.tags}
+                    tagNames={tagNames}
+                    selectedTags={this.state.selectedTags}
+                    searchString={this.state.searchString}
+                    updateSearch={this.updateSearch.bind(this)}
+                    addTag={this.addTag.bind(this)}
+                    removeTag={this.removeTag.bind(this)}
+                    searchCode={this.searchCode.bind(this)}
+                    results={this.state.searchResults}
+                />
 
-            {adminTools}
-        </div>;
+                {adminTools}
+            </div>;
+        }
 
         return (
             <Wrapper loaded={this.state.loaded}  content={content} />
@@ -328,7 +334,49 @@ class CodeViewer extends Component {
 }
 
 
+class SelectionScreen extends Component {
+    render() {
+        var style = {
+            margin: "15px",
+            padding: "30px 15px",
+            border: "thin solid #bbb",
+            borderRadius: "3px"
+        };
+        var margin = {
+            marginBottom: "20px"
+        }
+
+        return (
+        <div className='row container' style={{margin:"0px auto"}} >
+            <div className='col-6' style={margin} ><div style={style} >
+                <h1>EE Code</h1>
+                <Button type="info" clickHandler={this.props.selected} text="Search" />
+            </div></div>
+
+            <div className='col-6' style={margin} ><div style={style} >
+                <h1>New York EE Code</h1>
+                <h3>Coming Soon</h3>
+            </div></div>
+            <div className='col-6' style={margin} ><div style={style} >
+                <h1>New Jersey EE Code</h1>
+                <h3>Coming Soon</h3>
+            </div></div>
+            <div className='col-6' style={margin} ><div style={style} >
+                <h1>Pennsylvania EE Code</h1>
+                <h3>Coming Soon</h3>
+            </div></div>
+        </div>
+        );
+    }
+}
+
+
 class SearchSidebar extends Component {
+    preventDefault(e) {
+        e.preventDefault();
+        return false;
+    }
+
     render() {
         var tags = [];
         var selectedTags = null;
@@ -354,7 +402,7 @@ class SearchSidebar extends Component {
         var content =
         <div>
             <h3>Search</h3>
-            <form autoComplete="new-password">
+            <form autoComplete="new-password" onSubmit={this.preventDefault.bind(this)}>
                 <TextAutocomplete label="Search one or more items"
                     options={this.props.tagNames} name="search"
                     value={this.props.searchString}
@@ -453,14 +501,7 @@ class AdminSidebar extends Component {
         var data = {
             "tags[]": JSON.stringify([tagId])
         };
-        ajaxWrapper("POST",  "/api/home/chapter/" + id + '/?related=tags&', data, this.addTagResponse.bind(this));
-    }
-
-    addTagResponse(result) {
-        this.setState({
-            searchString: "",
-            chapter: result[0].chapter
-        });
+        ajaxWrapper("POST",  "/api/home/chapter/" + id + '/?related=tags&', data, this.refreshChapterResponse.bind(this));
     }
 
     removeChapterTag(e) {
@@ -470,18 +511,27 @@ class AdminSidebar extends Component {
         var data = {
             "tags[]__remove": JSON.stringify([tagId])
         };
-        ajaxWrapper("POST",  "/api/home/chapter/" + id + '/?related=tags&', data, this.removeTagResponse.bind(this));
+        ajaxWrapper("POST",  "/api/home/chapter/" + id + '/?related=tags&', data, this.refreshChapterResponse.bind(this));
     }
-    removeTagResponse(result) {
+
+    refreshChapterResponse(result) {
+        var articles = this.state.articles;
+        var article = this.state.article;
+        article.chapters[result[0].chapter.id] = result[0].chapter;
+        articles[article.id] = article;
+
         this.setState({
             searchString: "",
-            chapter: result[0].chapter
+            chapter: result[0].chapter,
+            article: article,
+            articles: articles
         });
     }
 
     render() {
         var jumpToPage = null;
         var tags = [];
+        var tagJSX = null;
         if (this.state.chapter){
             jumpToPage = <Button type="primary" text="Jump to page"
                 num={this.state.chapter.startPage_id}
@@ -496,6 +546,20 @@ class AdminSidebar extends Component {
                 }
                 tags.push(<Button type="info" text={text} num={tag.id} clickHandler={this.removeChapterTag.bind(this)} />);
             }
+
+            tagJSX =
+            <div>
+                <TextAutocomplete label="Search for tags to add."
+                    options={this.props.tagNames} name="search"
+                    value={this.state.searchString}
+                    handlechange={this.updateSearch.bind(this)}
+                    autocompleteSelect={this.addChapterTag.bind(this)}
+                />
+                <br/>
+
+                <div>Current Tags: (click to remove)</div>
+                {tags}
+            </div>;
         }
 
         var articleOptions = [];
@@ -520,7 +584,6 @@ class AdminSidebar extends Component {
             }
         }
 
-
         var content =
         <div>
             <h3>Admin: Chapter Tags</h3>
@@ -532,19 +595,7 @@ class AdminSidebar extends Component {
                 <br/><br/>
             </div>
 
-            <div>
-                <TextAutocomplete label="Search for tags to add."
-                    options={this.props.tagNames} name="search"
-                    value={this.state.searchString}
-                    handlechange={this.updateSearch.bind(this)}
-                    autocompleteSelect={this.addChapterTag.bind(this)}
-                />
-            </div>
-
-            <div>
-                <div>Current Tags: (click to remove)</div>
-                {tags}
-            </div>
+            {tagJSX}
         </div>;
 
 
@@ -625,17 +676,7 @@ class AdminTagSidebar extends Component {
         var data = {
             name: this.state.tagName
         }
-        ajaxWrapper("POST",  "/api/home/tag/?related=synonyms", data, this.createTagResponse.bind(this));
-    }
-    createTagResponse(result) {
-        var tags = this.state.tags;
-        tags[result[0].tag.id] = result[0].tag;
-
-        this.setState({
-            tag: result[0].tag,
-            tags: tags,
-            tagName: ""
-        });
+        ajaxWrapper("POST",  "/api/home/tag/?related=synonyms", data, this.refreshTagCallback.bind(this));
     }
 
     addSynonym(e) {
@@ -655,11 +696,15 @@ class AdminTagSidebar extends Component {
 
         ajaxWrapper("GET",  "/api/home/synonym/" + synonymId + '/delete/', {}, this.refreshTag.bind(this));
     }
+
     refreshTag(result) {
         ajaxWrapper("GET",  "/api/home/tag/" + this.state.tag.id + '/?related=synonyms', {}, this.refreshTagCallback.bind(this));
     }
     refreshTagCallback(result) {
+        var tags = this.state.tags;
+        tags[result[0].tag.id] = result[0].tag;
         this.setState({
+            tags: tags,
             tag: result[0].tag,
             synonymName: ""
         });
