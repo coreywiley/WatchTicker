@@ -33,13 +33,13 @@ def Error(request):
     print (1/0)
 
 def ErrorPage(request):
-    return JsonResponse({'error':'error'})
+    return JsonResponse({'error':'There was an error on the server. Our team has received an email detailing the error and will get it fixed as soon as possible.'})
 
 def NotFoundHandler(request):
-    return JsonResponse({'error':'Cant find page.'})
+    return JsonResponse({'error':"This page doesn't exist. :O"})
 
 def PermissionDenied(request):
-    return JsonResponse({'error':'Permission Denied'})
+    return JsonResponse({'error':'You do not have permission to view this page.'})
 
 def BadRequest(request):
     return JsonResponse({'error':'Bad Request'})
