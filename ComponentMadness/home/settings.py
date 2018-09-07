@@ -144,8 +144,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/static/images/'
 
-STATIC_ROOT = "static/"
-MEDIA_ROOT = "static/images/"
+STATIC_ROOT = "/home/dmiller89/webapps/django_apps_2_0/ComponentMadness/ComponentMadness/home/static/"
+MEDIA_ROOT = "/home/dmiller89/webapps/django_apps_2_0/ComponentMadness/ComponentMadness/home/static/images/"
 
 
 LOGGING = {
