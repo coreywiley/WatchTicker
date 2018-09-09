@@ -54,7 +54,7 @@ class App extends Component {
             if (window.location.href.indexOf('login') > -1) {
                 window.location.href = '/viewer/';
             }
-        } else if (window.location.href.indexOf('login') == -1) {
+        } else if (window.location.href.indexOf('login') == -1 || window.location.href.indexOf('signup') == -1 || window.location.href == '/') {
             window.location.href = '/login/';
         }
     }
