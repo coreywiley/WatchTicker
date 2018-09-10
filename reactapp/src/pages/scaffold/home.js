@@ -18,7 +18,14 @@ class Home extends Component {
 
     render() {
       var content =
-        <div>
+        <div className='container'>
+            <br/><br/>
+            <div style={{textAlign:"center"}}>
+                <h1>Electrical Engineering Code Finally Made Searchable</h1>
+                <br/>
+
+                <Button href={'/signUp/'} text={"Sign Up"} type={'success'} />
+            </div>
         </div>;
 
         return (

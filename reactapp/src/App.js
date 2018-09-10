@@ -47,15 +47,16 @@ class App extends Component {
     componentDidMount() {
         ajaxWrapper("GET", "/api/csrfmiddlewaretoken/", {}, this.ajaxCallback);
         ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));
+        var path = window.location.href.toLowerCase();
 
         var token = localStorage.getItem('token');
         if (token) {
             this.setState({token: token});
-            if (window.location.href.indexOf('login') > -1) {
+            if (path.indexOf('login') > -1 || window.location.pathname == "/") {
                 window.location.href = '/viewer/';
             }
-        } else if (window.location.href.toLowerCase().indexOf('login') == -1 &&
-                    window.location.href.toLowerCase().indexOf('signup') == -1) {
+        } else if (path.indexOf('login') == -1 && path.indexOf('signup') == -1 &&
+                    window.location.pathname != "/") {
             window.location.href = '/login/';
         }
     }
@@ -69,6 +70,8 @@ class App extends Component {
     logOut() {
         console.log("Log Out");
         localStorage.removeItem('token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('token_time');
         window.location.href = '/login/';
     }
 
@@ -104,7 +107,7 @@ class App extends Component {
         var content = null;
         if (params[0] === ""){
             //Home page
-            content = <CodeViewer user={this.state.user} />;
+            content = <Home />;
 
         } else if (params[0].toLowerCase() === "components") {
             //List components

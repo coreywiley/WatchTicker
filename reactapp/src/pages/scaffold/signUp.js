@@ -34,7 +34,7 @@ class SignUp extends Component {
         var ComponentProps = [first_name_props, last_name_props, email_props, password_props];
         var defaults = {'first_name':'','last_name':'', 'email':'', 'password':'','type':'User'};
 
-        var submitUrl = "/api/user/user/";
+        var submitUrl = "/users/signup/";
 
         var content = <div className="container">
                 <h2>Sign Up</h2>
