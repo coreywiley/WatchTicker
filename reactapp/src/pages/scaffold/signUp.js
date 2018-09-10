@@ -13,7 +13,9 @@ class SignUp extends Component {
     logIn(value) {
         console.log(value);
 
-        localStorage.setItem('token', value[0]['user']['id']);
+        localStorage.setItem('token', value['access']);
+        localStorage.setItem('refresh_token', value['refresh'])
+
         if (localStorage.getItem('redirect')) {
             var redirect = localStorage.getItem('redirect');
             localStorage.removeItem('redirect')

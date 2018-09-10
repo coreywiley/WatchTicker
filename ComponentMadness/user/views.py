@@ -14,6 +14,7 @@ from rest_framework.permissions import IsAuthenticated
 from modelWebsite.helpers.jsonGetters import getInstanceJson
 from modelWebsite.views import createAndUpdateModel
 from user.permissions import IsPostOrIsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 @api_view(['GET'])
@@ -30,9 +31,12 @@ def GetUser(request):
 @api_view(['POST'])
 @permission_classes((IsPostOrIsAuthenticated, ))
 def UserSignUp(request):
-    instances = createAndUpdateModel(request._request, 'user', 'user', [])
+    user = createAndUpdateModel(request._request, 'user', 'user', [])[0]['user']
 
-    return JsonResponse(instances, safe=False)
+    email = request.POST['email']
+    password = request.POST['password']
+
+    return TokenObtainPairView.as_view()(request._request)
 
 
 @csrf_exempt
