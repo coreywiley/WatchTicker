@@ -30,6 +30,10 @@ function ajaxWrapper(type, url, data, returnFunc){
               }
               returnFunc(value);
             },
+            400: function(value) {
+              value = {'error': 'Bad Request'}
+              returnFunc(value);
+            },
             401: function(xhr) {
               refreshToken(type,url,data,returnFunc);
             }

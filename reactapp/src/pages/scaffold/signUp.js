@@ -8,20 +8,27 @@ class SignUp extends Component {
     constructor(props) {
         super(props);
         this.logIn = this.logIn.bind(this);
+        this.logInCallback = this.logInCallback.bind(this);
     }
 
     logIn(value) {
-        console.log(value);
+      console.log("Form Value",value)
+        ajaxWrapper('POST','/users/token/', {'email': value['form_state']['email'],'password': value['form_state']['password']}, this.logInCallback);
+    }
 
-        localStorage.setItem('token', value[0]['user']['id']);
-        if (localStorage.getItem('redirect')) {
-            var redirect = localStorage.getItem('redirect');
-            localStorage.removeItem('redirect')
-            window.location.href = redirect;
-        }
-        else {
-            window.location.href = '/loggedIn/';
-        }
+    logInCallback(value) {
+      localStorage.setItem('token', value['access']);
+      localStorage.setItem('refresh_token', value['refresh'])
+      localStorage.setItem('token_time', new Date())
+      if (localStorage.getItem('redirect')) {
+          var redirect = localStorage.getItem('redirect');
+          localStorage.removeItem('redirect')
+          window.location.href = redirect;
+      }
+      else {
+          window.location.href = '/loggedIn/';
+      }
+
     }
 
     render() {

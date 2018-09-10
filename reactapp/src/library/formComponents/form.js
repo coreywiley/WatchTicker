@@ -138,6 +138,7 @@ class Form extends Component {
         }
 
         if (this.props.redirect) {
+            value['form_state'] = this.state;
             this.props.redirect(value);
         }
         else if (this.props.refreshData) {
