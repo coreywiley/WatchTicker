@@ -12,23 +12,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 from modelWebsite.helpers.jsonGetters import getInstanceJson
+from modelWebsite.views import createAndUpdateModel
+from user.permissions import IsPostOrIsAuthenticated
 
-# Create your views here.
-def my_login_required(function):
-    def wrapper(request, *args, **kw):
-        if not (request.user and request.user.is_authenticated):
-            return HttpResponseRedirect('/users/logIn/')
-        else:
-            return function(request, *args, **kw)
-    return wrapper
-
-def staff_required(function):
-    def wrapper(request, *args, **kw):
-        if not (request.user and request.user.is_authenticated and request.user.is_superuser):
-            return HttpResponseRedirect('/users/logIn/')
-        else:
-            return function(request, *args, **kw)
-    return wrapper
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
@@ -39,6 +25,14 @@ def GetUser(request):
         userData = getInstanceJson('user', 'user', request.user)[0]['user']
 
     return JsonResponse(userData)
+
+
+@api_view(['POST'])
+@permission_classes((IsPostOrIsAuthenticated, ))
+def UserSignUp(request):
+    instances = createAndUpdateModel(request._request, 'user', 'user', [])
+
+    return JsonResponse(instances, safe=False)
 
 
 @csrf_exempt

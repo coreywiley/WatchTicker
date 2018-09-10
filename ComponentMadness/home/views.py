@@ -5,7 +5,7 @@ from django.apps import apps
 import django
 
 from modelWebsite.models import Page, Component, PageComponent, Model, Field
-from user.views import my_login_required
+from user.permissions import my_login_required
 
 import datetime
 import time

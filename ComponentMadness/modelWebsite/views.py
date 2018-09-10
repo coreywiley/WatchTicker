@@ -6,7 +6,7 @@ import django
 from django.conf import settings
 
 from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, getModelFields
-from user.views import staff_required
+from user.permissions import staff_required
 from django.views.decorators.csrf import csrf_exempt
 from modelWebsite.helpers.databaseOps import insert
 
@@ -53,6 +53,7 @@ def getModelFieldsJson(request,appLabel,modelName):
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
     modelFields = getModelFields(model)
     return JsonResponse(modelFields, safe=False)
+
 
 @api_view(['GET', 'POST', 'PUT'])
 @permission_classes((IsAuthenticated, ))
@@ -165,71 +166,77 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
 
     # edit or instance
     elif request.method in ['PUT', 'POST']:
-        # jsonData = json.loads(request.body)
-        model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
-
-        modelFields = model._meta.get_fields()
-        if request.method == 'PUT':
-            requestFields = request.PUT
-        else:
-            requestFields = request.POST
-
-        print ("POST Payload:", requestFields)
-
-        if 'multiple' in requestFields:
-            instances = []
-            items = json.loads(requestFields[requestFields['multiple']])
-            print ("Items",items)
-            for item in items:
-                newFields = item
-                for key in requestFields.keys():
-                    newFields[key] = requestFields[key]
-                instances.append(insert(appLabel, modelName, modelFields,newFields, id = id, related=related))
-        elif 'csv_file' in request.FILES:
-            try:
-                print ("CSV FILE")
-                instances = []
-                csv_file = request.FILES["csv_file"]
-                if not csv_file.name.endswith('.csv'):
-                    print ("ERROR")
-                # if file is too large, return
-                if csv_file.multiple_chunks():
-                    print ("ERROR")
-
-                file_data = csv_file.read().decode("utf-8")
-                lines = file_data.split("\n")
-                # loop over the lines and save them in db. If error , store as string and then display
-                i = 0
-                titles = {}
-
-                for line in lines:
-                    if i == 0:
-                        i = 1
-                        fields = line.split(",")
-                        for x in range(len(fields)):
-                            titles[x] = fields[x].strip()
-                        continue
-
-                    fieldData = line.split(",")
-                    newFields = {}
-                    blankLine = True
-                    for x in range(len(fields)):
-                        newFields[titles[x]] = fieldData[x].strip()
-                        if newFields[titles[x]] != '':
-                            blankLine = False
-                    if not blankLine:
-                        print (newFields)
-                        instances.append(insert(appLabel, modelName, modelFields, newFields, id=id, related=related))
-            except Exception as e:
-                print ("ERROR")
-                instances = ['ERROR']
-        else:
-            print (1)
-            instances = insert(appLabel, modelName, modelFields,requestFields, id = id, related=related)
-
+        instances = createAndUpdateModel(request, appLabel, modelName, related, id)
 
 
     return JsonResponse(instances,safe=False)
+
+
+
+def createAndUpdateModel(request, appLabel, modelName, related, id=None):
+    # jsonData = json.loads(request.body)
+    model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
+
+    modelFields = model._meta.get_fields()
+    if request.method == 'PUT':
+        requestFields = request.PUT
+    else:
+        requestFields = request.POST
+
+    print ("POST Payload:", requestFields)
+
+    if 'multiple' in requestFields:
+        instances = []
+        items = json.loads(requestFields[requestFields['multiple']])
+        print ("Items", items)
+        for item in items:
+            newFields = item
+            for key in requestFields.keys():
+                newFields[key] = requestFields[key]
+            instances.append(insert(appLabel, modelName, modelFields, newFields, id=id, related=related))
+    elif 'csv_file' in request.FILES:
+        try:
+            print ("CSV FILE")
+            instances = []
+            csv_file = request.FILES["csv_file"]
+            if not csv_file.name.endswith('.csv'):
+                print ("ERROR")
+            # if file is too large, return
+            if csv_file.multiple_chunks():
+                print ("ERROR")
+
+            file_data = csv_file.read().decode("utf-8")
+            lines = file_data.split("\n")
+            # loop over the lines and save them in db. If error , store as string and then display
+            i = 0
+            titles = {}
+
+            for line in lines:
+                if i == 0:
+                    i = 1
+                    fields = line.split(",")
+                    for x in range(len(fields)):
+                        titles[x] = fields[x].strip()
+                    continue
+
+                fieldData = line.split(",")
+                newFields = {}
+                blankLine = True
+                for x in range(len(fields)):
+                    newFields[titles[x]] = fieldData[x].strip()
+                    if newFields[titles[x]] != '':
+                        blankLine = False
+                if not blankLine:
+                    print (newFields)
+                    instances.append(insert(appLabel, modelName, modelFields, newFields, id=id, related=related))
+        except Exception as e:
+            print ("ERROR")
+            instances = ['ERROR']
+    else:
+        print (1)
+        instances = insert(appLabel, modelName, modelFields, requestFields, id=id, related=related)
+
+    return instances
 
 
 
