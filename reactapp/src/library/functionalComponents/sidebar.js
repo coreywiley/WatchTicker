@@ -22,8 +22,10 @@ class Sidebar extends Component {
     toggle() {
         if (this.state.open){
             this.setState({ open: false});
+            this.props.toggleOpen(false);
         } else {
             this.setState({ open: true});
+            this.props.toggleOpen(true);
         }
     }
 
@@ -40,6 +42,8 @@ class Sidebar extends Component {
         if (!this.state.open){
             position['right'] = "-" + this.state.width;
             toggleText = this.props.openerText;
+        } else {
+            position['zIndex'] = "100";
         }
 
         var openerStyle = {

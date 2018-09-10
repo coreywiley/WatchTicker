@@ -21,6 +21,7 @@ class CodeViewer extends Component {
             selectedTags: [], searchString: "", searchResults: [],
             resultList: null,
             selected: false,
+            open: false
         };
     }
 
@@ -276,8 +277,24 @@ class CodeViewer extends Component {
         }
     }
 
+    toggleOpen(open){
+        if (open){
+            this.setState({
+                open: true
+            });
+        } else {
+            this.setState({
+                open: false
+            });
+        }
+    }
 
     render() {
+        var openStyle = {};
+        if (this.state.open){
+            openStyle['width'] = "50%";
+        }
+
         var pages = [];
         for (var key=0; key<this.state.offset; key++){
             if (key in this.state.pages){
@@ -296,17 +313,21 @@ class CodeViewer extends Component {
                     tags={this.state.tags}
                     tagNames={tagNames}
                     jumpToPage={this.jumpToPage.bind(this)}
+                    toggleOpen={this.toggleOpen.bind(this)}
                 />
 
                 <AdminTagSidebar />
             </div>;
         }
 
-        var content = <SelectionScreen selected={this.selected.bind(this)} />;
+        var content = <SelectionScreen
+            selected={this.selected.bind(this)}
+            toggleOpen={this.toggleOpen.bind(this)}
+        />;
 
         if (this.state.selected){
             content =
-            <div>
+            <div style={openStyle}>
                 <div>
                     {pages}
                 </div>
@@ -321,6 +342,7 @@ class CodeViewer extends Component {
                     removeTag={this.removeTag.bind(this)}
                     searchCode={this.searchCode.bind(this)}
                     results={this.state.searchResults}
+                    toggleOpen={this.toggleOpen.bind(this)}
                 />
 
                 {adminTools}
@@ -425,7 +447,9 @@ class SearchSidebar extends Component {
         return (
             <Sidebar content={content}
                 openerText="Search" openerPosition="10px"
-                widthPercent={50} headerHeight={67} />
+                widthPercent={50} headerHeight={67}
+                toggleOpen={this.props.toggleOpen}
+            />
         );
     }
 }
@@ -602,6 +626,7 @@ class AdminSidebar extends Component {
         return (
             <Sidebar content={content} widthPercent={50} headerHeight={67}
                 openerText="Admin: Chapter Tags" openerPosition="90px"
+                toggleOpen={this.props.toggleOpen}
             />
         );
     }
@@ -761,6 +786,7 @@ class AdminTagSidebar extends Component {
         return (
             <Sidebar content={content} widthPercent={50} headerHeight={67}
                 openerText="Admin: Tags & Synonyms" openerPosition="160px"
+                toggleOpen={this.props.toggleOpen}
             />
         );
     }

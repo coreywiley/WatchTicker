@@ -54,7 +54,8 @@ class App extends Component {
             if (window.location.href.indexOf('login') > -1) {
                 window.location.href = '/viewer/';
             }
-        } else if (window.location.href.indexOf('login') == -1 || window.location.href.indexOf('signup') == -1) {
+        } else if (window.location.href.toLowerCase().indexOf('login') == -1 &&
+                    window.location.href.toLowerCase().indexOf('signup') == -1) {
             window.location.href = '/login/';
         }
     }
@@ -66,8 +67,8 @@ class App extends Component {
     }
 
     logOut() {
-        console.log("Log Out")
-        localStorage.removeItem('token')
+        console.log("Log Out");
+        localStorage.removeItem('token');
         window.location.href = '/login/';
     }
 
