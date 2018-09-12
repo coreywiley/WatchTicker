@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse, Http404, HttpResponseForbidd
 from django.views.decorators.csrf import csrf_exempt
 from django.apps import apps
 import django
-
+from django.conf import settings
 
 import datetime
 import time
@@ -22,9 +22,7 @@ def Index(request, param = "", param2 = "", param3 = "", param4 = ""):
         html = html.decode().replace('src="/static/js/bundle.js"', 'src="http://localhost:3000/static/js/bundle.js"')
         return HttpResponse(html)
 
-    html = requests.get("http://mathapp.jthiesen1.webfactional.com").content
-    html = html.decode().replace('src="/static/js/bundle.js"', 'src="http://mathapp.jthiesen1.webfactional.com/static/js/bundle.js"')
-    return HttpResponse(html)
+    return render(request, "index.html", {})
 
 def Error(request):
     print (1/0)
@@ -32,7 +30,7 @@ def Error(request):
 def ErrorPage(request):
     return JsonResponse({'error':'There was an error on the server. Our team has received an email detailing the error and will get it fixed as soon as possible.'})
 
-def NotFoundHandler(request):
+def NotFoundHandler(request, exception):
     return JsonResponse({'error':"This page doesn't exist. :O"})
 
 def PermissionDenied(request):
