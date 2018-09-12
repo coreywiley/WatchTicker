@@ -4,9 +4,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.apps import apps
 import django
 
-from home.models import Test,Question,Answer,Analysis
-from modelWebsite.models import Page, Component, PageComponent, Model, Field
-from user.views import my_login_required
 
 import datetime
 import time

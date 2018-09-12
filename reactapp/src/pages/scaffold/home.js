@@ -19,7 +19,7 @@ class Home extends Component {
     render() {
       var content =
         <div>
-          <p>Welcome Home!</p>
+          <p>Catering Checklist</p>
           <Button href={'/signUp/'} text={"Sign Up"} type={'success'} />
           <Button href={'/logIn/'} text={"Log In"} type={'primary'} />
         </div>;

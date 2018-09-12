@@ -29,6 +29,7 @@ import StripeForm_ from './formComponents/stripe/stripeform.js';
 import StripeMain_ from './formComponents/stripe/stripemain.js';
 import TextArea_ from './formComponents/textarea.js';
 import TextInput_ from './formComponents/textinput.js';
+import DateTimePicker_ from './formComponents/datetimepicker.js';
 
 import Accordion_ from './functionalComponents/accordion.js';
 import Container_ from './functionalComponents/container.js';
@@ -74,3 +75,4 @@ export const ImageInput = ImageInput_;
 export const Table = Table_;
 export const Wrapper = Wrapper_;
 export const Alert = Alert_;
+export const DateTimePicker = DateTimePicker_;

@@ -26,7 +26,7 @@ class SignUp extends Component {
           window.location.href = redirect;
       }
       else {
-          window.location.href = '/loggedIn/';
+          window.location.href = '/events/';
       }
 
     }
