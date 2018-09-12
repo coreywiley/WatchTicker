@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 import Wrapper from 'base/wrapper.js';
 import ajaxWrapper from 'base/ajax.js';
-import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Table, Checkbox} from 'library';
+import {Container, Button, Image, Form, TextInput, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Table, Checkbox} from 'library';
+import Navbar from 'projectLibrary/nav.js';
 
 class Customers extends Component {
     constructor(props) {
@@ -86,7 +87,9 @@ class Customers extends Component {
 
 
         return (
+          <div>
             <Wrapper loaded={this.state.loaded}  content={content} />
+          </div>
         );
     }
 }

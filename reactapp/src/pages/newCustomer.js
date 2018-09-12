@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 import Wrapper from 'base/wrapper.js';
 import ajaxWrapper from 'base/ajax.js';
-import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Table, NumberInput} from 'library';
+import {Container, Button, Image, Form, TextInput, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Table, NumberInput} from 'library';
+import Navbar from 'projectLibrary/nav.js';
 
 class NewCustomer extends Component {
     constructor(props) {
@@ -56,7 +57,10 @@ class NewCustomer extends Component {
         </div>;
 
         return (
+          <div>
+            <Navbar logged_in={true} logOut={this.props.logOut} />
             <Wrapper loaded={this.state.loaded}  content={content} />
+          </div>
         );
     }
 }
