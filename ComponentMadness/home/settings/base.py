@@ -110,9 +110,9 @@ DATABASES = {
     'default': {
         'CONN_MAX_AGE': 0,
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'componentmadness',
-        'USER': 'madness',
-        'PASSWORD': 'thisissparta',
+        'NAME': 'catering',
+        'USER': 'catering',
+        'PASSWORD': 'BqF;?xvd\\3!tW~gg',
         'HOST': '127.0.0.1',
         'PORT': '5432'
     }
@@ -132,16 +132,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
-STATIC_URL = '/static/'
-MEDIA_URL = '/static/images/'
-
-STATIC_ROOT = ""
-MEDIA_ROOT = ""
-
 
 
 SENDGRID_API_KEY = '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'

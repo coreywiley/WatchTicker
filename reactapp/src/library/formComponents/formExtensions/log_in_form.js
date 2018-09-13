@@ -33,7 +33,13 @@ class LogInForm extends Component {
     formSubmitCallback (value) {
         console.log("Value",value)
         if ('error' in value) {
-            this.setState({error:value['error']})
+            if (value['error'] == 'Bad Request') {
+              this.setState({error: 'Wrong Email or Password.'})
+            }
+            else {
+              this.setState({error:value['error']})
+            }
+
         }
         else {
           console.log("User",value);

@@ -30,3 +30,9 @@ LOGGING = {
         },
     },
 }
+
+STATIC_URL = '/static/'
+MEDIA_URL = '/static/images/'
+
+STATIC_ROOT = ""
+MEDIA_ROOT = ""

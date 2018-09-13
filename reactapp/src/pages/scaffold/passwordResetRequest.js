@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 
-import {Form, TextInput, Select, PasswordInput, Navbar, Alert, Header, Button} from 'library';
+import {Form, TextInput, Select, PasswordInput, Alert, Header, Button} from 'library';
+import Navbar from 'projectLibrary/nav.js';
 
 class PasswordResetRequest extends Component {
     constructor(props) {
@@ -66,7 +67,10 @@ class PasswordResetRequest extends Component {
         </div>;
 
         return (
-            <Wrapper loaded={true} content={content} />
+          <div>
+            <Navbar logged_in={false} />
+            <Wrapper loaded={this.state.loaded}  content={content} />
+          </div>
              );
     }
 }

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 
-import {Form, TextInput, Select, PasswordInput, Navbar} from 'library';
+import {Form, TextInput, Select, PasswordInput, Header} from 'library';
+import Navbar from 'projectLibrary/nav.js';
 
 class SignUp extends Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class SignUp extends Component {
           window.location.href = redirect;
       }
       else {
-          window.location.href = '/loggedIn/';
+          window.location.href = '/events/';
       }
 
     }
@@ -44,13 +45,17 @@ class SignUp extends Component {
         var submitUrl = "/api/user/user/";
 
         var content = <div className="container">
-                <h2>Sign Up</h2>
+                <Header size={2} text={'Sign Up'} />
                 <Form components={Components} redirect={this.logIn} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
+                <small className="form-text">Already a user? <a href="/logIn/">Log In</a></small>
         </div>;
 
 
         return (
-            <Wrapper loaded={true} content={content} />
+          <div>
+            <Navbar logged_in={false} />
+            <Wrapper loaded={true}  content={content} />
+          </div>
              );
     }
 }

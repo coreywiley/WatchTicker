@@ -5,13 +5,24 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "component-playground": "^3.1.2",
+    "globalize": "^1.4.0",
     "jquery": "^3.3.1",
+    "moment": "^2.22.2",
     "react": "^16.3.2",
+    "react-datepicker": "^1.6.0",
+    "react-datetime": "^2.15.0",
     "react-dom": "^16.3.2",
     "react-easy-swipe": "0.0.16",
+    "react-moment": "^0.7.9",
+    "react-places-autocomplete": "^7.2.0",
     "react-scripts": "1.1.4",
+    "react-sortable-hoc": "^0.8.3",
+    "react-stripe-elements": "^2.0.1",
     "react-swipe-component": "^2.1.0",
-    "react-swipeable": "^4.3.0"
+    "react-swipeable": "^4.3.0",
+    "react-widgets": "^4.4.4",
+    "react-widgets-globalize": "^5.0.13",
+    "react-widgets-moment": "^4.0.20"
   },
   "scripts": {
     "start": "react-scripts start",

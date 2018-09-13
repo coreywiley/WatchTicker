@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import Wrapper from 'base/wrapper.js';
 
 import {
-    Container, Button, Image, TextInput, NavBar,
+    Container, Button, Image, TextInput,
     List, Link, Accordion, Paragraph, RadioButton,
     TextArea, Header, LogInForm, PasswordInput
 } from 'library';
-
+import Navbar from 'projectLibrary/nav.js';
 
 class LogIn extends Component {
     constructor(props) {
@@ -24,15 +24,15 @@ class LogIn extends Component {
     render() {
       var content =
         <div className="container">
-            <div className="row">
-                <div className="col-md-4"></div>
-                <div className="col-md-4"><LogInForm redirectUrl={'/loggedIn/'} defaults={['','']} submitUrl={'/users/token/'} components={[TextInput, PasswordInput]} componentProps={[{'value':'','placeholder':'Email', 'name':'email','label':'Email'},{'value':'','placeholder':'Password', 'name':'password'}]} /></div>
-                <div className="col-md-4"></div>
-            </div>
+                <Header size={2} text={'Log In'} />
+                <LogInForm redirectUrl={'/events/'} defaults={['','']} submitUrl={'/users/token/'} components={[TextInput, PasswordInput]} componentProps={[{'value':'','placeholder':'Email', 'name':'email','label':'Email'},{'value':'','placeholder':'Password', 'name':'password'}]} />
         </div>;
 
         return (
-            <Wrapper loaded={this.state.loaded} content={content} />
+          <div>
+            <Navbar logged_in={false} />
+            <Wrapper loaded={this.state.loaded}  content={content} />
+          </div>
         );
     }
 }

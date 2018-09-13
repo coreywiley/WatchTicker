@@ -29,6 +29,30 @@ import LoggedIn from './pages/scaffold/loggedIn.js';
 import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
 import PasswordReset from './pages/scaffold/passwordReset.js';
 
+import Events from './pages/events.js';
+import NewEvent from './pages/newEvent.js';
+import NewCustomer from './pages/newCustomer.js';
+import Customers from './pages/customers.js';
+import NewMenuItem from './pages/newMenuItem.js';
+import MenuItems from './pages/menuItems.js';
+import ShoppingListItems from './pages/shoppingListItems.js';
+import NewShoppingListItem from './pages/newShoppingListItem.js';
+import PrepListItems from './pages/prepListItems.js';
+import NewPrepListItem from './pages/newPrepListItem.js';
+import DecorationListItems from './pages/decorationListItems.js';
+import NewDecorationListItem from './pages/newDecorationListItem.js';
+import PackListItems from './pages/packListItems.js';
+import NewPackListItem from './pages/newPackListItem.js';
+import Menu from './pages/menu.js';
+
+import ShopList from './pages/shopList.js';
+import PrepList from './pages/prepList.js';
+import PackList from './pages/packList.js';
+import DecorationList from './pages/decorList.js';
+
+import DailyPrepList from './pages/dailypreplist.js';
+
+import PrintAll from './pages/printAll.js';
 
 class App extends Component {
     constructor(props) {
@@ -36,10 +60,12 @@ class App extends Component {
         this.state = {
             loaded: false,
             csrfmiddlewaretoken: undefined,
-            User:{'user_id':'', 'user_name':'', 'user_shorthand':''}
+            user:{'id':'', 'name':''}
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
+        this.getUserInfo = this.getUserInfo.bind(this);
+        this.getUserInfoCallback = this.getUserInfoCallback.bind(this);
     }
 
     componentDidMount() {
@@ -53,21 +79,30 @@ class App extends Component {
     }
 
     ajaxCallback(value) {
-        console.log(value);
+
         window.secretReactVars["csrfmiddlewaretoken"] = value.csrfmiddlewaretoken;
         var token = localStorage.getItem('token')
         if (token) {
-            if (window.location.href.indexOf('login') > -1) {
-                window.location.href = '/projects/';
+            if (window.location.href.indexOf('login') > -1 || window.location.href.indexOf('signup') > -1) {
+                window.location.href = '/events/';
             }
             else {
-                this.setState({loaded: true, csrfmiddlewaretoken: value.csrfmiddlewaretoken, token: token});
+                this.setState({csrfmiddlewaretoken: value.csrfmiddlewaretoken, token: token}, this.getUserInfo);
             }
         }
         else {
           this.setState({loaded:true,csrfmiddlewaretoken: value.csrfmiddlewaretoken})
         }
 
+    }
+
+    getUserInfo() {
+      console.log("Get User Info")
+      ajaxWrapper('GET', '/users/user/', {}, this.getUserInfoCallback)
+    }
+
+    getUserInfoCallback(result) {
+      this.setState({'user': result, loaded:true})
     }
 
     getURL() {
@@ -134,6 +169,74 @@ class App extends Component {
         else if (params[0].toLowerCase() == "passwordreset") {
             content = <PasswordReset  user_id={params[1]} />
         }
+        else if (params[0].toLowerCase() == "events") {
+            content = <Events user_id={this.state.user.id} logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "newevent") {
+            content = <NewEvent user_id={this.state.user.id} event_id={params[1]}  logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "newcustomer") {
+            content = <NewCustomer user_id={this.state.user.id} customer_id={params[1]}  logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "customers") {
+            content = <Customers user_id={this.state.user.id} logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "menuitems") {
+            content = <MenuItems user_id={this.state.user.id} logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "newmenuitem") {
+            content = <NewMenuItem user_id={this.state.user.id} fooditem_id={params[1]}  logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "shoplistitems") {
+          console.log("Check ceh")
+            content = <ShoppingListItems user_id={this.state.user.id} fooditem_id={params[1]}  logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "newshoppinglistitem") {
+            content = <NewShoppingListItem user_id={this.state.user.id} fooditem_id={params[1]} shoppinglistitem_id={params[2]} logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "preplistitems") {
+          console.log("Check ceh")
+            content = <PrepListItems user_id={this.state.user.id} fooditem_id={params[1]}  logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "newpreplistitem") {
+            content = <NewPrepListItem user_id={this.state.user.id} fooditem_id={params[1]} shoppinglistitem_id={params[2]} logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "decorationlistitems") {
+          console.log("Check ceh")
+            content = <DecorationListItems user_id={this.state.user.id} fooditem_id={params[1]}  logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "newdecorationlistitem") {
+            content = <NewDecorationListItem user_id={this.state.user.id} fooditem_id={params[1]} shoppinglistitem_id={params[2]} logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "packlistitems") {
+          console.log("Check ceh")
+            content = <PackListItems user_id={this.state.user.id} fooditem_id={params[1]}  logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "newpacklistitem") {
+            content = <NewPackListItem user_id={this.state.user.id} fooditem_id={params[1]} shoppinglistitem_id={params[2]} logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "menu") {
+            content = <Menu user_id={this.state.user.id} event_id={params[1]} logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "shoplist") {
+            content = <ShopList user_id={this.state.user.id} event_id={params[1]} logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "preplist") {
+            content = <PrepList user_id={this.state.user.id} event_id={params[1]} logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "packlist") {
+            content = <PackList user_id={this.state.user.id} event_id={params[1]} logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "decorlist") {
+            content = <DecorationList user_id={this.state.user.id} event_id={params[1]} logOut={this.logOut}/>
+        }
+        else if (params[0].toLowerCase() == "dailypreplist") {
+            content = <DailyPrepList user_id={this.state.user.id} logOut={this.logOut} />
+        }
+        else if (params[0].toLowerCase() == "printall") {
+            content = <PrintAll user_id={this.state.user.id} event_id={params[1]} />
+        }
+
 
 
         return (

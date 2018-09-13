@@ -9,11 +9,19 @@ class Nav extends React.Component {
     }
 
     render() {
-        var name = <div><img src='../../static/images/AnexLogo.PNG' height="30" width="30" /><strong>ANEX</strong></div>;
-        var links = [['#','Analyst:'],['/projects/','Projects']];
+        var name = <div><strong>Catering</strong></div>;
+        if (this.props.logged_in == true) {
+          var links = [['/events/','Events'],['/customers/','Customers'],['/menuItems/','Menu Items']];
+          var nameLink = '/events/'
+        }
+        else {
+          var links = [];
+          var nameLink = '/'
+        }
+
 
         return (
-            <Navbar nameLink={'/projects/'} name={name} links={links} logOut={this.props.logOut} />
+            <Navbar nameLink={nameLink} name={name} links={links} logOut={this.props.logOut} />
         );
     }
 }

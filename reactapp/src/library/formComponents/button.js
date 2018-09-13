@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
 
+//<Button type={'success'} text={'Add New Event'} href={'/newEvent/'} />
+
 class Button extends React.Component {
     constructor(props) {
       super(props);
@@ -13,6 +15,7 @@ class Button extends React.Component {
         window.location.href = this.props.href;
       }
       else if (this.props.clickHandler) {
+        console.log("Click Handler")
         this.props.clickHandler();
       }
     }
