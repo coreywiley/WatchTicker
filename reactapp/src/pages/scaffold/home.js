@@ -27,7 +27,7 @@ class Home extends Component {
               <p>The struggle us marketers face today is they are probably saying yes behind their screen but you as a marketer cannot capture that type of response.  No matter how good your copy is or how good your landing page looks, you can't really tell if your audience is saying "YES".</p>
               <p>What if we told you there is a way to do this....</p>
               <p>If there was a way to track EVERY single users response.  Heck, you can even retarget those who said yes but got lost down your funnel.</p>
-              <iframe src="https://slidemoji.com/slider/11/" width="100%" frameborder="0" height="300px" seamless="" scrolling="no">Browser not compatible.</iframe>
+              <iframe src="https://admin.slidemoji.com/slider/11/" width="100%" frameborder="0" height="300px" seamless="" scrolling="no">Browser not compatible.</iframe>
               <p>See, you are already getting the idea.  Just imagine what else you can implement this cool tool on.   Blog sites, email funnels, Facebook Canvas ads etc.</p>
               <p>Click, Engage, Convert</p>
               <p>It is simple as that!</p>
