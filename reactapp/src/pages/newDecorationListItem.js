@@ -55,6 +55,7 @@ class NewMenuItem extends Component {
       var content =
         <div className={'container'}>
           <Header size={2} text={'Create New Decoration List Task for ' + this.state.fooditem.name} />
+          <p><Link text={'Back to Decoration List.'} link={'/decorationListItems/' + this.state.fooditem.id + '/'} /></p>
           <Form components={[TextInput]} first={true} componentProps={[name_props]} submitUrl={submitUrl} defaults={defaults} redirectUrl={redirectUrl}/>
         </div>;
 

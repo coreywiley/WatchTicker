@@ -23,7 +23,7 @@ class Customers extends Component {
     }
 
     componentDidMount() {
-      ajaxWrapper('GET','/api/home/event/' + this.props.event_id + '/', {}, this.eventInfoCallback)
+      ajaxWrapper('GET','/api/home/event/' + this.props.event_id + '/?related=customer', {}, this.eventInfoCallback)
       ajaxWrapper('GET','/api/home/order/?related=food_item&event=' + this.props.event_id, {}, this.eventCallback)
     }
 
@@ -73,9 +73,30 @@ class Customers extends Component {
       var defaults = {'quantity':1, 'food_item':'', 'event':this.props.event_id};
       var submitUrl = '/api/home/order/';
 
+      var eventInfo = <div></div>
+      if (this.state.loaded == true) {
+      var eventInfo = <div className="row">
+                        <div className="col-md-8">
+                          <p><strong>Event Name: </strong>{this.state.eventInfo['name']}</p>
+                          <p><strong>Event Date: </strong>{this.state.eventInfo['date']}</p>
+                          <p><strong>Arrival Time: </strong>{this.state.eventInfo['arrival_time']}</p>
+                          <p><strong>Leave Kitchen Time: </strong>{this.state.eventInfo['leave_time']}</p>
+                          <p><strong>Occasion: </strong>{this.state.eventInfo['occasion']}</p>
+                          <p><strong>Guest Count: </strong>{this.state.eventInfo['guest_count']}</p>
+                        </div>
+                        <div className="col-md-4">
+                          <p><strong>Customer Name: </strong>{this.state.eventInfo['customer']['name']}</p>
+                          <p><strong>Customer Phone: </strong>{this.state.eventInfo['customer']['phone']}</p>
+                          <p><strong>Customer Email: </strong>{this.state.eventInfo['customer']['email']}</p>
+                          <p><strong>Location: </strong>{this.state.eventInfo['location']}</p>
+                        </div>
+                      </div>;
+      }
+
       var content =
         <div className='container'>
           <Header size={2} text={'Orders for ' + this.state.eventInfo.name} />
+          {eventInfo}
           <table className='table'>
             <tr>
               <th>Menu Item</th>

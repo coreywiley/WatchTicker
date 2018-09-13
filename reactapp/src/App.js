@@ -52,6 +52,8 @@ import DecorationList from './pages/decorList.js';
 
 import DailyPrepList from './pages/dailypreplist.js';
 
+import PrintAll from './pages/printAll.js';
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -230,6 +232,9 @@ class App extends Component {
         }
         else if (params[0].toLowerCase() == "dailypreplist") {
             content = <DailyPrepList user_id={this.state.user.id} logOut={this.logOut} />
+        }
+        else if (params[0].toLowerCase() == "printall") {
+            content = <PrintAll user_id={this.state.user.id} event_id={params[1]} />
         }
 
 

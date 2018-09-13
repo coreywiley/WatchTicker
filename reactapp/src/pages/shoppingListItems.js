@@ -74,7 +74,7 @@ class Customers extends Component {
               <th>Delete</th>
             </tr>
             <tr>
-              <td><Button type={'success'} text={'Add New Task'} href={'/newShoppingListItem/' + this.props.fooditem_id +'/'} /></td>
+              <td><Button type={'success'} text={'Add New Item'} href={'/newShoppingListItem/' + this.props.fooditem_id +'/'} /></td>
               <td></td>
               <td></td>
             </tr>

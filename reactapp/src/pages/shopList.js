@@ -76,7 +76,7 @@ class Customers extends Component {
 
       var content =
         <div className='container'>
-          <Header size={2} text={'Shopping List for ' + this.state.eventInfo.name} />
+          <Header css={{'padding':'20px','color':'#cb4154'}} size={1} text={'Shopping List for ' + this.state.eventInfo.name} />
           {eventInfo}
           <Header size={4} text={'Shop List'} />
           <div className="row">

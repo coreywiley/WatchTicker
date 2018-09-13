@@ -56,6 +56,7 @@ class Events extends Component {
                       <td><Button type={'success'} text={'Prep List'} href={'/preplist/' + this.state.eventList[index]['id'] + '/'} /></td>
                       <td><Button type={'success'} text={'Decor List'} href={'/decorlist/' + this.state.eventList[index]['id'] + '/'} /></td>
                       <td><Button type={'success'} text={'Pack List'} href={'/packlist/' + this.state.eventList[index]['id'] + '/'} /></td>
+                      <td><Button type={'primary'} text={'Print All'} href={'/printAll/' + this.state.eventList[index]['id'] + '/'} /></td>
                       <td><Button type={'info'} text={'Edit Event'} href={'/newEvent/' + this.state.eventList[index]['id'] + '/'} /></td>
                       <td><Button type={'danger'} text={'Delete Event'} clickHandler={this.deleteEvent.bind(this, this.state.eventList[index]['id'])} /></td>
                     </tr>;
@@ -76,12 +77,14 @@ class Events extends Component {
               <th>Prep List</th>
               <th>Decor List</th>
               <th>Pack List</th>
+              <th>Print All</th>
               <th>Edit Event</th>
               <th>Delete Event</th>
             </tr>
             <tr>
               <td></td>
               <td><Button type={'success'} text={'Add New Event'} href={'/newEvent/'} /></td>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>
