@@ -22,6 +22,7 @@ class Form extends Component {
         this.setFormState = this.setFormState.bind(this);
         this.refreshDataCallback = this.refreshDataCallback.bind(this);
         this.setGlobalState = this.setGlobalState.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     componentDidMount() {
@@ -150,6 +151,12 @@ class Form extends Component {
         ajaxWrapper("POST",this.props.deleteUrl, {}, this.formSubmitCallback.bind(this));
     }
 
+    handleKeyPress = (event) => {
+      if(event.key == 'Enter'){
+        this.formSubmit()
+      }
+    }
+
     render() {
         var layout = "";
         if (typeof(this.props.layout) != 'undefined') {
@@ -197,7 +204,7 @@ class Form extends Component {
 
         //need to add in formsubmit, delete, and handle change functions to components.
         return(
-            <div className={layout}  style={this.props.css} >
+            <div className={layout}  style={this.props.css} onKeyPress={this.handleKeyPress}>
                 {components}
                 {buttons}
             </div>
