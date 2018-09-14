@@ -3,10 +3,6 @@ import ajaxWrapper from '../base/ajax.js';
 import {Navbar} from 'library';
 
 class Nav extends React.Component {
-    constructor(props) {
-      super(props)
-      this.state = {'user_name':'', 'staff': false, 'logged_in':false}
-    }
 
     render() {
         var name = <div><strong>Catering</strong></div>;
@@ -20,9 +16,12 @@ class Nav extends React.Component {
         }
 
 
-        return (
-            <Navbar nameLink={nameLink} name={name} links={links} logOut={this.props.logOut} />
-        );
+      return (
+      <header className="topbar">
+    <div className="topbar-left">
+      <span className="topbar-btn sidebar-toggler"><i>☰</i></span>
+    </div>
+  </header>);
     }
 }
 

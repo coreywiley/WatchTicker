@@ -1,15 +1,16 @@
 import $ from 'jquery';
 
-function error(xhr, status, erro) {
+function handleerror(xhr, status, erro) {
   console.log("Ajax Failure")
   console.log(xhr.responseText);
   console.log(status)
-  console.log(error)
+  console.log(erro)
 }
 
 function ajaxWrapper(type, url, data, returnFunc){
     if (type === "POST") {
         data["csrfmiddlewaretoken"] = window.secretReactVars["csrfmiddlewaretoken"];
+        console.log("CSRF", data['csrfmiddlewaretoken'])
     }
     var auth_token = '';
     if (localStorage.getItem('token')) {
@@ -64,7 +65,7 @@ function refreshToken(type, url, data, returnFunc){
               ajaxWrapper(type, url, data, returnFunc)
           },
           error: function(xhr, status, error) {
-              error(xhr,status,error)
+              handleerror(xhr,status,error)
           }
       });
 

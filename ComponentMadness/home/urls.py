@@ -16,7 +16,6 @@ urlpatterns = [
 
     #user imports
     url(r'^users/', include('user.urls', namespace="user")),
-    url(r'^error/', Error),
     #Catch statements for React
     url(r'^$', Index, name='index'),
     url(r'^(?P<param>\w+)/$', Index, name='index'),

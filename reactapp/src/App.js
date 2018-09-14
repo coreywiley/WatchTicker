@@ -1,27 +1,24 @@
 import React, { Component } from 'react';
 import './App.css';
-
 import ajaxWrapper from "./base/ajax.js";
 
-import ClientApp from "./clientApp.js";
-
-import Header from './base/header.js';
-import Footer from './base/footer.js';
-
-import Wrapper from './base/wrapper.js';
-
+//Component Madness
 import ComponentList from './pages/admin/componentList.js';
 import ComponentManager from './pages/admin/componentManager.js';
-
 import PageList from './pages/admin/pageList.js';
 import PageManager from './pages/admin/pageManager.js';
 
+//Admin
 import AppList from './pages/admin/appList.js';
 import ModelList from './pages/admin/modelsList.js';
 import InstanceList from './pages/admin/modelInstances.js';
 import Instance from './pages/admin/instance.js';
 import InstanceTable from './pages/admin/modelInstancesTable.js';
 
+//Scaffolding
+import Header from './base/header.js';
+import Footer from './base/footer.js';
+import Wrapper from './base/wrapper.js';
 import Home from './pages/scaffold/home.js';
 import LogIn from './pages/scaffold/logIn.js';
 import SignUp from './pages/scaffold/signUp.js';
@@ -29,36 +26,11 @@ import LoggedIn from './pages/scaffold/loggedIn.js';
 import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
 import PasswordReset from './pages/scaffold/passwordReset.js';
 
-import Events from './pages/events.js';
-import NewEvent from './pages/newEvent.js';
-import NewCustomer from './pages/newCustomer.js';
-import Customers from './pages/customers.js';
-import NewMenuItem from './pages/newMenuItem.js';
-import MenuItems from './pages/menuItems.js';
-import ShoppingListItems from './pages/shoppingListItems.js';
-import NewShoppingListItem from './pages/newShoppingListItem.js';
-import PrepListItems from './pages/prepListItems.js';
-import NewPrepListItem from './pages/newPrepListItem.js';
-import DecorationListItems from './pages/decorationListItems.js';
-import NewDecorationListItem from './pages/newDecorationListItem.js';
-import PackListItems from './pages/packListItems.js';
-import NewPackListItem from './pages/newPackListItem.js';
-import Menu from './pages/menu.js';
-
-import ShopList from './pages/shopList.js';
-import PrepList from './pages/prepList.js';
-import PackList from './pages/packList.js';
-import DecorationList from './pages/decorList.js';
-
-import DailyPrepList from './pages/dailypreplist.js';
-
-import PrintAll from './pages/printAll.js';
-
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loaded: false,
+            loaded: true,
             csrfmiddlewaretoken: undefined,
             user:{'id':'', 'name':''}
         };
@@ -73,7 +45,7 @@ class App extends Component {
     }
 
     logOut() {
-        console.log("Log Out")
+        console.log("Log Out");
         localStorage.removeItem('token')
         window.location.href = '/login/';
     }
@@ -123,11 +95,14 @@ class App extends Component {
         if (params[0] === ""){
             //Home page
             content = <Home />
-
         } else if (params[0].toLowerCase() === "components") {
             //List components
             content = <ComponentList />;
-        } else if (params[0].toLowerCase() === "component") {
+        }
+        else if (params[0].toLowerCase() === "logout") {
+            this.logOut();
+        }
+        else if (params[0].toLowerCase() === "component") {
             //Single component page
             content = <ComponentManager id={params[1]} />;
         } else if (params[0].toLowerCase() === "pages") {
@@ -136,8 +111,6 @@ class App extends Component {
         } else if (params[0].toLowerCase() === "page") {
             //Single page
             content = <PageManager id={params[1]} />;
-        } else if (params[0].toLowerCase() == "app") {
-            content = <ClientApp params={params.slice(1)} />;
         }
         else if (params[0].toLowerCase() == "applist") {
             content = <AppList user_id={this.state.token} logOut={this.logOut}/>;
@@ -145,7 +118,7 @@ class App extends Component {
         else if (params[0].toLowerCase() == "models") {
             content = <ModelList app={params[1]} user_id={this.state.token} logOut={this.logOut}/>
         }
-        else if (params[0].toLowerCase() == "modelInstances") {
+        else if (params[0].toLowerCase() == "modelinstances") {
             content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "modelInstancesTable") {
@@ -168,6 +141,24 @@ class App extends Component {
         }
         else if (params[0].toLowerCase() == "passwordreset") {
             content = <PasswordReset  user_id={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "slider") {
+            content = <EmojiSliderViewer  slider={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "sliderdetails") {
+            content = <EmojiSliderDetails user_id={this.state.token} domain={params[1]} slider={params[2]} logOut={this.logOut} />
+        }
+        else if (params[0].toLowerCase() == "slidereditor") {
+            content = <EmojiSliderEditor user_id={this.state.token} domain={params[1]} slider={params[2]} logOut={this.logOut} />
+        }
+        else if (params[0].toLowerCase() == "dashboard") {
+            content = <Dashboard user_id={this.state.token} logOut={this.logOut} />
+        }
+        else if (params[0].toLowerCase() == "newdomain") {
+            content = <NewDomain user_id={this.state.token} logOut={this.logOut} />
+        }
+        else if (params[0].toLowerCase() == "domain") {
+            content = <Domain user_id={this.state.token} domain={params[1]} />
         }
         else if (params[0].toLowerCase() == "events") {
             content = <Events user_id={this.state.user.id} logOut={this.logOut}/>

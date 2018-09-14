@@ -1,0 +1,9 @@
+[Sat Aug 18 22:16:02.180036 2018] [mpm_worker:notice] [pid 42145:tid 140283413735296] AH00292: Apache/2.4.33 (Unix) mod_wsgi/4.6.4 Python/3.6 configured -- resuming normal operations
+[Sat Aug 18 22:16:02.180173 2018] [core:notice] [pid 42145:tid 140283413735296] AH00094: Command line: '/home/jthiesen1/webapps/emoji_api/apache2/bin/httpd.worker -f /home/jthiesen1/webapps/emoji_api/apache2/conf/httpd.conf'
+[Sun Aug 19 18:17:47.453495 2018] [wsgi:error] [pid 42150:tid 140283226953472] [remote 127.0.0.1:52220] Not Found: /static/admin/css/fonts.css
+[Sun Aug 19 18:17:47.557734 2018] [wsgi:error] [pid 42149:tid 140283059164928] [remote 127.0.0.1:52344] Not Found: /favicon.ico
+[Sun Aug 19 18:17:59.428274 2018] [mpm_worker:notice] [pid 42145:tid 140283413735296] AH00298: SIGHUP received.  Attempting to restart
+(98)Address already in use: AH00072: make_sock: could not bind to address [::]:26313
+(98)Address already in use: AH00072: make_sock: could not bind to address 0.0.0.0:26313
+[Sun Aug 19 18:17:59.529275 2018] [mpm_worker:alert] [pid 42145:tid 140283413735296] no listening sockets available, shutting down
+[Sun Aug 19 18:17:59.529282 2018] [:emerg] [pid 42145:tid 140283413735296] AH00019: Unable to open logs, exiting

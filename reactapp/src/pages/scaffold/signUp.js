@@ -4,6 +4,7 @@ import Wrapper from 'base/wrapper.js';
 
 import {Form, TextInput, Select, PasswordInput, Header} from 'library';
 import Navbar from 'projectLibrary/nav.js';
+import Sidebar from 'projectLibrary/loggedOutSidebar.js';
 
 class SignUp extends Component {
     constructor(props) {
@@ -27,24 +28,24 @@ class SignUp extends Component {
           window.location.href = redirect;
       }
       else {
-          window.location.href = '/events/';
+            window.location.href = '/loggedIn/';
       }
 
     }
 
     render() {
-        var Components = [TextInput,TextInput,TextInput, PasswordInput];
+        var Components = [TextInput, PasswordInput];
         var first_name_props = {'value':'','name':'first_name','label':'First Name:','placeholder': 'First Name'}
         var last_name_props = {'value':'','name':'last_name','label':'Last Name:','placeholder': 'Last Name'}
-        var email_props = {'value':'','name':'email','label':'Email:','placeholder': 'component@madness.com'}
+        var email_props = {'value':'','name':'email','label':'Email:','placeholder': 'emoji@slider.com'}
         var password_props = {'confirm_password':true};
 
-        var ComponentProps = [first_name_props, last_name_props, email_props, password_props];
-        var defaults = {'first_name':'','last_name':'', 'email':'', 'password':'','type':'User'};
+        var ComponentProps = [email_props, password_props];
+        var defaults = {'email':'', 'password':'','type':'User'};
 
         var submitUrl = "/api/user/user/";
 
-        var content = <div className="container">
+        var content = <div className="container" style={{'marginTop':'100px'}}>
                 <Header size={2} text={'Sign Up'} />
                 <Form components={Components} redirect={this.logIn} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
                 <small className="form-text">Already a user? <a href="/logIn/">Log In</a></small>
@@ -54,6 +55,7 @@ class SignUp extends Component {
         return (
           <div>
             <Navbar logged_in={false} />
+            <Sidebar />
             <Wrapper loaded={true}  content={content} />
           </div>
              );

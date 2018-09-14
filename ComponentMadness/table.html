@@ -1,0 +1,53 @@
+class Table Extend React.Component {
+
+    function setUp() {
+        if this.properties.tableData
+            if 'headers' in this.properties.tableData and 'content' in this.properties.tableData
+                this.properties.success = True
+            else
+                this.properties.failureReason = 'The data is improperly formatted';
+                this.properties.success = False;
+        else if this.properties.dataUrl
+            $.ajax({
+                'type':'GET',
+                'url':this.properties.url,
+                'success': function(data) {
+                    this.properties.tableData = data
+                    if 'headers' in this.properties.tableData and 'content' in this.properties.tableData
+                        this.properties.success = True
+                    else
+                        this.properties.failureReason = 'The data is improperly formatted';
+                        this.properties.success = False;
+                },
+                'error': function() {
+                    this.properties.success = False;
+                    this.properties.failureReason = 'The URL did not respond.'
+                },
+            });
+    }
+
+    render() {
+        if (this.properties.success) {
+        <table className="table">
+            <thead>
+                <tr>
+                    {% for tableHeader in tableData['headers'] %}
+                        <th>{{tableHeader}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in tableData['content'] %}
+                    <tr>
+                        {% for item in row %}
+                            <td>{{item}}</td>
+                        {% endfor %}
+                    </tr>
+            </tbody>
+        </table>
+        }
+        else {
+            <p className="alert alert-danger">The URL or data supplied for rendering the table either failed due to: {{failureReason}}</p>
+        }
+    }
+}

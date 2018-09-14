@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
 import ajaxWrapper from 'base/ajax.js';
 import Wrapper from 'base/wrapper.js';
+//Example
+//var lastInstanceData = {'name':"Something New?", 'description':"Add A New Component", 'link':"/component/", 'button':"Create New", 'button_type':"success"};
+//var dataMapping = {'button_type':'primary', 'button':'Edit', 'link':'/component/{id}/'};
+//<List dataUrl={"/api/home/component/"} component={Card} objectName={'component'} dataMapping={dataMapping} lastInstanceData={lastInstanceData} />
 
 class List extends Component {
     constructor(props) {
@@ -13,6 +17,7 @@ class List extends Component {
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
         this.refreshData = this.refreshData.bind(this);
+        console.log("Original", this.props.dataUrl)
     }
 
     componentDidMount() {
@@ -29,6 +34,7 @@ class List extends Component {
 
     refreshData() {
         var dataUrl = this.props.dataUrl;
+
         if (this.props.filters) {
             if (dataUrl.indexOf('?') == -1) {
                 dataUrl += '?';
@@ -45,6 +51,7 @@ class List extends Component {
                 }
             }
         }
+        console.log("Get", dataUrl);
         ajaxWrapper("GET", dataUrl, {}, this.ajaxCallback);
     }
 

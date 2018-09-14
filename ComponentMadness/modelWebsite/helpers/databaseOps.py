@@ -4,6 +4,7 @@ from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, 
 
 def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]):
     print ('Here')
+    print (requestFields)
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
     instance = model()
     if id:
@@ -39,7 +40,10 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
         elif field.get_internal_type() not in ['ForeignKey', 'ManyToManyField']:
             if field.get_internal_type() == 'DateTimeField' and requestFields[field.name] == '':
                 continue
-            setattr(instance, field.name, requestFields[field.name])
+            if field.name in ['email']:
+                setattr(instance, field.name, requestFields[field.name].lower())
+            else:
+                setattr(instance, field.name, requestFields[field.name])
 
         elif field.get_internal_type() == 'ForeignKey':
             if requestFields[field.name] not in [None, 'None']:

@@ -56,7 +56,11 @@ class Form extends Component {
 
     setFormState(state) {
         console.log("Set Form State",state)
-        this.setState(state,  this.setGlobalState(state));
+        var newState = this.state;
+        for (var index in state) {
+          newState[index] = state[index];
+        }
+        this.setState(state,  this.setGlobalState(newState));
 
     }
 
