@@ -4,7 +4,6 @@ import Wrapper from 'base/wrapper.js';
 
 import {Form, TextInput, Select, PasswordInput, Header} from 'library';
 import Navbar from 'projectLibrary/nav.js';
-import Sidebar from 'projectLibrary/loggedOutSidebar.js';
 
 class SignUp extends Component {
     constructor(props) {
@@ -55,7 +54,6 @@ class SignUp extends Component {
         return (
           <div>
             <Navbar logged_in={false} />
-            <Sidebar />
             <Wrapper loaded={true}  content={content} />
           </div>
              );

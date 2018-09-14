@@ -9,7 +9,6 @@ import {
     TextArea, Header, LogInForm, PasswordInput
 } from 'library';
 import Navbar from 'projectLibrary/nav.js';
-import Sidebar from 'projectLibrary/loggedOutSidebar.js';
 
 class LogIn extends Component {
     constructor(props) {
@@ -32,7 +31,6 @@ class LogIn extends Component {
 
         return (
           <div>
-          <Sidebar />
           <Wrapper loaded={true} content={content} />
           </div>
         );
