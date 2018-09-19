@@ -46,13 +46,22 @@ function refreshToken(type, url, data, returnFunc){
       var refreshData = {};
       refreshData["csrfmiddlewaretoken"] = window.secretReactVars["csrfmiddlewaretoken"];
       var refresh_token = localStorage.getItem('refresh_token')
-      refreshData['refresh'] = localStorage.getItem('refresh_token')
+
+      refreshData['refresh'] = '';
+      if (localStorage.getItem('refresh_token')) {
+        refreshData['refresh'] = localStorage.getItem('refresh_token')
+      }
 
       $.ajax({
           type: 'POST',
           url: '/users/token/refresh/',
           data: refreshData,
           statusCode: {
+            401: function(xhr) {
+              console.log('Refresh Token Expired')
+              localStorage.removeItem('token')
+              localStorage.removeItem('refresh_token')
+            },
             401: function(xhr) {
               console.log('Refresh Token Expired')
               localStorage.removeItem('token')
@@ -64,7 +73,14 @@ function refreshToken(type, url, data, returnFunc){
               ajaxWrapper(type, url, data, returnFunc)
           },
           error: function(xhr, status, error) {
-              error(xhr,status,error)
+            console.log("Ajax Failure")
+            console.log(xhr.responseText);
+            console.log(status)
+            console.log(error)
+            console.log('Refresh Token Expired')
+            localStorage.removeItem('token')
+            localStorage.removeItem('refresh_token')
+            window.location.href = window.location.href;
           }
       });
 

@@ -19,15 +19,14 @@ class Home extends Component {
 
     render() {
       var content =
-        <div>
-          <p>Catering Checklist</p>
-          <Button href={'/signUp/'} text={"Sign Up"} type={'success'} />
-          <Button href={'/logIn/'} text={"Log In"} type={'primary'} />
+        <div style={{'text-align':'center','margin-top':'200px'}}>
+          <p><img src='/static/images/CaterListerTagLine.JPG' /></p>
+          <Button href={'/signUp/'} text={"Sign Up"} type={'success'} css={{'margin':'20px'}}/>
+          <Button href={'/logIn/'} text={"Log In"} type={'primary'} css={{'margin':'20px'}}/>
         </div>;
 
         return (
           <div>
-            <Navbar logged_in={false} />
             <Wrapper loaded={this.state.loaded}  content={content} />
           </div>
         );

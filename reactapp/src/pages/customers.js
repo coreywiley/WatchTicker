@@ -60,6 +60,9 @@ class Customers extends Component {
 
       var content =
         <div className='container'>
+        <div style={{'marginBottom':'25px'}}>
+          <Button type={'success'} text={'Add New Customer'} href={'/newCustomer/'} />
+        </div>
           <Header size={2} text={'My Customers'} />
           <table className='table'>
             <tr>
@@ -69,17 +72,6 @@ class Customers extends Component {
               <th>Email</th>
               <th>Edit</th>
               <th>Delete</th>
-            </tr>
-            <tr>
-              <td></td>
-              <td><Button type={'success'} text={'Add New Customer'} href={'/newCustomer/'} /></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
             </tr>
             {eventList}
           </table>

@@ -11,6 +11,7 @@ class Customer(models.Model):
     phone = models.CharField(default = "", max_length=200, null = False)
     email = models.CharField(default = "", max_length=200, null = False)
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='customers')
+    notes = models.TextField(default="", null=False)
 
     def __str__(self):
         return u"{}".format(self.name)
@@ -32,6 +33,7 @@ class Event(models.Model):
     guest_count = models.IntegerField(default = 0, null = False)
     contact_info = models.CharField(default = "", max_length=200, null = False)
     user = models.ForeignKey(User, null = True, on_delete=models.CASCADE, related_name='events')
+    notes = models.TextField(default = "", null = False)
 
     def __str__(self):
         return u"{}".format(self.name)

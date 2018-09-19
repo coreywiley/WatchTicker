@@ -14,6 +14,7 @@ class NewCustomer extends Component {
             address: '',
             phone: '',
             email: '',
+            notes:'',
             user: this.props.user_id,
         };
 
@@ -42,6 +43,7 @@ class NewCustomer extends Component {
       var address = {'label': 'Address', 'name':'address', 'value': this.state.date}
       var phone = {'label': 'Phone', 'name': 'phone', 'value':this.state.leave_time}
       var email = {'label': 'Email', 'name': 'email', 'value':this.state.arrival_time}
+      var notes = {'label':'Notes','name':'notes','value':this.state.notes,'placeholder':''}
       var defaults = this.state;
       var submitUrl = '/api/home/customer/';
       if (this.props.customer_id) {
@@ -53,7 +55,7 @@ class NewCustomer extends Component {
       var content =
         <div className={'container'}>
           <Header size={2} text={'Create New Customer'} />
-          <Form components={[TextInput, TextInput, TextInput, TextInput]} first={true} componentProps={[name_props, address,phone,email]} submitUrl={submitUrl} defaults={defaults} redirectUrl={redirectUrl}/>
+          <Form components={[TextInput, TextInput, TextInput, TextInput, TextArea]} first={true} componentProps={[name_props, address,phone,email, notes]} submitUrl={submitUrl} defaults={defaults} redirectUrl={redirectUrl}/>
         </div>;
 
         return (

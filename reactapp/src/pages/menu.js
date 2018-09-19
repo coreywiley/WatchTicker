@@ -62,8 +62,7 @@ class Customers extends Component {
       for (var index in this.state.eventList) {
         var row = <tr>
                       <td>{this.state.eventList[index]['food_item']['name']}</td>
-                      <td>{this.state.eventList[index]['quantity']}</td>
-                      <td><Button type={'danger'} text={'Delete'} clickHandler={this.deleteEvent.bind(this,this.state.eventList[index]['id'])} /></td>
+                      <td className='no-print'><Button type={'danger'} text={'Delete'} clickHandler={this.deleteEvent.bind(this,this.state.eventList[index]['id'])} /></td>
                     </tr>;
           eventList.push(row);
       }
@@ -75,22 +74,24 @@ class Customers extends Component {
 
       var eventInfo = <div></div>
       if (this.state.loaded == true) {
-      var eventInfo = <div className="row">
-                        <div className="col-md-8">
-                          <p><strong>Event Name: </strong>{this.state.eventInfo['name']}</p>
-                          <p><strong>Event Date: </strong>{this.state.eventInfo['date']}</p>
-                          <p><strong>Arrival Time: </strong>{this.state.eventInfo['arrival_time']}</p>
-                          <p><strong>Leave Kitchen Time: </strong>{this.state.eventInfo['leave_time']}</p>
-                          <p><strong>Occasion: </strong>{this.state.eventInfo['occasion']}</p>
-                          <p><strong>Guest Count: </strong>{this.state.eventInfo['guest_count']}</p>
-                        </div>
-                        <div className="col-md-4">
-                          <p><strong>Customer Name: </strong>{this.state.eventInfo['customer']['name']}</p>
-                          <p><strong>Customer Phone: </strong>{this.state.eventInfo['customer']['phone']}</p>
-                          <p><strong>Customer Email: </strong>{this.state.eventInfo['customer']['email']}</p>
-                          <p><strong>Location: </strong>{this.state.eventInfo['location']}</p>
-                        </div>
-                      </div>;
+        var eventInfo = <div className="row" style={{'marginTop':'30px','marginBottom':'30px'}}>
+                          <div className="col-md-8">
+                            <p style={{'margin':'0'}}><strong>Event Name: </strong>{this.state.eventInfo['name']}</p>
+                            <p style={{'margin':'0'}}><strong>Event Date: </strong>{this.state.eventInfo['date']}</p>
+                            <p style={{'margin':'0'}}><strong>Arrival Time: </strong>{this.state.eventInfo['arrival_time']}</p>
+                            <p style={{'margin':'0'}}><strong>Leave Kitchen Time: </strong>{this.state.eventInfo['leave_time']}</p>
+                            <p style={{'margin':'0'}}><strong>Occasion: </strong>{this.state.eventInfo['occasion']}</p>
+                            <p style={{'margin':'0'}}><strong>Guest Count: </strong>{this.state.eventInfo['guest_count']}</p>
+                          </div>
+                          <div className="col-md-4">
+                            <p style={{'margin':'0'}}><strong>Customer Name: </strong>{this.state.eventInfo['customer']['name']}</p>
+                            <p style={{'margin':'0'}}><strong>Customer Phone: </strong>{this.state.eventInfo['customer']['phone']}</p>
+                            <p style={{'margin':'0'}}><strong>Customer Email: </strong>{this.state.eventInfo['customer']['email']}</p>
+                            <p style={{'margin':'0'}}><strong>Location: </strong>{this.state.eventInfo['location']}</p>
+                            <p style={{'margin':'0'}}><strong>Customer Notes: </strong>{this.state.eventInfo['customer']['notes']}</p>
+                            <p style={{'margin':'0'}}><strong>Event Notes: </strong>{this.state.eventInfo['notes']}</p>
+                          </div>
+                        </div>;
       }
 
       var content =
@@ -100,15 +101,15 @@ class Customers extends Component {
           <table className='table'>
             <tr>
               <th>Menu Item</th>
-              <th>Quantity</th>
-              <th>Delete</th>
+              <th className='no-print'>Delete</th>
             </tr>
             {eventList}
           </table>
 
+          <div className="no-print">
           <Header size={4} text={'Create New Order for ' + this.state.eventInfo.name} />
-          <Form components={[Select, TextInput]} first={true} componentProps={[food_props, quantity]} submitUrl={submitUrl} defaults={defaults} redirect={this.refreshOrders}/>
-
+          <Form components={[Select]} first={true} componentProps={[food_props]} submitUrl={submitUrl} defaults={defaults} redirect={this.refreshOrders}/>
+          </div>
 
         </div>;
 

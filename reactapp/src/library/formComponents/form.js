@@ -177,6 +177,9 @@ class Form extends Component {
         for (var index in this.props.components) {
             var Component = this.props.components[index];
             var props = this.props.componentProps[index];
+            if (index == 0) {
+              props['autoFocus'] = true;
+            }
 
             if (props['names']) {
                 var values = {}

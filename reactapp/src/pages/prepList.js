@@ -47,9 +47,9 @@ class Customers extends Component {
         var todolist = [];
         for (var index2 in this.state.orders[index][2]) {
           var item = this.state.orders[index][2][index2]['preplistitem']
-          todolist.push(<Checkbox name={'None'} label={item['task']} value={0} />)
+          todolist.push(<Checkbox name={'None'} label={'________ ' + item['task']} value={0} />)
         }
-        var renderItem = <div className="col-md-4"><Header size={5} text={this.state.orders[index][0] + ' : ' + this.state.orders[index][1]} /><br /> {todolist} <br /></div>;
+        var renderItem = <div className="col-md-4"><div style={{'color':'#cb4154'}}><Header size={5} text={this.state.orders[index][0]}  /></div> {todolist} <br /></div>;
         renderList.push(renderItem);
 
       }
@@ -58,27 +58,31 @@ class Customers extends Component {
       if (this.state.loaded == true) {
       var eventInfo = <div className="row">
                         <div className="col-md-8">
-                          <p><strong>Event Name: </strong>{this.state.eventInfo['name']}</p>
-                          <p><strong>Event Date: </strong>{this.state.eventInfo['date']}</p>
-                          <p><strong>Arrival Time: </strong>{this.state.eventInfo['arrival_time']}</p>
-                          <p><strong>Leave Kitchen Time: </strong>{this.state.eventInfo['leave_time']}</p>
-                          <p><strong>Occasion: </strong>{this.state.eventInfo['occasion']}</p>
-                          <p><strong>Guest Count: </strong>{this.state.eventInfo['guest_count']}</p>
+                          <p style={{'margin':'0'}}><strong>Event Name: </strong>{this.state.eventInfo['name']}</p>
+                          <p style={{'margin':'0'}}><strong>Event Date: </strong>{this.state.eventInfo['date']}</p>
+                          <p style={{'margin':'0'}}><strong>Arrival Time: </strong>{this.state.eventInfo['arrival_time']}</p>
+                          <p style={{'margin':'0'}}><strong>Leave Kitchen Time: </strong>{this.state.eventInfo['leave_time']}</p>
+                          <p style={{'margin':'0'}}><strong>Occasion: </strong>{this.state.eventInfo['occasion']}</p>
+                          <p style={{'margin':'0'}}><strong>Guest Count: </strong>{this.state.eventInfo['guest_count']}</p>
                         </div>
                         <div className="col-md-4">
-                          <p><strong>Customer Name: </strong>{this.state.eventInfo['customer']['name']}</p>
-                          <p><strong>Customer Phone: </strong>{this.state.eventInfo['customer']['phone']}</p>
-                          <p><strong>Customer Email: </strong>{this.state.eventInfo['customer']['email']}</p>
-                          <p><strong>Location: </strong>{this.state.eventInfo['location']}</p>
+                          <p style={{'margin':'0'}}><strong>Customer Name: </strong>{this.state.eventInfo['customer']['name']}</p>
+                          <p style={{'margin':'0'}}><strong>Customer Phone: </strong>{this.state.eventInfo['customer']['phone']}</p>
+                          <p style={{'margin':'0'}}><strong>Customer Email: </strong>{this.state.eventInfo['customer']['email']}</p>
+                          <p style={{'margin':'0'}}><strong>Location: </strong>{this.state.eventInfo['location']}</p>
+                          <p style={{'margin':'0'}}><strong>Customer Notes: </strong>{this.state.eventInfo['customer']['notes']}</p>
+                          <p style={{'margin':'0'}}><strong>Event Notes: </strong>{this.state.eventInfo['notes']}</p>
                         </div>
                       </div>;
       }
 
       var content =
         <div className='container'>
-          <Header css={{'padding':'20px','color':'#cb4154'}} size={1} text={'Prep List for ' + this.state.eventInfo.name} />
+          <Header css={{'padding':'50px','color':'#cb4154', 'text-align':'center'}} size={1} text={'Prep List for ' + this.state.eventInfo.name} />
           {eventInfo}
-          <Header size={4} text={'Prep List'} />
+          <div style={{'marginTop':'35px','marginBottom':'50px'}}>
+          <Header size={2} text={'Prep List'} />
+          </div>
           <div className="row">
           {renderList}
           </div>

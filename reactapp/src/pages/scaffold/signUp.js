@@ -33,13 +33,14 @@ class SignUp extends Component {
     }
 
     render() {
-        var Components = [TextInput,TextInput,TextInput, PasswordInput];
+        var Components = [TextInput,TextInput,TextInput, TextInput, PasswordInput];
         var first_name_props = {'value':'','name':'first_name','label':'First Name:','placeholder': 'First Name'}
         var last_name_props = {'value':'','name':'last_name','label':'Last Name:','placeholder': 'Last Name'}
+        var company_props = {'value':'','name':'company','label':'Company Name:','placeholder': 'Company Name'}
         var email_props = {'value':'','name':'email','label':'Email:','placeholder': 'component@madness.com'}
         var password_props = {'confirm_password':true};
 
-        var ComponentProps = [first_name_props, last_name_props, email_props, password_props];
+        var ComponentProps = [first_name_props, last_name_props, company_props, email_props, password_props];
         var defaults = {'first_name':'','last_name':'', 'email':'', 'password':'','type':'User'};
 
         var submitUrl = "/api/user/user/";

@@ -17,6 +17,7 @@ class NewEvent extends Component {
             arrival_time: '',
             location: '',
             occasion: '',
+            notes: '',
             guest_count: 0,
             user: this.props.user_id,
         };
@@ -51,6 +52,7 @@ class NewEvent extends Component {
       var location = {'label':'Location', 'name':'location', 'value':this.state.location, 'placeholder': '123 Fake Street'}
       var occasion = {'label':'Occasion', 'name': 'occasion', 'value': this.state.occasion, 'placeholder': 'Wedding'}
       var guest_count = {'label':'Guest Count', 'name': 'guest_count', 'value':this.state.value, 'placeholder': 0}
+      var notes = {'label':'Notes','name':'notes','value':this.state.notes,'placeholder':''}
       var defaults = this.state;
 
       var submitUrl = '/api/home/event/';
@@ -64,7 +66,7 @@ class NewEvent extends Component {
         <div className='container'>
           <Header size={2} text={'Create New Event'} />
           <p>If you cant find the customer, <Link text={'create a customer first.'} link={'/newCustomer/'} /></p>
-          <Form components={[Select, TextInput, DateTimePicker, DateTimePicker, DateTimePicker, TextInput, TextInput, NumberInput]} first={true} componentProps={[customer_props, name_props, date, leave_time, arrival_time, location, occasion, guest_count]} submitUrl={submitUrl} defaults={defaults} redirectUrl={redirectUrl}/>
+          <Form components={[Select, TextInput, DateTimePicker, DateTimePicker, DateTimePicker, TextInput, TextInput, NumberInput, TextArea]} first={true} componentProps={[customer_props, name_props, date, leave_time, arrival_time, location, occasion, guest_count, notes]} submitUrl={submitUrl} defaults={defaults} redirectUrl={redirectUrl}/>
         </div>;
 
         return (

@@ -9,7 +9,7 @@ class Nav extends React.Component {
     }
 
     render() {
-        var name = <div><strong>Catering</strong></div>;
+        var name = <div><img src='/static/images/CaterLister.png' style={{'height':'30px'}} /></div>;
         if (this.props.logged_in == true) {
           var links = [['/events/','Events'],['/customers/','Customers'],['/menuItems/','Menu Items']];
           var nameLink = '/events/'

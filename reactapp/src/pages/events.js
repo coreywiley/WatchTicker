@@ -52,7 +52,7 @@ class Events extends Component {
                       <td>{this.state.eventList[index]['name']}</td>
                       <td>{this.state.eventList[index]['guest_count']}</td>
                       <td><Button type={'success'} text={'Menu'} href={'/menu/' + this.state.eventList[index]['id'] + '/'} /></td>
-                      <td><Button type={'success'} text={'Shopping List'} href={'/shoplist/' + this.state.eventList[index]['id'] + '/'} /></td>
+                      <td><Button type={'success'} text={'Shop List'} href={'/shoplist/' + this.state.eventList[index]['id'] + '/'} /></td>
                       <td><Button type={'success'} text={'Prep List'} href={'/preplist/' + this.state.eventList[index]['id'] + '/'} /></td>
                       <td><Button type={'success'} text={'Decor List'} href={'/decorlist/' + this.state.eventList[index]['id'] + '/'} /></td>
                       <td><Button type={'success'} text={'Pack List'} href={'/packlist/' + this.state.eventList[index]['id'] + '/'} /></td>
@@ -65,33 +65,23 @@ class Events extends Component {
 
       var content =
         <div className='container'>
-          <Button href={'/dailypreplist/'} text={'Daily Prep List'} type={'primary'} />
+          <div style={{'margin-bottom':'35px'}}>
+          <Button type={'success'} text={'Add New Event'} href={'/newEvent/'} />
+          </div>
           <Header size={2} text={'My Events'} />
-          <table className='table'>
+          <table className='table' style={{'marginLeft':'-5%','marginTop':'2%'}}>
             <tr>
               <th>Date</th>
               <th>Name</th>
-              <th>Number of Guests</th>
+              <th>Guests</th>
               <th>Menu</th>
-              <th>Shopping List</th>
+              <th>Shop List</th>
               <th>Prep List</th>
               <th>Decor List</th>
               <th>Pack List</th>
               <th>Print All</th>
               <th>Edit Event</th>
               <th>Delete Event</th>
-            </tr>
-            <tr>
-              <td></td>
-              <td><Button type={'success'} text={'Add New Event'} href={'/newEvent/'} /></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
             </tr>
             {eventList}
           </table>
