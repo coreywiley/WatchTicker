@@ -118,6 +118,7 @@ class Customers extends Component {
 
       var content =
         <div className='container'>
+          <Button clickHandler={() => window.print()} type={'success'} text={'Print'} />
           <Header css={{'padding':'50px','color':'#cb4154', 'text-align':'center'}} size={1} text={'Orders for ' + this.state.eventInfo.name} />
           {eventInfo}
           <div style={{'marginTop':'35px','marginBottom':'50px'}}>
