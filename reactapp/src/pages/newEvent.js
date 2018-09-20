@@ -16,6 +16,10 @@ class NewEvent extends Component {
             leave_time: '',
             arrival_time: '',
             location: '',
+            address: '',
+            city: '',
+            state: '',
+            zip: '',
             occasion: '',
             notes: '',
             guest_count: 0,
@@ -49,7 +53,10 @@ class NewEvent extends Component {
       var date = {'label':'Date', 'name':'date', 'value': this.state.date, 'placeholder': '09/20/2020', 'display_time': false}
       var leave_time = {'label':'Leave Time', 'name': 'leave_time', 'value':this.state.leave_time, 'placeholder': '12:15 PM', 'display_date': false}
       var arrival_time = {'label':'Arrival Time', 'name': 'arrival_time', 'value':this.state.arrival_time, 'placeholder': '1:00 PM', 'display_date':false}
-      var location = {'label':'Location', 'name':'location', 'value':this.state.location, 'placeholder': '123 Fake Street'}
+      var address = {'label': 'Address', 'name':'address', 'value': this.state.address}
+      var city = {'label': 'City', 'name':'city', 'value': this.state.city}
+      var state = {'label': 'State', 'name':'state', 'value': this.state.state}
+      var zip = {'label': 'Zip Code', 'name':'zip', 'value': this.state.zip}
       var occasion = {'label':'Occasion', 'name': 'occasion', 'value': this.state.occasion, 'placeholder': 'Wedding'}
       var guest_count = {'label':'Guest Count', 'name': 'guest_count', 'value':this.state.value, 'placeholder': 0}
       var notes = {'label':'Notes','name':'notes','value':this.state.notes,'placeholder':''}
@@ -66,7 +73,7 @@ class NewEvent extends Component {
         <div className='container'>
           <Header size={2} text={'Create New Event'} />
           <p>If you cant find the customer, <Link text={'create a customer first.'} link={'/newCustomer/'} /></p>
-          <Form components={[Select, TextInput, DateTimePicker, DateTimePicker, DateTimePicker, TextInput, TextInput, NumberInput, TextArea]} first={true} componentProps={[customer_props, name_props, date, leave_time, arrival_time, location, occasion, guest_count, notes]} submitUrl={submitUrl} defaults={defaults} redirectUrl={redirectUrl}/>
+          <Form components={[Select, TextInput, DateTimePicker, DateTimePicker, DateTimePicker, TextInput, TextInput, TextInput, TextInput, TextInput, NumberInput, TextArea]} first={true} componentProps={[customer_props, name_props, date, leave_time, arrival_time, address, city, state, zip, occasion, guest_count, notes]} submitUrl={submitUrl} defaults={defaults} redirectUrl={redirectUrl}/>
         </div>;
 
         return (

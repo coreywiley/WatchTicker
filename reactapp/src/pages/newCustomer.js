@@ -12,6 +12,9 @@ class NewCustomer extends Component {
             loaded: false,
             name: '',
             address: '',
+            city: '',
+            state: '',
+            zip: '',
             phone: '',
             email: '',
             notes:'',
@@ -40,7 +43,10 @@ class NewCustomer extends Component {
     render() {
 
       var name_props = {'label': 'Name', 'name':'name', 'value':this.state.name}
-      var address = {'label': 'Address', 'name':'address', 'value': this.state.date}
+      var address = {'label': 'Address', 'name':'address', 'value': this.state.address}
+      var city = {'label': 'City', 'name':'city', 'value': this.state.city}
+      var state = {'label': 'State', 'name':'state', 'value': this.state.state}
+      var zip = {'label': 'Zip Code', 'name':'zip', 'value': this.state.zip}
       var phone = {'label': 'Phone', 'name': 'phone', 'value':this.state.leave_time}
       var email = {'label': 'Email', 'name': 'email', 'value':this.state.arrival_time}
       var notes = {'label':'Notes','name':'notes','value':this.state.notes,'placeholder':''}
@@ -55,7 +61,7 @@ class NewCustomer extends Component {
       var content =
         <div className={'container'}>
           <Header size={2} text={'Create New Customer'} />
-          <Form components={[TextInput, TextInput, TextInput, TextInput, TextArea]} first={true} componentProps={[name_props, address,phone,email, notes]} submitUrl={submitUrl} defaults={defaults} redirectUrl={redirectUrl}/>
+          <Form components={[TextInput, TextInput, TextInput, TextInput, TextInput, TextInput, TextInput, TextArea]} first={true} componentProps={[name_props, address,city, state, zip, phone,email, notes]} submitUrl={submitUrl} defaults={defaults} redirectUrl={redirectUrl}/>
         </div>;
 
         return (

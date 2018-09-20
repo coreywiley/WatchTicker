@@ -58,14 +58,14 @@ class Events extends Component {
                       <td><Button type={'success'} text={'Pack List'} href={'/packlist/' + this.state.eventList[index]['id'] + '/'} /></td>
                       <td><Button type={'primary'} text={'Print All'} href={'/printAll/' + this.state.eventList[index]['id'] + '/'} /></td>
                       <td><Button type={'info'} text={'Edit Event'} href={'/newEvent/' + this.state.eventList[index]['id'] + '/'} /></td>
-                      <td><Button type={'danger'} text={'Delete Event'} clickHandler={this.deleteEvent.bind(this, this.state.eventList[index]['id'])} /></td>
+                      <td><Button type={'danger'} deleteType={true} text={'Delete Event'} clickHandler={this.deleteEvent.bind(this, this.state.eventList[index]['id'])} /></td>
                     </tr>;
           eventList.push(row);
       }
 
       var content =
         <div className='container'>
-          <div style={{'margin-bottom':'35px'}}>
+          <div style={{'marginBottom':'35px'}}>
           <Button type={'success'} text={'Add New Event'} href={'/newEvent/'} />
           </div>
           <Header size={2} text={'My Events'} />

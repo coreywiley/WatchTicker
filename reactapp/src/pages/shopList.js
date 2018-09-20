@@ -49,31 +49,53 @@ class Customers extends Component {
           var item = this.state.orders[index][2][index2]['shoppinglistitem']
           todolist.push(<Checkbox name={'None'} label={'________ ' + item['task']} value={0} />)
         }
-        var renderItem = <div className="col-md-4"><div style={{'color':'#cb4154'}}><Header size={5} text={this.state.orders[index][0]}  /></div> {todolist} <br /></div>;
+        var renderItem = <div className="col-md-6"><div style={{'color':'#cb4154'}}><Header size={5} text={this.state.orders[index][0]}  /></div> {todolist} <br /></div>;
         renderList.push(renderItem);
 
       }
 
       var eventInfo = <div></div>
       if (this.state.loaded == true) {
-      var eventInfo = <div className="row">
-                        <div className="col-md-8">
-                          <p style={{'margin':'0'}}><strong>Event Name: </strong>{this.state.eventInfo['name']}</p>
-                          <p style={{'margin':'0'}}><strong>Event Date: </strong>{this.state.eventInfo['date']}</p>
-                          <p style={{'margin':'0'}}><strong>Arrival Time: </strong>{this.state.eventInfo['arrival_time']}</p>
-                          <p style={{'margin':'0'}}><strong>Leave Kitchen Time: </strong>{this.state.eventInfo['leave_time']}</p>
-                          <p style={{'margin':'0'}}><strong>Occasion: </strong>{this.state.eventInfo['occasion']}</p>
-                          <p style={{'margin':'0'}}><strong>Guest Count: </strong>{this.state.eventInfo['guest_count']}</p>
-                        </div>
-                        <div className="col-md-4">
-                          <p style={{'margin':'0'}}><strong>Customer Name: </strong>{this.state.eventInfo['customer']['name']}</p>
-                          <p style={{'margin':'0'}}><strong>Customer Phone: </strong>{this.state.eventInfo['customer']['phone']}</p>
-                          <p style={{'margin':'0'}}><strong>Customer Email: </strong>{this.state.eventInfo['customer']['email']}</p>
-                          <p style={{'margin':'0'}}><strong>Location: </strong>{this.state.eventInfo['location']}</p>
-                          <p style={{'margin':'0'}}><strong>Customer Notes: </strong>{this.state.eventInfo['customer']['notes']}</p>
-                          <p style={{'margin':'0'}}><strong>Event Notes: </strong>{this.state.eventInfo['notes']}</p>
-                        </div>
-                      </div>;
+        var eventInfo = <div className="row" style={{'marginTop':'30px','marginBottom':'30px'}}>
+                          <table className="table">
+                            <tr>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Event Name</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['name']}</td>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Customer Name</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['customer']['name']}</td>
+                            </tr>
+                            <tr>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Event Date</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['date']}</td>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Customer Phone</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['customer']['phone']}</td>
+                            </tr>
+                            <tr>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Arrival Time</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['arrival_time']}</td>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Customer Email</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['customer']['email']}</td>
+                            </tr>
+                            <tr>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Leave Kitchen Time</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['leave_time']}</td>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Location</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['address'] + ', ' + this.state.eventInfo['city'] + ' ' + this.state.eventInfo['state'] + ' ' + this.state.eventInfo['zip']}</td>
+                            </tr>
+                            <tr>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Occasion</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['occasion']}</td>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Customer Notes</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['customer']['notes']}</td>
+                            </tr>
+                            <tr>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Guest Count</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['guest_count']}</td>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Event Notes</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['notes']}</td>
+                            </tr>
+                          </table>
+                        </div>;
       }
 
       var content =

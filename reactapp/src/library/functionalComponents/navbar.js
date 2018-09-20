@@ -14,24 +14,23 @@ class NavBar extends React.Component {
 
         var logOut = <div></div>
         if (this.props.logOut) {
-          logOut = <div className="form-inline">
+          logOut = <div className="form-inline" style={{'margin-right':'25px'}}>
             <Button type={'danger'} text={'Log Out'} clickHandler={this.props.logOut} />
           </div>
         }
 
         return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{'margin-bottom':'25px'}}>
+            <nav className="navbar navbar-expand-lg navbar-light" style={{'margin-bottom':'25px', 'backgroundColor':'#DFE0E1'}}>
               <a className="navbar-brand" href={this.props.nameLink}>{this.props.name}</a>
               <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
               </button>
-              <div className="collapse navbar-collapse" id="navbarNav" style={{'margin-right':'30%', 'margin-left':'33%'}}>
+              <div className="collapse navbar-collapse" id="navbarNav" style={{'margin-left':'30%'}}>
                 <ul className="navbar-nav">
                   {links}
                 </ul>
               </div>
               {logOut}
-
             </nav>
         );
     }

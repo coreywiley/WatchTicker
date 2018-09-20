@@ -49,11 +49,11 @@ class Customers extends Component {
         console.log("Here")
         var row = <tr>
                       <td>{this.state.eventList[index]['name']}</td>
-                      <td>{this.state.eventList[index]['address']}</td>
+                      <td>{this.state.eventList[index]['address'] + ', ' + this.state.eventList[index]['city'] + ' ' + this.state.eventList[index]['state'] + ' ' + this.state.eventList[index]['zip']}</td>
                       <td>{this.state.eventList[index]['phone']}</td>
                       <td>{this.state.eventList[index]['email']}</td>
                       <td><Button type={'info'} text={'Edit'} href={'/newCustomer/' + this.state.eventList[index]['id'] + '/'} /></td>
-                      <td><Button type={'danger'} text={'Delete'} clickHandler={this.deleteEvent.bind(this,this.state.eventList[index]['id'])} /></td>
+                      <td><Button type={'danger'} deleteType={true} text={'Delete'} clickHandler={this.deleteEvent.bind(this,this.state.eventList[index]['id'])} /></td>
                     </tr>;
           eventList.push(row);
       }

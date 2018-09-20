@@ -54,7 +54,7 @@ class MenuItems extends Component {
                       <td><Button type={'success'} text={'Decor List'} href={'/decorationlistitems/' + this.state.eventList[index]['id'] + '/'} /></td>
                       <td><Button type={'success'} text={'Pack List'} href={'/packlistitems/' + this.state.eventList[index]['id'] + '/'} /></td>
                       <td><Button type={'info'} text={'Edit'} href={'/newMenuItem/' + this.state.eventList[index]['id'] + '/'} /></td>
-                      <td><Button type={'danger'} text={'Delete'} clickHandler={this.deleteEvent.bind(this, this.state.eventList[index]['id'])} /></td>
+                      <td><Button type={'danger'} deleteType={true} text={'Delete'} clickHandler={this.deleteEvent.bind(this, this.state.eventList[index]['id'])} /></td>
                     </tr>;
           eventList.push(row);
       }

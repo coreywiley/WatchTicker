@@ -58,7 +58,7 @@ class Customers extends Component {
         var row = <tr>
                       <td>{this.state.eventList[index]['task']}</td>
                       <td><Button type={'info'} text={'Edit'} href={'/newPrepListItem/' + this.props.fooditem_id + '/' + this.state.eventList[index]['id'] + '/'} /></td>
-                      <td><Button type={'danger'} text={'Delete'} clickHandler={this.deleteEvent.bind(this,this.state.eventList[index]['id'])} /></td>
+                      <td><Button type={'danger'} text={'Delete'} deleteType={true} clickHandler={this.deleteEvent.bind(this,this.state.eventList[index]['id'])} /></td>
                     </tr>;
           eventList.push(row);
       }
