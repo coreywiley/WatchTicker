@@ -7,10 +7,14 @@ from user.models import User
 class Customer(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(default = "", max_length=200, null = False)
-    address = models.CharField(default = "", max_length=200, null = False)
+    address = models.CharField(default="", max_length=200, null=False)
+    city = models.CharField(default="", max_length=200, null=False)
+    state = models.CharField(default="", max_length=200, null=False)
+    zip = models.CharField(default="", max_length=200, null=False)
     phone = models.CharField(default = "", max_length=200, null = False)
     email = models.CharField(default = "", max_length=200, null = False)
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='customers')
+    notes = models.TextField(default="", null=False)
 
     def __str__(self):
         return u"{}".format(self.name)
@@ -27,11 +31,15 @@ class Event(models.Model):
     date = models.CharField(default = datetime.datetime.now, max_length=200)
     leave_time = models.CharField(default = datetime.datetime.now,  max_length=200)
     arrival_time = models.CharField(default = datetime.datetime.now,  max_length=200)
-    location = models.CharField(default = "", max_length=200, null = False)
+    address = models.CharField(default="", max_length=200, null=False)
+    city = models.CharField(default="", max_length=200, null=False)
+    state = models.CharField(default="", max_length=200, null=False)
+    zip = models.CharField(default="", max_length=200, null=False)
     occasion = models.CharField(default = "", max_length=200, null = False)
     guest_count = models.IntegerField(default = 0, null = False)
     contact_info = models.CharField(default = "", max_length=200, null = False)
     user = models.ForeignKey(User, null = True, on_delete=models.CASCADE, related_name='events')
+    notes = models.TextField(default = "", null = False)
 
     def __str__(self):
         return u"{}".format(self.name)
