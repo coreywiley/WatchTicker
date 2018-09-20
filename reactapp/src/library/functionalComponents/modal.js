@@ -16,27 +16,12 @@ class Modal extends Component {
 
         var modalStyle = {};
         var modalClass = "modal fade";
-        if (this.props.show){
+        if (this.props.show == true) {
             modalClass += " show";
             modalStyle.display = "block";
         }
 
-        var content = [];
-
-        let Component = this.props.component;
-        var data = {};
-        var dataMapping = {...this.props.dataMapping};
-        console.log("Data",data, dataMapping);
-
-        if (typeof(this.props.resolveData) == "undefined" || this.props.resolveData != false){
-            dataMapping = resolveVariables(dataMapping, data);
-        }
-
-        //console.log("Key " + data.id, dataMapping);
-        var componentInstance = <Component key={data.id} {...data} {...dataMapping}
-            refreshData={this.refreshData} setGlobalState={this.props.setGlobalState} />;
-
-        content.push(componentInstance);
+        var content = this.props.content;
 
         return (
             <div className={modalClass} tabindex="-1" role="dialog" style={modalStyle} >
