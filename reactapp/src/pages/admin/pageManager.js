@@ -4,7 +4,7 @@ import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 import Modal from 'library/functionalComponents/modal.js';
 
-import Playground from "component-playground";
+//import Playground from "component-playground";
 import ReactDOM from "react-dom";
 
 import {Card, Button, TextInput, TextArea, Form, List} from 'library';
