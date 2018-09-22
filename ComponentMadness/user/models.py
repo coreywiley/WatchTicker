@@ -26,7 +26,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password, **extra_fields):
-        u = self.create_user(email, password, **extra_fields)
+        u = self.create_user(email, password, "", **extra_fields)
         u.is_staff = True
         u.is_active = True
         u.save(using=self._db)
@@ -38,18 +38,18 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=120, blank=True, default="")
     company_name = models.CharField(max_length=250, blank=True, default="")
     email = models.EmailField(_('email address'), max_length=254, unique=True, db_index=True)
-    type = models.CharField(max_length=7, choices = (('User','User'),('Parent','Parent')), default='User')
+    type = models.CharField(max_length=7, choices=(('User', 'User'), ('Parent', 'Parent')), default='User')
     imageUrl = models.CharField(max_length=120, blank=True, default="")
-    
-    parent = models.ForeignKey('User', related_name = 'children', blank=True, null=True, on_delete=models.CASCADE)
-    
+
+    parent = models.ForeignKey('User', related_name='children', blank=True, null=True, on_delete=models.CASCADE)
+
     is_staff = models.BooleanField(
         _('staff status'), default=False, help_text=_('Designates whether the user can log into this admin site.'))
     is_active = models.BooleanField(
         _('active'), default=True,
         help_text=_('Designates whether this user should be treated as active. Unselect this instead of deleting '
                     'accounts.'))
-    
+
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
     updated = ModificationDateTimeField()
     #updated = ModificationDateTimeField()

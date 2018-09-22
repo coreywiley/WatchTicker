@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.apps import apps
+from django.db.models import Q
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseForbidden, HttpResponseRedirect
 import django
 from django.conf import settings
 
 from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, getModelFields
-from user.views import staff_required
+from user.permissions import staff_required
 from django.views.decorators.csrf import csrf_exempt
 from modelWebsite.helpers.databaseOps import insert
 
@@ -34,6 +35,8 @@ def getApps(request):
 
     return JsonResponse(djangoApps, safe=False)
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def getModels(request,appLabel):
     models = []
 
@@ -43,13 +46,17 @@ def getModels(request,appLabel):
 
     return JsonResponse(models, safe=False)
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def getModelFieldsJson(request,appLabel,modelName):
     print ("App Label", appLabel, "Model Name", modelName)
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
     modelFields = getModelFields(model)
     return JsonResponse(modelFields, safe=False)
 
-@csrf_exempt
+
+@api_view(['GET', 'POST', 'PUT'])
+@permission_classes((IsAuthenticated, ))
 def getModelInstanceJson(request, appLabel, modelName, id=None):
     print ("Request : %s" % (request.GET))
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
@@ -57,28 +64,23 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
     parameters = request.GET.dict()
     related = []
     if 'related' in parameters:
-        related = parameters['related'].split(',')
+        related = [x for x in parameters['related'].split(',') if x != ""]
         del parameters['related']
 
     order_by = []
     if 'order_by' in parameters:
-        order_by = parameters['order_by'].split(',')
+        order_by = [x for x in parameters['order_by'].split(',') if x != ""]
         del parameters['order_by']
+
+    only = []
+    if 'only' in parameters:
+        only = [x for x in parameters['only'].split(',') if x != ""]
+        del parameters['only']
 
     values_list = []
     if 'values_list' in parameters:
-        values_list = parameters['values_list'].split(',')
+        values_list = [x for x in parameters['values_list'].split(',') if x != ""]
         del parameters['values_list']
-
-    amenities__has = []
-    if 'amenities__has' in parameters:
-        amenities__has = parameters['amenities__has'].split(',')
-        del parameters['amenities__has']
-
-    preferences__has = []
-    if 'preferences__has' in parameters:
-        preferences__has = parameters['preferences__has'].split(',')
-        del parameters['preferences__has']
 
     limit = 0
     if 'limit' in parameters:
@@ -91,21 +93,34 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
         del parameters['count']
 
     print (values_list)
-    print ("Parameters",parameters)
-
+    print ("Parameters", parameters)
+    print ("Only", only)
 
     excluded = {}
+    orFilters = None
+    newParameters = parameters.copy()
     for parameter in parameters:
         if ',' in parameters[parameter]:
-            parameters[parameter] = parameters[parameter].split(',')
+            parameters[parameter] = [x for x in parameters[parameter].split(',') if x != ""]
         if parameters[parameter] == 'true':
             parameters[parameter] = True
         elif parameters[parameter] == 'false':
             parameters[parameter] = False
 
         if parameter.startswith("exclude__"):
-            excluded[parameter.replace("exclude__","")] = parameters[parameter]
-            del parameters[parameter]
+            excluded[parameter.replace("exclude__", "")] = parameters[parameter]
+            del newParameters[parameter]
+        elif parameter.startswith("or__"):
+            if parameter.endswith("__splitme"):
+                key = parameter.replace("or__", "").replace("__splitme", "")
+                for value in parameters[parameter]:
+                    orFilters = addOrFilter(orFilters, key, value)
+            else:
+                orFilters = addOrFilter(orFilters, parameter.replace("or__", ""), parameters[parameter])
+
+            del newParameters[parameter]
+
+    parameters = newParameters
 
     print ("Related : %s" % (related))
 
@@ -119,104 +134,122 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
                 instance = model.objects.filter(id=int(id)).prefetch_related(*related).first()
 
             instances = getInstanceJson(appLabel, modelName, instance, related=related)
-        #page for adding a new instance
-        elif not id:
+
+        else:
             #gets instances queried by kwargs for a filtered list of the database
-            if len(values_list) == 1:
+            instanceQuery = model.objects.filter(**parameters)
+            if orFilters:
+                instanceQuery = instanceQuery.filter(orFilters)
+
+            instanceQuery = instanceQuery.exclude(**excluded).prefetch_related(*related).order_by(*order_by).only(*only)
+
+            if len(values_list) > 1:
+                instanceQuery = instanceQuery.values_list(*values_list)
+            elif len(values_list) == 1:
+                instanceQuery = instanceQuery.values_list(*values_list, flat=True)
+
+            if limit > 0:
+                instanceQuery = instanceQuery[:limit]
+
+            if count:
+                return JsonResponse({'count': instanceQuery.count()})
+
+
+            if len(values_list) > 0:
                 instancesData = []
-                if len(values_list) > 1:
-                    query = model.objects.filter(**parameters).exclude(**excluded).values_list(*values_list).prefetch_related(*related).order_by(*order_by)
-                else:
-                    query = model.objects.filter(**parameters).exclude(**excluded).values_list(*values_list,flat=True).prefetch_related(*related).order_by(*order_by)
-                if limit > 0:
-                    query = query[:limit]
                 for instance in query:
                     instancesData.append(instance)
                 instances = {}
                 instances[modelName] = instancesData
             else:
-                instanceQuery = model.objects.filter(**parameters).exclude(**excluded).prefetch_related(*related).order_by(*order_by)
-                if len(preferences__has) > 0:
-                    print ('Preferences_Has')
-                    for item in preferences__has:
-                        instanceQuery = instanceQuery.filter(preferences=item)
-                if len(amenities__has) > 0:
-                    for item in amenities__has:
-                        instanceQuery = instanceQuery.filter(amenities=item)
-                if limit > 0:
-                    instanceQuery = instanceQuery[:limit]
-                if count:
-                    return JsonResponse({'count':instanceQuery.count()})
-                instances = getInstancesJson(appLabel, modelName, instanceQuery = instanceQuery, related=related)
+                instances = getInstancesJson(appLabel, modelName, instanceQuery = instanceQuery, related=related, only=only)
 
     # edit or instance
-    if request.method in ['PUT', 'POST']:
-        # jsonData = json.loads(request.body)
-        model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
-
-        modelFields = model._meta.get_fields()
-        if request.method == 'PUT':
-            requestFields = request.PUT
-        else:
-            requestFields = request.POST
-
-        if 'multiple' in requestFields:
-            instances = []
-            items = json.loads(requestFields[requestFields['multiple']])
-            print ("Items",items)
-            for item in items:
-                newFields = item
-                for key in requestFields.keys():
-                    newFields[key] = requestFields[key]
-                instances.append(insert(appLabel, modelName, modelFields,newFields, id = id, related=related))
-        elif 'csv_file' in request.FILES:
-            try:
-                print ("CSV FILE")
-                instances = []
-                csv_file = request.FILES["csv_file"]
-                if not csv_file.name.endswith('.csv'):
-                    print ("ERROR")
-                # if file is too large, return
-                if csv_file.multiple_chunks():
-                    print ("ERROR")
-
-                file_data = csv_file.read().decode("utf-8")
-                lines = file_data.split("\n")
-                # loop over the lines and save them in db. If error , store as string and then display
-                i = 0
-                titles = {}
-
-                for line in lines:
-                    if i == 0:
-                        i = 1
-                        fields = line.split(",")
-                        for x in range(len(fields)):
-                            titles[x] = fields[x].strip()
-                        continue
-
-                    fieldData = line.split(",")
-                    newFields = {}
-                    blankLine = True
-                    for x in range(len(fields)):
-                        newFields[titles[x]] = fieldData[x].strip()
-                        if newFields[titles[x]] != '':
-                            blankLine = False
-                    if not blankLine:
-                        print (newFields)
-                        instances.append(insert(appLabel, modelName, modelFields, newFields, id=id, related=related))
-            except Exception as e:
-                print ("ERROR")
-                instances = ['ERROR']
-        else:
-            print (1)
-            instances = insert(appLabel, modelName, modelFields,requestFields, id = id, related=related)
-
+    elif request.method in ['PUT', 'POST']:
+        instances = createAndUpdateModel(request, appLabel, modelName, related, id)
 
 
     return JsonResponse(instances,safe=False)
 
 
 
+def createAndUpdateModel(request, appLabel, modelName, related, id=None):
+    # jsonData = json.loads(request.body)
+    model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
+
+    modelFields = model._meta.get_fields()
+    if request.method == 'PUT':
+        requestFields = request.PUT
+    else:
+        requestFields = request.POST
+
+    print ("POST Payload:", requestFields)
+
+    if 'multiple' in requestFields:
+        instances = []
+        items = json.loads(requestFields[requestFields['multiple']])
+        print ("Items", items)
+        for item in items:
+            newFields = item
+            for key in requestFields.keys():
+                newFields[key] = requestFields[key]
+            instances.append(insert(appLabel, modelName, modelFields, newFields, id=id, related=related))
+    elif 'csv_file' in request.FILES:
+        try:
+            print ("CSV FILE")
+            instances = []
+            csv_file = request.FILES["csv_file"]
+            if not csv_file.name.endswith('.csv'):
+                print ("ERROR")
+            # if file is too large, return
+            if csv_file.multiple_chunks():
+                print ("ERROR")
+
+            file_data = csv_file.read().decode("utf-8")
+            lines = file_data.split("\n")
+            # loop over the lines and save them in db. If error , store as string and then display
+            i = 0
+            titles = {}
+
+            for line in lines:
+                if i == 0:
+                    i = 1
+                    fields = line.split(",")
+                    for x in range(len(fields)):
+                        titles[x] = fields[x].strip()
+                    continue
+
+                fieldData = line.split(",")
+                newFields = {}
+                blankLine = True
+                for x in range(len(fields)):
+                    newFields[titles[x]] = fieldData[x].strip()
+                    if newFields[titles[x]] != '':
+                        blankLine = False
+                if not blankLine:
+                    print (newFields)
+                    instances.append(insert(appLabel, modelName, modelFields, newFields, id=id, related=related))
+        except Exception as e:
+            print ("ERROR")
+            instances = ['ERROR']
+    else:
+        print (1)
+        instances = insert(appLabel, modelName, modelFields, requestFields, id=id, related=related)
+
+    return instances
+
+
+
+def addOrFilter(orFilters, key, value):
+    if not orFilters:
+        orFilters = Q(**{key.replace("or__", ""): value})
+    else:
+        orFilters.add(Q(**{key.replace("or__", ""): value}), Q.OR)
+
+    return orFilters
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def deleteModelInstance(request,appLabel,modelName,id):
     print ('DELETING', appLabel, modelName, id)
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_',''))
@@ -225,6 +258,9 @@ def deleteModelInstance(request,appLabel,modelName,id):
     return JsonResponse({'success':True})
 
 
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def writeComponents(request):
     filepath = os.path.join(os.getcwd(), "..", "reactapp", "src", "library")
     print (filepath)

@@ -1,8 +1,12 @@
 from django.db import models
 import datetime
+from jsonfield import JSONField
+
 from user.models import User
 # Create your models here.
 
+class LargeText(models.Model):
+    text = models.TextField(default="")
 
 class Customer(models.Model):
     id = models.AutoField(primary_key=True)
@@ -16,8 +20,10 @@ class Customer(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='customers')
     notes = models.TextField(default="", null=False)
 
+    text = models.ForeignKey(LargeText, on_delete=models.CASCADE)
+
     def __str__(self):
-        return u"{}".format(self.name)
+        return u"{}".format(self.number)
 
 class FoodItem(models.Model):
     id = models.AutoField(primary_key=True)
@@ -41,8 +47,6 @@ class Event(models.Model):
     user = models.ForeignKey(User, null = True, on_delete=models.CASCADE, related_name='events')
     notes = models.TextField(default = "", null = False)
 
-    def __str__(self):
-        return u"{}".format(self.name)
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)

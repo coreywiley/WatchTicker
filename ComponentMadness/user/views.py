@@ -11,27 +11,32 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
-# Create your views here.
-def my_login_required(function):
-    def wrapper(request, *args, **kw):
-        if not (request.user and request.user.is_authenticated):
-            return HttpResponseRedirect('/users/logIn/')
-        else:
-            return function(request, *args, **kw)
-    return wrapper
+from modelWebsite.helpers.jsonGetters import getInstanceJson
+from modelWebsite.views import createAndUpdateModel
+from user.permissions import IsPostOrIsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-def staff_required(function):
-    def wrapper(request, *args, **kw):
-        if not (request.user and request.user.is_authenticated and request.user.is_superuser):
-            return HttpResponseRedirect('/users/logIn/')
-        else:
-            return function(request, *args, **kw)
-    return wrapper
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def GetUser(request):
-    return JsonResponse({'id':request.user.id})
+    userData = {}
+
+    if request.user.is_authenticated:
+        userData = getInstanceJson('user', 'user', request.user)[0]['user']
+
+    return JsonResponse(userData)
+
+
+@api_view(['POST'])
+@permission_classes((IsPostOrIsAuthenticated, ))
+def UserSignUp(request):
+    user = createAndUpdateModel(request._request, 'user', 'user', [])[0]['user']
+
+    email = request.POST['email']
+    password = request.POST['password']
+
+    return TokenObtainPairView.as_view()(request._request)
 
 
 @csrf_exempt
