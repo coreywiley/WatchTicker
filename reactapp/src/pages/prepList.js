@@ -86,13 +86,13 @@ class Customers extends Component {
                               <th style={{'padding':'0px','border-top':'0px'}}>Occasion</th>
                               <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['occasion']}</td>
                               <th style={{'padding':'0px','border-top':'0px'}}>Customer Notes</th>
-                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['customer']['notes']}</td>
+                              <td style={{'padding':'0px','border-top':'0px', 'maxWidth':'250px'}}>{this.state.eventInfo['customer']['notes']}</td>
                             </tr>
                             <tr>
                               <th style={{'padding':'0px','border-top':'0px'}}>Guest Count</th>
                               <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['guest_count']}</td>
                               <th style={{'padding':'0px','border-top':'0px'}}>Event Notes</th>
-                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['notes']}</td>
+                              <td style={{'padding':'0px','border-top':'0px', 'maxWidth':'250px'}}>{this.state.eventInfo['notes']}</td>
                             </tr>
                           </table>
                         </div>;
@@ -100,7 +100,9 @@ class Customers extends Component {
 
       var content =
         <div className='container'>
+        <div style={{'marginTop':'25px'}}>
           <Button clickHandler={() => window.print()} type={'success'} text={'Print'} />
+        </div>
           <Header css={{'padding':'50px','color':'#cb4154', 'text-align':'center'}} size={1} text={'Prep List for ' + this.state.eventInfo.name} />
           {eventInfo}
           <div style={{'marginTop':'35px','marginBottom':'50px'}}>

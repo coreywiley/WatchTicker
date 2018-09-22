@@ -22,7 +22,7 @@ class Home extends Component {
         <div style={{'text-align':'center','margin-top':'200px'}}>
           <p><img src='/static/images/CaterListerTagLine.JPG' style={{'maxWidth':'50%'}}/></p>
           <Button href={'/signUp/'} text={"Sign Up"} type={'success'} css={{'margin':'20px'}}/>
-          <Button href={'/logIn/'} text={"Log In"} type={'primary'} css={{'margin':'20px'}}/>
+          <Button href={'/logIn/'} text={"Log In"} type={'primary'} css={{'margin':'20px', 'paddingLeft':'18px','paddingRight':'18px'}} />
         </div>;
 
         return (
