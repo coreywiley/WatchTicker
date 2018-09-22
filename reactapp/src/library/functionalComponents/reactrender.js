@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
-import Playground from "component-playground";
+//import Playground from "component-playground";
 
 class ReactRender extends Component {
     render() {
@@ -25,7 +25,7 @@ class ReactRender extends Component {
                 <div>
               <label>Render</label>
                 <div className="component-documentation">
-                    <Playground codeText={html + ' ReactDOM.render(' + example + ', mountNode);'} noRender={false} scope={this.props.scope} />
+                    {/*<Playground codeText={html + ' ReactDOM.render(' + example + ', mountNode);'} noRender={false} scope={this.props.scope} />*/}
                 </div>
 
               <div id='mountNode'>
