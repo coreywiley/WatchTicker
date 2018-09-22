@@ -29,9 +29,11 @@ class Project(models.Model):
     """ The base Project model. """
     company = models.ForeignKey(Company, blank=True, null=True, on_delete=models.CASCADE)
 
-    masters = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_master', blank=True)
-    managers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_manager', blank=True)
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_user', blank=True)
+    managers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_managers', blank=True)
+    directors = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_directors', blank=True)
+    field_pros = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_field_pros', blank=True)
+    supports = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_supports', blank=True)
+    clients = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_clients', blank=True)
 
     # Basics
     created = CreationDateTimeField(_('created'), help_text=_('When this project was created.'))
