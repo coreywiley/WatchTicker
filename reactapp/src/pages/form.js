@@ -4,7 +4,7 @@ import Wrapper from 'base/wrapper.js';
 import ajaxWrapper from "base/ajax.js";
 
 import {
-    Button, Image, Paragraph, Form, Select,
+    Button, Image, Paragraph, Form, Select, NumberInput,
     TextInput, ButtonGroup, TextArea, CheckGroup
 } from 'library';
 
@@ -162,7 +162,7 @@ class FormPage extends Component {
             }
 
             form.push(<div className='col-6'>{elements}</div>);
-            form.push(<div className='col-6'><RenderedForm data={this.state.form} /></div>);
+            form.push(<div className='col-6'><RenderedForm data={this.state.form} edit={this.props.edit} /></div>);
             form.push(<Button type="primary" text="Add New Element" clickHandler={this.addElement.bind(this)} />);
         } else {
             form.push(<div className='col-12'>
@@ -199,8 +199,9 @@ var ELEMENT_TYPES = {
     0: 'Radio',
     1: 'Checkbox',
     2: 'Text Input',
-    3: 'Paragraph Input',
-    4: 'Text Only'
+    3: 'Number Input',
+    4: 'Paragraph Input',
+    5: 'Text Only'
 };
 
 class RenderedForm extends Component {
@@ -276,7 +277,8 @@ class RenderedForm extends Component {
                     type: 'secondary',
                     options: element['data']['options']
                 }, ComponentProps);
-
+            } else if (type == 'Number Input'){
+                Component = NumberInput;
             } else if (type == 'Text Input'){
                 Component = TextInput;
             } else if (type == 'Paragraph Input'){

@@ -80,9 +80,10 @@ class ProjectForm(models.Model):
 FORMTYPENAMES = ((0, 'Radio'),
                  (1, 'Checkbox'),
                  (2, 'Text Input'),
-                 (3, 'Paragraph Input'),
-                 (4, 'Text Only'),
-                 (5, 'Image'),)
+                 (3, 'Number Input'),
+                 (4, 'Paragraph Input'),
+                 (5, 'Text Only'),
+                 (6, 'Image'),)
 
 class FormElement(models.Model):
     form = models.ForeignKey(ProjectForm, on_delete=models.CASCADE, related_name='elements')
