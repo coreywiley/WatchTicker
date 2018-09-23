@@ -88,11 +88,10 @@ FORMTYPENAMES = ((0, 'Radio'),
                  (2, 'Text Input'),
                  (3, 'Paragraph Input'),
                  (4, 'Text Only'),
-                 (5, 'Embedded'),
-                 (6, 'Image'),)
+                 (5, 'Image'),)
 
 class FormElement(models.Model):
-    form = models.ForeignKey(ProjectForm, on_delete=models.CASCADE)
+    form = models.ForeignKey(ProjectForm, on_delete=models.CASCADE, related_name='elements')
     parent = models.ForeignKey('FormElement', null=True, blank=True, on_delete=models.CASCADE)
 
     type = models.IntegerField(default=0, choices=FORMTYPENAMES)

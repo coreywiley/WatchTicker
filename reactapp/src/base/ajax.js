@@ -14,14 +14,14 @@ function ajaxWrapper(type, url, data, returnFunc){
     }
     var auth_token = '';
     if (localStorage.getItem('token')) {
-      auth_token = 'Bearer ' + localStorage.getItem('token')
+      auth_token = 'Bearer ' + localStorage.getItem('token');
     }
 
       $.ajax({
           type: type,
           url: url,
           beforeSend: function(request) {
-            request.setRequestHeader('Authorization', auth_token)
+            request.setRequestHeader('Authorization', auth_token);
           },
           data: data,
           statusCode: {
