@@ -22,7 +22,7 @@ class SignUp extends Component {
             window.location.href = redirect;
         }
         else {
-            window.location.href = '/';
+            window.location.href = '/projects/';
         }
     }
 

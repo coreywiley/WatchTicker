@@ -30,15 +30,18 @@ import InviteCollaborators from './pages/inviteCollaborators.js';
 import Activate from './pages/activate.js';
 
 import FormPage from './pages/form.js';
-
+import Nav from './projectLibrary/nav.js';
+import Projects from './pages/projects.js';
+import CreateNewProject from './pages/createNewProject.js';
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loaded: true,
+            loaded: false,
             csrfmiddlewaretoken: undefined,
-            user:{}
+            user:{},
+            logged_in: false,
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
@@ -58,11 +61,14 @@ class App extends Component {
                     window.location.pathname != "/") {
             window.location.href = '/login/';
         }
+        else {
+          this.setState({loaded:true})
+        }
     }
 
     loadUser(result){
         this.setState({
-            user: result
+            user: result, loaded:true
         });
     }
 
@@ -96,7 +102,7 @@ class App extends Component {
     }
 
     getUserInfoCallback(result) {
-      this.setState({'user': result, loaded:true})
+      this.setState({'user': result, loaded:true, logged_in: true})
     }
 
     getURL() {
@@ -170,6 +176,12 @@ class App extends Component {
         else if (params[0].toLowerCase() == "activate") {
             content = <Activate user_id={params[1]} />
         }
+        else if (params[0].toLowerCase() == "projects") {
+            content = <Projects user_id={this.state.user.id} />
+        }
+        else if (params[0].toLowerCase() == "createnewproject") {
+            content = <CreateNewProject user_id={this.state.user.id} />
+        }
 
         else if (params[0].toLowerCase() == "project") {
             if (params[2].toLowerCase() == "formbuilder") {
@@ -180,11 +192,21 @@ class App extends Component {
             }
         }
 
+        if (this.state.loaded == true) {
         return (
             <div className="App">
+                <Nav logOut={this.logOut} logged_in={this.state.logged_in} />
                 <Wrapper content={content} loaded={this.state.loaded} />
             </div>
         );
+      }
+      else {
+        return (
+            <div className="App">
+                <Nav logOut={this.logOut} logged_in={this.state.logged_in} />
+            </div>
+        );
+      }
     }
 }
 
