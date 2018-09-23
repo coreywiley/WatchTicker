@@ -25,6 +25,11 @@ class CheckGroup extends React.Component {
     }
 
     render() {
+        var value = [];
+        if (this.props.value && typeOf(this.props.value) != 'undefined'){
+            value = this.props.value;
+        }
+
     	var type = " btn-" + this.props.type;
 
         var layout = '';
@@ -41,7 +46,7 @@ class CheckGroup extends React.Component {
         var css = {}
     	for (var index in this.props.options) {
             var checked = false;
-    	    if (this.props.value.indexOf(this.props.options[index]) > -1) {
+    	    if (value.indexOf(this.props.options[index]) > -1) {
     	        checked = true;
     	    }
 
