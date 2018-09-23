@@ -29,12 +29,6 @@ class Project(models.Model):
     """ The base Project model. """
     company = models.ForeignKey(Company, blank=True, null=True, on_delete=models.CASCADE)
 
-    managers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_managers', blank=True)
-    directors = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_directors', blank=True)
-    field_pros = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_field_pros', blank=True)
-    supports = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_supports', blank=True)
-    clients = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project_clients', blank=True)
-
     # Basics
     created = CreationDateTimeField(_('created'), help_text=_('When this project was created.'))
     updated = ModificationDateTimeField(_('updated'))
@@ -45,7 +39,6 @@ class Project(models.Model):
     public = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
     deleted = models.BooleanField(default=False)
-
 
     def __unicode__(self):
         return unicode(self.title)
@@ -58,6 +51,7 @@ class Project(models.Model):
             return True
         else:
             return False
+
 
 
 
@@ -164,3 +158,20 @@ class FormEvent(models.Model):
 
     def __unicode__(self):
         return "%s : %s : %s" % (self.form, self.owner, self.answers.get('name', 'NONE'))
+
+class Market(models.Model):
+    name = models.CharField(max_length=255, default='')
+
+class ProjectUser(models.Model):
+    """ The base Project model. """
+    project = models.ForeignKey(Project, blank=True, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE)
+    type = models.CharField(max_length=255, default='Support Staff')
+    markets = models.ManyToManyField(Market, related_name='project_user', blank=True)
+
+
+    def has_permission(self, user):
+        if user and user.is_authenticated() and user in self.all_user_list():
+            return True
+        else:
+            return False
