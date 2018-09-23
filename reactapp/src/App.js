@@ -33,6 +33,8 @@ import FormPage from './pages/form.js';
 import Nav from './projectLibrary/nav.js';
 import Projects from './pages/projects.js';
 import CreateNewProject from './pages/createNewProject.js';
+import ProjectDashboard from './pages/projectDashboard.js';
+import EditProjectDetails from './pages/editProjectDetails.js';
 
 class App extends Component {
     constructor(props) {
@@ -114,6 +116,7 @@ class App extends Component {
     }
 
     render() {
+      var project_id = null;
         console.log(this.props);
         var params = this.getURL();
         console.log("Params", params);
@@ -171,6 +174,7 @@ class App extends Component {
             content = <PasswordReset  user_id={params[1]} />
         }
         else if (params[0].toLowerCase() == "invitecollaborators") {
+           project_id = params[1];
             content = <InviteCollaborators project_id={params[1]} />
         }
         else if (params[0].toLowerCase() == "activate") {
@@ -182,20 +186,31 @@ class App extends Component {
         else if (params[0].toLowerCase() == "createnewproject") {
             content = <CreateNewProject user_id={this.state.user.id} />
         }
+        else if (params[0].toLowerCase() == "projectdashboard") {
+            project_id = params[1];
+            content = <ProjectDashboard user_id={this.state.user.id} project_id={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "editproject") {
+            project_id = params[1];
+            content = <EditProjectDetails user_id={this.state.user.id} project_id={params[1]} />
+        }
+
 
         else if (params[0].toLowerCase() == "project") {
             if (params[2].toLowerCase() == "formbuilder") {
                 content = <FormPage project={params[1]} id={params[3]} edit={true} params={params} edit={true} />
+                project_id = params[1];
             }
             else if (params[2].toLowerCase() == "view") {
                 content = <FormPage project={params[1]} id={params[3]} edit={false} params={params} edit={false} />
+                project_id = params[1];
             }
         }
 
         if (this.state.loaded == true) {
         return (
             <div className="App">
-                <Nav logOut={this.logOut} logged_in={this.state.logged_in} />
+                <Nav logOut={this.logOut} logged_in={this.state.logged_in} project_id={project_id} />
                 <Wrapper content={content} loaded={this.state.loaded} />
             </div>
         );

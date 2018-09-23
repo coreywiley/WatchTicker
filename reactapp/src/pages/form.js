@@ -5,7 +5,7 @@ import ajaxWrapper from "base/ajax.js";
 
 import {
     Button, Image, Paragraph, Form, Select,
-    TextInput, ButtonGroup, TextArea, CheckGroup
+    TextInput, ButtonGroup, TextArea, CheckGroup, Header
 } from 'library';
 
 class FormPage extends Component {
@@ -33,7 +33,7 @@ class FormPage extends Component {
     }
 
     getForm() {
-        var url = "/api/home/projectform/" + this.props.id + "/?related=elements,project,project__company";
+        var url = "/api/home/projectform/" + this.props.id + "/?related=elements,project";
         ajaxWrapper("GET",  url, {}, this.loadForm.bind(this));
     }
 
@@ -114,8 +114,13 @@ class FormPage extends Component {
         var editTitle = null;
         var form = [];
         var elements = [];
-
+        var newForm = null;
         if (this.props.edit){
+            newForm = <div>
+              <Header size={2} text={'Create The Form For Your Project'} />
+              <Button type={'success'} text={'Finish Form'} href={'/inviteCollaborators/' + this.props.project + '/'} />
+              </div>
+
             editTitle = <div>
                 <TextInput name='title' value={this.state.title}
                     handlechange={this.updateTitle.bind(this)} onBlur={this.changeTitle.bind(this)} />
@@ -140,6 +145,8 @@ class FormPage extends Component {
 
         var content =
         <div className='container'>
+            <br />
+            {newForm}
             <br/><br/>
             <div style={{textAlign:"center"}} className='row'>
                 <div className='col-12' style={{textAlign:'left'}}>
