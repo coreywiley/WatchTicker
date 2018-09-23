@@ -16,13 +16,13 @@ class Projects extends Component {
 
 
     componentDidMount() {
-      ajaxWrapper('GET','/api/home/project/?projectuser__user=' + this.props.user_id, {}, this.projectCallback)
+      ajaxWrapper('GET','/api/home/projectform/?project=' + this.props.project_id, {}, this.projectCallback)
     }
 
     projectCallback(result) {
       var projects = [];
       for (var index in result) {
-        projects.push(result[index]['project'])
+        projects.push(result[index]['projectform'])
       }
       this.setState({projects:projects, loaded:true})
     }
@@ -30,13 +30,11 @@ class Projects extends Component {
     render() {
       var projects = [];
       for (var index in this.state.projects) {
-        projects.push(<Card link={'/projectDashboard/' + this.state.projects[index]['id']} button_type={'primary'} button={'View'} name={this.state.projects[index]['title']} description={this.state.projects[index]['description']} />)
+        projects.push(<Card link={'/project/' + this.props.project_id + '/results/' + this.state.projects[index]['id'] +'/'} button_type={'primary'} button={'View Results'} name={this.state.projects[index]['title']} />)
       }
 
         var content = <div className="container">
-
-                <Button type={'success'} text={'Add New Project'} href={'/createNewProject/'} />
-                <h2>Projects</h2>
+                <h2>Form Results</h2>
                 {projects}
         </div>;
 

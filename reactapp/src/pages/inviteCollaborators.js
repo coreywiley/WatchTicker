@@ -125,6 +125,7 @@ class Collaborator extends Component {
        }
 
       if (this.props.projectuser) {
+        var deleteUrl = '/api/home/projectuser/' + this.props.projectuser + '/delete/';
         var form = <div>
           <Form components={Components} deleteUrl={deleteUrl} componentProps={ComponentProps} refreshData={this.props.refreshData} setGlobalState={this.setGlobalState} submitFunc={this.newProjectUser} defaults={defaults} autoSetGlobalState={true} />
           {active}
@@ -135,7 +136,7 @@ class Collaborator extends Component {
           var form = <div></div>
         }
 
-        var deleteUrl = '/api/home/projectuser/' + this.props.projectuser + '/delete/';
+
         var content = <div className="container">
         <div className="row">
           <div className="col-md-4">
@@ -192,13 +193,14 @@ class InviteCollaborators extends Component {
     for (var index in this.state.projectusers) {
       var email = this.state.projectusers[index]['email'];
       var active = this.state.projectusers[index]['is_active'];
-      var text = "You've been invited to a new project. <a clicktracking=off href='http://hackathon.dmiller89.webfactional.com/project/" + this.props.project_id + "/' >Check it out.</a>";
+      var text = "You've been invited to a new project. <a clicktracking=off href='http://hackathon.dmiller89.webfactional.com/projectDashboard/" + this.props.project_id + "/' >Check it out.</a>";
       if (active == false) {
         text = "You've been invited to a new project on AGNNN. <a clicktracking=off href='http://hackathon.dmiller89.webfactional.com/activate/" + this.projectusers[index]['id'] + "/' >Please Activate Your Account Here.</a>"
       }
       ajaxWrapper('POST','/api/email/',{'from_email':'jeremy.thiesen1@gmail.com','to_email':email, 'text':text, 'subject':'Invite to AGNNN'})
     }
     this.setState({sent:true})
+    window.location.href = '/projectDashboard/' + this.props.project_id +'/'
   }
 
   componentDidMount() {

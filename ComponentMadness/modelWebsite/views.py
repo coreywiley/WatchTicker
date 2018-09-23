@@ -247,7 +247,7 @@ def addOrFilter(orFilters, key, value):
 
     return orFilters
 
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def deleteModelInstance(request,appLabel,modelName,id):
     print ('DELETING', appLabel, modelName, id)
@@ -501,7 +501,7 @@ def SendEmail(request):
     from_email = Email(request.POST['from_email'])
     to_email = Email(request.POST['to_email'])
     subject = request.POST['subject']
-    content = Content("text/plain", request.POST['text'])
+    content = Content("text/html", request.POST['text'])
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
 

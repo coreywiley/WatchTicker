@@ -11,20 +11,22 @@ class CreateNewProject extends Component {
     }
 
     newProjectCreated(project) {
-      ajaxWrapper('POST','/api/home/projectuser/', {'project':project['id'], 'user':this.props.user_id, 'type':'Account Manager'}, this.redirect)
+      console.log("New Project", project)
+      console.log({'project':project[0]['project']['id'], 'user':this.props.user_id, 'type':'Account Manager'});
+      ajaxWrapper('POST','/api/home/projectuser/', {'project':project[0]['project']['id'], 'user':this.props.user_id, 'type':'Account Manager'}, this.redirect)
     }
 
     redirect(result) {
-      window.location.href = '/inviteCollaborators/' + result[0]['projectuser']['project'] + '/';
+      window.location.href = '/project/' + result[0]['projectuser']['project_id'] + '/formbuilder/0/';
     }
 
     render() {
-        var Components = [TextInput,TextArea];
-        var title = {'value':'','name':'first_name','label':'First Name:','placeholder': 'First Name'}
-        var description = {'value':'','name':'last_name','label':'Last Name:','placeholder': 'Last Name'}
-
-        var ComponentProps = [title, description];
-        var defaults = {'title':'','description':'', };
+        var Components = [TextInput,TextArea, Select];
+        var title = {'value':'','name':'title','label':'Title:','placeholder': 'Title'}
+        var description = {'value':'','name':'description','label':'Description:','placeholder': 'Description'}
+        var project_type = {'value':'', 'name':'type', 'label':'Project Type', 'options':[{'value':'Market Research', 'text':'Market Research'}]}
+        var ComponentProps = [title, description, project_type];
+        var defaults = {'title':'','description':''};
 
         var submitUrl = "/api/home/project/";
 
@@ -32,7 +34,6 @@ class CreateNewProject extends Component {
                 <h2>Create Your Project</h2>
                 <Form components={Components} redirect={this.newProjectCreated} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
         </div>;
-
 
         return (
             <Wrapper loaded={true} content={content} />

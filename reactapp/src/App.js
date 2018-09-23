@@ -35,6 +35,8 @@ import Projects from './pages/projects.js';
 import CreateNewProject from './pages/createNewProject.js';
 import ProjectDashboard from './pages/projectDashboard.js';
 import EditProjectDetails from './pages/editProjectDetails.js';
+import ProjectForms from './pages/projectForms.js';
+import ProjectResults from './pages/projectResults.js';
 
 class App extends Component {
     constructor(props) {
@@ -194,6 +196,14 @@ class App extends Component {
             project_id = params[1];
             content = <EditProjectDetails user_id={this.state.user.id} project_id={params[1]} />
         }
+        else if (params[0].toLowerCase() == "projectforms") {
+            project_id = params[1];
+            content = <ProjectForms user_id={this.state.user.id} project_id={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "projectresults") {
+            project_id = params[1];
+            content = <ProjectResults user_id={this.state.user.id} project_id={params[1]} />
+        }
 
 
         else if (params[0].toLowerCase() == "project") {
@@ -203,6 +213,7 @@ class App extends Component {
             }
             else if (params[2].toLowerCase() == "view") {
                 if (params[4].toLowerCase() == "submission") {
+                  project_id = params[1];
                     content = <FormPage project={params[1]} id={params[3]} submissionId={params[5]}
                         edit={false} params={params} />
                 }
@@ -220,7 +231,6 @@ class App extends Component {
       else {
         return (
             <div className="App">
-                <Nav logOut={this.logOut} logged_in={this.state.logged_in} />
             </div>
         );
       }
