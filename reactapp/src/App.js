@@ -26,6 +26,9 @@ import LoggedIn from './pages/scaffold/loggedIn.js';
 import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
 import PasswordReset from './pages/scaffold/passwordReset.js';
 
+import InviteCollaborators from './pages/inviteCollaborators.js';
+import Activate from './pages/activate.js';
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -141,6 +144,12 @@ class App extends Component {
         }
         else if (params[0].toLowerCase() == "passwordreset") {
             content = <PasswordReset  user_id={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "invitecollaborators") {
+            content = <InviteCollaborators project_id={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "activate") {
+            content = <Activate user_id={params[1]} />
         }
 
         return (

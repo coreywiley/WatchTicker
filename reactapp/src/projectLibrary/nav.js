@@ -17,7 +17,7 @@ class Nav extends React.Component {
 
 
       return (
-        <header className="header">
+        <header className="header" style={{'margin-bottom':'100px'}}>
         <nav className="navbar navbar-expand-lg fixed-top"><a href="index.html" className="navbar-brand">Landy</a>
           <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" className="navbar-toggler navbar-toggler-right"><span></span><span></span><span></span></button>
           <div id="navbarSupportedContent" className="collapse navbar-collapse">

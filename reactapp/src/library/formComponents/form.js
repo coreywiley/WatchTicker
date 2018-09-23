@@ -72,6 +72,7 @@ class Form extends Component {
     }
 
     formSubmit() {
+        if (this.props.submitUrl) {
         console.log("Submitting", this.state, this.props.submitUrl);
         var data = this.state;
         for (var item in data) {
@@ -83,6 +84,10 @@ class Form extends Component {
         }
 
         ajaxWrapper("POST",this.props.submitUrl, data, this.formSubmitCallback);
+      }
+      else if (this.props.submitFunc) {
+        this.props.submitFunc(this.state);
+      }
     }
 
     refreshDataCallback(value) {
@@ -119,8 +124,7 @@ class Form extends Component {
 
     formSubmitCallback (value) {
         console.log("Value",value);
-
-
+        if (value[0]) {
             if (this.props.setGlobalState) {
                 if (this.props.globalStateName) {
                     this.setState(value[0][this.props.objectName], () => this.props.setGlobalState(this.props.globalStateName,this.state));
@@ -128,8 +132,9 @@ class Form extends Component {
                     this.setState(value[0][this.props.objectName], this.props.setGlobalState('Form',this.state));
                 }
             } else {
-                this.setState(value[0][this.props.objectName]);
+                  this.setState(value[0][this.props.objectName]);
             }
+          }
 
         if (this.props.redirectUrl) {
             if (this.props.objectName) {
@@ -199,7 +204,7 @@ class Form extends Component {
         }
 
         var buttons = [];
-        if (this.props.submitUrl) {
+        if (this.props.submitUrl || this.props.submitFunc) {
             var submitButton = <button className="btn btn-primary" onClick={this.formSubmit}>Save</button>
             buttons.push(submitButton);
         }
