@@ -14,9 +14,14 @@ class TextInput extends Component {
           input = <input autoFocus type="text" className="form-control" name={this.props.name} onChange={this.props.handlechange} value={this.props.value} placeholder={this.props.placeholder} />
         }
 
+        var label = null;
+        if (this.props.label && this.props.label != ''){
+            label = <label>{this.props.label}</label>;
+        }
+
         return (
               <div className={"form-group " + this.props.layout}>
-                <label>{this.props.label}</label>
+                {label}
                 {input}
               </div>
         )

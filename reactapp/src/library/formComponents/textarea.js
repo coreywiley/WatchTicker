@@ -9,10 +9,19 @@ class TextArea extends Component {
             layout = this.props.layout;
         }
 
+        var label = null;
+        if (this.props.label && this.props.label != ''){
+            label = <label>{this.props.label}</label>;
+        }
+
         return (
               <div className={"form-group " + this.props.layout}>
-                <label>{this.props.label}</label>
-                <textarea className="form-control" name={this.props.name} onChange={this.props.handlechange} value={this.props.value}></textarea>
+                {label}
+                <textarea className="form-control" name={this.props.name}
+                    onChange={this.props.handlechange}
+                    onBlur={this.props.onBlur}
+                    value={this.props.value}>
+                </textarea>
               </div>
         )
 

@@ -5,7 +5,7 @@ import ajaxWrapper from "base/ajax.js";
 
 import {
     Button, Image, Paragraph, Form, Select,
-    TextInput, ButtonGroup, TextArea, Checklist
+    TextInput, ButtonGroup, TextArea, CheckGroup
 } from 'library';
 
 class FormPage extends Component {
@@ -133,8 +133,15 @@ class FormElement extends Component {
         this.state = {
             loaded: true,
             component: null,
-            props: null
+            props: null,
+            text: ""
         };
+    }
+
+    componentDidMount(){
+        this.setState({
+            text: this.props.data['pretext']
+        })
     }
 
     changeType(e){
@@ -147,31 +154,44 @@ class FormElement extends Component {
         ajaxWrapper("POST",  url, data, this.props.updateElement.bind(this));
     }
 
+    updateText(e){
+        this.setState({
+            text: e.currentTarget.value
+        });
+    }
+
+    changeText(e){
+        var url = "/api/home/formelement/" + this.props.data['id'] + "/";
+        var data = {
+            pretext: e.currentTarget.value
+        };
+
+        ajaxWrapper("POST",  url, data, this.props.updateElement.bind(this));
+    }
+
     render() {
         var Component = null;
         var type = ELEMENT_TYPES[this.props.data['type']];
         var props = {};
+        var defaults = {};
 
         if (type == 'Radio') {
             Component = ButtonGroup;
             props = {
                 type: 'secondary',
                 name: 'test',
-                options: ['One', 'Two', 'Three'],
-                value: 'One'
-            }
+                options: ['One', 'Two', 'Three']
+            };
+            defaults['test'] = 'One';
 
         } else if (type == 'Checkbox'){
-            Component = Checklist;
+            Component = CheckGroup;
             props = {
+                type: 'secondary',
                 name: 'test',
-                dataList: [
-                    {
-                        a: {id: 0, name: 'test', value: 1, label: 'One'}
-                    },
-                ],
-                objectName: 'a'
-            }
+                options: ['One', 'Two', 'Three']
+            };
+            defaults['test'] = [];
 
         } else if (type == 'Text Input'){
             Component = TextInput;
@@ -188,22 +208,41 @@ class FormElement extends Component {
             var type = ELEMENT_TYPES[key];
             options.push({'text': type, 'value': key});
         }
-        var select = <Select label="Type" name='type' options={options} setFormState={this.changeType.bind(this)} />;
+        var select = <Select label="Type" name='type' options={options}
+            value={String(this.props.data['type'])} setFormState={this.changeType.bind(this)} />;
+
+        var textInput = <TextArea label="Question Text" name='text' value={this.state.text}
+            handlechange={this.updateText.bind(this)} onBlur={this.changeText.bind(this)} />;
 
         var Components = [Component];
         var ComponentProps = [props];
-        var defaults = {};
 
         var content =
         <div className='card'>
-            {select}
+            <div className='row'>
+                <div className="col-4">
+                    {select}
+                </div>
+                <div className="col-8">
+                    {textInput}
+                </div>
+                <br/>
+            </div>
 
-            <Form components={Components} componentProps={ComponentProps} submitFunc={this.newProjectUser} defaults={defaults} />
+            <div className='row'>
+                <div className='col-12' style={{textAlign: 'left'}}>
+                    <Paragraph text={this.props.data['pretext']} />
+                    <Form components={Components} componentProps={ComponentProps}
+                        submitFunc={this.newProjectUser} defaults={defaults} />
+                    <br/>
+                </div>
+            </div>
         </div>;
 
         return (
             <div>
                 {content}
+                <br/>
             </div>
         );
     }
