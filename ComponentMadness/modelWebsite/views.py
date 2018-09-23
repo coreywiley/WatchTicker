@@ -55,8 +55,6 @@ def getModelFieldsJson(request,appLabel,modelName):
     return JsonResponse(modelFields, safe=False)
 
 
-@api_view(['GET', 'POST', 'PUT'])
-@permission_classes((IsAuthenticated, ))
 def getModelInstanceJson(request, appLabel, modelName, id=None):
     print ("Request : %s" % (request.GET))
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
@@ -99,13 +97,15 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
     excluded = {}
     orFilters = None
     newParameters = parameters.copy()
+    print ('\n\n',parameters,'\n\n')
     for parameter in parameters:
+
         if ',' in parameters[parameter]:
-            parameters[parameter] = [x for x in parameters[parameter].split(',') if x != ""]
+            newParameters[parameter] = [x for x in parameters[parameter].split(',') if x != ""]
         if parameters[parameter] == 'true':
-            parameters[parameter] = True
+            newParameters[parameter] = True
         elif parameters[parameter] == 'false':
-            parameters[parameter] = False
+            newParameters[parameter] = False
 
         if parameter.startswith("exclude__"):
             excluded[parameter.replace("exclude__", "")] = parameters[parameter]
@@ -121,7 +121,6 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             del newParameters[parameter]
 
     parameters = newParameters
-
     print ("Related : %s" % (related))
 
     # single instance
