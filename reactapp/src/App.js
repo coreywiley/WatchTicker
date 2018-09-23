@@ -29,13 +29,16 @@ import PasswordReset from './pages/scaffold/passwordReset.js';
 import InviteCollaborators from './pages/inviteCollaborators.js';
 import Activate from './pages/activate.js';
 
+import FormPage from './pages/form.js';
+
+
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loaded: true,
             csrfmiddlewaretoken: undefined,
-            user:{'id':'', 'name':''}
+            user:{}
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
@@ -45,11 +48,27 @@ class App extends Component {
 
     componentDidMount() {
         ajaxWrapper("GET", "/api/csrfmiddlewaretoken/", {}, this.ajaxCallback);
+        ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));
+        var path = window.location.href.toLowerCase();
+
+        var token = localStorage.getItem('token');
+        if (token) {
+            this.setState({token: token});
+        } else if (path.indexOf('login') == -1 && path.indexOf('signup') == -1 &&
+                    window.location.pathname != "/") {
+            window.location.href = '/login/';
+        }
+    }
+
+    loadUser(result){
+        this.setState({
+            user: result
+        });
     }
 
     logOut() {
         console.log("Log Out");
-        localStorage.removeItem('token')
+        localStorage.removeItem('token');
         window.location.href = '/login/';
     }
 
@@ -59,7 +78,7 @@ class App extends Component {
         var token = localStorage.getItem('token')
         if (token) {
             if (window.location.href.indexOf('login') > -1 || window.location.href.indexOf('signup') > -1) {
-                window.location.href = '/events/';
+                window.location.href = '/';
             }
             else {
                 this.setState({csrfmiddlewaretoken: value.csrfmiddlewaretoken, token: token}, this.getUserInfo);
@@ -150,6 +169,15 @@ class App extends Component {
         }
         else if (params[0].toLowerCase() == "activate") {
             content = <Activate user_id={params[1]} />
+        }
+
+        else if (params[0].toLowerCase() == "project") {
+            if (params[2].toLowerCase() == "formbuilder") {
+                content = <FormPage project={params[1]} id={params[3]} edit={true} params={params} />
+            }
+            else if (params[2].toLowerCase() == "view") {
+                content = <FormPage project={params[1]} id={params[3]} edit={false} params={params} />
+            }
         }
 
         return (

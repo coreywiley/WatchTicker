@@ -29,7 +29,9 @@ class List extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.refreshData();
+        if (!this.props.dataList) {
+            this.refreshData();
+        }
     }
 
     refreshData() {

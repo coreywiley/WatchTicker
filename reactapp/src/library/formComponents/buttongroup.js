@@ -6,17 +6,19 @@ class ButtonGroup extends React.Component {
 
 
     	var buttons = [];
-        var css = {'margin':'2px'}
+        var css = {}
     	for (var index in this.props.options) {
     	    var active = "";
-    	    css = {'margin':'2px'}
+    	    css = {}
     	    if (String(this.props.value) == String(this.props.options[index])) {
     	        active = " active"
-    	        css = {'margin':'2px', 'background-color':'green'}
+    	        css = {}
     	    }
-    	        buttons.push(<label style={css} className={"btn" + active + type}>
-                <input type="radio" name={this.props.name} value={this.props.options[index]} onClick={this.props.handlechange} id={this.props.options[index]} />{this.props.options[index]}
-                </label>);
+    	        buttons.push(
+                    <label style={css} className={"btn" + active + type}>
+                        <input type="radio" name={this.props.name} value={this.props.options[index]} onClick={this.props.handlechange} id={this.props.options[index]} />{this.props.options[index]}
+                    </label>
+                );
     	}
 
         return (

@@ -6,3 +6,4 @@ npm-debug.log
 ComponentMadness/--upgrade/
 *.pyc
 reactapp/package-lock.json
+pythonEnv/

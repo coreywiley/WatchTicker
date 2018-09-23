@@ -43,8 +43,11 @@ class Checklist extends Component {
 
 
     render() {
-        this.props.dataMapping['onChange'] = this.handleChange;
-        this.props.dataMapping['checkList'] = this.props.value;
+        if (this.props.dataMapping){
+            this.props.dataMapping['onChange'] = this.handleChange;
+            this.props.dataMapping['checkList'] = this.props.value;
+        }
+
         return (
             <div className="form-group">
                 <List component={Checkbox} {...this.props} />
