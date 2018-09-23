@@ -13,6 +13,7 @@ class FormPage extends Component {
         super(props);
         this.state = {
             form: {},
+            submission: {},
             loaded: true,
             title: ''
         };
@@ -29,11 +30,25 @@ class FormPage extends Component {
 
         } else {
             this.getForm();
+
+            if (!(this.props.edit)){
+                if (this.props.submissionId == 0){
+                    var url = "/api/home/formsubmission/";
+                    var data = {
+                        form: this.props.id
+                    };
+
+                    ajaxWrapper("POST",  url, data, this.loadSubmission.bind(this));
+
+                } else {
+                    this.getSubmission();
+                }
+            }
         }
     }
 
     getForm() {
-        var url = "/api/home/projectform/" + this.props.id + "/?related=elements,project,project__company";
+        var url = "/api/home/projectform/" + this.props.id + "/?related=elements,project,project__company,submissions";
         ajaxWrapper("GET",  url, {}, this.loadForm.bind(this));
     }
 
@@ -56,8 +71,23 @@ class FormPage extends Component {
         });
     }
 
-    saveForm(){
+    getSubmission() {
+        var url = "/api/home/formsubmission/" + this.props.submissionId + "/";
+        ajaxWrapper("GET",  url, {}, this.loadSubmission.bind(this));
+    }
+    loadSubmission(result){
+        var submission = result[0]['formsubmission'];
+        if (this.props.submissionId != submission['id']) {
+            var newUrl = '/' + this.props.params[0] + '/' + this.props.project + '/'
+            newUrl += this.props.params[2] + '/' + this.props.id + '/';
+            newUrl += this.props.params[4] + '/' + submission['id'] + '/';
 
+            window.location = newUrl;
+        }
+
+        this.setState({
+            submission: submission
+        });
     }
 
     addElement(){
@@ -135,7 +165,10 @@ class FormPage extends Component {
             form.push(<div className='col-6'><RenderedForm data={this.state.form} /></div>);
             form.push(<Button type="primary" text="Add New Element" clickHandler={this.addElement.bind(this)} />);
         } else {
-            form.push(<div className='col-12'><RenderedForm data={this.state.form} /></div>);
+            form.push(<div className='col-12'>
+                <RenderedForm data={this.state.form} submission={this.state.submission}
+                    edit={this.props.edit} loadSubmission={this.loadSubmission.bind(this)} />
+            </div>);
         }
 
         var content =
@@ -175,13 +208,49 @@ class RenderedForm extends Component {
         super(props);
         this.state = {
             loaded: true,
+            saved: false
         };
+    }
+
+    saveSubmission(formData){
+        var searchTerm = formData['searchTerm'];
+        if (searchTerm == ''){ searchTerm = 'New Submission';}
+        delete formData['searchTerm'];
+
+        var url = "/api/home/formsubmission/" + this.props.submission['id'] + "/";
+        var data = {
+            searchTerm: searchTerm,
+            data: JSON.stringify(formData)
+        };
+
+        ajaxWrapper("POST",  url, data, this.submissionSaved.bind(this));
+    }
+    submissionSaved(result){
+        this.setState({
+            saved: true
+        });
+        window.scrollTo(0,0);
+        this.props.loadSubmission(result);
     }
 
     render() {
         var defaults = {};
+        if (typeof(this.props.submission) != 'undefined' && 'data' in this.props.submission){
+            defaults = this.props.submission['data'];
+            defaults['searchTerm'] = this.props.submission['searchTerm'];
+        }
+
         var Components = [];
         var ComponentsProps = [];
+
+        if (!(this.props.edit)){
+            Components.push(TextInput);
+            ComponentsProps.push({
+                name: 'searchTerm',
+                label: "Submission Title",
+                layout: "leftAlign spacing"
+            });
+        }
 
         for (var i in this.props.data['elements']){
             var element = this.props.data['elements'][i]['formelement'];
@@ -198,11 +267,8 @@ class RenderedForm extends Component {
                 Component = ButtonGroup;
                 ComponentProps = Object.assign({
                     type: 'secondary',
-
                     options: element['data']['options']
                 }, ComponentProps);
-
-                defaults['test'] = 'One';
 
             } else if (type == 'Checkbox'){
                 Component = CheckGroup;
@@ -210,8 +276,6 @@ class RenderedForm extends Component {
                     type: 'secondary',
                     options: element['data']['options']
                 }, ComponentProps);
-
-                defaults['test'] = [];
 
             } else if (type == 'Text Input'){
                 Component = TextInput;
@@ -227,9 +291,19 @@ class RenderedForm extends Component {
             ComponentsProps.push(ComponentProps);
         }
 
+        var saved = null;
+        if (this.state.saved){
+            saved = <div className="alert alert-success">Submission Saved Succesfully!</div>;
+        }
+
         return (
-            <Form components={Components} componentProps={ComponentsProps}
-                    submitFunc={this.newProjectUser} defaults={defaults} />
+            <div>
+                {saved}
+                <Form components={Components} componentProps={ComponentsProps}
+                        submitFunc={this.saveSubmission.bind(this)} defaults={defaults}
+                        buttonClass={"leftAlign spacing"}
+                     />
+            </div>
         );
     }
 }
@@ -360,7 +434,7 @@ class FormElement extends Component {
             for (var i in this.props.data['data']['options']){
                 var text = this.props.data['data']['options'][i];
                 optionTags.push(<Button type="secondary" key={text} text={text}
-                    clickHandler={this.removeOption.bind(this)} inline={true} />)
+                    clickHandler={this.removeOption.bind(this)} inline={true} />);
             }
 
             options = <div className='col-12'><div className='row' style={{margin:"0px -15px"}}>

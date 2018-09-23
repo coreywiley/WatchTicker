@@ -185,10 +185,13 @@ class App extends Component {
 
         else if (params[0].toLowerCase() == "project") {
             if (params[2].toLowerCase() == "formbuilder") {
-                content = <FormPage project={params[1]} id={params[3]} edit={true} params={params} edit={true} />
+                content = <FormPage project={params[1]} id={params[3]} edit={true} params={params} />
             }
             else if (params[2].toLowerCase() == "view") {
-                content = <FormPage project={params[1]} id={params[3]} edit={false} params={params} edit={false} />
+                if (params[4].toLowerCase() == "submission") {
+                    content = <FormPage project={params[1]} id={params[3]} submissionId={params[5]}
+                        edit={false} params={params} />
+                }
             }
         }
 

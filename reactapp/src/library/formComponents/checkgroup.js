@@ -10,7 +10,10 @@ class CheckGroup extends React.Component {
         var selection = e.currentTarget.value;
         var newState = {};
 
-        var value = this.props.value;
+        var value = [];
+        if (this.props.value && typeof(this.props.value) != 'undefined'){
+            value = this.props.value;
+        }
         var index = value.indexOf(selection);
         if (index == -1) {
             value.push(selection);
@@ -26,7 +29,7 @@ class CheckGroup extends React.Component {
 
     render() {
         var value = [];
-        if (this.props.value && typeOf(this.props.value) != 'undefined'){
+        if (this.props.value && typeof(this.props.value) != 'undefined'){
             value = this.props.value;
         }
 
