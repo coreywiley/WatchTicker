@@ -80,9 +80,10 @@ class ProjectForm(models.Model):
 FORMTYPENAMES = ((0, 'Radio'),
                  (1, 'Checkbox'),
                  (2, 'Text Input'),
-                 (3, 'Paragraph Input'),
-                 (4, 'Text Only'),
-                 (5, 'Image'),)
+                 (3, 'Number Input'),
+                 (4, 'Paragraph Input'),
+                 (5, 'Text Only'),
+                 (6, 'Image'),)
 
 class FormElement(models.Model):
     form = models.ForeignKey(ProjectForm, on_delete=models.CASCADE, related_name='elements')
@@ -95,7 +96,7 @@ class FormElement(models.Model):
     pretext = models.TextField(_('Pretext'), help_text=_(''), blank=True)
     posttext = models.TextField(_('Posttext'), help_text=_(''), blank=True)
 
-    data = JSONField()
+    data = JSONField(default = {})
 
     display = models.CharField(default='', max_length=100, blank=True, null=True)
     style = models.CharField(default='', max_length=300, blank=True, null=True)
@@ -106,9 +107,9 @@ class FormElement(models.Model):
 
 class FormSubmission(models.Model):
     project = models.ForeignKey(Project, null=True, blank=True, on_delete=models.CASCADE)
-    form = models.ForeignKey(ProjectForm, on_delete=models.CASCADE)
+    form = models.ForeignKey(ProjectForm, on_delete=models.CASCADE, related_name='submissions')
 
-    searchTerm = models.CharField(max_length=255, default='')
+    searchTerm = models.CharField(max_length=255, default='New Submission')
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('initiator'),
                               help_text=_('Submission owner'), null=True, blank=True, on_delete=models.CASCADE)
@@ -121,7 +122,7 @@ class FormSubmission(models.Model):
     completed = models.BooleanField(default=False)
     completedDate = models.DateTimeField(blank=True, null=True)
 
-    answers = JSONField(null=True, blank=True, default={})
+    data = JSONField(null=True, blank=True, default={})
     jsonData = JSONField(null=True, blank=True, default={})
 
     archived = models.BooleanField(default=False)
@@ -157,7 +158,7 @@ class FormEvent(models.Model):
     updated = ModificationDateTimeField(_('updated'))
     timestamp = models.BigIntegerField(blank=True, null=True)
 
-    answers = JSONField(null=True, blank=True)
+    answers = JSONField(null=True, blank=True, default={})
 
     def __unicode__(self):
         return "%s : %s : %s" % (self.form, self.owner, self.answers.get('name', 'NONE'))

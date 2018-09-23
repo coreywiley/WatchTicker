@@ -218,7 +218,10 @@ class Form extends Component {
         return(
             <div className={layout}  style={this.props.css} onKeyPress={this.handleKeyPress}>
                 {components}
-                {buttons}
+
+                <div className={'form-group ' + this.props.buttonClass}>
+                    {buttons}
+                </div>
             </div>
         )
     }
