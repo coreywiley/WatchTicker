@@ -108,6 +108,8 @@ class FormSubmission(models.Model):
     project = models.ForeignKey(Project, null=True, blank=True, on_delete=models.CASCADE)
     form = models.ForeignKey(ProjectForm, on_delete=models.CASCADE)
 
+    searchTerm = models.CharField(max_length=255, default='')
+
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('initiator'),
                               help_text=_('Submission owner'), null=True, blank=True, on_delete=models.CASCADE)
 

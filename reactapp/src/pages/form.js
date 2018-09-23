@@ -111,14 +111,31 @@ class FormPage extends Component {
     }
 
     render() {
-
+        var editTitle = null;
+        var form = [];
         var elements = [];
-        for (var i in this.state.form.elements) {
-            var data = this.state.form.elements[i]['formelement'];
 
-            elements.push(
-                <FormElement key={data['id']} data={data} updateElement={this.updateElement.bind(this)} />
-            );
+        if (this.props.edit){
+            editTitle = <div>
+                <TextInput name='title' value={this.state.title}
+                    handlechange={this.updateTitle.bind(this)} onBlur={this.changeTitle.bind(this)} />
+                <br/>
+                <h4>Questions</h4>
+            </div>
+
+            for (var i in this.state.form.elements) {
+                var data = this.state.form.elements[i]['formelement'];
+
+                elements.push(
+                    <FormElement key={data['id']} data={data} updateElement={this.updateElement.bind(this)} />
+                );
+            }
+
+            form.push(<div className='col-6'>{elements}</div>);
+            form.push(<div className='col-6'><RenderedForm data={this.state.form} /></div>);
+            form.push(<Button type="primary" text="Add New Element" clickHandler={this.addElement.bind(this)} />);
+        } else {
+            form.push(<div className='col-12'><RenderedForm data={this.state.form} /></div>);
         }
 
         var content =
@@ -126,22 +143,11 @@ class FormPage extends Component {
             <br/><br/>
             <div style={{textAlign:"center"}} className='row'>
                 <div className='col-12' style={{textAlign:'left'}}>
-                    <h1>{this.state.form.id} : {this.state.form.title}</h1>
-                    <TextInput name='title' value={this.state.title}
-                        handlechange={this.updateTitle.bind(this)} onBlur={this.changeTitle.bind(this)} />
-                    <br/>
-                    <h4>Questions</h4>
+                    <h1>{this.state.form.title}</h1>
+                    {editTitle}
                 </div>
 
-                <div className='col-6'>
-                    {elements}
-                </div>
-
-                <div className='col-6'>
-                    <RenderedForm data={this.state.form} />
-                </div>
-
-                <Button type="primary" text="Add New Element" clickHandler={this.addElement.bind(this)} />
+                {form}
 
                 <br/>
             </div>
@@ -182,6 +188,7 @@ class RenderedForm extends Component {
 
             var Component = null;
             var ComponentProps = {
+                name: element['id'],
                 label: element['pretext'],
                 layout: "leftAlign spacing"
             };
@@ -191,7 +198,7 @@ class RenderedForm extends Component {
                 Component = ButtonGroup;
                 ComponentProps = Object.assign({
                     type: 'secondary',
-                    name: 'test',
+
                     options: element['data']['options']
                 }, ComponentProps);
 
@@ -201,7 +208,6 @@ class RenderedForm extends Component {
                 Component = CheckGroup;
                 ComponentProps = Object.assign({
                     type: 'secondary',
-                    name: 'test',
                     options: element['data']['options']
                 }, ComponentProps);
 
@@ -220,7 +226,6 @@ class RenderedForm extends Component {
             Components.push(Component);
             ComponentsProps.push(ComponentProps);
         }
-
 
         return (
             <Form components={Components} componentProps={ComponentsProps}
@@ -289,7 +294,7 @@ class FormElement extends Component {
     }
 
     addOption(e){
-        var text = e.currentTarget.value.strip();
+        var text = e.currentTarget.value.trim();
 
         if (e.key === 'Enter') {
             var jsonData = this.props.data['data'];
