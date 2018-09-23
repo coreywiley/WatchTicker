@@ -27,6 +27,16 @@ class CheckGroup extends React.Component {
     render() {
     	var type = " btn-" + this.props.type;
 
+        var layout = '';
+        if (this.props.layout) {
+            layout = 'form-group ' + this.props.layout;
+        }
+
+        var label = null;
+        if (this.props.label && this.props.label != ''){
+            label = <label>{this.props.label}</label>;
+        }
+
     	var buttons = [];
         var css = {}
     	for (var index in this.props.options) {
@@ -46,7 +56,8 @@ class CheckGroup extends React.Component {
     	}
 
         return (
-            <div style={{'display':'block'}}>
+            <div className={layout} style={{'display':'block'}}>
+                {label}
                 {buttons}
             </div>
         );

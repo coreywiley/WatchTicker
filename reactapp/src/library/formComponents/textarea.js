@@ -15,9 +15,10 @@ class TextArea extends Component {
         }
 
         return (
-              <div className={"form-group " + this.props.layout}>
+              <div className={"form-group " + layout}>
                 {label}
                 <textarea className="form-control" name={this.props.name}
+                    rows={this.props.rows}
                     onChange={this.props.handlechange}
                     onBlur={this.props.onBlur}
                     value={this.props.value}>

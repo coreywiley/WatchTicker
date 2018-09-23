@@ -17,30 +17,35 @@ class Button extends React.Component {
     }
 
     showModal() {
-      this.setState({modal:true})
+      this.setState({modal:true});
     }
 
     hideModal() {
-      this.setState({modal:false})
+      this.setState({modal:false});
     }
 
-    click() {
+    click(e) {
       console.log("Clicked");
       if (this.props.href) {
         window.location.href = this.props.href;
       }
       else if (this.props.clickHandler) {
         console.log("Click Handler")
-        this.props.clickHandler();
+        this.props.clickHandler(e);
       }
     }
 
     render() {
     	var type = "btn-" + this.props.type;
-      var css = {}
+      var css = {maxWidth: '100%', whiteSpace: 'normal'};
       if (this.props.css) {
         css = this.props.css;
       }
+      var inline = {};
+      if (this.props.inline){
+          inline = {display: 'inline-block', marginRight: '5px', marginBottom:'5px'};
+      }
+
       var content = <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>
       if (this.props.deleteType == true && this.state.modal == false) {
         console.log("I am here");
@@ -53,7 +58,7 @@ class Button extends React.Component {
       }
 
         return (
-          <div>
+          <div className={this.props.class} style={inline}>
             {content}
             </div>
         );

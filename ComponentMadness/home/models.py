@@ -100,6 +100,8 @@ class FormElement(models.Model):
     display = models.CharField(default='', max_length=100, blank=True, null=True)
     style = models.CharField(default='', max_length=300, blank=True, null=True)
 
+    class Meta:
+        ordering = ['order', 'id']
 
 
 class FormSubmission(models.Model):

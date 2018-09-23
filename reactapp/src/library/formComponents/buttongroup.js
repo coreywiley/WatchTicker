@@ -4,6 +4,15 @@ class ButtonGroup extends React.Component {
     render() {
     	var type = " btn-" + this.props.type;
 
+        var layout = '';
+        if (this.props.layout) {
+            layout = 'form-group ' + this.props.layout;
+        }
+
+        var label = null;
+        if (this.props.label && this.props.label != ''){
+            label = <label>{this.props.label}</label>;
+        }
 
     	var buttons = [];
         var css = {}
@@ -14,16 +23,21 @@ class ButtonGroup extends React.Component {
     	        active = " active"
     	        css = {}
     	    }
-    	        buttons.push(
-                    <label style={css} className={"btn" + active + type}>
-                        <input type="radio" name={this.props.name} value={this.props.options[index]} onClick={this.props.handlechange} id={this.props.options[index]} />{this.props.options[index]}
-                    </label>
-                );
+
+	        buttons.push(
+                <label style={css} className={"btn" + active + type}>
+                    <input type="radio" name={this.props.name} value={this.props.options[index]}
+                        onClick={this.props.handlechange} id={this.props.options[index]} />{this.props.options[index]}
+                </label>
+            );
     	}
 
         return (
-            <div className="btn-group btn-group-toggle" style={{'display':'block'}}>
-                {buttons}
+            <div className={layout} >
+                {label}
+                <div className="btn-group btn-group-toggle" style={{'display':'block'}}>
+                    {buttons}
+                </div>
             </div>
         );
     }
