@@ -115,7 +115,7 @@ class FormPage extends Component {
 
         for (var i in form['elements']){
             if (form['elements'][i]['formelement']['id'] == element['id']){
-                form['elements'][i]['formelement'] = element;
+                form['elements'][i]['formelement'] = result[0];
             }
         }
 
