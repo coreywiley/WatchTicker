@@ -220,14 +220,19 @@ class RenderedForm extends Component {
         };
     }
 
+
     saveSubmission(formData){
         var searchTerm = formData['searchTerm'];
         if (searchTerm == ''){ searchTerm = 'New Submission';}
         delete formData['searchTerm'];
 
+        var market = formData['market'];
+        delete formData['market'];
+
         var url = "/api/home/formsubmission/" + this.props.submission['id'] + "/";
         var data = {
             searchTerm: searchTerm,
+            market:market,
             data: JSON.stringify(formData)
         };
 
@@ -246,6 +251,7 @@ class RenderedForm extends Component {
         if (typeof(this.props.submission) != 'undefined' && 'data' in this.props.submission){
             defaults = this.props.submission['data'];
             defaults['searchTerm'] = this.props.submission['searchTerm'];
+            defaults['market'] = this.props.submission['market_id'];
         }
 
         var Components = [];
@@ -258,6 +264,13 @@ class RenderedForm extends Component {
                 label: "Submission Title",
                 layout: "leftAlign spacing"
             });
+            Components.push(Select);
+            ComponentsProps.push({
+              name: 'market',
+              label: "Market",
+              optionsUrl:'/api/home/market/',
+              optionsUrlMap:{'text':['market','name'], 'value':['market','id']}
+            })
         }
 
         for (var i in this.props.data['elements']){

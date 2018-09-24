@@ -12,7 +12,7 @@ class EditProjectDetails extends Component {
     }
 
     componentDidMount() {
-      ajaxWrapper('GET','/api/home/project/' + this.props.project_id + '/')
+      ajaxWrapper('GET','/api/home/project/' + this.props.project_id + '/',{},this.projectCallback)
     }
 
     projectCallback(result) {

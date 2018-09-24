@@ -104,13 +104,15 @@ class FormElement(models.Model):
     class Meta:
         ordering = ['order', 'id']
 
+class Market(models.Model):
+    name = models.CharField(max_length=255, default='')
 
 class FormSubmission(models.Model):
     project = models.ForeignKey(Project, null=True, blank=True, on_delete=models.CASCADE)
     form = models.ForeignKey(ProjectForm, on_delete=models.CASCADE, related_name='submissions')
 
     searchTerm = models.CharField(max_length=255, default='New Submission')
-
+    market = models.ForeignKey(Market, null=True, blank=True, on_delete=models.CASCADE)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('initiator'),
                               help_text=_('Submission owner'), null=True, blank=True, on_delete=models.CASCADE)
 
@@ -163,8 +165,7 @@ class FormEvent(models.Model):
     def __unicode__(self):
         return "%s : %s : %s" % (self.form, self.owner, self.answers.get('name', 'NONE'))
 
-class Market(models.Model):
-    name = models.CharField(max_length=255, default='')
+
 
 class ProjectUser(models.Model):
     """ The base Project model. """
