@@ -34,7 +34,7 @@ class Projects extends Component {
         var form = result[i]['projectform'];
         submissions[form.title] = {'submissions':[],'id':form.id};
         for (var index in form['submissions']) {
-          submissions[form.title].push(form['submissions'][index]['formsubmission'])
+          submissions[form.title]['submissions'].push(form['submissions'][index]['formsubmission'])
         }
       }
       this.setState({submissions:submissions})
@@ -51,11 +51,11 @@ class Projects extends Component {
         for (var i in this.state.submissions[index]['submissions']) {
           if (this.state.permission_markets.length > 0) {
             if (this.state.permission_markets.indexOf(this.state.submissions[index]['submissions'][i]['market_id']) > -1) {
-              submissions.push(<p><a href={'/projectDashboard/' + this.state.submissions[index]['submissions'][i]['id']}>{this.state.submissions[index]['submissions'][i]['searchTerm']}</a></p>)
+              submissions.push(<p><a href={'/project/' + this.props.project_id + '/view/' + this.state.submissions[index]['id'] + '/submission/' + this.state.submissions[index]['submissions'][i]['id'] + '/'}>{this.state.submissions[index]['submissions'][i]['searchTerm']}</a></p>)
             }
           }
           else {
-            submissions.push(<p><a href={'/projectDashboard/' + this.state.submissions[index]['submissions'][i]['id']}>{this.state.submissions[index]['submissions'][i]['searchTerm']}</a></p>)
+            submissions.push(<p><a href={'/project/' + this.props.project_id + '/view/' + this.state.submissions[index]['id'] + '/submission/' + this.state.submissions[index]['submissions'][i]['id'] + '/'}>{this.state.submissions[index]['submissions'][i]['searchTerm']}</a></p>)
           }
 
         }
