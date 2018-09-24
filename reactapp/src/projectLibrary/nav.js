@@ -33,12 +33,13 @@ class Nav extends React.Component {
              ['/inviteCollaborators/' + this.props.project_id + '/','Invite Collaborators'],
              ['/projectDashboard/' + this.props.project_id + '/','Project Submissions'],
              ['/projectResults/' + this.props.project_id + '/', 'Project Results']];
+             title = <Header size={2} text={'Project: ' + this.state.title} />
           }
           else {
             var links = [['/projects/','Projects']];
           }
 
-          title = <Header size={2} text={'Project: ' + this.state.title} />
+
 
           var nameLink = '/projects/'
           console.log("Links",links)

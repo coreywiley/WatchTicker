@@ -220,6 +220,7 @@ class App extends Component {
                 }
             }
             else if (params[2].toLowerCase() == "results") {
+                project_id = params[1];
                 content = <ResultPage project={params[1]} id={params[3]} params={params} />
             }
         }

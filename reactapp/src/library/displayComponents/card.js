@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
+import {Button} from 'library';
 
 class Card extends React.Component {
 
@@ -31,6 +32,11 @@ class Card extends React.Component {
             extraClass = ' ' + this.props.cssClass;
         }
 
+        var deleteButton = <div></div>
+        if (this.props.deleteUrl) {
+          deleteButton = <Button href={this.props.deleteUrl} type={'danger'} text={'Delete'} deleteType={true} />
+        }
+
         return (
             <div className="card" style={this.props.css} data-id={this.props.data_id} >
               {image}
@@ -38,6 +44,7 @@ class Card extends React.Component {
                 <h5 className="card-title">{this.props.name}</h5>
                 <p className="card-text">{this.props.description}</p>
                 {button}
+                {deleteButton}
               </div>
             </div>
         );

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 
-import {Form, TextInput, Select, PasswordInput, Navbar, Button, Header} from 'library';
+import {Form, TextInput, Select, PasswordInput, Navbar, Button, Header, Card} from 'library';
 
 class Projects extends Component {
     constructor(props) {
@@ -32,9 +32,9 @@ class Projects extends Component {
       var submissions = {};
       for (var i in result) {
         var form = result[i]['projectform'];
-        submissions[form.title] = {'submissions':[],'id':form.id};
+        submissions[form.id] = {'submissions':[],'title':form.title};
         for (var index in form['submissions']) {
-          submissions[form.title]['submissions'].push(form['submissions'][index]['formsubmission'])
+          submissions[form.id]['submissions'].push(form['submissions'][index]['formsubmission'])
         }
       }
       this.setState({submissions:submissions})
@@ -46,16 +46,16 @@ class Projects extends Component {
       var form_id = 0;
       for (var index in this.state.submissions) {
         console.log("SUBMISSIONS", this.state.submissions[index])
-        submissions.push(<Header size={4} text={'Form: ' + index} />)
-        submissions.push(<Button type={'success'} text={'Add New Submission'} href={'/project/' + this.props.project_id + '/view/' + this.state.submissions[index].id + '/submission/0/'} />);
+        submissions.push(<Header size={4} text={'Form: ' +  this.state.submissions[index]['title']} />)
+        submissions.push(<Button type={'success'} text={'Add New Submission'} href={'/project/' + this.props.project_id + '/view/' + index + '/submission/0/'} />);
         for (var i in this.state.submissions[index]['submissions']) {
           if (this.state.permission_markets.length > 0) {
             if (this.state.permission_markets.indexOf(this.state.submissions[index]['submissions'][i]['market_id']) > -1) {
-              submissions.push(<p><a href={'/project/' + this.props.project_id + '/view/' + this.state.submissions[index]['id'] + '/submission/' + this.state.submissions[index]['submissions'][i]['id'] + '/'}>{this.state.submissions[index]['submissions'][i]['searchTerm']}</a></p>)
+              submissions.push(<Card href={'/project/' + this.props.project_id + '/view/' + index + '/submission/' + this.state.submissions[index]['submissions'][i]['id'] + '/'} button={'Edit'} button_type={'primary'} name={this.state.submissions[index]['submissions'][i]['searchTerm']} />)
             }
           }
           else {
-            submissions.push(<p><a href={'/project/' + this.props.project_id + '/view/' + this.state.submissions[index]['id'] + '/submission/' + this.state.submissions[index]['submissions'][i]['id'] + '/'}>{this.state.submissions[index]['submissions'][i]['searchTerm']}</a></p>)
+            submissions.push(<Card deleteUrl={'/api/home/formsubmission/' + this.state.submissions[index]['submissions'][i]['id'] + '/delete/'} href={'/project/' + this.props.project_id + '/view/' + index + '/submission/' + this.state.submissions[index]['submissions'][i]['id'] + '/'} button={'Edit'} button_type={'primary'} name={this.state.submissions[index]['submissions'][i]['searchTerm']} />)
           }
 
         }
