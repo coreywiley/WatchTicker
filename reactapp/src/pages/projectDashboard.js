@@ -37,7 +37,6 @@ class Projects extends Component {
           submissions[form.title].push(form['submissions'][index]['formsubmission'])
         }
       }
-
       this.setState({submissions:submissions})
 
     }
@@ -50,7 +49,15 @@ class Projects extends Component {
         submissions.push(<Header size={4} text={'Form: ' + index} />)
         submissions.push(<Button type={'success'} text={'Add New Submission'} href={'/project/' + this.props.project_id + '/view/' + this.state.submissions[index].id + '/submission/0/'} />);
         for (var i in this.state.submissions[index]['submissions']) {
-          submissions.push(<p><a href={'/projectDashboard/' + this.state.submissions[index]['submissions'][i]['id']}>{this.state.submissions[index]['submissions'][i]['searchTerm']}</a></p>)
+          if (this.state.permission_markets.length > 0) {
+            if (this.state.permission_markets.indexOf(this.state.submissions[index]['submissions'][i]['market_id']) > -1) {
+              submissions.push(<p><a href={'/projectDashboard/' + this.state.submissions[index]['submissions'][i]['id']}>{this.state.submissions[index]['submissions'][i]['searchTerm']}</a></p>)
+            }
+          }
+          else {
+            submissions.push(<p><a href={'/projectDashboard/' + this.state.submissions[index]['submissions'][i]['id']}>{this.state.submissions[index]['submissions'][i]['searchTerm']}</a></p>)
+          }
+
         }
 
       }

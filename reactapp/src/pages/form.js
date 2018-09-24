@@ -216,10 +216,25 @@ class RenderedForm extends Component {
         super(props);
         this.state = {
             loaded: true,
-            saved: false
+            saved: false,
+            permission_markets: '',
         };
+
+        this.projectUserCallback = this.projectUserCallback.bind(this);
     }
 
+    componentDidMount() {
+      ajaxWrapper('GET','/api/home/projectuser/?related=markets&user=' + this.props.user_id + '&project=' + this.props.project, {}, this.projectUserCallback)
+    }
+
+    projectUserCallback(result) {
+      var permission_markets = '';
+      var markets = result[0]['user']['markets'];
+      for (var index in markets) {
+        permission_markets += markets[index]['market']['id'] + ','
+      }
+      this.setState({permission_markets: permission_markets})
+    }
 
     saveSubmission(formData){
         var searchTerm = formData['searchTerm'];
@@ -265,12 +280,23 @@ class RenderedForm extends Component {
                 layout: "leftAlign spacing"
             });
             Components.push(Select);
-            ComponentsProps.push({
-              name: 'market',
-              label: "Market",
-              optionsUrl:'/api/home/market/',
-              optionsUrlMap:{'text':['market','name'], 'value':['market','id']}
-            })
+            if (this.state.permission_markets == '') {
+              ComponentsProps.push({
+                name: 'market',
+                label: "Market",
+                optionsUrl:'/api/home/market/',
+                optionsUrlMap:{'text':['market','name'], 'value':['market','id']}
+              })
+            }
+            else {
+              ComponentsProps.push({
+                name: 'market',
+                label: "Market",
+                optionsUrl:'/api/home/market/?id__in=' + this.state.permission_markets,
+                optionsUrlMap:{'text':['market','name'], 'value':['market','id']}
+              })
+            }
+
         }
 
         for (var i in this.props.data['elements']){
