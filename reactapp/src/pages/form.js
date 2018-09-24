@@ -93,14 +93,15 @@ class FormPage extends Component {
     addElement(){
         var url = "/api/home/formelement/";
         var data = {
-            form: this.props.id
+            form: this.props.id,
+            type: 0
         };
 
         ajaxWrapper("POST",  url, data, this.loadElement.bind(this));
     }
     loadElement(result){
         var form = this.state.form;
-        form['elements'].push(result[0]['formelement']);
+        form['elements'].push(result[0]);
 
         this.setState({
             form: form
@@ -115,7 +116,7 @@ class FormPage extends Component {
 
         for (var i in form['elements']){
             if (form['elements'][i]['formelement']['id'] == element['id']){
-                form['elements'][i]['formelement'] = result[0];
+                form['elements'][i]['formelement'] = element;
             }
         }
 
@@ -335,8 +336,10 @@ class RenderedForm extends Component {
                 Component = Image;
             }
 
-            Components.push(Component);
-            ComponentsProps.push(ComponentProps);
+            if (Component){
+                Components.push(Component);
+                ComponentsProps.push(ComponentProps);
+            }
         }
 
         var saved = null;
