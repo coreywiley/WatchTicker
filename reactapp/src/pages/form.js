@@ -48,7 +48,7 @@ class FormPage extends Component {
     }
 
     getForm() {
-        var url = "/api/home/projectform/" + this.props.id + "/?related=elements,project,project__company,submissions";
+        var url = "/api/home/projectform/" + this.props.id + "/?related=elements,project";
         ajaxWrapper("GET",  url, {}, this.loadForm.bind(this));
     }
 
@@ -132,7 +132,7 @@ class FormPage extends Component {
         });
     }
     changeTitle(e){
-        var url = "/api/home/projectform/" + this.props.id + "/?related=elements,project,project__company";
+        var url = "/api/home/projectform/" + this.props.id + "/?related=elements,project";
         var data = {
             title: e.currentTarget.value
         };

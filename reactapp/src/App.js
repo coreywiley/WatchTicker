@@ -30,6 +30,7 @@ import InviteCollaborators from './pages/inviteCollaborators.js';
 import Activate from './pages/activate.js';
 
 import FormPage from './pages/form.js';
+import ResultPage from './pages/results.js';
 import Nav from './projectLibrary/nav.js';
 import Projects from './pages/projects.js';
 import CreateNewProject from './pages/createNewProject.js';
@@ -217,6 +218,9 @@ class App extends Component {
                     content = <FormPage project={params[1]} id={params[3]} submissionId={params[5]}
                         edit={false} params={params} />
                 }
+            }
+            else if (params[2].toLowerCase() == "results") {
+                content = <ResultPage project={params[1]} id={params[3]} params={params} />
             }
         }
 
