@@ -51,11 +51,11 @@ class Projects extends Component {
         for (var i in this.state.submissions[index]['submissions']) {
           if (this.state.permission_markets.length > 0) {
             if (this.state.permission_markets.indexOf(this.state.submissions[index]['submissions'][i]['market_id']) > -1) {
-              submissions.push(<Card href={'/project/' + this.props.project_id + '/view/' + index + '/submission/' + this.state.submissions[index]['submissions'][i]['id'] + '/'} button={'Edit'} button_type={'primary'} name={this.state.submissions[index]['submissions'][i]['searchTerm']} />)
+              submissions.push(<Card link={'/project/' + this.props.project_id + '/view/' + index + '/submission/' + this.state.submissions[index]['submissions'][i]['id'] + '/'} button={'Edit'} button_type={'primary'} name={this.state.submissions[index]['submissions'][i]['searchTerm']} />)
             }
           }
           else {
-            submissions.push(<Card deleteUrl={'/api/home/formsubmission/' + this.state.submissions[index]['submissions'][i]['id'] + '/delete/'} href={'/project/' + this.props.project_id + '/view/' + index + '/submission/' + this.state.submissions[index]['submissions'][i]['id'] + '/'} button={'Edit'} button_type={'primary'} name={this.state.submissions[index]['submissions'][i]['searchTerm']} />)
+            submissions.push(<Card deleteUrl={'/api/home/formsubmission/' + this.state.submissions[index]['submissions'][i]['id'] + '/delete/'} link={'/project/' + this.props.project_id + '/view/' + index + '/submission/' + this.state.submissions[index]['submissions'][i]['id'] + '/'} button={'Edit'} button_type={'primary'} name={this.state.submissions[index]['submissions'][i]['searchTerm']} />)
           }
 
         }

@@ -195,7 +195,7 @@ class InviteCollaborators extends Component {
       var active = this.state.projectusers[index]['is_active'];
       var text = "You've been invited to a new project. <a clicktracking=off href='http://hackathon.dmiller89.webfactional.com/projectDashboard/" + this.props.project_id + "/' >Check it out.</a>";
       if (active == false) {
-        text = "You've been invited to a new project on AGNNN. <a clicktracking=off href='http://hackathon.dmiller89.webfactional.com/activate/" + this.projectusers[index]['id'] + "/' >Please Activate Your Account Here.</a>"
+        text = "You've been invited to a new project on AGNNN. <a clicktracking=off href='http://hackathon.dmiller89.webfactional.com/activate/" + this.state.projectusers[index]['id'] + "/' >Please Activate Your Account Here.</a>"
       }
       ajaxWrapper('POST','/api/email/',{'from_email':'jeremy.thiesen1@gmail.com','to_email':email, 'text':text, 'subject':'Invite to AGNNN'})
     }

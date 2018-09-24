@@ -1,8 +1,23 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
 import {Button} from 'library';
+import ajaxWrapper from 'base/ajax.js';
 
 class Card extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.deleteButton = this.deleteButton.bind(this);
+    this.reload = this.reload.bind(this)
+  }
+    deleteButton() {
+      ajaxWrapper('POST',this.props.deleteUrl,{}, this.reload)
+    }
+
+    reload() {
+
+        document.location.reload(true)
+    }
 
     render() {
         var button = null;
@@ -34,7 +49,7 @@ class Card extends React.Component {
 
         var deleteButton = <div></div>
         if (this.props.deleteUrl) {
-          deleteButton = <Button href={this.props.deleteUrl} type={'danger'} text={'Delete'} deleteType={true} />
+          deleteButton = <Button clickHandler={this.deleteButton} type={'danger'} text={'Delete'} deleteType={true} />
         }
 
         return (
