@@ -28,15 +28,15 @@ def GetUser(request):
     return JsonResponse(userData)
 
 
-@api_view(['POST'])
-@permission_classes((IsPostOrIsAuthenticated, ))
+#@api_view(['POST'])
+#@permission_classes((IsPostOrIsAuthenticated, ))
 def UserSignUp(request):
-    user = createAndUpdateModel(request._request, 'user', 'user', [])[0]['user']
+    user = createAndUpdateModel(request, 'user', 'user', [])[0]['user']
 
     email = request.POST['email']
     password = request.POST['password']
 
-    return TokenObtainPairView.as_view()(request._request)
+    return TokenObtainPairView.as_view()(request)
 
 
 @csrf_exempt
