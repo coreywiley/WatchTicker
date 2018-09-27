@@ -30,13 +30,21 @@ class Projects extends Component {
     render() {
       var projects = [];
       for (var index in this.state.projects) {
-        projects.push(<Card deleteUrl={'/api/home/project/' + this.state.projects[index]['id'] + '/delete/'} link={'/projectDashboard/' + this.state.projects[index]['id']} button_type={'primary'} button={'View'} name={this.state.projects[index]['title']} description={this.state.projects[index]['description']} />)
+        projects.push(
+            <Card deleteUrl={'/api/home/project/' + this.state.projects[index]['id'] + '/delete/'}
+                link={'/projectDashboard/' + this.state.projects[index]['id']}
+                button_type={'primary'} button={'View'}
+                name={this.state.projects[index]['title']}
+                description={this.state.projects[index]['description']} />
+        );
       }
 
         var content = <div className="container">
-
-                <Button type={'success'} text={'Add New Project'} href={'/createNewProject/'} />
-                <h2>Projects</h2>
+                <h2>
+                    Projects
+                    <Button css={{marginLeft: "10px"}} inline={true} type={'success'} text={'Add New Project'} href={'/createNewProject/'} />
+                </h2>
+                <br/>
                 {projects}
         </div>;
 

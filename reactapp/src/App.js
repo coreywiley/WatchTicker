@@ -229,7 +229,7 @@ class App extends Component {
         return (
             <div className="App">
                 <Nav logOut={this.logOut} logged_in={this.state.logged_in} project_id={project_id} />
-                <Wrapper content={content} loaded={this.state.loaded} />
+                <Wrapper content={content} loaded={this.state.loaded} css={{paddingTop:"20px"}} />
             </div>
         );
       }

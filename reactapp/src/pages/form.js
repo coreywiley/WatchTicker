@@ -5,7 +5,8 @@ import ajaxWrapper from "base/ajax.js";
 
 import {
     Button, Image, Paragraph, Form, Select, NumberInput,
-    TextInput, ButtonGroup, TextArea, CheckGroup, Header
+    TextInput, ButtonGroup, TextArea, CheckGroup, Header,
+    GoogleAddress
 } from 'library';
 
 class FormPage extends Component {
@@ -14,7 +15,7 @@ class FormPage extends Component {
         this.state = {
             form: {},
             submission: {},
-            loaded: true,
+            loaded: false,
             title: ''
         };
     }
@@ -56,6 +57,7 @@ class FormPage extends Component {
         if (this.props.id != result[0]['projectform']['id']) {
             var id = result[0]['projectform']['id'];
             window.location = '/' + this.props.params[0] + '/' + this.props.project + '/' + this.props.params[2] + '/' + id + '/';
+            return false;
         }
 
         var form = result[0]['projectform'];
@@ -67,7 +69,8 @@ class FormPage extends Component {
 
         this.setState({
             form: form,
-            title: form['title']
+            title: form['title'],
+            loaded: true
         });
     }
 
@@ -129,13 +132,13 @@ class FormPage extends Component {
 
     updateTitle(e){
         this.setState({
-            title: e.currentTarget.value
+            title: e.currentTarget.value,
         });
     }
     changeTitle(e){
         var url = "/api/home/projectform/" + this.props.id + "/?related=elements,project";
         var data = {
-            title: e.currentTarget.value
+            title: e.currentTarget.value,
         };
 
         ajaxWrapper("POST",  url, data, this.loadForm.bind(this));
@@ -147,9 +150,13 @@ class FormPage extends Component {
         var elements = [];
         var newForm = null;
         if (this.props.edit){
+            var text = ['Create The Form For Your Project'];
+            text.push(
+                <Button css={{marginLeft: "10px"}} inline={true} type={'success'}
+                    text={'Finish Form'} href={'/inviteCollaborators/' + this.props.project + '/'} />
+            );
             newForm = <div>
-              <Header size={2} text={'Create The Form For Your Project'} />
-              <Button type={'success'} text={'Finish Form'} href={'/inviteCollaborators/' + this.props.project + '/'} />
+              <Header size={2} text={text} />
               </div>
 
             editTitle = <div>
@@ -167,8 +174,10 @@ class FormPage extends Component {
                 );
             }
 
-            form.push(<div className='col-6'>{elements}</div>);
-            form.push(<div className='col-6'><RenderedForm data={this.state.form} edit={this.props.edit} /></div>);
+            if (elements.length > 0){
+                form.push(<div className='col-6'>{elements}</div>);
+                form.push(<div className='col-6'><RenderedForm data={this.state.form} edit={this.props.edit} /></div>);
+            }
             form.push(<Button type="primary" text="Add New Element" clickHandler={this.addElement.bind(this)} />);
         } else {
             form.push(<div className='col-12'>
@@ -202,14 +211,14 @@ class FormPage extends Component {
 
 
 
-
 var ELEMENT_TYPES = {
     0: 'Radio',
     1: 'Checkbox',
     2: 'Text Input',
     3: 'Number Input',
     4: 'Paragraph Input',
-    5: 'Text Only'
+    5: 'Text Only',
+    6: 'Address'
 };
 
 class RenderedForm extends Component {
@@ -332,8 +341,16 @@ class RenderedForm extends Component {
                 Component = TextArea;
             } else if (type == 'Text Only'){
                 Component = Paragraph;
-            } else if (type == 'Image'){
-                Component = Image;
+            } else if (type == 'Address'){
+                Component = GoogleAddress;
+                ComponentProps = Object.assign({
+                    names: [
+                        'street',
+                        'city',
+                        'state',
+                        'zip'
+                    ],
+                }, ComponentProps);
             }
 
             if (Component){
@@ -347,11 +364,14 @@ class RenderedForm extends Component {
             saved = <div className="alert alert-success">Submission Saved Succesfully!</div>;
         }
 
+        var submitFunc = null;
+        if (!(this.props.edit)){submitFunc = this.saveSubmission.bind(this);}
+
         return (
             <div>
                 {saved}
                 <Form components={Components} componentProps={ComponentsProps}
-                        submitFunc={this.saveSubmission.bind(this)} defaults={defaults}
+                        submitFunc={submitFunc} defaults={defaults}
                         buttonClass={"leftAlign spacing"}
                      />
             </div>
@@ -438,11 +458,12 @@ class FormElement extends Component {
               optionText: ''
           });
 
-        } else {
-            this.setState({
-                optionText: text + e.key
-            });
         }
+    }
+    changeOption(e){
+        this.setState({
+            optionText: e.currentTarget.value
+        });
     }
     removeOption(e){
         var jsonData = this.props.data['data'];
@@ -490,7 +511,10 @@ class FormElement extends Component {
 
             options = <div className='col-12'><div className='row' style={{margin:"0px -15px"}}>
                 <div className='col-6'>
-                    <TextInput name='options' label="Hit enter to add new option" value={this.state.optionText} handleKeyPress={this.addOption.bind(this)} />
+                    <TextInput name='options' label="Hit enter to add new option"
+                        value={this.state.optionText} handleKeyPress={this.addOption.bind(this)}
+                        handlechange={this.changeOption.bind(this)}
+                    />
                 </div>
                 <div className='col-6'>
                     {optionTags}
@@ -542,6 +566,9 @@ function dynamicSort(property) {
             }
         }
         var prop = property.split('.')[property.split('.').length - 1];
+        a[prop] = parseFloat(a[prop]);
+        b[prop] = parseFloat(b[prop]);
+
         var result = (a[prop] < b[prop]) ? -1 : (a[prop] > b[prop]) ? 1 : 0;
         return result * sortOrder;
     }

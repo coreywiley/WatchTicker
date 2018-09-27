@@ -25,6 +25,11 @@ class Nav extends React.Component {
         var name = <div><Header size={3} text={'ARGNNN'} /></div>;
         var navbarComponent = <div></div>;
         var title = null;
+        var titleStyle = {
+            background: "#eee",
+            padding:"5px 0px",
+        };
+
         if (this.props.logged_in == true) {
           if (this.props.project_id) {
             var links = [['/projects/','Projects'],
@@ -33,13 +38,17 @@ class Nav extends React.Component {
              ['/inviteCollaborators/' + this.props.project_id + '/','Invite Collaborators'],
              ['/projectDashboard/' + this.props.project_id + '/','Project Submissions'],
              ['/projectResults/' + this.props.project_id + '/', 'Project Results']];
-             title = <Header size={2} text={'Project: ' + this.state.title} />
+
+             title =
+             <div style={titleStyle}>
+                 <div className="container">
+                     <div>{'Project: ' + this.state.title}</div>
+                 </div>
+             </div>;
           }
           else {
             var links = [['/projects/','Projects']];
           }
-
-
 
           var nameLink = '/projects/'
           console.log("Links",links)
@@ -56,9 +65,7 @@ class Nav extends React.Component {
       return (
         <div>
           {navbarComponent}
-          <div className="container">
           {title}
-          </div>
         </div>
     );
     }
