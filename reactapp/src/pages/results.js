@@ -46,17 +46,7 @@ class ResultPage extends Component {
     }
 
     componentDidMount() {
-        if (this.props.id == 0){
-            var url = "/api/home/projectform/?related=elements";
-            var data = {
-                project: this.props.project
-            };
-
-            ajaxWrapper("POST",  url, data, this.loadForm.bind(this));
-
-        } else {
-            this.getForm();
-        }
+        this.getForm();
     }
 
     getForm() {

@@ -42,6 +42,7 @@ import List_ from './functionalComponents/list.js';
 import Modal_ from './functionalComponents/modal.js';
 import Navbar_ from './functionalComponents/navbar.js';
 import ReactRender_ from './functionalComponents/reactrender.js';
+import MapEmbed_ from './functionalComponents/mapembed.js';
 
 export const Button = Button_;
 export const ButtonGroup = ButtonGroup_;
@@ -84,3 +85,4 @@ export const DateTimePicker = DateTimePicker_;
 export const ColorPicker = ColorPicker_;
 export const EmojiList = EmojiList_;
 export const EmojiSlider = EmojiSlider_;
+export const MapEmbed = MapEmbed_;

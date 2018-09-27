@@ -31,6 +31,7 @@ import Activate from './pages/activate.js';
 
 import FormPage from './pages/form.js';
 import ResultPage from './pages/results.js';
+import SingleResultPage from './pages/singleresult.js';
 import Nav from './projectLibrary/nav.js';
 import Projects from './pages/projects.js';
 import CreateNewProject from './pages/createNewProject.js';
@@ -220,25 +221,29 @@ class App extends Component {
                 }
             }
             else if (params[2].toLowerCase() == "results") {
-                project_id = params[1];
-                content = <ResultPage project={params[1]} id={params[3]} params={params} />
+                if (params[4].toLowerCase() == "submission") {
+                    project_id = params[1];
+                    content = <SingleResultPage project={params[1]} form={params[3]} id={params[5]} params={params} />
+                } else {
+                    project_id = params[1];
+                    content = <ResultPage project={params[1]} id={params[3]} params={params} />
+                }
             }
         }
 
         if (this.state.loaded == true) {
-        return (
-            <div className="App">
-                <Nav logOut={this.logOut} logged_in={this.state.logged_in} project_id={project_id} />
-                <Wrapper content={content} loaded={this.state.loaded} css={{paddingTop:"20px"}} />
-            </div>
-        );
-      }
-      else {
-        return (
-            <div className="App">
-            </div>
-        );
-      }
+            return (
+                <div className="App">
+                    <Nav logOut={this.logOut} logged_in={this.state.logged_in} project_id={project_id} />
+                    <Wrapper content={content} loaded={this.state.loaded} css={{paddingTop:"20px"}} />
+                </div>
+            );
+        } else {
+            return (
+                <div className="App">
+                </div>
+            );
+        }
     }
 }
 
