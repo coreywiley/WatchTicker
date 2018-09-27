@@ -6,7 +6,7 @@ import Wrapper from 'base/wrapper.js';
 import ajaxWrapper from "base/ajax.js";
 
 import {
-    Accordion
+    Accordion, Button
 } from 'library';
 
 var PieChart = require("react-chartjs").Pie;
@@ -79,6 +79,7 @@ class ResultPage extends Component {
         var submissions = [];
         var submissionComponents = [];
         var submissionComponentProps = [];
+        var submissionCards = [];
         for (var i in this.state.form['submissions']){
             var submission = this.state.form['submissions'][i]['formsubmission'];
             var title = submission['searchTerm'];
@@ -91,6 +92,14 @@ class ResultPage extends Component {
                 data: submission,
                 elements: this.state.elements
             });
+
+            submissionCards.push(
+                <div className='card' style={{textAlign:'left', padding:'10px'}}>
+                    <h5>{title}</h5>
+                    <Button css={{marginLeft: "10px"}} inline={true} type={'info'}
+                        text={'View Result'} href={'/project/' + this.props.project + '/results/' + this.props.id + '/submission/' + submission.id + '/'} />
+                </div>
+            );
         }
         var submissionTables = <Accordion names={submissions} ComponentList={submissionComponents}
             ComponentProps={submissionComponentProps} open={[true]} />;
@@ -151,7 +160,6 @@ class ResultPage extends Component {
                 </div>
 
                 <div className='col-12 row'>
-                    {charts}
                 </div>
 
                 <div className='col-12 row'>
@@ -159,7 +167,7 @@ class ResultPage extends Component {
                 </div>
 
                 <div className='col-12'>
-                    {submissionTables}
+                    {submissionCards}
                 </div>
 
                 <br/>
@@ -184,13 +192,15 @@ class SubmissionTable extends Component {
     render() {
         var data = [];
         for (var key in this.props.data['data']){
-            var question = this.props.elements[key].pretext;
-            var value = this.props.data['data'][key];
-            data.push({
-                id: key,
-                question: question,
-                answer: value
-            });
+            if (key in this.props.elements){
+                var question = this.props.elements[key].pretext;
+                var value = this.props.data['data'][key];
+                data.push({
+                    id: key,
+                    question: question,
+                    answer: value
+                });
+            }
         }
 
         var columns = [{

@@ -221,7 +221,7 @@ class App extends Component {
                 }
             }
             else if (params[2].toLowerCase() == "results") {
-                if (params[4].toLowerCase() == "submission") {
+                if (params.length >= 5 && params[4].toLowerCase() == "submission") {
                     project_id = params[1];
                     content = <SingleResultPage project={params[1]} form={params[3]} id={params[5]} params={params} />
                 } else {
