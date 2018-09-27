@@ -11,7 +11,9 @@ export class MapEmbed extends Component {
             showingInfoWindow: false,
             activeMarker: {},
             selectedPlace: {},
-            map: null,
+            place: null,
+            places: [],
+            center: this.props.center
         };
     }
 
@@ -19,22 +21,44 @@ export class MapEmbed extends Component {
       var geocoder = new window.google.maps.Geocoder;
       var infowindow = new window.google.maps.InfoWindow;
       var placeId = this.props.placeId;
+      if (placeId){
+          geocoder.geocode({'placeId': placeId}, function(results, status) {
+            if (status === 'OK') {
+              if (results[0]) {
+                  this.setState({
+                     center: results[0]['geometry']['location'],
+                     place: results[0],
+                  });
 
-      geocoder.geocode({'placeId': placeId}, function(results, status) {
-        if (status === 'OK') {
-          if (results[0]) {
-              this.setState({
-                 center: results[0]['geometry']['location'],
-                 place: results[0],
-              });
-
-          } else {
-            window.alert('No results found');
-          }
-        } else {
-          window.alert('Geocoder failed due to: ' + status);
+              } else {
+                window.alert('No results found');
+              }
+            } else {
+              window.alert('Geocoder failed due to: ' + status);
+            }
+        }.bind(this));
+    } else if (this.props.placeIds.length > 0){
+        for (var i in this.props.placeIds){
+            var placeId = this.props.placeIds[i];
+            geocoder.geocode({'placeId': placeId}, function(results, status) {
+              if (status === 'OK') {
+                if (results[0]) {
+                    var places = this.state.places;
+                    places.push(results[0]);
+                    this.setState({
+                        center: {lat: 39.3573643, lng: -101.1152616},
+                       places: places,
+                    });
+                } else {
+                  window.alert('No results found');
+                }
+              } else {
+                window.alert('Geocoder failed due to: ' + status);
+              }
+          }.bind(this));
         }
-    }.bind(this));
+    }
+
   }
 
   onMarkerClick(props, marker, e){
@@ -56,20 +80,34 @@ export class MapEmbed extends Component {
 
   render() {
       var place = this.state.place;
-      var center = this.state.center;
+      var center = this.state.center
+
       var marker = null;
+      var markers = [];
+
       if (place){
           marker = <Marker onClick={this.onMarkerClick.bind(this)}
               position={center}
               place={place} />;
       }
+      for (var i in this.state.places){
+          markers.push(
+              <Marker onClick={this.onMarkerClick.bind(this)}
+                  position={this.state.places[i]['geometry']['location']}
+                  place={this.state.places[i]} />
+          );
+      }
+
+
 
     return (
       <Map google={this.props.google}
           onClick={this.onMapClicked.bind(this)}
           center={center}
+          zoom={this.props.zoom}
           >
         {marker}
+        {markers}
       </Map>
     )
   }

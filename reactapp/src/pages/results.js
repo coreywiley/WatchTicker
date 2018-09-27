@@ -6,7 +6,7 @@ import Wrapper from 'base/wrapper.js';
 import ajaxWrapper from "base/ajax.js";
 
 import {
-    Accordion, Button
+    Accordion, Button, Table, MapEmbed
 } from 'library';
 
 var PieChart = require("react-chartjs").Pie;
@@ -41,7 +41,7 @@ class ResultPage extends Component {
         this.state = {
             form: {},
             elements: {},
-            loaded: true,
+            loaded: false,
         };
     }
 
@@ -71,27 +71,36 @@ class ResultPage extends Component {
 
         this.setState({
             form: form,
-            elements: elements
+            elements: elements,
+            loaded: true
         });
     }
 
     render() {
         var submissions = [];
-        var submissionComponents = [];
-        var submissionComponentProps = [];
+        var places = [];
         var submissionCards = [];
+        var elements = this.state.form['elements'];
+
         for (var i in this.state.form['submissions']){
             var submission = this.state.form['submissions'][i]['formsubmission'];
             var title = submission['searchTerm'];
             if ('name' in submission['market']){
                 title += " : " + submission['market']['name'];
             }
-            submissions.push(title);
-            submissionComponents.push(SubmissionTable);
-            submissionComponentProps.push({
-                data: submission,
-                elements: this.state.elements
-            });
+
+            submissions.push([
+                i,
+                submission['market']['name'],
+                submission['data']['address'],
+                submission['data'][elements[11]['formelement']['id']],
+                submission['data'][elements[7]['formelement']['id']],
+                '$' + submission['data'][elements[18]['formelement']['id']] + ' - $'  + submission['data'][elements[19]['formelement']['id']],
+                submission['data'][elements[17]['formelement']['id']],
+                '$' + submission['data'][elements[20]['formelement']['id']] + ' - $'  + submission['data'][elements[21]['formelement']['id']],
+            ]);
+
+            places.push(submission['data']['placeId']);
 
             submissionCards.push(
                 <div className='card' style={{textAlign:'left', padding:'10px'}}>
@@ -101,8 +110,24 @@ class ResultPage extends Component {
                 </div>
             );
         }
-        var submissionTables = <Accordion names={submissions} ComponentList={submissionComponents}
-            ComponentProps={submissionComponentProps} open={[true]} />;
+        var headers = [
+            '#',
+            'Buisiness Unit',
+            'Property Address',
+            'Size',
+            'Owned vs. Leased',
+            'NNN Market Rent/SF/YR',
+            'Sale Value - Vacant',
+            'Sale Value - Leaseback'
+        ];
+
+        var submissionTable = null;
+        var map = null;
+        if (this.state.loaded){
+            map = <MapEmbed centerAroundCurrentLocation={true} placeIds={places}
+                    zoom={4} />;
+            submissionTable = <Table headers={headers} data={submissions} />;
+        }
 
         var charts = [];
         for (var key in this.state.elements){
@@ -168,6 +193,12 @@ class ResultPage extends Component {
 
                 <div className='col-12'>
                     {submissionCards}
+                </div>
+                <div className='col-12'>
+                    {submissionTable}
+                </div>
+                <div className='col-12' style={{minHeight:'300px'}}>
+                    {map}
                 </div>
 
                 <br/>
