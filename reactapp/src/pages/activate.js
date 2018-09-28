@@ -38,7 +38,12 @@ class SignUp extends Component {
     userCallback(result) {
       var user = result[0]['user'];
       user['loaded'] = true;
-      this.setState(user)
+
+      if (user['is_active']){
+          window.location.href = '/login/';
+      } else {
+          this.setState(user);
+      }
     }
 
     render() {
@@ -51,7 +56,7 @@ class SignUp extends Component {
         var ComponentProps = [first_name_props, last_name_props, email_props, password_props];
         var defaults = {'first_name':this.state.first_name,'last_name':this.state.last_name, 'email':this.state.email, 'is_active':true, 'password':'','type':'User'};
 
-        var submitUrl = "/api/user/user/" + this.props.user_id;
+        var submitUrl = "/api/user/user/" + this.props.user_id + '/';
 
         var content = <div className="container">
                 <h2>Activate Your Account</h2>

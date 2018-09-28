@@ -17,7 +17,7 @@ class CreateNewProject extends Component {
     }
 
     redirect(result) {
-      window.location.href = '/project/' + result[0]['projectuser']['project_id'] + '/formbuilder/0/';
+      window.location.href = '/projectForms/' + result[0]['projectuser']['project_id'] + '/';
     }
 
     render() {

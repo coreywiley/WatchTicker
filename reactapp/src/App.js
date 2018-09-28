@@ -63,7 +63,7 @@ class App extends Component {
         var token = localStorage.getItem('token');
         if (token) {
             this.setState({token: token});
-        } else if (path.indexOf('login') == -1 && path.indexOf('signup') == -1 &&
+        } else if (path.indexOf('activate') == -1 && path.indexOf('login') == -1 && path.indexOf('signup') == -1 &&
                     window.location.pathname != "/") {
             window.location.href = '/login/';
         }

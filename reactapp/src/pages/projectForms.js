@@ -41,7 +41,8 @@ class Projects extends Component {
     loadFromTemplate(e){
         var url = "/api/home/projectform/?related=elements";
         var data = {
-            project: this.props.project_id
+            project: this.props.project_id,
+            title: 'Facility Evaluation'
         };
         ajaxWrapper("POST",  url, data, this.getFormSetElements.bind(this));
     }

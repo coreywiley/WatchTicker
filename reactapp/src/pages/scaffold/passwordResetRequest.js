@@ -31,7 +31,7 @@ class PasswordResetRequest extends Component {
     email(result) {
       if (result.length > 0) {
         var user = result[0]['user']
-        ajaxWrapper('POST','/api/email/', {'to_email':user.email, 'from_email':'jeremy.thiesen1@gmail.com','subject':'Password Reset','text':'You can reset your password at .../passwordReset/' + user.id +'/'}, this.emailCallback)
+        ajaxWrapper('POST','/api/email/', {'to_email':user.email, 'from_email':'alex@flashform.io','subject':'Password Reset','text':'You can reset your password at .../passwordReset/' + user.id +'/'}, this.emailCallback)
       }
       else {
         this.setState({'error':true})

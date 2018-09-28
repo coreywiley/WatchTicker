@@ -8,15 +8,15 @@ class Projects extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {'submissions':{}, 'project':{}, permission_markets: [], form_id: 0, 'loaded':false}
+        this.state = {'forms':{}, 'project':{}, permission_markets: [], form_id: 0, 'loaded':false}
 
-        this.submissionsCallback = this.submissionsCallback.bind(this);
+        this.formsCallback = this.formsCallback.bind(this);
         this.userCallback = this.userCallback.bind(this);
 
     }
 
     componentDidMount() {
-      ajaxWrapper('GET','/api/home/projectform/?related=submissions&project_id=' + this.props.project_id, {}, this.submissionsCallback)
+      ajaxWrapper('GET','/api/home/projectform/?related=submissions,elements&project_id=' + this.props.project_id, {}, this.formsCallback)
       ajaxWrapper('GET','/api/home/projectuser/?related=markets&project=' + this.props.project_id + '&user=' + this.props.user_id, {}, this.userCallback)
     }
 
@@ -28,35 +28,59 @@ class Projects extends Component {
       this.setState({'permission_markets':markets, loaded:true})
     }
 
-    submissionsCallback(result) {
-      var submissions = {};
+    formsCallback(result) {
+      var forms = {};
       for (var i in result) {
         var form = result[i]['projectform'];
-        submissions[form.id] = {'submissions':[],'title':form.title};
+
+        var submissions = [];
         for (var index in form['submissions']) {
-          submissions[form.id]['submissions'].push(form['submissions'][index]['formsubmission'])
+          submissions.push(form['submissions'][index]['formsubmission']);
         }
+
+        forms[form.id] = form;
+        forms[form.id]['submissions'] = submissions;
       }
-      this.setState({submissions:submissions})
+      this.setState({forms:forms})
 
     }
 
     render() {
-      var submissions = [];
+      var forms = [];
       var form_id = 0;
-      for (var index in this.state.submissions) {
-        console.log("SUBMISSIONS", this.state.submissions[index])
-        submissions.push(<Header size={4} text={'Form: ' +  this.state.submissions[index]['title']} />)
-        submissions.push(<Button type={'success'} text={'Add New Submission'} href={'/project/' + this.props.project_id + '/view/' + index + '/submission/0/'} />);
-        for (var i in this.state.submissions[index]['submissions']) {
-          if (this.state.permission_markets.length > 0) {
-            if (this.state.permission_markets.indexOf(this.state.submissions[index]['submissions'][i]['market_id']) > -1) {
-              submissions.push(<Card link={'/project/' + this.props.project_id + '/view/' + index + '/submission/' + this.state.submissions[index]['submissions'][i]['id'] + '/'} button={'Edit'} button_type={'primary'} name={this.state.submissions[index]['submissions'][i]['searchTerm']} />)
+      for (var index in this.state.forms) {
+        console.log("SUBMISSIONS", this.state.forms[index])
+        var form = this.state.forms[index];
+        forms.push(<Header size={4} text={'Form: ' +  form['title']} />)
+        forms.push(<Button type={'success'} text={'Add New Submission'} href={'/project/' + this.props.project_id + '/view/' + index + '/submission/0/'} />);
+
+        for (var i in form['submissions']) {
+            var submission = form['submissions'][i];
+            var date = new Date(submission['updated']);
+            var completed = 0;
+            for (var key in submission['data']){
+                if (!isNaN(parseInt(key)) || key == 'address'){ completed += 1;}
             }
-          }
-          else {
-            submissions.push(<Card deleteUrl={'/api/home/formsubmission/' + this.state.submissions[index]['submissions'][i]['id'] + '/delete/'} link={'/project/' + this.props.project_id + '/view/' + index + '/submission/' + this.state.submissions[index]['submissions'][i]['id'] + '/'} button={'Edit'} button_type={'primary'} name={this.state.submissions[index]['submissions'][i]['searchTerm']} />)
-          }
+
+            var total = form['elements'].length;
+
+            var desc = completed + " of " + total + " questions answered.  Last updated : " + date;
+
+            if (this.state.permission_markets.length > 0) {
+                if (this.state.permission_markets.indexOf(submission['market_id']) > -1) {
+                    forms.push(
+                        <Card link={'/project/' + this.props.project_id + '/view/' + index + '/submission/' + submission['id'] + '/'}
+                        button={'Edit'} button_type={'primary'} name={submission['searchTerm']} description={desc} />
+                    );
+                }
+            }
+            else {
+                forms.push(
+                    <Card deleteUrl={'/api/home/formsubmission/' + submission['id'] + '/delete/'}
+                    link={'/project/' + this.props.project_id + '/view/' + index + '/submission/' + submission['id'] + '/'}
+                    button={'Edit'} button_type={'primary'} name={submission['searchTerm']} description={desc} />
+                );
+            }
 
         }
 
@@ -64,7 +88,7 @@ class Projects extends Component {
 
         var content = <div className="container">
                 <h2>Submissions</h2>
-                {submissions}
+                {forms}
         </div>;
 
 

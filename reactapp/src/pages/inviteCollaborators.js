@@ -197,7 +197,7 @@ class InviteCollaborators extends Component {
       if (active == false) {
         text = "You've been invited to a new project on AGNNN. <a clicktracking=off href='http://hackathon.dmiller89.webfactional.com/activate/" + this.state.projectusers[index]['id'] + "/' >Please Activate Your Account Here.</a>"
       }
-      ajaxWrapper('POST','/api/email/',{'from_email':'jeremy.thiesen1@gmail.com','to_email':email, 'text':text, 'subject':'Invite to AGNNN'})
+      ajaxWrapper('POST','/api/email/',{'from_email':'alex@flashform.io','to_email':email, 'text':text, 'subject':'Invite to AGNNN'})
     }
     this.setState({sent:true})
     window.location.href = '/projectDashboard/' + this.props.project_id +'/'
@@ -239,7 +239,15 @@ class InviteCollaborators extends Component {
         marketDisplay += projectuser['markets'][i]['market']['name'] + ', ';
       }
       console.log("Markets", markets);
-      projectusers.push({'projectuser':projectuser['id'], 'email':projectuser['user']['email'], 'markets':markets, 'marketDisplay':marketDisplay, 'type':projectuser['type'], 'is_active':projectuser['user']['is_active']});
+      projectusers.push({
+          'id': projectuser['user']['id'],
+          'projectuser':projectuser['id'],
+          'email':projectuser['user']['email'],
+          'markets':markets,
+          'marketDisplay':marketDisplay,
+          'type':projectuser['type'],
+          'is_active':projectuser['user']['is_active']
+      });
     }
     this.setState({'projectusers':projectusers})
   }
