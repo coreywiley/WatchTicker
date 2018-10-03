@@ -30,7 +30,10 @@ class Projects extends Component {
     render() {
       var projects = [];
       for (var index in this.state.projects) {
-        projects.push(<Card link={'/project/' + this.props.project_id + '/results/' + this.state.projects[index]['id'] +'/'} button_type={'primary'} button={'View Results'} name={this.state.projects[index]['title']} />)
+        projects.push(
+            <Card link={'/project/' + this.props.project_id + '/results/' + this.state.projects[index]['id'] +'/'}
+                button_type={'primary'} button={'View Results'} name={this.state.projects[index]['title']} />
+        );
       }
 
         var content = <div className="container">
