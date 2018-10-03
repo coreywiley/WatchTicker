@@ -20,6 +20,7 @@ class Select extends Component {
 
     componentDidMount() {
         if (this.props.optionsUrl) {
+          console.log("Options Url", this.props.optionsUrl);
             ajaxWrapper("GET", this.props.optionsUrl, {}, this.optionsCallback.bind(this));
         }
     }

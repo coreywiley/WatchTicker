@@ -22,6 +22,7 @@ class Form extends Component {
         this.setFormState = this.setFormState.bind(this);
         this.refreshDataCallback = this.refreshDataCallback.bind(this);
         this.setGlobalState = this.setGlobalState.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     componentDidMount() {
@@ -55,7 +56,11 @@ class Form extends Component {
 
     setFormState(state) {
         console.log("Set Form State",state)
-        this.setState(state,  this.setGlobalState(state));
+        var newState = this.state;
+        for (var index in state) {
+          newState[index] = state[index];
+        }
+        this.setState(state,  this.setGlobalState(newState));
 
     }
 
@@ -139,6 +144,7 @@ class Form extends Component {
         }
 
         if (this.props.redirect) {
+            value['form_state'] = this.state;
             this.props.redirect(value);
         }
         else if (this.props.refreshData) {
@@ -148,6 +154,12 @@ class Form extends Component {
 
     formDelete() {
         ajaxWrapper("POST",this.props.deleteUrl, {}, this.formSubmitCallback.bind(this));
+    }
+
+    handleKeyPress = (event) => {
+      if(event.key == 'Enter'){
+        this.formSubmit()
+      }
     }
 
     render() {
@@ -170,6 +182,9 @@ class Form extends Component {
         for (var index in this.props.components) {
             var Component = this.props.components[index];
             var props = this.props.componentProps[index];
+            if (index == 0) {
+              props['autoFocus'] = true;
+            }
 
             if (props['names']) {
                 var values = {}
@@ -197,7 +212,7 @@ class Form extends Component {
 
         //need to add in formsubmit, delete, and handle change functions to components.
         return(
-            <div className={layout}  style={this.props.css} >
+            <div className={layout}  style={this.props.css} onKeyPress={this.handleKeyPress}>
                 {components}
                 {buttons}
             </div>

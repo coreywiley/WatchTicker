@@ -8,6 +8,7 @@ import Progress_ from './displayComponents/progress.js';
 import Table_ from './displayComponents/table.js';
 import Wrapper_ from './displayComponents/wrapper.js';
 import Alert_ from './displayComponents/alert.js';
+import EmojiSlider_ from './displayComponents/emojiSlider.js';
 
 import BooleanInput_ from './formComponents/booleaninput.js';
 import Button_ from './formComponents/button.js';
@@ -29,6 +30,9 @@ import StripeForm_ from './formComponents/stripe/stripeform.js';
 import StripeMain_ from './formComponents/stripe/stripemain.js';
 import TextArea_ from './formComponents/textarea.js';
 import TextInput_ from './formComponents/textinput.js';
+import DateTimePicker_ from './formComponents/datetimepicker.js';
+import EmojiList_ from './formComponents/emojiSelect.js';
+import ColorPicker_ from './formComponents/colorpicker.js';
 import TextAutocomplete_ from './formComponents/textautocomplete.js';
 
 import Accordion_ from './functionalComponents/accordion.js';
@@ -78,3 +82,7 @@ export const ImageInput = ImageInput_;
 export const Table = Table_;
 export const Wrapper = Wrapper_;
 export const Alert = Alert_;
+export const DateTimePicker = DateTimePicker_;
+export const ColorPicker = ColorPicker_;
+export const EmojiList = EmojiList_;
+export const EmojiSlider = EmojiSlider_;

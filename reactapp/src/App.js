@@ -1,27 +1,24 @@
 import React, { Component } from 'react';
 import './App.css';
-
 import ajaxWrapper from "./base/ajax.js";
 
-import ClientApp from "./clientApp.js";
-
-import Header from './base/header.js';
-import Footer from './base/footer.js';
-
-import Wrapper from './base/wrapper.js';
-
+//Component Madness
 import ComponentList from './pages/admin/componentList.js';
 import ComponentManager from './pages/admin/componentManager.js';
-
 import PageList from './pages/admin/pageList.js';
 import PageManager from './pages/admin/pageManager.js';
 
+//Admin
 import AppList from './pages/admin/appList.js';
 import ModelList from './pages/admin/modelsList.js';
 import InstanceList from './pages/admin/modelInstances.js';
 import Instance from './pages/admin/instance.js';
 import InstanceTable from './pages/admin/modelInstancesTable.js';
 
+//Scaffolding
+import Header from './base/header.js';
+import Footer from './base/footer.js';
+import Wrapper from './base/wrapper.js';
 import Home from './pages/scaffold/home.js';
 import LogIn from './pages/scaffold/logIn.js';
 import SignUp from './pages/scaffold/signUp.js';
@@ -36,12 +33,14 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loaded: false,
+            loaded: true,
             csrfmiddlewaretoken: undefined,
             user:{}
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
+        this.getUserInfo = this.getUserInfo.bind(this);
+        this.getUserInfoCallback = this.getUserInfoCallback.bind(this);
     }
 
     componentDidMount() {
@@ -76,13 +75,34 @@ class App extends Component {
     }
 
     ajaxCallback(value) {
-        console.log(value);
+
         window.secretReactVars["csrfmiddlewaretoken"] = value.csrfmiddlewaretoken;
+        var token = localStorage.getItem('token')
+        if (token) {
+            if (window.location.href.indexOf('login') > -1 || window.location.href.indexOf('signup') > -1) {
+                window.location.href = '/events/';
+            }
+            else {
+                this.setState({csrfmiddlewaretoken: value.csrfmiddlewaretoken, token: token}, this.getUserInfo);
+            }
+        }
+        else {
+          this.setState({loaded:true,csrfmiddlewaretoken: value.csrfmiddlewaretoken})
+        }
 
         this.setState({
             loaded: true,
             csrfmiddlewaretoken: value.csrfmiddlewaretoken
         });
+    }
+
+    getUserInfo() {
+      console.log("Get User Info")
+      ajaxWrapper('GET', '/users/user/', {}, this.getUserInfoCallback)
+    }
+
+    getUserInfoCallback(result) {
+      this.setState({'user': result, loaded:true})
     }
 
     getURL() {
@@ -112,7 +132,11 @@ class App extends Component {
         } else if (params[0].toLowerCase() === "components") {
             //List components
             content = <ComponentList />;
-        } else if (params[0].toLowerCase() === "component") {
+        }
+        else if (params[0].toLowerCase() === "logout") {
+            this.logOut();
+        }
+        else if (params[0].toLowerCase() === "component") {
             //Single component page
             content = <ComponentManager id={params[1]} />;
         } else if (params[0].toLowerCase() === "pages") {
@@ -121,8 +145,6 @@ class App extends Component {
         } else if (params[0].toLowerCase() === "page") {
             //Single page
             content = <PageManager id={params[1]} />;
-        } else if (params[0].toLowerCase() == "app") {
-            content = <ClientApp params={params.slice(1)} />;
         }
         else if (params[0].toLowerCase() == "applist") {
             content = <AppList user_id={this.state.token} logOut={logOut}/>;

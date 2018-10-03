@@ -1,15 +1,16 @@
 import $ from 'jquery';
 
-function error(xhr, status, erro) {
+function handleerror(xhr, status, erro) {
   console.log("Ajax Failure")
   console.log(xhr.responseText);
   console.log(status)
-  console.log(error)
+  console.log(erro)
 }
 
 function ajaxWrapper(type, url, data, returnFunc){
     if (type === "POST") {
         data["csrfmiddlewaretoken"] = window.secretReactVars["csrfmiddlewaretoken"];
+        console.log("CSRF", data['csrfmiddlewaretoken'])
     }
 
     var auth_token = '';
@@ -33,6 +34,10 @@ function ajaxWrapper(type, url, data, returnFunc){
               }
               returnFunc(value);
             },
+            400: function(value) {
+              value = {'error': 'Bad Request'}
+              returnFunc(value);
+            },
             401: function(xhr) {
               refreshToken(type,url,data,returnFunc);
             }
@@ -45,13 +50,22 @@ function refreshToken(type, url, data, returnFunc){
       var refreshData = {};
       refreshData["csrfmiddlewaretoken"] = window.secretReactVars["csrfmiddlewaretoken"];
       var refresh_token = localStorage.getItem('refresh_token')
-      refreshData['refresh'] = localStorage.getItem('refresh_token')
+
+      refreshData['refresh'] = '';
+      if (localStorage.getItem('refresh_token')) {
+        refreshData['refresh'] = localStorage.getItem('refresh_token')
+      }
 
       $.ajax({
           type: 'POST',
           url: '/users/token/refresh/',
           data: refreshData,
           statusCode: {
+            401: function(xhr) {
+              console.log('Refresh Token Expired')
+              localStorage.removeItem('token')
+              localStorage.removeItem('refresh_token')
+            },
             401: function(xhr) {
               console.log('Refresh Token Expired')
               localStorage.removeItem('token')
@@ -63,13 +77,14 @@ function refreshToken(type, url, data, returnFunc){
               ajaxWrapper(type, url, data, returnFunc)
           },
           error: function(xhr, status, error) {
-              if (xhr.status == 401){
-                  console.log('Refresh Token Expired')
-                  localStorage.removeItem('token')
-                  localStorage.removeItem('refresh_token')
-                  window.location.href = '/login/';
-              }
-              //error(xhr,status,error)
+              handleerror(xhr,status,error)
+            console.log(xhr.responseText);
+            console.log(status)
+            console.log(error)
+            console.log('Refresh Token Expired')
+            localStorage.removeItem('token')
+            localStorage.removeItem('refresh_token')
+            window.location.href = window.location.href;
           }
       });
 
