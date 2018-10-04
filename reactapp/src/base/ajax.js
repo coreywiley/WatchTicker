@@ -39,7 +39,10 @@ function ajaxWrapper(type, url, data, returnFunc){
               returnFunc(value);
             },
             401: function(xhr) {
-              refreshToken(type,url,data,returnFunc);
+                if (localStorage.getItem('refresh_token')){
+                    refreshToken(type,url,data,returnFunc);
+                }
+
             }
           },
       });
@@ -77,13 +80,13 @@ function refreshToken(type, url, data, returnFunc){
               ajaxWrapper(type, url, data, returnFunc)
           },
           error: function(xhr, status, error) {
-              handleerror(xhr,status,error)
+            handleerror(xhr,status,error);
             console.log(xhr.responseText);
-            console.log(status)
-            console.log(error)
-            console.log('Refresh Token Expired')
-            localStorage.removeItem('token')
-            localStorage.removeItem('refresh_token')
+            console.log(status);
+            console.log(error);
+            console.log('Refresh Token Expired');
+            localStorage.removeItem('token');
+            localStorage.removeItem('refresh_token');
             window.location.href = window.location.href;
           }
       });

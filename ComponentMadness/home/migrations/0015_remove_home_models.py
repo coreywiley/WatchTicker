@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0014_auto_20180601_1040'),
+        ('home', '0008_remove_home_models'),
     ]
 
     operations = [

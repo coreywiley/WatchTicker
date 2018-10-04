@@ -9,6 +9,10 @@ import {
     Paragraph, RadioButton, TextArea, Header, TextAutocomplete
 } from 'library';
 
+import AdminTagSidebar from 'pages/adminTagSidebar.js';
+import AdminSidebar from 'pages/adminSidebar.js';
+
+
 class CodeViewer extends Component {
     constructor(props) {
         super(props);
@@ -345,6 +349,10 @@ class CodeViewer extends Component {
                     toggleOpen={this.toggleOpen.bind(this)}
                 />
 
+                <TableOfContents
+
+                />
+
                 {adminTools}
             </div>;
         }
@@ -454,44 +462,33 @@ class SearchSidebar extends Component {
     }
 }
 
-class AdminSidebar extends Component {
+
+class TableOfContents extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            articles: [],
-            article: null,
-            chapter: null,
-            searchString: ""
+            articles: []
         };
     }
 
-    componentDidMount() {
-        this.getChapters();
+
+    componentDidMount(){
+        var url = "/api/home/article/?related=chapters&order_by=id";
+        ajaxWrapper("GET",  url, {}, this.loadArticles.bind(this));
     }
 
-    toggle() {
-        if (this.state.open){
-            this.setState({ open: false});
-        } else {
-            this.setState({ open: true});
-        }
-    }
-
-    getChapters() {
-      ajaxWrapper("GET",  "/api/home/article/?related=chapters,chapters__tags", {}, this.loadChapters.bind(this));
-    }
-    loadChapters(result) {
-        var articles = {};
+    loadArticles(result) {
+        var articles = [];
         for (var i in result){
             var article = result[i].article;
-            var chapters = {};
+            var chapters = [];
             for (var j in article.chapters){
                 var chapter = article.chapters[j].chapter;
-                chapters[chapter.id] = chapter;
+                chapters.push(chapter);
             }
 
             article.chapters = chapters;
-            articles[article.id] = article;
+            articles.push(article);
         }
 
         this.setState({
@@ -499,133 +496,33 @@ class AdminSidebar extends Component {
         });
     }
 
-    updateSearch(e) {
-        this.setState({
-            searchString: e.target.value
-        });
-    }
-
-    chooseArticle(e) {
-        var selected = this.state.articles[e['article']];
-        this.setState({
-            article: selected
-        });
-    }
-    chooseChapter(e) {
-        var selected = this.state.article.chapters[e['chapter']];
-        this.setState({
-            chapter: selected
-        });
-    }
-
-    addChapterTag(e) {
-        var id = this.state.chapter.id;
-        var tagId = e.currentTarget.getAttribute('num');
-
-        var data = {
-            "tags[]": JSON.stringify([tagId])
-        };
-        ajaxWrapper("POST",  "/api/home/chapter/" + id + '/?related=tags&', data, this.refreshChapterResponse.bind(this));
-    }
-
-    removeChapterTag(e) {
-        var id = this.state.chapter.id;
-        var tagId = e.currentTarget.getAttribute('num');
-
-        var data = {
-            "tags[]__remove": JSON.stringify([tagId])
-        };
-        ajaxWrapper("POST",  "/api/home/chapter/" + id + '/?related=tags&', data, this.refreshChapterResponse.bind(this));
-    }
-
-    refreshChapterResponse(result) {
-        var articles = this.state.articles;
-        var article = this.state.article;
-        article.chapters[result[0].chapter.id] = result[0].chapter;
-        articles[article.id] = article;
-
-        this.setState({
-            searchString: "",
-            chapter: result[0].chapter,
-            article: article,
-            articles: articles
-        });
-    }
-
     render() {
-        var jumpToPage = null;
-        var tags = [];
-        var tagJSX = null;
-        if (this.state.chapter){
-            jumpToPage = <Button type="primary" text="Jump to page"
-                num={this.state.chapter.startPage_id}
-                clickHandler={this.props.jumpToPage} />;
 
-            var chapterTags = this.state.chapter.tags;
-            for (var i=0; i<chapterTags.length; i++){
-                var tag = chapterTags[i].tag;
-                var text = tag.name;
-                if (tag.synonymSelected){
-                    var text = tag.synonymSelected;
-                }
-                tags.push(<Button type="info" text={text} num={tag.id} clickHandler={this.removeChapterTag.bind(this)} />);
+        articles = [];
+        for (var i in this.state.articles){
+            var article = this.state.articles[i];
+
+            var chapters = [];
+            for (var j in article.chapters){
+                var chapter = article.chapters[j];
+                var chapterJSX = <div>
+                    <a></a>
+                </div>;
+                
             }
 
-            tagJSX =
-            <div>
-                <TextAutocomplete label="Search for tags to add."
-                    options={this.props.tagNames} name="search"
-                    value={this.state.searchString}
-                    handlechange={this.updateSearch.bind(this)}
-                    autocompleteSelect={this.addChapterTag.bind(this)}
-                />
-                <br/>
-
-                <div>Current Tags: (click to remove)</div>
-                {tags}
-            </div>;
-        }
-
-        var articleOptions = [];
-        var articleSelect = null;
-        for (var key in this.state.articles){
-            var article = this.state.articles[key];
-            articleOptions.push({'text': article.name, 'value': article.id});
-        }
-        if (Object.keys(this.state.articles).length > 0){
-            articleSelect = <Select label="Choose Article to Edit" name='article' options={articleOptions} setFormState={this.chooseArticle.bind(this)} />;
-        }
-
-        var options = [];
-        var select = null;
-        if (this.state.article){
-            for (var key in this.state.article.chapters){
-                var chapter = this.state.article.chapters[key];
-                options.push({'text': chapter.name, 'value': chapter.id});
-            }
-            if (Object.keys(this.state.article.chapters).length > 0){
-                select = <Select label="Choose Chapter to Edit" name='chapter' options={options} setFormState={this.chooseChapter.bind(this)} />;
-            }
         }
 
         var content =
         <div>
-            <h3>Admin: Chapter Tags</h3>
+            <h3>Table of Contents</h3>
 
-            <div>
-                {articleSelect}
-                {select}
-                {jumpToPage}
-                <br/><br/>
-            </div>
-
-            {tagJSX}
         </div>;
 
-
         return (
-            <Sidebar content={content} widthPercent={50} headerHeight={67}
-                openerText="Admin: Chapter Tags" openerPosition="90px"
+            <Sidebar content={content}
+                openerText="Table of Contents" openerPosition="85px"
+                widthPercent={50} headerHeight={67}
                 toggleOpen={this.props.toggleOpen}
             />
         );
@@ -633,164 +530,6 @@ class AdminSidebar extends Component {
 }
 
 
-class AdminTagSidebar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            tags: [],
-            tag: null,
-            tagName: "",
-            open: false,
-            height: "0px",
-            synonymName: ""
-        };
-    }
-
-    componentDidMount() {
-        var height = String(window.outerHeight - 67) + "px";
-        var width = String(window.outerWidth * .5) + "px";
-        this.setState({
-            height: height,
-            width: width
-        });
-
-        this.getTags();
-    }
-
-    toggle() {
-        if (this.state.open){
-            this.setState({ open: false});
-        } else {
-            this.setState({ open: true});
-        }
-    }
-
-    getTags() {
-      ajaxWrapper("GET",  "/api/home/tag/?related=synonyms", {}, this.loadTags.bind(this));
-    }
-    loadTags(result) {
-        var tags = {};
-        for (var key in result){
-            tags[result[key].tag.id] = result[key].tag;
-        }
-        this.setState({
-            tags: tags
-        });
-    }
-
-    updateTag(e) {
-        this.setState({
-            tagName: e.target.value
-        });
-    }
-    updateSynonym(e) {
-        this.setState({
-            synonymName: e.target.value
-        });
-    }
-
-    chooseTag(e) {
-        var tag = this.state.tags[e['tag']];
-
-        this.setState({
-            tag: tag
-        });
-    }
-
-    createTag() {
-        var data = {
-            name: this.state.tagName
-        }
-        ajaxWrapper("POST",  "/api/home/tag/?related=synonyms", data, this.refreshTagCallback.bind(this));
-    }
-
-    addSynonym(e) {
-        var id = this.state.tag.id;
-        var synonym = this.state.synonymName;
-
-        var data = {
-            name: synonym,
-            tag: id
-        };
-        ajaxWrapper("POST",  "/api/home/synonym/", data, this.refreshTag.bind(this));
-    }
-
-    removeSynonym(e) {
-        var id = this.state.tag.id;
-        var synonymId = e.currentTarget.getAttribute('num');
-
-        ajaxWrapper("GET",  "/api/home/synonym/" + synonymId + '/delete/', {}, this.refreshTag.bind(this));
-    }
-
-    refreshTag(result) {
-        ajaxWrapper("GET",  "/api/home/tag/" + this.state.tag.id + '/?related=synonyms', {}, this.refreshTagCallback.bind(this));
-    }
-    refreshTagCallback(result) {
-        var tags = this.state.tags;
-        tags[result[0].tag.id] = result[0].tag;
-        this.setState({
-            tags: tags,
-            tag: result[0].tag,
-            synonymName: ""
-        });
-    }
-
-    render() {
-        var options = [];
-        var select = null;
-        for (var key in this.state.tags){
-            var tag = this.state.tags[key];
-            options.push({'text': tag.name, 'value': tag.id});
-        }
-        if (options.length > 0){
-            if (this.state.tag){ var value = {value: this.state.tag.id};}
-            select = <Select {...value} label="Choose Tag to Edit" name='tag' options={options} setFormState={this.chooseTag.bind(this)} />;
-        }
-
-        var synonyms = [];
-        if (this.state.tag){
-            for (var i in this.state.tag.synonyms){
-                var synonym = this.state.tag.synonyms[i].synonym;
-                var text = synonym.name;
-                synonyms.push(<Button type="info" text={text} num={synonym.id} clickHandler={this.removeSynonym.bind(this)} />);
-            }
-        }
-
-        var content =
-        <div>
-            <h3>Admin: Tags</h3>
-
-            <div>
-                {select}
-                <br/>
-            </div>
-
-            <div>
-                <TextInput label="Type tag to add" value={this.state.tagName} handlechange={this.updateTag.bind(this)} />
-                <Button text="Add" clickHandler={this.createTag.bind(this)} />
-            </div>
-
-            <div>
-                <br/>
-                <TextInput label="Type synonym to add" value={this.state.synonymName} handlechange={this.updateSynonym.bind(this)} />
-                <Button text="Add" clickHandler={this.addSynonym.bind(this)} />
-            </div>
-
-            <div>
-                <br/>
-                <div>Current Synonyms: (click to remove)</div>
-                {synonyms}
-            </div>
-        </div>;
-
-        return (
-            <Sidebar content={content} widthPercent={50} headerHeight={67}
-                openerText="Admin: Tags & Synonyms" openerPosition="160px"
-                toggleOpen={this.props.toggleOpen}
-            />
-        );
-    }
-}
 
 
 
