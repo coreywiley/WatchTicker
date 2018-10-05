@@ -38,5 +38,5 @@ SERVER_EMAIL = 'jeremy@jthiesen1.webfactional.com'
 STATIC_URL = '/static/'
 MEDIA_URL = '/static/images/'
 
-STATIC_ROOT = "/home/jthiesen1/webapps/catering/ComponentMadness/home/static/"
-MEDIA_ROOT = "/home/jthiesen1/webapps/catering/ComponentMadness/home/static/images/"
+STATIC_ROOT = "/home/ubuntu/ComponentMadness/home/static/"
+MEDIA_ROOT = "/home/ubuntu/home/static/images/"
