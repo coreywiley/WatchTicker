@@ -30,21 +30,36 @@ class PasswordInput extends Component {
         var passwordConfirm = <div></div>;
         if (this.props.confirm_password) {
             var valid = ' is-valid';
-            if (this.state.password != this.state.password_confirm) {
-                valid = ' is-invalid';
+            if (this.state.password == '') {
+              valid = ' is-blank'
+              passwordConfirm = <div className={"form-group " + this.props.layout}>
+                  <label>Confirm Password</label>
+                  <input type="password" className={"form-control" + valid} name="password_confirm" onChange={(e) => {this.verifyPassword(e); this.props.handleChange(e)}} value={this.state.password_confirm} />
+
+                </div>
             }
 
-            passwordConfirm = <div className={"form-group " + this.props.layout}>
-                <label>Confirm Password</label>
-                <input type="password" className={"form-control" + valid} name="password_confirm" onChange={(e) => {this.verifyPassword(e); this.props.handleChange(e)}} value={this.state.password_confirm} />
-                <div className="valid-feedback">
-                    Passwords Match!
+            else if (this.state.password != this.state.password_confirm) {
+                valid = ' is-invalid';
+                passwordConfirm = <div className={"form-group " + this.props.layout}>
+                    <label>Confirm Password</label>
+                    <input type="password" className={"form-control" + valid} name="password_confirm" onChange={(e) => {this.verifyPassword(e); this.props.handleChange(e)}} value={this.state.password_confirm} />
+                    <div className="invalid-feedback">
+                      Passwords Do Not Match!
+                    </div>
                   </div>
-                <div className="invalid-feedback">
-                  Passwords Do Not Match!
-                </div>
+            }
 
-              </div>
+            else {
+              passwordConfirm = <div className={"form-group " + this.props.layout}>
+                  <label>Confirm Password</label>
+                  <input type="password" className={"form-control" + valid} name="password_confirm" onChange={(e) => {this.verifyPassword(e); this.props.handleChange(e)}} value={this.state.password_confirm} />
+                  <div className="valid-feedback">
+                      Passwords Match!
+                    </div>
+                </div>
+            }
+
         }
 
         return (
