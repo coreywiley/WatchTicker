@@ -15,8 +15,6 @@ function ajaxWrapper(type, url, data, returnFunc){
     var auth_token = '';
     if (localStorage.getItem('token')) {
       auth_token = 'Bearer ' + localStorage.getItem('token')
-    }
-
       $.ajax({
           type: type,
           url: url,
@@ -40,6 +38,31 @@ function ajaxWrapper(type, url, data, returnFunc){
             }
           },
       });
+    }
+    else {
+      $.ajax({
+          type: type,
+          url: url,
+          data: data,
+          statusCode: {
+            200: function(value) {
+              if (typeof(value) === "object" && "redirect" in value) {
+                  window.location = value['redirect'] + "?redirect=" + window.secretReactVars["BASE_URL"];
+              }
+              returnFunc(value);
+            },
+            400: function(value) {
+              value = {'error': 'Bad Request'}
+              returnFunc(value);
+            },
+            401: function(xhr) {
+              refreshToken(type,url,data,returnFunc);
+            }
+          },
+      });
+    }
+
+
 
 }
 
