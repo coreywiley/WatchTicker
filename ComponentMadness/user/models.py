@@ -40,6 +40,12 @@ class User(AbstractBaseUser):
     email = models.EmailField(_('email address'), max_length=254, unique=True, db_index=True)
     type = models.CharField(max_length=7, choices=(('User', 'User'), ('Parent', 'Parent')), default='User')
     imageUrl = models.CharField(max_length=120, blank=True, default="")
+    zipcode = models.CharField(max_length=20, blank=True, default="")
+    phone = models.CharField(max_length=254, blank=True, default="")
+    age = models.IntegerField(default=0)
+    gender = models.CharField(max_length=20,blank=True, default="")
+    photo = models.URLField(default="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg")
+    notifications = models.BooleanField(default=True)
 
     parent = models.ForeignKey('User', related_name='children', blank=True, null=True, on_delete=models.CASCADE)
 

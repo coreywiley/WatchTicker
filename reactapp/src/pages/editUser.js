@@ -4,26 +4,23 @@ import Wrapper from 'base/wrapper.js';
 
 import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput} from 'library';
 
-class SignUp extends Component {
-    constructor(props) {
-        super(props);
-        this.logIn = this.logIn.bind(this);
+class EditUser extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {'first_name':'','last_name':'', 'email':'', 'password':'','type':'User', 'gender':'Pick One', 'zipcode':'', 'age':'','phone':''};
+
+    this.getUserInfoCallback = this.getUserInfoCallback.bind(this);
+  }
+
+    componentDidMount() {
+        console.log("User Id", this.props.user_id)
+        ajaxWrapper('GET','/api/user/user/' + this.props.user_id + '/', {}, this.getUserInfoCallback)
+
     }
 
-    logIn(value) {
-        console.log(value);
-
-        localStorage.setItem('token', value['access']);
-        localStorage.setItem('refresh_token', value['refresh'])
-
-        if (localStorage.getItem('redirect')) {
-            var redirect = localStorage.getItem('redirect');
-            localStorage.removeItem('redirect')
-            window.location.href = redirect;
-        }
-        else {
-            window.location.href = '/';
-        }
+    getUserInfoCallback(result) {
+      var user = result[0]['user']
+      this.setState(user)
     }
 
     render() {
@@ -38,13 +35,13 @@ class SignUp extends Component {
         var zipcode =  {'value':'','name':'zipcode','label':'Zip Code','placeholder': '55104'}
 
         var ComponentProps = [first_name_props, last_name_props, email_props, phone, age, gender, zipcode, password_props];
-        var defaults = {'first_name':'','last_name':'', 'email':'', 'password':'','type':'User', 'gender':'Pick One', 'zipcode':'', 'age':'','phone':''};
+        var defaults = this.state;
 
-        var submitUrl = "/users/signup/";
+        var submitUrl = "/api/user/user/" + this.props.user_id + '/';
 
         var content = <div className="container">
-                <h2>Sign Up</h2>
-                <Form components={Components} redirect={this.logIn} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
+                <h2>Edit Your Info</h2>
+                <Form components={Components} redirect={'/'} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
         </div>;
 
 
@@ -53,4 +50,4 @@ class SignUp extends Component {
              );
     }
 }
-export default SignUp;
+export default EditUser;
