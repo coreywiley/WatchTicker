@@ -26,11 +26,21 @@ import LoggedIn from './pages/scaffold/loggedIn.js';
 import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
 import PasswordReset from './pages/scaffold/passwordReset.js';
 
+import BusinessForm from './pages/businessForm.js';
+import DealForm from './pages/dealForm.js';
+import EditUser from './pages/editUser.js';
+
+import Deals from './pages/deals.js';
+import Businesses from './pages/businesses.js';
+import Business from './pages/business.js';
+import Deal from './pages/deal.js';
+import Redemption from './pages/redeemed.js';
+
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loaded: true,
+            loaded: false,
             csrfmiddlewaretoken: undefined,
             user:{'id':'', 'name':''}
         };
@@ -140,14 +150,50 @@ class App extends Component {
             content = <PasswordResetRequest />
         }
         else if (params[0].toLowerCase() == "passwordreset") {
-            content = <PasswordReset  user_id={params[1]} />
+            content = <PasswordReset user_id={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "businessform") {
+            content = <BusinessForm user_id={this.state.user.id} business_id={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "dealform") {
+            content = <DealForm user_id={this.state.user.id} business_id={params[1]} deal_id={params[2]} />
+        }
+        else if (params[0].toLowerCase() == "edituser") {
+            content = <EditUser user_id={this.state.user.id} />
+        }
+        else if (params[0].toLowerCase() == "deals") {
+            content = <Deals user_id={this.state.user.id} />
+        }
+        else if (params[0].toLowerCase() == "businesses") {
+            content = <Businesses user_id={this.state.user.id} />
+        }
+        else if (params[0].toLowerCase() == "business") {
+            content = <Business user_id={this.state.user.id} business_id={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "deal") {
+            content = <Deal user={this.state.user} user_id={this.state.user.id} deal_id={params[1]} />
+        }
+        else if (params[0].toLowerCase() == "redeemed") {
+            content = <Redemption user={this.state.user} user_id={this.state.user.id} redemption_id={params[1]} />
         }
 
-        return (
-            <div className="App">
-                <Wrapper content={content} loaded={this.state.loaded} />
-            </div>
-        );
+
+
+        if (this.state.loaded == false) {
+          return (
+              <div className="App">
+                  <Wrapper content={<div></div>} loaded={this.state.loaded} />
+              </div>
+          );
+        }
+        else {
+          return (
+              <div className="App">
+                  <Wrapper content={content} loaded={this.state.loaded} />
+              </div>
+          );
+        }
+
     }
 }
 
