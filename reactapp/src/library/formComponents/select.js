@@ -3,6 +3,10 @@ import resolveVariables from 'base/resolver.js';
 import ajaxWrapper from "base/ajax.js";
 import {Button} from 'library';
 
+
+//Example
+// var gender =  {'value':'','name':'gender','label':'Gender','options':[{'value':'Pick One','text':'Pick One'}, {'value':'Male', 'text':'Male'}, {'value':'Female','text':'Female'},{'value':'Other','text':"I don't identify as either"}]}
+
 class Select extends Component {
     constructor(props) {
         super(props);
@@ -29,7 +33,7 @@ class Select extends Component {
         var options = [];
         for (var index in value) {
             var textValue = value[index];
-            var valueValue = value[index]
+            var valueValue = value[index];
 
             if (this.props.optionsUrlMap) {
 
