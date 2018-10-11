@@ -28,7 +28,10 @@ class Customers extends Component {
     }
 
     eventInfoCallback(result) {
-      this.setState({eventInfo: result[0]['event']})
+      console.log("Event Info Callback", result[0]['event']);
+      var event = result[0]['event'];
+      //event['customer'] = {'name':'Test','phone':"Test",'email':'Test','notes':'Test'}
+      this.setState({eventInfo: event, loaded: true})
     }
 
     refreshOrders() {
@@ -42,7 +45,7 @@ class Customers extends Component {
         eventList.push(result[index]['order'])
       }
 
-      this.setState({eventList: eventList, loaded: true})
+      this.setState({eventList: eventList})
     }
 
     deleteEvent(id) {
