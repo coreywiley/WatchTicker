@@ -1,4 +1,4 @@
-import getComponent from './../componentResolver.js';
+
 
 //using datamapping in list or form you can pass a dictionary like so dataMapping={'name':'Bob', 'id':'{id}', 'children':'{children.length}'}
 // in this case, name will always be bob, id will resolve to the id of the data and children will resolve to the length of data.children

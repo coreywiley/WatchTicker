@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
-import getComponent from '../../componentResolver.js';
 import {Form, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput} from 'library';
 import Nav from 'projectLibrary/nav.js';
 
