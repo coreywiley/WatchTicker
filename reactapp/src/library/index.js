@@ -33,6 +33,7 @@ import TextInput_ from './formComponents/textinput.js';
 import DateTimePicker_ from './formComponents/datetimepicker.js';
 import EmojiList_ from './formComponents/emojiSelect.js';
 import ColorPicker_ from './formComponents/colorpicker.js';
+import PhotoInput_ from './formComponents/photoInput.js';
 
 import Accordion_ from './functionalComponents/accordion.js';
 import Container_ from './functionalComponents/container.js';
@@ -82,3 +83,4 @@ export const DateTimePicker = DateTimePicker_;
 export const ColorPicker = ColorPicker_;
 export const EmojiList = EmojiList_;
 export const EmojiSlider = EmojiSlider_;
+export const PhotoInput = PhotoInput_;
