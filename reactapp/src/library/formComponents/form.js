@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
 import ajaxWrapper from "base/ajax.js";
-
+import {Alert} from 'library';
 //Example
 //var answerProps = {'name':'response', 'value':''}
 //var defaults = {'response':'', 'question':this.props.question_id, 'sid':this.props.user_id}
@@ -13,6 +13,7 @@ class Form extends Component {
     constructor(props) {
         super(props);
         this.state = this.props.defaults;
+        this.state.required = "";
 
         this.handleChange = this.handleChange.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
@@ -74,15 +75,33 @@ class Form extends Component {
     formSubmit() {
         console.log("Submitting", this.state, this.props.submitUrl);
         var data = this.state;
-        for (var item in data) {
-            if (item.endsWith('[]')) {
-                console.log("STRINGIFY")
-                data[item] = JSON.stringify(data[item]);
-                console.log(item,data[item])
-            }
-        }
 
-        ajaxWrapper("POST",this.props.submitUrl, data, this.formSubmitCallback);
+        var failed = false;
+        var required = '';
+        for (var index in this.props.componentProps) {
+          var prop = this.props.componentProps[index];
+          if (prop.required == true) {
+            if (this.state[prop.name] == '') {
+              required += "The field " + prop.label + " must be filled out to submit the form. ";
+              failed = true
+            }
+          }
+        }
+        if (failed == true) {
+          this.setState({required: required})
+        }
+        else {
+
+          for (var item in data) {
+              if (item.endsWith('[]')) {
+                  console.log("STRINGIFY")
+                  data[item] = JSON.stringify(data[item]);
+                  console.log(item,data[item])
+              }
+          }
+
+          ajaxWrapper("POST",this.props.submitUrl, data, this.formSubmitCallback);
+        }
     }
 
     refreshDataCallback(value) {
@@ -128,7 +147,10 @@ class Form extends Component {
                     this.setState(value[0][this.props.objectName], this.props.setGlobalState('Form',this.state));
                 }
             } else {
+              if (value[0]) {
                 this.setState(value[0][this.props.objectName]);
+              }
+
             }
 
         if (this.props.redirectUrl) {
@@ -209,10 +231,16 @@ class Form extends Component {
             buttons.push(deleteButton);
         }
 
+        var failed = <div></div>;
+        if (this.state.required != '') {
+          failed = <Alert type={"danger"} text={this.state.required} />
+        }
+
         //need to add in formsubmit, delete, and handle change functions to components.
         return(
             <div className={layout}  style={this.props.css} onKeyPress={this.handleKeyPress}>
                 {components}
+                {failed}
                 {buttons}
             </div>
         )
