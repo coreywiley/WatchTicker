@@ -350,7 +350,8 @@ class CodeViewer extends Component {
                 />
 
                 <TableOfContents
-
+                    toggleOpen={this.toggleOpen.bind(this)}
+                    clickHandler={this.jumpToPage.bind(this)}
                 />
 
                 {adminTools}
@@ -498,7 +499,7 @@ class TableOfContents extends Component {
 
     render() {
 
-        articles = [];
+        var articles = [];
         for (var i in this.state.articles){
             var article = this.state.articles[i];
 
@@ -506,18 +507,32 @@ class TableOfContents extends Component {
             for (var j in article.chapters){
                 var chapter = article.chapters[j];
                 var chapterJSX = <div>
-                    <a></a>
+                    <a onClick={this.props.clickHandler} num={chapter.startPage_id}>{chapter.name}</a>
                 </div>;
-                
+
+                chapters.push(chapterJSX);
             }
 
+            var article = <div style={{margin:'0px 0px 20px 0px'}}>
+                <a onClick={this.props.clickHandler} num={article.startPage_id}>
+                    <h5>{article.name}</h5>
+                </a>
+
+                <div style={{padding:"0px 0px 0px 15px"}}>
+                    {chapters}
+                </div>
+            </div>;
+
+            articles.push(article);
         }
 
         var content =
         <div>
             <h3>Table of Contents</h3>
 
+            <div style={{padding:"0px 0px 0px 15px"}}>{articles}</div>
         </div>;
+
 
         return (
             <Sidebar content={content}
