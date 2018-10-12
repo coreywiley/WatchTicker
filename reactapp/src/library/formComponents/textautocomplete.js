@@ -43,7 +43,7 @@ class TextAutocomplete extends Component {
                     options.push(
                         <Button clickHandler={this.props.autocompleteSelect}
                             type="default" text={key} num={value} css={{marginLeft:"10px"}} />
-                        );
+                    );
                 }
             }
         }

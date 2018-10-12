@@ -120,12 +120,6 @@ class CodeViewer extends Component {
         return tagNames;
     }
 
-    updateSearch(e) {
-        this.setState({
-            searchString: e.target.value
-        });
-    }
-
     addTag(e) {
         var done = false;
         var tags = this.state.selectedTags;
@@ -139,8 +133,7 @@ class CodeViewer extends Component {
         tags.push(tag);
 
         this.setState({
-            selectedTags: tags,
-            searchString: ""
+            selectedTags: tags
         });
     }
 
@@ -160,12 +153,12 @@ class CodeViewer extends Component {
         });
     }
 
-    searchCode(){
+    searchCode(searchString){
         var url = "/api/home/chapter/?order_by=id&related=text,tags&";
         var tags = this.state.selectedTags;
 
         var tagNames = "";
-        if (this.state.searchString != ""){tagNames += this.state.searchString + ","};
+        if (searchString != ""){tagNames += searchString + ","};
         for (var i=0; i<tags.length; i++){
             tagNames += tags[i].name + ",";
         }
@@ -340,8 +333,6 @@ class CodeViewer extends Component {
                     tags={this.state.tags}
                     tagNames={tagNames}
                     selectedTags={this.state.selectedTags}
-                    searchString={this.state.searchString}
-                    updateSearch={this.updateSearch.bind(this)}
                     addTag={this.addTag.bind(this)}
                     removeTag={this.removeTag.bind(this)}
                     searchCode={this.searchCode.bind(this)}
@@ -403,9 +394,34 @@ class SelectionScreen extends Component {
 
 
 class SearchSidebar extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchString: "",
+        };
+    }
+
     preventDefault(e) {
         e.preventDefault();
         return false;
+    }
+
+    updateSearch(e) {
+        this.setState({
+            searchString: e.target.value
+        });
+    }
+
+    addTag(e){
+        this.props.addTag(e);
+        this.setState({
+            searchString: ''
+        });
+    }
+
+
+    searchCode(){
+        this.props.searchCode(this.state.searchString);
     }
 
     render() {
@@ -436,9 +452,9 @@ class SearchSidebar extends Component {
             <form autoComplete="new-password" onSubmit={this.preventDefault.bind(this)}>
                 <TextAutocomplete label="Search one or more items"
                     options={this.props.tagNames} name="search"
-                    value={this.props.searchString}
-                    handlechange={this.props.updateSearch}
-                    autocompleteSelect={this.props.addTag}
+                    value={this.state.searchString}
+                    handlechange={this.updateSearch.bind(this)}
+                    autocompleteSelect={this.addTag.bind(this)}
                     placeholder="Air Conditioning"
                 />
                 <br/>
@@ -447,7 +463,7 @@ class SearchSidebar extends Component {
             {selectedTags}
 
             <div>
-                <Button type="success" clickHandler={this.props.searchCode} text="Search" />
+                <Button type="success" clickHandler={this.searchCode.bind(this)} text="Search" />
             </div>
 
             {this.props.results}
