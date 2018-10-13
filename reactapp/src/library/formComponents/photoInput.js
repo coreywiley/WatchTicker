@@ -21,6 +21,9 @@ const SortableList = SortableContainer(({items, removeImage}) => {
   );
 });
 
+//var main_image = {'value':'', 'name':'main_image', 'label':'Display Image', 'multiple':false}
+// <PhotoInput {...main_image} />
+
 class PhotoInput extends Component {
 
         constructor(props) {
@@ -41,7 +44,7 @@ class PhotoInput extends Component {
       }
 
       fileUpload(files) {
-        var url = '/file_upload/';
+        var url = '/api/photoUpload/';
         const formData = new FormData();
         for (var index in files) {
             if (index != 'length' && index != 'item') {
