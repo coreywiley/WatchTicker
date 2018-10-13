@@ -44,6 +44,7 @@ class SignUp extends Component {
 
         var content = <div className="container">
                 <h2>Sign Up</h2>
+                <p>Sign Up To Redeem Deals or Add Your Business</p>
                 <Form components={Components} redirect={this.logIn} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
         </div>;
 

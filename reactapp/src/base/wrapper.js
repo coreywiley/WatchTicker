@@ -11,7 +11,7 @@ class Wrapper extends Component {
 
     render() {
         var loading = <div style={{'textAlign':'center'}}> <Image css={{'width':'100px'}} src={'/static/images/loading.gif'} /></div>;
-        var css = {'paddingLeft':'2px','paddingRight':'2px'};
+        var css = {'paddingLeft':'0px','paddingRight':'0px'};
         if (this.props.css) {
             css = this.props.css;
         }

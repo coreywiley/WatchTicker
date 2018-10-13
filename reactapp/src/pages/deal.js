@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
+import MetaTags from 'react-meta-tags';
 
-import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Link, Button} from 'library';
+import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Link, Button, Alert} from 'library';
 
 class Deal extends Component {
     constructor(props) {
       super(props);
-      this.state = {'business':{'name':'', 'id':0}, 'name':'','description':'', 'published':false, 'emails_sent':false, 'redeemable':true};
+      this.state = {'business':{'name':'', 'id':0}, 'name':'','description':'', 'published':false, 'emails_sent':false, 'redeemable':true, 'totalRedemptions':0, 'number_of_redeems_available':0, 'newPublish':false};
 
       this.dealCallback = this.dealCallback.bind(this);
       this.publish = this.publish.bind(this);
@@ -15,16 +16,44 @@ class Deal extends Component {
       this.followCallback = this.followCallback.bind(this);
       this.redeem = this.redeem.bind(this);
       this.redeemed = this.redeemed.bind(this);
+      this.redemptionNumber = this.redemptionNumber.bind(this);
     }
 
     componentDidMount() {
         ajaxWrapper('GET','/api/home/deal/' + this.props.deal_id + '/?related=business', {}, this.dealCallback)
     }
 
+    checkIfRedeemable(deal) {
+      //is date past due
+      if (deal.valid_until) {
+        var d = new Date()
+        var valid_until = new Date(deal.valid_until)
+        if (d > valid_until) {
+          this.setState({redeemable: false})
+        }
+      }
+
+
+        ajaxWrapper('GET','/api/home/redemption/?count&user=' + this.props.user_id + '&deal=' + this.props.deal_id, {}, this.redemptionNumber)
+      
+
+    }
+
+    redemptionNumber(result) {
+      var totalRedemptions = result['count'];
+
+      if (totalRedemptions > this.state.number_of_redeems_available && this.state.number_of_redeems_available > 0) {
+        this.setState({totalRedemptions:result['count'], redeemable:false})
+      }
+      else {
+        this.setState({totalRedemptions:result['count']})
+      }
+    }
+
     dealCallback(result) {
       var deal = result[0]['deal']
       deal['loaded'] = true
-      this.setState(deal)
+      this.setState(deal, () => this.checkIfRedeemable(deal))
     }
 
     followCallback(result) {
@@ -33,7 +62,7 @@ class Deal extends Component {
         if (result[index]['follow']['notifications'] == true) {
           emails_sent += 1
           var user = result[index]['follow']['user']
-          ajaxWrapper('POST','/api/email/',{'to_email':user['email'], 'from_email':'jeremy.thiesen1@gmail.com', 'subject': this.state.business.name + ' has a new deal for you!', 'text': this.state.business.name + ' just published a new deal for you via Patron Gate. <a href="http://localhost:8000/deal/' + this.props.deal_id + '">' + this.state.name + '</a>'}, console.log)
+          ajaxWrapper('POST','/api/email/',{'to_email':user['email'], 'from_email':'jeremy.thiesen1@gmail.com', 'subject': this.state.business.name + ' has a new deal for you!', 'text': this.state.business.name + ' just published a new deal for you via Patron Gate. <a href="http://patrongate.jthiesen1.webfactional.com/deal/' + this.props.deal_id + '">' + this.state.name + '</a>'}, console.log)
         }
 
       }
@@ -42,9 +71,17 @@ class Deal extends Component {
 
     publish() {
       if (this.state.published == false) {
-        ajaxWrapper('POST','/api/home/deal/' + this.props.deal_id + '/', {'published':true}, () => this.setState({'published':true}))
+        ajaxWrapper('GET','/api/home/follow/?related=user&business=' + this.state.business.id,{},this.followCallback)
       }
-      ajaxWrapper('GET','/api/home/follow/?related=user&business=' + this.state.business.id,{},this.followCallback)
+      var d = new Date();
+      var date = [
+        d.getFullYear(),
+        ('0' + (d.getMonth() + 1)).slice(-2),
+        ('0' + d.getDate()).slice(-2)
+      ].join('-') + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
+      ajaxWrapper('POST','/api/home/deal/' + this.props.deal_id + '/', {'published':true, 'last_published': date}, () => this.setState({'published':true, 'newPublish':true}))
+
     }
 
     remove() {
@@ -77,28 +114,64 @@ class Deal extends Component {
         }
         console.log("You own this business")
         if (this.state.published == false) {
-          publish = <Button clickHandler={this.publish} type={'success'} text={'Publish Your Deal On Patron Gate and to all your followers'} />
+          publish = <div style={{'padding':'10px'}}>
+            <div style={{'float':'left'}}><Button clickHandler={this.publish} type={'success'} text={'Publish Your Deal On Patron Gate and to all your followers'} /></div>
+            <div style={{'float':'right'}}><Button href={"/dealForm/" + this.state.business.id + "/" + this.props.deal_id + "/"} type={'primary'} text={'Edit Deal'} /></div>
+          </div>
         }
         else {
           publish = <div>
-                      <Button clickHandler={this.remove} type={'danger'} text={'Remove Your Deal From Patron Gate'} />
-                      <Button clickHandler={this.publish} type={'success'} text={'Re-publish Your Deal On Patron Gate'} />
+                      <div style={{'float':'left'}}>
+                        <Button clickHandler={this.remove} type={'danger'} text={'Remove Your Deal From Patron Gate'} />
+                        <Button clickHandler={this.publish} type={'success'} text={'Re-publish Your Deal On Patron Gate'} />
                       </div>
+                      <div style={{'float':'right'}}><Button href={"/dealForm/" + this.state.business.id + "/" + this.props.deal_id + "/"} type={'primary'} text={'Edit Deal'} /></div>
+                    </div>
         }
       }
 
+      var newPublish = <div></div>
+      if (this.state.newPublish == true) {
+        newPublish = <Alert text={'You just published your deal!'} type={'success'} />
+      }
+
       var redeem = <div></div>
-      if (this.state.redeemable == true) {
-        redeem = <Button clickHandler={this.redeem} type={'success'} text={'Redeem'} />
+      if (this.props.user_id) {
+        if (this.state.redeemable == true) {
+          redeem = <Button clickHandler={this.redeem} type={'patron'} text={'Redeem'} />
+        }
+      }
+      else {
+        redeem = <Button href={'/signUp/'} type={'success'} text={'Sign Up To Redeem'} />
+      }
+
+      var number_of_redeems_available = <p>This deal can be redeemed a total of {this.state.number_of_redeems_available} times.</p>
+      if (this.state.number_of_redeems_available == 0) {
+        number_of_redeems_available = <p>This deal can be redeemed unlimited times.</p>
+      }
+
+      var valid_until = <div></div>
+      if (this.state.valid_until != null) {
+        valid_until = <p>Valid Until: {this.state.valid_until}</p>
       }
 
         var content = <div className="container">
-                <h2>{this.state.name}</h2>
+        <MetaTags>
+          <title>{this.state.name} with {this.state.business.name}| PatronGate</title>
+          <meta name="description" content={this.state.name + ' with ' + this.state.business.name + '| PatronGate'} />
+          <meta property="og:title" content={this.state.name + ' with ' + this.state.business.name + '| PatronGate'} />
+        </MetaTags>
                 {publish}
                 {emailsSent}
+                <h1>{this.state.name} is available at <a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></h1>
+                {number_of_redeems_available}
+                {valid_until}
+                <img src={this.state.main_image} style={{'width':'100%'}} />
+                <h3>About {this.state.name}</h3>
                 <p>{this.state.description}</p>
                 {redeem}
-                <Link link={"/business/" + this.state.business.id + "/"} text={this.state.business.name} />
+                <p>You have redeemed this coupon {this.state.totalRedemptions} times.</p>
+
         </div>;
 
 

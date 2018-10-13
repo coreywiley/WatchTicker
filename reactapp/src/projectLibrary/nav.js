@@ -3,37 +3,43 @@ import ajaxWrapper from '../base/ajax.js';
 import {Navbar} from 'library';
 
 class Nav extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {'user_name':'', 'staff': false, 'logged_in':false, 'business':0, 'loaded':true}
+
+      this.businessCallback = this.businessCallback.bind(this);
+    }
+
+    componentDidMount() {
+      if (this.props.user_id) {
+        ajaxWrapper('GET','/api/home/business/?owner=' + this.props.user_id,{}, this.businessCallback)
+      }
+    }
+
+    businessCallback(result) {
+      console.log("Nav Result", result)
+      this.setState({business:result[0]['business']['id'], loaded:true})
+    }
 
     render() {
-        var name = <div><img src='/static/images/CaterLister.png' style={{'height':'30px'}} /></div>;
-        if (this.props.logged_in == true) {
-          var links = [['/events/','Events'],['/customers/','Customers'],['/menuItems/','Menu Items']];
-          var nameLink = '/events/'
+        var name = <div><img style={{'marginRight':'10px'}} src='/static/images/logo.png' height="125" /></div>;
+        console.log("Nav User Id", this.props.user_id)
+        if (this.props.user_id) {
+          var businessLink = ["/businessForm/",'Add Your Listing'];
+          if (this.state.business != 0) {
+            businessLink = ["/businessForm/" + this.state.business + '/','Edit Your Listing'];
+          }
+          var links = [['/how-it-works/','How It Works'], ['/deals/','Deals Of The Week'], ['/businesses/','Local Businesses'], businessLink, ['/editUser/','Account Details'], ['/logOut/','Log Out']];
         }
         else {
-          var links = [];
-          var nameLink = '/'
+          var links = [['/how-it-works/','How It Works'], ['/deals/','Deals Of The Week'], ['/businesses/','Local Businesses'], ['/signUp/','Add Your Listing'], ['/signUp/','Sign Up'], ['/logIn/','Log In']];
         }
 
-
-      return (
-        <header className="header">
-        <nav className="navbar navbar-expand-lg fixed-top"><a href="index.html" className="navbar-brand">Landy</a>
-          <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" className="navbar-toggler navbar-toggler-right"><span></span><span></span><span></span></button>
-          <div id="navbarSupportedContent" className="collapse navbar-collapse">
-            <ul className="navbar-nav ml-auto align-items-start align-items-lg-center">
-              <li className="nav-item"><a href="#about-us" className="nav-link link-scroll">About Us</a></li>
-              <li className="nav-item"><a href="#features" className="nav-link link-scroll">Features</a></li>
-              <li className="nav-item"><a href="#testimonials" className="nav-link link-scroll">Testimonials</a></li>
-              <li className="nav-item"><a href="text.html" className="nav-link">Text Page</a></li>
-            </ul>
-            <div className="navbar-text">
-  <a href="#" data-toggle="modal" data-target="#exampleModal" className="btn btn-primary navbar-btn btn-shadow btn-gradient">Sign Up</a>
+        return (
+            <div>
+              <Navbar nameLink={'/'} name={name} links={links} style={this.props.style} />
             </div>
-          </div>
-        </nav>
-      </header>
-    );
+        );
     }
 }
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
+import MetaTags from 'react-meta-tags';
 
 import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput} from 'library';
 

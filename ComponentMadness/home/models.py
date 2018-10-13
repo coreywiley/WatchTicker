@@ -22,6 +22,11 @@ class Business(models.Model):
     email = models.CharField(max_length=255, blank=True, default="")
     phone = models.CharField(max_length=255, blank=True, default="")
     website = models.URLField(blank=True, default="")
+    type = models.CharField(max_length=255, blank=True, default="")
+    facebook = models.CharField(max_length=255, blank=True, default="")
+    twitter = models.CharField(max_length=255, blank=True, default="")
+    instagram = models.CharField(max_length=255, blank=True, default="")
+    yelp = models.CharField(max_length=255, blank=True, default="")
 
 class Follow(models.Model):
     id = models.AutoField(primary_key=True)
@@ -36,6 +41,10 @@ class Deal(models.Model):
     business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='deals')
     main_image = models.URLField(blank=True, default="http://atlantabeststeamers.com/wp-content/uploads/sites/30/2015/11/hotdeal.png")
     published = models.BooleanField(default=False)
+    valid_until = models.DateField(null=True)
+    last_published = models.DateTimeField(default = datetime.datetime.now)
+    type = models.CharField(max_length=255, blank=True, default="")
+    number_of_redeems_available = models.IntegerField(default = 0)
 
 class Redemption(models.Model):
     id = models.AutoField(primary_key=True)

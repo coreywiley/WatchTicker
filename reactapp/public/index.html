@@ -10,7 +10,7 @@
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <link rel="shortcut icon" href="/static/images/pg_logo.png">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -41,12 +41,15 @@
 
     <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/vendor/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/css/landy-iconfont.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800">
-    <link rel="stylesheet" href="/static/vendor/owl.carousel/assets/owl.carousel.css">
-    <link rel="stylesheet" href="/static/vendor/owl.carousel/assets/owl.theme.default.css">
-    <link rel="stylesheet" href="/static/css/style.default.css" id="theme-stylesheet">
-    <link rel="stylesheet" href="/static/css/custom.css">
+
+    <link rel="stylesheet" id="wpcfs-form-css" href="http://beta.patrongate.com/wp-content/plugins/wp-custom-fields-search/templates/form.css?ver=4.9.8" type="text/css" media="all">
+    <link rel="stylesheet" id="woocommerce-layout-css" href="http://beta.patrongate.com/wp-content/plugins/woocommerce/assets/css/woocommerce-layout.css?ver=3.3.3" type="text/css" media="all">
+    <link rel="stylesheet" id="woocommerce-smallscreen-css" href="http://beta.patrongate.com/wp-content/plugins/woocommerce/assets/css/woocommerce-smallscreen.css?ver=3.3.3" type="text/css" media="only screen and (max-width: 768px)">
+    <link rel="stylesheet" id="if-menu-site-css-css" href="http://beta.patrongate.com/wp-content/plugins/if-menu/assets/if-menu-site.css?ver=4.9.8" type="text/css" media="all">
+    <link rel="stylesheet" id="listify-css" href="http://beta.patrongate.com/wp-content/themes/listify/css/style.min.css?ver=2.4.4" type="text/css" media="all">
+    <link rel="stylesheet" id="listify-child-css" href="http://beta.patrongate.com/wp-content/themes/listify-child/style.css?ver=4.9.8" type="text/css" media="all">
+    <link href="http://beta.patrongate.com/wp-content/plugins/facetwp/assets/css/front.css?ver=3.1.3" rel="stylesheet">
+
 
     <script>
       window.secretReactVars = {};
@@ -68,6 +71,29 @@
       }
     }
 
+      ::selection {
+        background: #22498e; /* WebKit/Blink Browsers */
+      }
+      ::-webkit-selection {
+        background: #22498e; /* WebKit/Blink Browsers */
+      }
+      ::-moz-selection {
+        background: #22498e; /* Gecko Browsers */
+      }
+
+      .nav-bg {
+        background: #234f9c !important;
+      }
+
+      .btn-patron {
+        color: white;
+        background-color:#234f9c;
+        border-color: #234f9c;
+      }
+
+body {
+  font-family:"Karla","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:normal;}
+}
 
     .progress .progress-bar {
       -webkit-transition: none;
@@ -86,7 +112,7 @@
     </style>
 
 
-    <title>Patron Gate</title>
+    <title>Patron Gate | Your Local Business Deals, Specials and Coupon Finder</title>
   </head>
   <body>
     <noscript>

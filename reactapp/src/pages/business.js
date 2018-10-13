@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
+import MetaTags from 'react-meta-tags';
 
-import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Card, Button} from 'library';
+import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Button} from 'library';
+import Card from 'projectLibrary/dealCard.js';
 
 class Business extends Component {
     constructor(props) {
@@ -56,9 +58,15 @@ class Business extends Component {
     notify() {
       if (this.state.follow.notifications == true) {
           ajaxWrapper('POST','/api/home/follow/' + this.state.follow.id + '/', {'notifications':false}, this.changeFollowCallback)
+          var follow = this.state.follow;
+          follow.notifications = false;
+          this.setState({follow:follow})
       }
       else {
         ajaxWrapper('POST','/api/home/follow/' + this.state.follow.id + '/', {'notifications':true}, this.changeFollowCallback)
+        var follow = this.state.follow;
+        follow.notifications = true;
+        this.setState({follow:follow})
       }
     }
 
@@ -79,44 +87,112 @@ class Business extends Component {
 
         var dealCards = [];
         for (var index in this.state.deals) {
-          dealCards.push(<Card name={this.state.deals[index]['deal']['name']} description={this.state.deals[index]['deal']['description']} button={'Read More'} button_type={'primary'} link={'/deal/' + this.state.deals[index]['deal']['id'] + '/'} />)
+          dealCards.push(<Card imageUrl={this.state.deals[index]['deal']['main_image']} imageAlt={this.state.deals[index]['deal']['name']} name={this.state.deals[index]['deal']['name']} description={this.state.deals[index]['deal']['description']} button={'Read More'} button_type={'primary'} link={'/deal/' + this.state.deals[index]['deal']['id'] + '/'} />)
         }
 
         var publish = <div></div>
+        var newDeal = <div></div>
         if (this.props.user_id == this.state.owner) {
-          console.log("You own this business")
+          newDeal = <Button href={'/dealForm/' + this.props.business_id + '/'} text={'New Deal'} type={'patron'} />
           if (this.state.published == false) {
-            publish = <Button clickHandler={this.publish} type={'success'} text={'Publish Your Business On Patron Gate'} />
+            publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}><Button clickHandler={this.publish} type={'success'} text={'Publish Your Business On Patron Gate'} /></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /></div></div>
           }
           else {
-            publish = <Button clickHandler={this.publish} type={'danger'} text={'Hide Your Business On Patron Gate Results'} />
+            publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}><Button clickHandler={this.publish} type={'danger'} text={'Hide Your Business On Patron Gate Results'} /></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /></div></div>
           }
         }
 
-        var following = <Button clickHandler={this.follow} type={'success'} text={'Follow'} />
+
+        if (this.props.user_id) {
+          var following = <p onClick={this.follow}  style={{fontSize:'15px', margin: '0px'}}><i style={{'color':' orange'}} class="fa fa-star-o" aria-hidden="true"></i> Favorite {this.state.name}</p>
+        }
+        else {
+          var following = <Button href={"/signUp/"} type={'patron'} text={'Sign Up To Get Notified Of Deals'} />
+        }
+
         var notifications = <div></div>
         if (this.state.follow.id) {
-          following = <Button clickHandler={this.follow} type={'danger'} text={'Un-Follow'} />
+          following = <p onClick={this.follow}  style={{fontSize:'15px', margin:'0px'}}><i style={{'color':' orange'}} class="fa fa-star" aria-hidden="true"></i> Favorite {this.state.name}</p>
           if (this.state.follow.notifications == true) {
-            notifications = <Button clickHandler={this.notify} type={'danger'} text={'Turn Off Notifications'} />
+            notifications = <p onClick={this.notify}  style={{fontSize:'15px'}}><i style={{'color':' #234f9c'}} class="fa fa-check-square-o" aria-hidden="true"></i> Notify Me About New Deals</p>
+
           }
           else {
-            notifications = <Button clickHandler={this.notify} type={'success'} text={'Notify Me Of New Deals'} />
+            notifications = <p onClick={this.notify} style={{fontSize:'15px'}}><i style={{'color':'#234f9c'}} class="fa fa-square-o" aria-hidden="true"></i> Notify Me About New Deals</p>
           }
 
+        }
+
+        var email = <div></div>
+        if (this.state.email != '') {
+          email = <p style={{fontSize:'15px', 'color':'#234f9c', 'marginBottom':'5px'}}><i class="fa fa-envelope" aria-hidden="true"></i> {this.state.email}</p>
+        }
+
+        var phone = <div></div>
+        if (this.state.phone != '') {
+          phone = <p style={{fontSize:'15px', 'color':'#234f9c', 'marginBottom':'5px'}}><i className="fa fa-phone" aria-hidden="true"></i> {this.state.phone}</p>
+        }
+
+        var website = <div></div>
+        if (this.state.website != '') {
+          website = <p style={{fontSize:'15px', 'color':'#234f9c', 'marginBottom':'5px'}}><i class="fa fa-globe" aria-hidden="true"></i> <a href={this.state.website} target="_blank">Visit Website</a></p>
+        }
+
+        var facebook = <div></div>
+        if (this.state.facebook != '') {
+          facebook = <a href={this.state.facebook} target='_blank'><i class="fa fa-facebook fa-2x" aria-hidden="true" style={{'padding':'5px'}}></i></a>
+        }
+
+        var twitter = <div></div>
+        if (this.state.twitter != '') {
+          twitter = <a href={this.state.twitter} target='_blank'><i class="fa fa-twitter fa-2x" aria-hidden="true" style={{'padding':'5px'}}></i></a>
+        }
+
+        var instagram = <div></div>
+        if (this.state.instagram != '') {
+          instagram = <a href={this.state.instagram} target='_blank'><i class="fa fa-instagram fa-2x" aria-hidden="true" style={{'padding':'5px'}}></i></a>
+        }
+
+        var yelp = <div></div>
+        if (this.state.yelp != '') {
+          yelp = <a href={this.state.yelp} target='_blank'><i class="fa fa-yelp fa-2x" aria-hidden="true" style={{'padding':'5px'}}></i></a>
         }
 
         var content = <div className="container">
-                <h2>{this.state.name}</h2>
+              <MetaTags>
+                <title>{this.state.name} | PatronGate</title>
+                <meta name="description" content={this.state.description} />
+                <meta property="og:title" content={this.state.name} />
+              </MetaTags>
+                <div className='col-md-8'>
                 {publish}
-                <p>{this.state.description}</p>
-                <p>{this.state.email}</p>
-                <p>{this.state.phone}</p>
-                <p>{this.state.website}</p>
+                <h2 style={{'paddingTop':'10px', paddingBottom: '10px'}}>{this.state.name}</h2>
                 <p>{this.state.address}</p>
+                <img src={this.state.main_image} style={{'width':'100%'}} />
                 {following}
                 {notifications}
-                <h3>Active Deals</h3>
+                <h4>About {this.state.name}</h4>
+                <p>{this.state.description}</p>
+                </div>
+                <div className='col-md-4'>
+                  <h3>Contact {this.state.name}</h3>
+                  <div style={{'marginLeft':'10px'}}>
+                    {email}
+                    {phone}
+                    {website}
+                    <p style={{fontSize:'15px', 'color':'#234f9c', 'marginBottom':'5px'}}><i class="fa fa-car" aria-hidden="true"></i> <a href={"https://www.google.com/maps/place/" + this.state.address} target="_blank">Get Directions</a></p>
+                    <div id="socialMedia">
+                      <h3>Social Profiles</h3>
+                      {facebook}
+                      {twitter}
+                      {instagram}
+                      {yelp}
+                    </div>
+                  </div>
+                </div>
+
+                <h3 style={{'paddingTop':'35px'}}>Active Deals</h3>
+                {newDeal}
                 {dealCards}
         </div>;
 

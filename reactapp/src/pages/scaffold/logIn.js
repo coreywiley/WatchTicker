@@ -26,7 +26,8 @@ class LogIn extends Component {
       var content =
         <div className="container" style={{'marginTop':'100px'}}>
                 <Header size={2} text={'Log In'} />
-                <LogInForm redirectUrl={'/events/'} defaults={['','']} submitUrl={'/users/token/'} components={[TextInput, PasswordInput]} componentProps={[{'value':'','placeholder':'Email', 'name':'email','label':'Email'},{'value':'','placeholder':'Password', 'name':'password'}]} />
+                <LogInForm redirectUrl={'/'} defaults={['','']} submitUrl={'/users/token/'} components={[TextInput, PasswordInput]} componentProps={[{'value':'','placeholder':'Email', 'name':'email','label':'Email'},{'value':'','placeholder':'Password', 'name':'password'}]} />
+                <br/><br/>
         </div>;
 
         return (

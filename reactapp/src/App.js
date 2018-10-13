@@ -35,6 +35,12 @@ import Businesses from './pages/businesses.js';
 import Business from './pages/business.js';
 import Deal from './pages/deal.js';
 import Redemption from './pages/redeemed.js';
+import Nav from './projectLibrary/nav.js';
+
+import HowItWorks from './pages/how-it-works.js';
+import TermsOfService from './pages/tos.js';
+import About from './pages/about.js';
+import Contact from './pages/contact.js';
 
 class App extends Component {
     constructor(props) {
@@ -176,8 +182,18 @@ class App extends Component {
         else if (params[0].toLowerCase() == "redeemed") {
             content = <Redemption user={this.state.user} user_id={this.state.user.id} redemption_id={params[1]} />
         }
-
-
+        else if (params[0].toLowerCase() == "how-it-works") {
+            content = <HowItWorks user={this.state.user} user_id={this.state.user.id} />
+        }
+        else if (params[0].toLowerCase() == "tos") {
+            content = <TermsOfService user={this.state.user} user_id={this.state.user.id} />
+        }
+        else if (params[0].toLowerCase() == "about") {
+            content = <About user={this.state.user} user_id={this.state.user.id} />
+        }
+        else if (params[0].toLowerCase() == "contact") {
+            content = <Contact user={this.state.user} user_id={this.state.user.id} />
+        }
 
         if (this.state.loaded == false) {
           return (
@@ -189,8 +205,59 @@ class App extends Component {
         else {
           return (
               <div className="App">
+                  <Nav user_id={this.state.user.id} style={{'backgroundColor':'#234f9c !important'}}/>
                   <Wrapper content={content} loaded={this.state.loaded} />
+                  <div className="footer-wrapper">
+              			<footer className="site-footer-widgets" style={{'backgroundColor':'#2854a1'}}>
+              				<div className="container">
+              					<div className="row">
+              						<div className="footer-widget-column col-xs-12 col-sm-12 col-lg-5">
+              							<aside id="text-1" className="footer-widget widget_text">
+                              <div className="textwidget">
+                                <img src="http://beta.patrongate.com/wp-content/uploads/2018/07/pg_v3.png" style={{'width': '159px', 'marginBottom': '1em'}} />
+                                <p>At PatronGate our purpose is to connect people with great local businesses.  Discover and search for exclusive deals on meals, drink specials, and more!</p>
+                                <p>Made in the USA</p>
+                                <p></p>
+                              </div>
+          		              </aside>
+                          </div>
+              						<div className="footer-widget-column col-xs-12 col-sm-6 col-lg-3 col-lg-offset-1">
+              							<aside id="nav_menu-2" className="footer-widget widget_nav_menu">
+                              <h4 className="footer-widget-title">Resources</h4>
+                              <div className="menu-resources-container">
+                                <ul id="menu-resources" className="menu">
+                                  <li id="menu-item-13" className="menu-item menu-item-type-custom menu-item-object-custom menu-item-13"><a href="/contact/">Contact Us</a></li>
+                                  <li id="menu-item-31" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-31"><a href="/tos/">Terms of Service</a></li>
+                                </ul>
+                              </div>
+                            </aside>
+              						</div>
+              						<div className="footer-widget-column col-xs-12 col-sm-6 col-lg-3">
+              							<aside id="nav_menu-1" className="footer-widget widget_nav_menu">
+                              <h4 className="footer-widget-title">Company</h4>
+                              <div className="menu-company-container">
+                                <ul id="menu-company" className="menu">
+                                  <li id="menu-item-11" className="menu-item menu-item-type-custom menu-item-object-custom menu-item-11"><a href="/contact/">Customer Support</a></li>
+                                  <li id="menu-item-12" className="menu-item menu-item-type-custom menu-item-object-custom menu-item-12"><a href="/about/">About PatronGate</a></li>
+                                  <li id="menu-item-53" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-53"><a href="/deals/">Deals of the Week</a></li>
+                                </ul>
+                              </div>
+                            </aside>
+              						</div>
+              					</div>
+              				</div>
+              			</footer>
+
+              	<footer id="colophon" className="site-footer" style={{'backgroundColor':'#22498e', 'color':'#a1b5d6'}}>
+              		<div className="container">
+              			<div className="site-info">
+              				Copyright PatronGate © 2018 - All Rights Reserved
+                    </div>
+              			<div className="site-social"></div>
+              		</div>
+              	</footer>
               </div>
+            </div>
           );
         }
 
