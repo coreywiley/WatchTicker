@@ -222,7 +222,11 @@ class Form extends Component {
 
         var buttons = [];
         if (this.props.submitUrl) {
-            var submitButton = <button className="btn btn-primary" onClick={this.formSubmit}>Save</button>
+            var classes = "btn btn-primary";
+            if (this.props.submitButtonType) {
+              classes = "btn btn-" + this.props.submitButtonType;
+            }
+            var submitButton = <button className={classes} onClick={this.formSubmit}>Save</button>
             buttons.push(submitButton);
         }
 
