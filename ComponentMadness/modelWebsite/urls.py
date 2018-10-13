@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from modelWebsite.views import getModels, getModelInstanceJson, deleteModelInstance, \
-    getApps, getModelFieldsJson, writeComponents, CSRFMiddlewareToken, SendEmail
+    getApps, getModelFieldsJson, writeComponents, CSRFMiddlewareToken, SendEmail, PhotoUpload
 
 app_name = 'api'
 
@@ -19,6 +19,7 @@ urlpatterns = [
 
     url(r'^writeComponents/$', writeComponents, name = "writeComponents"),
     url(r'^email/$', SendEmail, name='email'),
+    url(r'^photoUpload/$',PhotoUpload, name='photoUpload')
 
 
 ]
