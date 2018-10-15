@@ -210,6 +210,13 @@ class CodeViewer extends Component {
         });
         ajaxWrapper("GET",  url, {}, this.loadSearch.bind(this));
     }
+    clearSearch(){
+        this.setState({
+            searchString: '',
+            searchResults: null,
+            selectedTags: [],
+        });
+    }
 
     loadSearch(result){
         var searchResults = this.parseResults(result);
@@ -375,6 +382,7 @@ class CodeViewer extends Component {
                     addTag={this.addTag.bind(this)}
                     removeTag={this.removeTag.bind(this)}
                     searchCode={this.searchCode.bind(this)}
+                    clearSearch={this.clearSearch.bind(this)}
                     results={this.state.searchResults}
                     toggleOpen={this.toggleOpen.bind(this)}
                 />
@@ -462,6 +470,12 @@ class SearchSidebar extends Component {
     searchCode(){
         this.props.searchCode(this.state.searchString);
     }
+    clearSearch(){
+        this.props.clearSearch();
+        this.setState({
+            searchString: ''
+        })
+    }
 
     render() {
         var tags = [];
@@ -503,6 +517,7 @@ class SearchSidebar extends Component {
 
             <div>
                 <Button type="success" clickHandler={this.searchCode.bind(this)} text="Search" />
+                <Button type="danger" clickHandler={this.clearSearch.bind(this)} text="Clear" />
             </div>
 
             {this.props.results}
