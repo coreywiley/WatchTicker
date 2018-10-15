@@ -152,10 +152,10 @@ class App extends Component {
         else if (params[0].toLowerCase() == "models") {
             content = <ModelList app={params[1]} user_id={this.state.token} logOut={logOut}/>;
         }
-        else if (params[0].toLowerCase() == "modelInstances") {
+        else if (params[0] == "modelInstances") {
             content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token} logOut={logOut}/>;
         }
-        else if (params[0].toLowerCase() == "modelInstancesTable") {
+        else if (params[0] == "modelInstancesTable") {
             content = <InstanceTable app={params[1]} model={params[2]} logOut={logOut}/>;
         }
         else if (params[0].toLowerCase() == "instance") {
