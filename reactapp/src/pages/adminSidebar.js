@@ -180,7 +180,7 @@ class AdminSidebar extends Component {
 
 
         return (
-            <Sidebar content={content} widthPercent={50} headerHeight={67}
+            <Sidebar content={content} loaded={true} widthPercent={50} headerHeight={67}
                 openerText="Admin: Chapter Tags" openerPosition="160px"
                 toggleOpen={this.props.toggleOpen}
             />

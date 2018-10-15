@@ -161,7 +161,7 @@ class AdminTagSidebar extends Component {
         </div>;
 
         return (
-            <Sidebar content={content} widthPercent={50} headerHeight={67}
+            <Sidebar content={content} loaded={true} widthPercent={50} headerHeight={67}
                 openerText="Admin: Tags & Synonyms" openerPosition="240px"
                 toggleOpen={this.props.toggleOpen}
             />

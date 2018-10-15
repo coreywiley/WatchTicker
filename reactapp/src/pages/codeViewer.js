@@ -23,6 +23,7 @@ class CodeViewer extends Component {
             pages: {}, tags: [],
             loadingPages: false, up: false,
             selectedTags: [], searchString: "", searchResults: [],
+            searchLoaded: true,
             resultList: null,
             selected: false,
             open: false
@@ -206,7 +207,8 @@ class CodeViewer extends Component {
             url += "or__text__text__icontains__splitme="+ tagNames +"&";
         }
         this.setState({
-            searchString: searchString
+            searchString: searchString,
+            searchLoaded: false,
         });
         ajaxWrapper("GET",  url, {}, this.loadSearch.bind(this));
     }
@@ -220,7 +222,10 @@ class CodeViewer extends Component {
 
     loadSearch(result){
         var searchResults = this.parseResults(result);
-        this.setState({searchResults: searchResults});
+        this.setState({
+            searchResults: searchResults,
+            searchLoaded: true
+        });
     }
 
     parseResults(resultData) {
@@ -385,6 +390,7 @@ class CodeViewer extends Component {
                     clearSearch={this.clearSearch.bind(this)}
                     results={this.state.searchResults}
                     toggleOpen={this.toggleOpen.bind(this)}
+                    loaded={this.state.searchLoaded}
                 />
 
                 <TableOfContents
@@ -524,7 +530,7 @@ class SearchSidebar extends Component {
         </div>;
 
         return (
-            <Sidebar content={content}
+            <Sidebar content={content} loaded={this.props.loaded}
                 openerText="Search" openerPosition="10px"
                 widthPercent={50} headerHeight={67}
                 toggleOpen={this.props.toggleOpen}
@@ -538,7 +544,8 @@ class TableOfContents extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            articles: []
+            articles: [],
+            loaded: false
         };
     }
 
@@ -563,7 +570,8 @@ class TableOfContents extends Component {
         }
 
         this.setState({
-            articles: articles
+            articles: articles,
+            loaded: true,
         });
     }
 
@@ -605,7 +613,7 @@ class TableOfContents extends Component {
 
 
         return (
-            <Sidebar content={content}
+            <Sidebar content={content} loaded={this.state.loaded}
                 openerText="Table of Contents" openerPosition="85px"
                 widthPercent={50} headerHeight={67}
                 toggleOpen={this.props.toggleOpen}

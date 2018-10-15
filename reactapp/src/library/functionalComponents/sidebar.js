@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-
+import {
+    Image
+} from 'library';
 
 class Sidebar extends Component {
     constructor(props) {
@@ -62,14 +64,17 @@ class Sidebar extends Component {
             <button className="btn btn-info" onClick={this.toggle.bind(this)}>{toggleText}</button>
         </div>
 
+        var content = <div style={{'textAlign':'center'}}> <Image css={{'width':'100px'}} src={'../../static/images/loading.gif'} /></div>;
+        if (this.props.loaded){
+            content = this.props.content;
+        }
+
         return (
             <div style={position} >
                 {opener}
                 <div className="container" style={{height: this.state.height, overflow: "scroll"}}>
                     <br/>
-
-                    {this.props.content}
-
+                    {content}
                     <br/>
                 </div>
             </div>
