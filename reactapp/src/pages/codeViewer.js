@@ -84,6 +84,15 @@ class CodeViewer extends Component {
             window.scrollTo(0, window.scrollY + 1214 * this.state.step);
         }
 
+        if (this.state.searchString){
+            var search = this.state.searchString;
+            pages = this.highlightInViewer(pages, search);
+        }
+        for (var i in this.state.selectedTags){
+            var tagName = this.state.selectedTags[i].name;
+            pages = this.highlightInViewer(pages, tagName);
+        }
+
         this.setState({
             pages: pages,
             loadingPages: false,
@@ -91,6 +100,33 @@ class CodeViewer extends Component {
         });
     }
 
+    highlightInViewer(pages, search){
+        for (var i in pages){
+            var page = pages[i];
+            var pageText = page.text.text.split(search);
+            var text = '';
+            for (var i in pageText){
+                text += pageText[i];
+                if (!(i >= pageText.length - 1)){
+                    text += '<span style="background:yellow;">' + search + '</span>';
+                }
+            }
+
+            if (!(search == search.toLowerCase())){
+                var pageText = page.text.text.split(search.toLowerCase());
+                var text = '';
+                for (var i in pageText){
+                    text += pageText[i];
+                    if (!(i >= pageText.length - 1)){
+                        text += '<span style="background:yellow;">' + search.toLowerCase() + '</span>';
+                    }
+                }
+            }
+            page.text.text = text;
+        }
+
+        return pages;
+    }
 
     getTags(page, offset) {
       ajaxWrapper("GET",  "/api/home/tag/?related=synonyms", {}, this.loadTags.bind(this));
@@ -169,6 +205,9 @@ class CodeViewer extends Component {
             url += "or__tags__synonyms__name__in="+ tagNames +"&";
             url += "or__text__text__icontains__splitme="+ tagNames +"&";
         }
+        this.setState({
+            searchString: searchString
+        });
         ajaxWrapper("GET",  url, {}, this.loadSearch.bind(this));
     }
 
@@ -433,7 +472,7 @@ class SearchSidebar extends Component {
             if (tag.synonymSelected){
                 var text = tag.synonymSelected;
             }
-            tags.push(<Button type="info" text={text} num={tag.id} clickHandler={this.props.removeTag} />);
+            tags.push(<Button hover={true} type="info" text={text} num={tag.id} clickHandler={this.props.removeTag} />);
         }
         if (tags.length > 0){
             selectedTags =
