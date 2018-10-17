@@ -27,6 +27,18 @@ class Business(models.Model):
     twitter = models.CharField(max_length=255, blank=True, default="")
     instagram = models.CharField(max_length=255, blank=True, default="")
     yelp = models.CharField(max_length=255, blank=True, default="")
+    rejected = models.BooleanField(default=False)
+    ask_for_publish = models.BooleanField(default=False)
+    monday_special = models.CharField(max_length=255, blank=True, default="")
+    tuesday_special = models.CharField(max_length=255, blank=True, default="")
+    wednesday_special = models.CharField(max_length=255, blank=True, default="")
+    thursday_special = models.CharField(max_length=255, blank=True, default="")
+    friday_special = models.CharField(max_length=255, blank=True, default="")
+    saturday_special = models.CharField(max_length=255, blank=True, default="")
+    sunday_special = models.CharField(max_length=255, blank=True, default="")
+
+    def __str__(self):
+        return u"{}".format(self.name)
 
 class Follow(models.Model):
     id = models.AutoField(primary_key=True)
@@ -45,6 +57,9 @@ class Deal(models.Model):
     last_published = models.DateTimeField(default = datetime.datetime.now)
     type = models.CharField(max_length=255, blank=True, default="")
     number_of_redeems_available = models.IntegerField(default = 0)
+
+    def __str__(self):
+        return u"{}".format(self.name)
 
 class Redemption(models.Model):
     id = models.AutoField(primary_key=True)

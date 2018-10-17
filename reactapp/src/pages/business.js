@@ -3,7 +3,7 @@ import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 import MetaTags from 'react-meta-tags';
 
-import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Button} from 'library';
+import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Button, Header} from 'library';
 import Card from 'projectLibrary/dealCard.js';
 
 class Business extends Component {
@@ -75,7 +75,7 @@ class Business extends Component {
           ajaxWrapper('POST','/api/home/business/' + this.props.business_id + '/', {'published':false}, () => this.setState({'published':false}))
       }
       else {
-        ajaxWrapper('POST','/api/home/business/' + this.props.business_id + '/', {'published':true}, () => this.setState({'published':true}))
+        ajaxWrapper('POST','/api/home/business/' + this.props.business_id + '/', {'ask_for_publish':true}, () => this.setState({'ask_for_publish':true}))
       }
     }
 
@@ -92,10 +92,14 @@ class Business extends Component {
 
         var publish = <div></div>
         var newDeal = <div></div>
-        if (this.props.user_id == this.state.owner) {
+
+        if (this.props.is_staff == true) {
+          publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /></div></div>
+        }
+        else if (this.props.user_id == this.state.owner) {
           newDeal = <Button href={'/dealForm/' + this.props.business_id + '/'} text={'New Deal'} type={'patron'} />
-          if (this.state.published == false) {
-            publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}><Button clickHandler={this.publish} type={'success'} text={'Publish Your Business On Patron Gate'} /></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /></div></div>
+          if (this.state.ask_for_publish == false) {
+            publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}><Button clickHandler={this.publish} type={'success'} text={'Submit For Approval To Publish Your Business On Patron Gate'} /></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /></div></div>
           }
           else {
             publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}><Button clickHandler={this.publish} type={'danger'} text={'Hide Your Business On Patron Gate Results'} /></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /></div></div>
@@ -158,6 +162,34 @@ class Business extends Component {
           yelp = <a href={this.state.yelp} target='_blank'><i class="fa fa-yelp fa-2x" aria-hidden="true" style={{'padding':'5px'}}></i></a>
         }
 
+        var specials = []
+        if (this.state.monday_special != '') {
+          specials.push(<p><strong>Monday - </strong>{this.state.monday_special}</p>)
+        }
+        if (this.state.tuesday_special != '') {
+          specials.push(<p><strong>Tuesday - </strong>{this.state.tuesday_special}</p>)
+        }
+        if (this.state.wednesday_special != '') {
+          specials.push(<p><strong>Wednesday - </strong>{this.state.wednesday_special}</p>)
+        }
+        if (this.state.thursday_special != '') {
+          specials.push(<p><strong>Thursday - </strong>{this.state.thursday_special}</p>)
+        }
+        if (this.state.friday_special != '') {
+          specials.push(<p><strong>Friday - </strong>{this.state.friday_special}</p>)
+        }
+        if (this.state.saturday_special != '') {
+          specials.push(<p><strong>Saturday - </strong>{this.state.saturday_special}</p>)
+        }
+        if (this.state.sunday_special != '') {
+          specials.push(<p><strong>Sunday - </strong>{this.state.sunday_special}</p>)
+        }
+
+        var specialsDisplay = <div></div>
+        if (specials.length > 0) {
+          specialsDisplay = <div><Header text={'Weekly Specials'} size={3} />{specials}</div>
+        }
+
         var content = <div className="container">
               <MetaTags>
                 <title>{this.state.name} | PatronGate</title>
@@ -171,6 +203,7 @@ class Business extends Component {
                 <img src={this.state.main_image} style={{'width':'100%'}} />
                 {following}
                 {notifications}
+                {specialsDisplay}
                 <h4>About {this.state.name}</h4>
                 <p>{this.state.description}</p>
                 </div>

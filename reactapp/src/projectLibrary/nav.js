@@ -32,7 +32,12 @@ class Nav extends React.Component {
           var links = [['/how-it-works/','How It Works'], ['/deals/','Deals Of The Week'], ['/businesses/','Local Businesses'], businessLink, ['/editUser/','Account Details'], ['/logOut/','Log Out']];
         }
         else {
-          var links = [['/how-it-works/','How It Works'], ['/deals/','Deals Of The Week'], ['/businesses/','Local Businesses'], ['/signUp/','Add Your Listing'], ['/signUp/','Sign Up'], ['/logIn/','Log In']];
+          var links = [['/how-it-works/','How It Works'], ['/deals/','Deals Of The Week'], ['/businesses/','Local Businesses'], ['/signUp/business/','Add Your Listing'], ['/signUp/','Sign Up'], ['/logIn/','Log In']];
+        }
+
+        if (this.props.is_staff == true) {
+          links.push(['/appList/','Admin'])
+          links.push(['/manageBusinesses/','Manage Businesses'])
         }
 
         return (

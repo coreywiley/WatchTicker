@@ -9,7 +9,6 @@ class AppList extends Component {
 
         return (
           <div>
-            <Nav token={this.props.user_id} logOut={this.props.logOut} />
             <div className="container list-group">
                 <List dataUrl={"/api/getApps/"} title={'Apps'} component={Link} objectName={'app'} dataMapping={dataMapping} />
             </div>

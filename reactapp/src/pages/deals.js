@@ -18,10 +18,10 @@ class Deals extends Component {
 
     componentDidMount() {
       if (this.props.limit) {
-        ajaxWrapper('GET','/api/home/deal/?order_by=-last_published&published=True&related=business&limit=' + this.props.limit, {}, this.dealCallback)
+        ajaxWrapper('GET','/api/home/deal/?order_by=-last_published&business__published=True&published=True&related=business&limit=' + this.props.limit, {}, this.dealCallback)
       }
       else {
-        ajaxWrapper('GET','/api/home/deal/?order_by=-last_published&published=True&related=business', {}, this.dealCallback)
+        ajaxWrapper('GET','/api/home/deal/?order_by=-last_published&business__published=True&published=True&related=business', {}, this.dealCallback)
       }
     }
 

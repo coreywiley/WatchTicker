@@ -22,7 +22,13 @@ class SignUp extends Component {
             window.location.href = redirect;
         }
         else {
-            window.location.href = '/';
+            if (this.props.business) {
+              window.location.href = '/businessForm/';
+            }
+            else {
+              window.location.href = '/';
+            }
+
         }
     }
 
@@ -34,7 +40,7 @@ class SignUp extends Component {
         var password_props = {'confirm_password':true, 'required':true};
         var phone =  {'value':'','name':'phone','label':'Phone Number','placeholder': '(651) 123-4567'}
         var age =  {'value':'','name':'age','label':'Age','placeholder': 23}
-        var gender =  {'value':'','name':'gender','label':'Gender','options':[{'value':'Pick One','text':'Pick One'}, {'value':'Male', 'text':'Male'}, {'value':'Female','text':'Female'},{'value':'Other','text':"I don't identify as either"}]}
+        var gender =  {'value':'','name':'gender','label':'Gender','options':[{'value':'Pick One','text':'Pick One'}, {'value':'Male', 'text':'Male'}, {'value':'Female','text':'Female'},{'value':'Other', 'text':"I don't identify as either"},{'value':'N/A','text':"I'd rather not say"}]}
         var zipcode =  {'value':'','name':'zipcode','label':'Zip Code','placeholder': '55104'}
 
         var ComponentProps = [first_name_props, last_name_props, email_props, phone, age, gender, zipcode, password_props];
@@ -42,9 +48,12 @@ class SignUp extends Component {
 
         var submitUrl = "/users/signup/";
 
+        var titles = <h2>Sign Up To Redeem Deals</h2>
+        if (this.props.business) {
+          titles = <h2>Sign Up To Add Your Business</h2>
+        }
         var content = <div className="container">
-                <h2>Sign Up</h2>
-                <p>Sign Up To Redeem Deals or Add Your Business</p>
+                {titles}
                 <Form components={Components} redirect={this.logIn} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
         </div>;
 
