@@ -70,7 +70,7 @@ class Customers extends Component {
           <p><Link text={'Back to Menu Items List.'} link={'/menuItems/'} /></p>
           <table className='table'>
             <tr>
-              <th>Task</th>
+              <th>Pack List Items</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>
@@ -89,7 +89,7 @@ class Customers extends Component {
 
         return (
           <div>
-            <Navbar logged_in={true} logOut={this.props.logOut} />
+            <Navbar is_staff={this.props.is_staff} logged_in={true} logOut={this.props.logOut} />
             <Wrapper loaded={this.state.loaded}  content={content} />
           </div>
         );

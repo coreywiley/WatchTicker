@@ -54,7 +54,7 @@ class SignUp extends Component {
 
         return (
           <div>
-            <Navbar logged_in={false} />
+            <Navbar is_staff={this.props.is_staff} logged_in={false} />
             <Wrapper loaded={true}  content={content} />
           </div>
              );

@@ -30,6 +30,7 @@ class NavBar extends React.Component {
                   {links}
                 </ul>
               </div>
+              <a href={'/appList'} style={{'marginRight':'25px', 'color':'darkblue'}}>Admin</a>
               {logOut}
             </nav>
         );

@@ -61,7 +61,7 @@ class NewMenuItem extends Component {
 
         return (
           <div>
-            <Navbar logged_in={true} logOut={this.props.logOut} />
+            <Navbar is_staff={this.props.is_staff} logged_in={true} logOut={this.props.logOut} />
             <Wrapper loaded={this.state.loaded}  content={content} />
           </div>
         );

@@ -170,71 +170,71 @@ class App extends Component {
             content = <PasswordReset  user_id={params[1]} />
         }
         else if (params[0].toLowerCase() == "events") {
-            content = <Events user_id={this.state.user.id} logOut={this.logOut}/>
+            content = <Events user_id={this.state.user.id} is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "newevent") {
-            content = <NewEvent user_id={this.state.user.id} event_id={params[1]}  logOut={this.logOut}/>
+            content = <NewEvent user_id={this.state.user.id} event_id={params[1]}  is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "newcustomer") {
-            content = <NewCustomer user_id={this.state.user.id} customer_id={params[1]}  logOut={this.logOut}/>
+            content = <NewCustomer user_id={this.state.user.id} customer_id={params[1]}  is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "customers") {
-            content = <Customers user_id={this.state.user.id} logOut={this.logOut}/>
+            content = <Customers user_id={this.state.user.id} is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "menuitems") {
-            content = <MenuItems user_id={this.state.user.id} logOut={this.logOut}/>
+            content = <MenuItems user_id={this.state.user.id} is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "newmenuitem") {
-            content = <NewMenuItem user_id={this.state.user.id} fooditem_id={params[1]}  logOut={this.logOut}/>
+            content = <NewMenuItem user_id={this.state.user.id} fooditem_id={params[1]}  is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "shoplistitems") {
           console.log("Check ceh")
-            content = <ShoppingListItems user_id={this.state.user.id} fooditem_id={params[1]}  logOut={this.logOut}/>
+            content = <ShoppingListItems user_id={this.state.user.id} fooditem_id={params[1]}  is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "newshoppinglistitem") {
-            content = <NewShoppingListItem user_id={this.state.user.id} fooditem_id={params[1]} shoppinglistitem_id={params[2]} logOut={this.logOut}/>
+            content = <NewShoppingListItem user_id={this.state.user.id} fooditem_id={params[1]} shoppinglistitem_id={params[2]} is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "preplistitems") {
           console.log("Check ceh")
-            content = <PrepListItems user_id={this.state.user.id} fooditem_id={params[1]}  logOut={this.logOut}/>
+            content = <PrepListItems user_id={this.state.user.id} fooditem_id={params[1]}  is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "newpreplistitem") {
-            content = <NewPrepListItem user_id={this.state.user.id} fooditem_id={params[1]} shoppinglistitem_id={params[2]} logOut={this.logOut}/>
+            content = <NewPrepListItem user_id={this.state.user.id} fooditem_id={params[1]} shoppinglistitem_id={params[2]} is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "decorationlistitems") {
           console.log("Check ceh")
-            content = <DecorationListItems user_id={this.state.user.id} fooditem_id={params[1]}  logOut={this.logOut}/>
+            content = <DecorationListItems user_id={this.state.user.id} fooditem_id={params[1]}  is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "newdecorationlistitem") {
-            content = <NewDecorationListItem user_id={this.state.user.id} fooditem_id={params[1]} shoppinglistitem_id={params[2]} logOut={this.logOut}/>
+            content = <NewDecorationListItem user_id={this.state.user.id} fooditem_id={params[1]} shoppinglistitem_id={params[2]} is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "packlistitems") {
           console.log("Check ceh")
-            content = <PackListItems user_id={this.state.user.id} fooditem_id={params[1]}  logOut={this.logOut}/>
+            content = <PackListItems user_id={this.state.user.id} fooditem_id={params[1]}  is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "newpacklistitem") {
-            content = <NewPackListItem user_id={this.state.user.id} fooditem_id={params[1]} shoppinglistitem_id={params[2]} logOut={this.logOut}/>
+            content = <NewPackListItem user_id={this.state.user.id} fooditem_id={params[1]} shoppinglistitem_id={params[2]} is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "menu") {
-            content = <Menu user_id={this.state.user.id} event_id={params[1]} logOut={this.logOut}/>
+            content = <Menu user_id={this.state.user.id} event_id={params[1]} is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "shoplist") {
-            content = <ShopList user_id={this.state.user.id} event_id={params[1]} logOut={this.logOut}/>
+            content = <ShopList user_id={this.state.user.id} event_id={params[1]} is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "preplist") {
-            content = <PrepList user_id={this.state.user.id} event_id={params[1]} logOut={this.logOut}/>
+            content = <PrepList user_id={this.state.user.id} event_id={params[1]} is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "packlist") {
-            content = <PackList user_id={this.state.user.id} event_id={params[1]} logOut={this.logOut}/>
+            content = <PackList user_id={this.state.user.id} event_id={params[1]} is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "decorlist") {
-            content = <DecorationList user_id={this.state.user.id} event_id={params[1]} logOut={this.logOut}/>
+            content = <DecorationList user_id={this.state.user.id} event_id={params[1]} is_staff={this.state.user.is_staff} logOut={this.logOut}/>
         }
         else if (params[0].toLowerCase() == "dailypreplist") {
-            content = <DailyPrepList user_id={this.state.user.id} logOut={this.logOut} />
+            content = <DailyPrepList user_id={this.state.user.id} is_staff={this.state.user.is_staff} logOut={this.logOut} />
         }
         else if (params[0].toLowerCase() == "printall") {
-            content = <PrintAll user_id={this.state.user.id} event_id={params[1]} />
+            content = <PrintAll user_id={this.state.user.id} is_staff={this.state.user.is_staff} event_id={params[1]} />
         }
 
 

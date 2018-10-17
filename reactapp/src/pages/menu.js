@@ -92,29 +92,38 @@ class Customers extends Component {
                               <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['customer']['phone']}</td>
                             </tr>
                             <tr>
-                              <th style={{'padding':'0px','border-top':'0px'}}>Arrival Time</th>
-                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['arrival_time']}</td>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Leave Kitchen Time</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['leave_time']}</td>
                               <th style={{'padding':'0px','border-top':'0px'}}>Customer Email</th>
                               <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['customer']['email']}</td>
                             </tr>
                             <tr>
-                              <th style={{'padding':'0px','border-top':'0px'}}>Leave Kitchen Time</th>
-                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['leave_time']}</td>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Arrival Time</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['arrival_time']}</td>
                               <th style={{'padding':'0px','border-top':'0px'}}>Location</th>
                               <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['address'] + ', ' + this.state.eventInfo['city'] + ' ' + this.state.eventInfo['state'] + ' ' + this.state.eventInfo['zip']}</td>
                             </tr>
                             <tr>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Event Start Time</th>
+                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['event_time']}</td>
                               <th style={{'padding':'0px','border-top':'0px'}}>Occasion</th>
                               <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['occasion']}</td>
-                              <th style={{'padding':'0px','border-top':'0px'}}>Customer Notes</th>
-                              <td style={{'padding':'0px','border-top':'0px', 'maxWidth':'250px'}}>{this.state.eventInfo['customer']['notes']}</td>
+
                             </tr>
                             <tr>
-                              <th style={{'padding':'0px','border-top':'0px'}}>Guest Count</th>
-                              <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['guest_count']}</td>
-                              <th style={{'padding':'0px','border-top':'0px'}}>Event Notes</th>
-                              <td style={{'padding':'0px','border-top':'0px', 'maxWidth':'250px'}}>{this.state.eventInfo['notes']}</td>
+                            <th style={{'padding':'0px','border-top':'0px'}}>Guest Count</th>
+                            <td style={{'padding':'0px','border-top':'0px'}}>{this.state.eventInfo['guest_count']}</td>
+                            <td style={{'padding':'0px','border-top':'0px'}}></td>
+                            <td style={{'padding':'0px','border-top':'0px'}}></td>
+
                             </tr>
+                            <tr>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Customer Notes</th>
+                              <td style={{'padding':'0px','border-top':'0px', 'maxWidth':'250px'}}>{this.state.eventInfo['customer']['notes']}</td>
+                              <th style={{'padding':'0px','border-top':'0px'}}>Event Notes</th>
+                              <td style={{'padding':'0px','border-top':'0px', 'maxWidth':'250px', 'wordBreak':'break-word'}}>{this.state.eventInfo['notes']}</td>
+                            </tr>
+
                           </table>
                         </div>;
       }
@@ -124,19 +133,22 @@ class Customers extends Component {
         <div style={{'marginTop':'25px'}}>
           <Button clickHandler={() => window.print()} type={'success'} text={'Print'} />
         </div>
-          <Header css={{'padding':'50px','color':'#cb4154', 'text-align':'center'}} size={1} text={'Orders for ' + this.state.eventInfo.name} />
+          <Header css={{'padding':'50px','color':'#cb4154', 'text-align':'center'}} size={1} text={'Menu for ' + this.state.eventInfo.name} />
           {eventInfo}
           <div style={{'marginTop':'35px','marginBottom':'50px'}}>
+          <div className="no-print">
+          <Header size={4} text={'Create New Order for ' + this.state.eventInfo.name} />
+          <Form components={[Select]} first={true} componentProps={[food_props]} submitUrl={submitUrl} defaults={defaults} redirect={this.refreshOrders}/>
+          </div>
+          <br />
+          <br />
           <Header size={2} text={'Menu Items'} />
           </div>
           <table className='table'>
             {eventList}
           </table>
 
-          <div className="no-print">
-          <Header size={4} text={'Create New Order for ' + this.state.eventInfo.name} />
-          <Form components={[Select]} first={true} componentProps={[food_props]} submitUrl={submitUrl} defaults={defaults} redirect={this.refreshOrders}/>
-          </div>
+
 
         </div>;
 
@@ -144,7 +156,7 @@ class Customers extends Component {
 
         return (
           <div>
-            <Navbar logged_in={true} logOut={this.props.logOut} />
+            <Navbar is_staff={this.props.is_staff} logged_in={true} logOut={this.props.logOut} />
             <Wrapper loaded={this.state.loaded}  content={content} />
           </div>
         );

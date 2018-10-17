@@ -68,7 +68,7 @@ class PasswordResetRequest extends Component {
 
         return (
           <div>
-            <Navbar logged_in={false} />
+            <Navbar is_staff={this.props.is_staff} logged_in={false} />
             <Wrapper loaded={this.state.loaded}  content={content} />
           </div>
              );

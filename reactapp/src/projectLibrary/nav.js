@@ -21,7 +21,7 @@ class Nav extends React.Component {
 
 
         return (
-            <Navbar nameLink={nameLink} name={name} links={links} logOut={this.props.logOut} />
+            <Navbar nameLink={nameLink} name={name} links={links} is_staff={this.props.is_staff} logOut={this.props.logOut} />
         );
     }
 }
