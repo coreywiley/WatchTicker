@@ -14,12 +14,12 @@ class NewMenuItem extends Component {
             user: this.props.user_id,
         };
 
-        this.customerCallback = this.eventCallback.bind(this);
+        this.eventCallback = this.eventCallback.bind(this);
     }
 
     componentDidMount() {
       if (this.props.fooditem_id) {
-        ajaxWrapper('GET','/api/home/fooditem/' + this.props.customer_id + '/', {}, this.customerCallback)
+        ajaxWrapper('GET','/api/home/fooditem/' + this.props.fooditem_id + '/', {}, this.eventCallback)
       }
       else {
         this.setState({'loaded':true})
@@ -27,7 +27,6 @@ class NewMenuItem extends Component {
     }
 
     eventCallback(result) {
-      console.log("Result", result)
       var customerDetails = result[0]['fooditem'];
       customerDetails['loaded'] = true;
       this.setState(customerDetails)
