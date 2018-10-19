@@ -67,11 +67,8 @@ class PasswordResetRequest extends Component {
         </div>;
 
         return (
-          <div>
-            <Navbar logged_in={false} />
             <Wrapper loaded={this.state.loaded}  content={content} />
-          </div>
-             );
+         );
     }
 }
 export default PasswordResetRequest;
