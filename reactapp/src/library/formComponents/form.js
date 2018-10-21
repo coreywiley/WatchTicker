@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
 import ajaxWrapper from "base/ajax.js";
-import {Alert} from 'library';
+import {Alert, Button} from 'library';
 //Example
 //var answerProps = {'name':'response', 'value':''}
 //var defaults = {'response':'', 'question':this.props.question_id, 'sid':this.props.user_id}
@@ -146,14 +146,21 @@ class Form extends Component {
                 } else {
                     this.setState(value[0][this.props.objectName], this.props.setGlobalState('Form',this.state));
                 }
-            } else {
+            }
+            else if (value['success'] == true) {
+              //do nothing
+            }
+            else {
               if (value[0]) {
                 this.setState(value[0][this.props.objectName]);
               }
 
             }
 
-        if (this.props.redirectUrl) {
+        if (this.props.deleteRedirectUrl && value['success'] == true) {
+          window.location.href = this.props.deleteRedirectUrl;
+        }
+        else if (this.props.redirectUrl) {
             if (this.props.objectName) {
                  var redirectUrl = resolveVariables({'redirectUrl':this.props.redirectUrl}, value[0][this.props.objectName]);
             }
@@ -226,12 +233,14 @@ class Form extends Component {
             if (this.props.submitButtonType) {
               classes = "btn btn-" + this.props.submitButtonType;
             }
-            var submitButton = <button className={classes} onClick={this.formSubmit}>Save</button>
+            var float = {'float':'left'}
+            var submitButton = <button css={float} className={classes} onClick={this.formSubmit}>Save</button>
             buttons.push(submitButton);
         }
 
         if (this.props.deleteUrl) {
-            var deleteButton = <button className="btn btn-danger" onClick={this.formDelete}>Delete</button>
+            var float = {'float':'right'}
+            var deleteButton = <Button css={float} type={"danger"} clickHandler={this.formDelete} deleteType={true} text={"Delete"} />
             buttons.push(deleteButton);
         }
 

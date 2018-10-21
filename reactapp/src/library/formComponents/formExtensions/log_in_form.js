@@ -26,6 +26,7 @@ class LogInForm extends Component {
     formSubmit() {
         console.log("Submitting", this.state, this.props.submitUrl);
         var data = this.state;
+        data['email'] = data['email'].toLowerCase()
         ajaxWrapper("POST",this.props.submitUrl, data, this.formSubmitCallback);
     }
 
@@ -47,8 +48,13 @@ class LogInForm extends Component {
             localStorage.setItem('token_time', new Date())
             if (localStorage.getItem('redirect')) {
                 var redirect = localStorage.getItem('redirect');
-                localStorage.removeItem('redirect')
-                window.location.href = redirect;
+                if (redirect.indexOf('deal') > -1 || redirect.indexOf('business') > -1) {
+                  localStorage.removeItem('redirect')
+                  window.location.href = redirect;
+                }
+                else {
+                  window.location.href = this.props.redirectUrl;
+                }
             }
             else {
                 window.location.href = this.props.redirectUrl;

@@ -47,7 +47,7 @@ class Button extends React.Component {
         content = <button className={"btn " + type} onClick={this.showModal} style={css}>{this.props.text}</button>
       }
       else if (this.props.deleteType == true && this.state.modal == true) {
-        var alt = <button className={"btn btn-success"} onClick={this.hideModal} style={{'margin':'15px'}}>Dont Delete</button>;
+        var alt = <button className={"btn btn-success"} onClick={this.hideModal} style={{'margin':'15px', 'float':'left'}}>Dont Delete</button>;
         var button = <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>;
         content = <Modal content={[alt,button]} show={true} title={'Are you sure?'} onHide={this.hideModal} />
       }
