@@ -134,32 +134,4 @@ USE_L10N = True
 USE_TZ = True
 
 
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'datefmt': "%Y-%m-%d %H:%M:%S",
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d :: %(message)s'
-        },
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'stream': sys.stdout,
-            'formatter': 'verbose'
-        },
-    },
-    'loggers': {
-        'django.requests': {
-            'handlers': ['console'],
-            'propagate': True,
-            'level': 'DEBUG',
-        },
-    },
-}
-
-
 SENDGRID_API_KEY = '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'
