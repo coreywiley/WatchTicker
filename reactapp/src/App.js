@@ -34,6 +34,8 @@ import Businesses from './pages/businesses.js';
 import Business from './pages/business.js';
 import Deal from './pages/deal.js';
 import Redemption from './pages/redeemed.js';
+import ManageYourBusinesses from './pages/manageYourBusinesses.js';
+import CouponMetrics from './pages/couponMetrics.js';
 
 import Nav from './projectLibrary/nav.js';
 import Footer from './projectLibrary/footer.js';
@@ -75,7 +77,7 @@ class App extends Component {
         var token = localStorage.getItem('token')
         if (token) {
             if (window.location.href.indexOf('login') > -1 || window.location.href.indexOf('signup') > -1) {
-                window.location.href = '/events/';
+                window.location.href = '/';
             }
             else {
                 this.setState({csrfmiddlewaretoken: value.csrfmiddlewaretoken, token: token}, this.getUserInfo);
@@ -109,7 +111,12 @@ class App extends Component {
         var params = this.getURL();
         console.log("Params", params);
 
+        if (window.location.pathname.toLowerCase().indexOf('login') == -1 && window.location.pathname.toLowerCase().indexOf('signup') == -1 && window.location.pathname.toLowerCase().indexOf('sockjs') == -1  && window.location.pathname.toLowerCase().indexOf('password') == -1 && window.location.pathname.toLowerCase().indexOf('log') == -1) {
+          localStorage.setItem('redirect', window.location.pathname);
+        }
+
         var adminPages = ['applist','models','modelinstances','modelinstancestable','instance', 'managebusinesses']
+        var loggedInPages = ['manageYourBusinesses']
         var route = params[0].toLowerCase()
 
 
@@ -120,7 +127,10 @@ class App extends Component {
           console.log("Admin", adminPages.indexOf(route), this.state.user.is_staff)
           if (params[0] === "") {
               //Home page
-              content = <Home />
+              content = <Home user_id={this.state.user.id}/>
+          }
+          else if (this.state.user.id == '' && loggedInPages.indexOf(route) > -1) {
+            window.location.href = '/signUp/';
           }
           else if (this.state.user.is_staff == false && adminPages.indexOf(route) > -1) {
             window.location.href = '/';
@@ -211,6 +221,12 @@ class App extends Component {
           else if (params[0].toLowerCase() == "managebusinesses") {
               content = <ManageBusinesses user={this.state.user} user_id={this.state.user.id} />
           }
+          else if (params[0].toLowerCase() == "manageyourbusinesses") {
+              content = <ManageYourBusinesses user={this.state.user} user_id={this.state.user.id} />
+          }
+          else if (params[0].toLowerCase() == "couponmetrics") {
+              content = <CouponMetrics user={this.state.user} user_id={this.state.user.id} business_id={params[1]} />
+          }
         }
 
         if (this.state.loaded == false) {
@@ -225,6 +241,8 @@ class App extends Component {
               <div className="App">
                   <Nav user_id={this.state.user.id} style={{'backgroundColor':'#234f9c !important'}} is_staff={this.state.user.is_staff}/>
                   <Wrapper content={content} loaded={this.state.loaded} />
+                  <br />
+                  <br />
                   <Footer />
             </div>
           );

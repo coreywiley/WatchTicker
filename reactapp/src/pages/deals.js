@@ -10,7 +10,7 @@ class Deals extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {deals:[], filters:{'deal_type':'', 'business_type':'', 'city':'', 'state':''}, 'loaded':false};
+    this.state = {deals:[], filters:{'deal_type':'', 'business_type':'', 'city':'', 'state':'', 'search':''}, 'loaded':false};
 
     this.dealCallback = this.dealCallback.bind(this);
     this.setGlobalState = this.setGlobalState.bind(this);
@@ -53,26 +53,30 @@ class Deals extends Component {
 
         if (this.state.loaded == true) {
         for (var index in this.state.deals) {
-          if (this.state.filters.deal_type == '' || (this.state.filters.deal_type == this.state.deals[index]['type'])) {
-            if (this.state.filters.business_type == '' || (this.state.filters.business_type == this.state.deals[index]['business']['type'])) {
-              if (this.state.filters.city == '' || (this.state.filters.city == this.state.deals[index]['business']['city'])) {
-                if (this.state.filters.state == '' || (this.state.filters.state == this.state.deals[index]['business']['state'])) {
-                  dealCards.push(<Card imageUrl={this.state.deals[index]['main_image']} imageAlt={this.state.deals[index]['name']} name={this.state.deals[index]['name']} description={this.state.deals[index]['description']} button={'Read More'} button_type={'primary'} link={'/deal/' + this.state.deals[index]['id'] + '/'} />)
-                  if (usedDealTypes.indexOf(this.state.deals[index]['type']) == -1) {
-                    deal_types.push({'value':this.state.deals[index]['type'], 'text':this.state.deals[index]['type']})
-                    usedDealTypes.push(this.state.deals[index]['type'])
-                  }
-                  if (usedBusinessTypes.indexOf(this.state.deals[index]['business']['type']) == -1) {
-                    business_types.push({'value':this.state.deals[index]['business']['type'], 'text':this.state.deals[index]['business']['type']})
-                    usedBusinessTypes.push(this.state.deals[index]['business']['type'])
-                  }
-                  if (usedCities.indexOf(this.state.deals[index]['business']['city']) == -1) {
-                    cities.push({'value':this.state.deals[index]['business']['city'], 'text':this.state.deals[index]['business']['city']})
-                    usedCities.push(this.state.deals[index]['business']['city'])
-                  }
-                  if (usedState.indexOf(this.state.deals[index]['business']['state']) == -1) {
-                    states.push({'value':this.state.deals[index]['business']['state'], 'text':this.state.deals[index]['business']['state']})
-                    usedState.push(this.state.deals[index]['business']['state'])
+          var deal = this.state.deals[index]
+          if (this.state.filters.deal_type == '' || (this.state.filters.deal_type == deal['type'])) {
+            if (this.state.filters.business_type == '' || (this.state.filters.business_type == deal['business']['type'])) {
+              if (this.state.filters.city == '' || (this.state.filters.city == deal['business']['city'])) {
+                if (this.state.filters.state == '' || (this.state.filters.state == deal['business']['state'])) {
+                  var dealText = deal.name + deal.description;
+                  if (this.state.filters.search == '' || dealText.toLowerCase().indexOf(this.state.filters.search.toLowerCase()) > -1) {
+                    dealCards.push(<Card imageUrl={deal['main_image']} imageAlt={deal['name']} name={deal['name']} description={deal['description']} button={'Read More'} button_type={'primary'} link={'/deal/' + deal['id'] + '/'} />)
+                    if (usedDealTypes.indexOf(deal['type']) == -1) {
+                      deal_types.push({'value':deal['type'], 'text':deal['type']})
+                      usedDealTypes.push(deal['type'])
+                    }
+                    if (usedBusinessTypes.indexOf(deal['business']['type']) == -1) {
+                      business_types.push({'value':deal['business']['type'], 'text':deal['business']['type']})
+                      usedBusinessTypes.push(deal['business']['type'])
+                    }
+                    if (usedCities.indexOf(deal['business']['city']) == -1) {
+                      cities.push({'value':deal['business']['city'], 'text':deal['business']['city']})
+                      usedCities.push(deal['business']['city'])
+                    }
+                    if (usedState.indexOf(deal['business']['state']) == -1) {
+                      states.push({'value':deal['business']['state'], 'text':deal['business']['state']})
+                      usedState.push(deal['business']['state'])
+                    }
                   }
                 }
               }
@@ -81,13 +85,14 @@ class Deals extends Component {
         }
 
 
-        var Components = [Select,Select,Select,Select];
+        var Components = [Select,Select,Select,Select, TextInput];
         var deal_type = {'value':'', 'name':'deal_type', 'label':'Type Of Deal', 'options':deal_types, 'layout':'col-md-3 col-xs-6', 'defaultoption':''}
         var business_type = {'value':'', 'name':'business_type', 'label':'Type Of Restaurant', 'options':business_types, 'layout':'col-md-3 col-xs-6', 'defaultoption':''}
         var city = {'value':'', 'name':'city', 'label':'City', 'options':cities, 'layout':'col-md-3 col-xs-6', 'defaultoption':''}
         var state = {'value':'', 'name':'state', 'label':'State', 'options':states, 'layout':'col-md-3 col-xs-6', 'defaultoption':''}
+        var search = {'value':'', 'name':'search', 'label':'Search Anything', 'layout':'col-md-12 col-xs-12', 'defaultoption':''}
 
-        var ComponentProps = [deal_type, business_type, city, state];
+        var ComponentProps = [deal_type, business_type, city, state, search];
         var defaults = this.state.filters;
 
         var title = <h2>Filter</h2>

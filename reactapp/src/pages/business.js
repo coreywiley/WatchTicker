@@ -3,7 +3,7 @@ import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 import MetaTags from 'react-meta-tags';
 
-import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Button, Header} from 'library';
+import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Button, Header, MultiLineText} from 'library';
 import Card from 'projectLibrary/dealCard.js';
 
 class Business extends Component {
@@ -94,15 +94,16 @@ class Business extends Component {
         var newDeal = <div></div>
 
         if (this.props.is_staff == true) {
-          publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /></div></div>
+          newDeal = <Button href={'/dealForm/' + this.props.business_id + '/'} text={'New Deal'} type={'patron'} />
+          publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /><Button href={"/couponMetrics/" + this.state.id + "/"} type={'patron'} text={'View Redemptions'} /></div></div>
         }
         else if (this.props.user_id == this.state.owner) {
           newDeal = <Button href={'/dealForm/' + this.props.business_id + '/'} text={'New Deal'} type={'patron'} />
           if (this.state.ask_for_publish == false) {
-            publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}><Button clickHandler={this.publish} type={'success'} text={'Submit For Approval To Publish Your Business On Patron Gate'} /></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /></div></div>
+            publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}><Button clickHandler={this.publish} type={'success'} text={'Submit For Approval To Publish Your Business On Patron Gate'} /></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /><Button href={"/couponMetrics/" + this.state.id + "/"} type={'patron'} text={'View Redemptions'} /></div></div>
           }
           else {
-            publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}><Button clickHandler={this.publish} type={'danger'} text={'Hide Your Business On Patron Gate Results'} /></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /></div></div>
+            publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}><Button clickHandler={this.publish} type={'danger'} text={'Hide Your Business On Patron Gate Results'} /></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /><Button href={"/couponMetrics/" + this.state.id + "/"} type={'patron'} text={'View Redemptions'} /></div></div>
           }
         }
 
@@ -205,7 +206,7 @@ class Business extends Component {
                 {notifications}
                 {specialsDisplay}
                 <h4>About {this.state.name}</h4>
-                <p>{this.state.description}</p>
+                <MultiLineText text={this.state.description} />
                 </div>
                 <div className='col-md-4'>
                   <h3>Contact {this.state.name}</h3>

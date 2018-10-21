@@ -3,7 +3,7 @@ import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 import MetaTags from 'react-meta-tags';
 
-import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Link, Button, Alert} from 'library';
+import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Link, Button, Alert, MultiLineText} from 'library';
 
 class Deal extends Component {
     constructor(props) {
@@ -35,14 +35,14 @@ class Deal extends Component {
 
 
         ajaxWrapper('GET','/api/home/redemption/?count&user=' + this.props.user_id + '&deal=' + this.props.deal_id, {}, this.redemptionNumber)
-      
+
 
     }
 
     redemptionNumber(result) {
       var totalRedemptions = result['count'];
 
-      if (totalRedemptions > this.state.number_of_redeems_available && this.state.number_of_redeems_available > 0) {
+      if (totalRedemptions >= this.state.number_of_redeems_available && this.state.number_of_redeems_available > 0) {
         this.setState({totalRedemptions:result['count'], redeemable:false})
       }
       else {
@@ -95,12 +95,23 @@ class Deal extends Component {
         ('0' + (d.getMonth() + 1)).slice(-2),
         ('0' + d.getDate()).slice(-2)
       ].join('-');
-
       ajaxWrapper('POST','/api/home/redemption/', {'date':date, 'user':this.props.user_id, 'deal': this.props.deal_id}, this.redeemed);
-      ajaxWrapper('POST','/api/email/', {'to_email':this.props.user['email'], 'from_email':'jeremy.thiesen1@gmail.com', 'subject':'Redeemed Coupon: ' + this.state.name + ' via Patron Gate', 'text':this.props.user['first_name'] + ' ' + this.props.user['last_name'] + ' redeemed the coupon ' + this.state.name + ' for ' + this.state.business.name + ' for ' + date}, console.log)
+
     }
 
     redeemed(result) {
+      var d = new Date();
+      var date = [
+        d.getFullYear(),
+        ('0' + (d.getMonth() + 1)).slice(-2),
+        ('0' + d.getDate()).slice(-2)
+      ].join('-');
+
+
+      var file_name = this.props.user['id'] + '_' + result[0]['redemption']['id'] + '.jpg';
+      console.log({'file_name': file_name, 'main_image':this.state.main_image, 'text': this.props.user['first_name'] + ' redeemed \n' + this.state.name + '\n on ' + date + '\n via PatronGate'})
+      ajaxWrapper('POST','/redeem/',{'file_name': file_name, 'main_image':this.state.main_image, 'text': this.props.user['first_name'] + ' redeemed \n' + this.state.name + '\n on ' + date + '\n via PatronGate'}, console.log)
+      ajaxWrapper('POST','/api/email/', {'to_email':this.props.user['email'], 'from_email':'jeremy.thiesen1@gmail.com', 'subject':'Redeemed Coupon: ' + this.state.name + ' via Patron Gate', 'text':"<img src='http://patrongate.jthiesen1.webfactional.com/static/images/" + file_name + "'>"}, console.log)
       window.location.href = '/redeemed/' + result[0]['redemption']['id'] + '/';
     }
 
@@ -108,11 +119,10 @@ class Deal extends Component {
 
       var publish = <div></div>
       var emailsSent = <div></div>;
-      if (this.props.user_id == this.state.business.owner_id) {
+      if (this.props.user_id == this.state.business.owner_id || this.props.user.is_staff == true) {
         if (this.state.emailsSent == true) {
           emailsSent = <Alert type={"success"} text={"Emails To " + this.state.totalEmails + " Followers Have Been Sent!"} />
         }
-        console.log("You own this business")
         if (this.state.published == false) {
           publish = <div style={{'padding':'10px'}}>
             <div style={{'float':'left'}}><Button clickHandler={this.publish} type={'success'} text={'Publish Your Deal On Patron Gate and to all your followers'} /></div>
@@ -138,7 +148,7 @@ class Deal extends Component {
       var redeem = <div></div>
       if (this.props.user_id) {
         if (this.state.redeemable == true) {
-          redeem = <Button clickHandler={this.redeem} type={'patron'} text={'Redeem'} />
+          redeem = <div><Button clickHandler={this.redeem} type={'patron'} text={'Redeem'} /><p><strong>When clicking redeem, you are redeeming the coupon for use today. It will be invalid after today</strong></p></div>
         }
       }
       else {
@@ -167,8 +177,8 @@ class Deal extends Component {
                 {number_of_redeems_available}
                 {valid_until}
                 <img src={this.state.main_image} style={{'width':'100%'}} />
-                <h3>About {this.state.name}</h3>
-                <p>{this.state.description}</p>
+                <h3>About the Deal</h3>
+                <MultiLineText text={this.state.description} />
                 {redeem}
                 <p>You have redeemed this coupon {this.state.totalRedemptions} times.</p>
 

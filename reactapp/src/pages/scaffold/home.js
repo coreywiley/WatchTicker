@@ -18,6 +18,12 @@ class Home extends Component {
     }
 
     render() {
+
+      var addBusiness = <Button href={"/signUp/business/"} text={"Add Your Business"} type={'patron'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
+      if (this.props.user_id) {
+        var addBusiness = <Button href={"/manageYourBusinesses/"} text={"Add Your Business"} type={'patron'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
+      }
+
       var content =
         <div className=''>
           <MetaTags>
@@ -86,9 +92,9 @@ class Home extends Component {
 							</div>
 
 			<div class="cta-button-wrapper col-sm-12 col-md-4 col-lg-3">
-			<Button href={"/add-your-listing/"} text={"Add Your Business"} type={'patron'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
+			{addBusiness}
 				<small class="cta-subtext">
-					and get started in minutes				</small>
+					and get started in minutes</small>
 			</div>
 
 		</div>

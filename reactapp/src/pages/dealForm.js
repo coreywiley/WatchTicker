@@ -47,6 +47,12 @@ class DealForm extends Component {
           title = <h2>Edit A Deal</h2>
         }
 
+        var deleteUrl = undefined;
+        if (this.props.deal_id) {
+          deleteUrl = submitUrl + 'delete/';
+        }
+        var deleteRedirectUrl = '/business/' + this.props.business_id + '/'
+
         var redirectUrl = "/deal/{id}/";
 
         var content = <div className="container">
@@ -56,7 +62,7 @@ class DealForm extends Component {
           <meta property="og:title" content="Create A New Deal" />
         </MetaTags>
                 {title}
-                <Form components={Components} redirectUrl={redirectUrl} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} objectName={'deal'} submitButtonType={'patron'} />
+                <Form components={Components} redirectUrl={redirectUrl} componentProps={ComponentProps} submitUrl={submitUrl} deleteUrl={deleteUrl} deleteRedirectUrl={deleteRedirectUrl} defaults={defaults} objectName={'deal'} submitButtonType={'patron'} />
         </div>;
 
 

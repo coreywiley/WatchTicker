@@ -33,7 +33,7 @@ def GetUser(request):
 def UserSignUp(request):
     user = createAndUpdateModel(request._request, 'user', 'user', [])[0]['user']
 
-    email = request.POST['email']
+    email = request.POST['email'].lower()
     password = request.POST['password']
 
     return TokenObtainPairView.as_view()(request._request)
@@ -43,7 +43,7 @@ def UserSignUp(request):
 def UserLogin(request):
     if request.method == "GET":
         if 'email' in request.GET and 'password' in request.GET:
-            email = request.GET['email']
+            email = request.GET['email'].lower()
             password = request.GET['password']
             redirect = request.GET['redirectLocation']
         else:
@@ -52,7 +52,7 @@ def UserLogin(request):
                 error = request.GET['error']
             return HttpResponseRedirect(request.META.HTTP_REFERER + '?error=Cannot Find User')
     if request.method == "POST":
-        email = request.POST['email']
+        email = request.POST['email'].lower()
         password = request.POST['password']
         redirect = request.POST['redirectLocation']
 

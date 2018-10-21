@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 
-from home.views import Index
+from home.views import Index, redeem
 admin.autodiscover()
 
 urlpatterns = [
@@ -13,7 +13,7 @@ urlpatterns = [
     #Get avaliable models
     #modelWesbite app to create rest api
     url(r'^api/', include('modelWebsite.urls', namespace="api")),
-
+    url(r'^redeem/$', redeem, name='redeem'),
     #user imports
     url(r'^users/', include('user.urls', namespace="user")),
     #Catch statements for React

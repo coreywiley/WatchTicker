@@ -103,51 +103,60 @@ class Businesses extends Component {
             <meta property="og:title" content="Manage Businesses | PatronGate" />
           </MetaTags>
                   <h1>Manage Businesses on Patron Gate</h1>
+                  <Button type={'success'} href={'/couponMetrics/'} text={'View All Coupon Redemptions'} />
                   <br />
                   <h3>Businesses Looking To Be Published</h3>
-                  <table>
-                    <tr>
-                      <th>Business Name</th>
-                      <th>Email</th>
-                      <th>View Their Page</th>
-                      <th>Publish</th>
-                      <th>Reject Application</th>
-                    </tr>
-                    {unpublishedTableRows}
-                  </table>
+                  <div style={{'overflowX':'scroll'}}>
+                    <table>
+                      <tr>
+                        <th>Business Name</th>
+                        <th>Email</th>
+                        <th>View Their Page</th>
+                        <th>Publish</th>
+                        <th>Reject Application</th>
+                      </tr>
+                      {unpublishedTableRows}
+                    </table>
+                  </div>
                   <br /><br />
                   <h3>Businesses Working On Their Page</h3>
-                  <table>
-                    <tr>
-                      <th>Business Name</th>
-                      <th>Email</th>
-                      <th>View Their Page</th>
-                    </tr>
-                    {workingOnTableRows}
-                  </table>
+                  <div style={{'overflowX':'scroll'}}>
+                    <table>
+                      <tr>
+                        <th>Business Name</th>
+                        <th>Email</th>
+                        <th>View Their Page</th>
+                      </tr>
+                      {workingOnTableRows}
+                    </table>
+                  </div>
                   <br /><br />
                   <h3>Rejected Businesses</h3>
-                  <table>
-                    <tr>
-                      <th>Business Name</th>
-                      <th>Email</th>
-                      <th>View Their Page</th>
-                      <th>Publish</th>
-                    </tr>
-                    {rejectedTableRows}
-                  </table>
+                  <div style={{'overflowX':'scroll'}}>
+                    <table>
+                      <tr>
+                        <th>Business Name</th>
+                        <th>Email</th>
+                        <th>View Their Page</th>
+                        <th>Publish</th>
+                      </tr>
+                      {rejectedTableRows}
+                    </table>
+                  </div>
                   <br /><br />
                   <h3>Published Businesses</h3>
-                  <table>
-                    <tr>
-                      <th>Business Name</th>
-                      <th>Email</th>
-                      <th>View Their Page</th>
-                      <th>Un Publish</th>
-                      <th>Reject</th>
-                    </tr>
-                    {publishedTableRows}
-                  </table>
+                  <div style={{'overflowX':'scroll'}}>
+                    <table>
+                      <tr>
+                        <th>Business Name</th>
+                        <th>Email</th>
+                        <th>View Their Page</th>
+                        <th>Un Publish</th>
+                        <th>Reject</th>
+                      </tr>
+                      {publishedTableRows}
+                    </table>
+                  </div>
 
           </div>;
       }

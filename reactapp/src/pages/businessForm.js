@@ -66,6 +66,12 @@ class BusinessForm extends Component {
 
         var redirectUrl = "/business/{id}/"
 
+        var deleteUrl = undefined;
+        if (this.props.business_id) {
+          deleteUrl = submitUrl + 'delete/';
+        }
+        var deleteRedirectUrl = '/manageYourBusinesses/'
+
         var content = <div className="container">
         <MetaTags>
           <title>Find Local Business Deals | PatronGate</title>
@@ -74,7 +80,7 @@ class BusinessForm extends Component {
         </MetaTags>
                 {title}
                 <p>You can save and edit later if you need more time.</p>
-                <Form components={Components} redirectUrl={redirectUrl} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} objectName={'business'} />
+                <Form components={Components} redirectUrl={redirectUrl} componentProps={ComponentProps} deleteUrl={deleteUrl} deleteRedirectUrl={deleteRedirectUrl} submitUrl={submitUrl} defaults={defaults} objectName={'business'} />
         </div>;
 
 

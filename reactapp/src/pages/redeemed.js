@@ -25,10 +25,12 @@ class Redemption extends Component {
 
 
     render() {
-
+        var file_name = this.props.user['id'] + '_' + this.props.redemption_id + '.jpg';
         var content = <div className="container">
                 <h2>Coupon: {this.state.deal.name}</h2>
                 <p>{this.props.user.first_name} redeemed this coupon for {this.state.deal.business.name} on {this.state.date}</p>
+
+                <img src={'http://patrongate.jthiesen1.webfactional.com/static/images/' + file_name} style={{'width':'100%'}} />
         </div>;
 
 

@@ -21,5 +21,4 @@ urlpatterns = [
     url(r'^email/$', SendEmail, name='email'),
     url(r'^photoUpload/$',PhotoUpload, name='photoUpload')
 
-
 ]

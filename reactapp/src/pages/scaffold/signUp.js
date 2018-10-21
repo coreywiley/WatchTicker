@@ -15,19 +15,16 @@ class SignUp extends Component {
 
         localStorage.setItem('token', value['access']);
         localStorage.setItem('refresh_token', value['refresh'])
-
-        if (localStorage.getItem('redirect')) {
+        if (this.props.business) {
+          window.location.href = '/manageYourBusinesses/';
+        }
+        else if (localStorage.getItem('redirect')) {
             var redirect = localStorage.getItem('redirect');
             localStorage.removeItem('redirect')
             window.location.href = redirect;
         }
         else {
-            if (this.props.business) {
-              window.location.href = '/businessForm/';
-            }
-            else {
               window.location.href = '/';
-            }
 
         }
     }
@@ -55,6 +52,7 @@ class SignUp extends Component {
         var content = <div className="container">
                 {titles}
                 <Form components={Components} redirect={this.logIn} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
+                <small className="form-text">Already a user? <a href="/login/">Log In Here</a></small>
         </div>;
 
 
