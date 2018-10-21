@@ -5,6 +5,8 @@ from django.apps import apps
 import django
 from django.conf import settings
 
+from user.permissions import my_login_required
+
 import datetime
 import time
 import requests

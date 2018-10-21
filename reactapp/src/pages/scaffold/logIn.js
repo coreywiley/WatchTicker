@@ -24,9 +24,12 @@ class LogIn extends Component {
 
     render() {
       var content =
-        <div className="container" style={{'marginTop':'100px'}}>
-                <Header size={2} text={'Log In'} />
-                <LogInForm redirectUrl={'/events/'} defaults={['','']} submitUrl={'/users/token/'} components={[TextInput, PasswordInput]} componentProps={[{'value':'','placeholder':'Email', 'name':'email','label':'Email'},{'value':'','placeholder':'Password', 'name':'password'}]} />
+        <div className="container">
+            <div className="row">
+                <div className="col-md-4"></div>
+                <div className="col-md-4"><LogInForm redirectUrl={'/viewer/'} defaults={['','']} submitUrl={'/users/token/'} components={[TextInput, PasswordInput]} componentProps={[{'value':'','placeholder':'Email', 'name':'email','label':'Email'},{'value':'','placeholder':'Password', 'name':'password'}]} /></div>
+                <div className="col-md-4"></div>
+            </div>
         </div>;
 
         return (

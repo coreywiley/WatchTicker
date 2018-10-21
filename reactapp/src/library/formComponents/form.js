@@ -120,7 +120,7 @@ class Form extends Component {
     formSubmitCallback (value) {
         console.log("Value",value);
 
-
+        if (typeof(value[0]) != 'undefined'){
             if (this.props.setGlobalState) {
                 if (this.props.globalStateName) {
                     this.setState(value[0][this.props.objectName], () => this.props.setGlobalState(this.props.globalStateName,this.state));
@@ -130,6 +130,7 @@ class Form extends Component {
             } else {
                 this.setState(value[0][this.props.objectName]);
             }
+        }
 
         if (this.props.redirectUrl) {
             if (this.props.objectName) {

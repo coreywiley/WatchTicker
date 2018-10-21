@@ -78,6 +78,9 @@ class Select extends Component {
     }
 
     render() {
+        var optionData = this.state.options;
+        if (this.props.options){ optionData = this.props.options;}
+
         var layout = '';
         if (this.props.layout) {
             layout = this.props.layout;
@@ -96,23 +99,23 @@ class Select extends Component {
           }
         }
 
-        if (this.props.defaultoption in this.state.options) {
+        if (this.props.defaultoption in optionData) {
             var options = [];
         }
         else {
             var options = [<option key={-1}>{this.props.defaultoption}</option>];
         }
 
-        for (var index in this.state.options) {
-            options.push(<option key={index} value={this.state.options[index]['value']}>{this.state.options[index]['text']}</option>)
+        for (var index in optionData) {
+            options.push(<option key={index} value={optionData[index]['value']}>{optionData[index]['text']}</option>)
         }
 
         var multipleSelections = []
 
         if (this.props.multiple == true) {
           var optionsDict = {}
-          for (var index in this.state.options) {
-            optionsDict[this.state.options[index]['value']] = this.state.options[index]['text']
+          for (var index in optionData) {
+            optionsDict[optionData[index]['value']] = optionData[index]['text']
           }
           for (var index in value) {
             multipleSelections.push(<Button key={this.props.name + '-' + index} clickHandler={() => this.removeSelection(value[index])} type={'danger'} text={optionsDict[value[index]]} />)

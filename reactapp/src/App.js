@@ -32,7 +32,7 @@ class App extends Component {
         this.state = {
             loaded: true,
             csrfmiddlewaretoken: undefined,
-            user:{'id':'', 'name':''}
+            user:{}
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
@@ -42,11 +42,32 @@ class App extends Component {
 
     componentDidMount() {
         ajaxWrapper("GET", "/api/csrfmiddlewaretoken/", {}, this.ajaxCallback);
+        ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));
+        var path = window.location.href.toLowerCase();
+
+        var token = localStorage.getItem('token');
+        if (token) {
+            this.setState({token: token});
+            if (path.indexOf('login') > -1 || window.location.pathname == "/") {
+                window.location.href = '/viewer/';
+            }
+        } else if (path.indexOf('login') == -1 && path.indexOf('signup') == -1 &&
+                    window.location.pathname != "/") {
+            window.location.href = '/login/';
+        }
+    }
+
+    loadUser(result){
+        this.setState({
+            user: result
+        });
     }
 
     logOut() {
         console.log("Log Out");
-        localStorage.removeItem('token')
+        localStorage.removeItem('token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('token_time');
         window.location.href = '/login/';
     }
 
@@ -66,6 +87,10 @@ class App extends Component {
           this.setState({loaded:true,csrfmiddlewaretoken: value.csrfmiddlewaretoken})
         }
 
+        this.setState({
+            loaded: true,
+            csrfmiddlewaretoken: value.csrfmiddlewaretoken
+        });
     }
 
     getUserInfo() {
@@ -90,11 +115,17 @@ class App extends Component {
         var params = this.getURL();
         console.log("Params", params);
 
+        var logOut = null;
+        if (this.state.token){
+            logOut = this.logOut;
+        }
+
         var loading = <h1>Loading . . . </h1>;
         var content = null;
         if (params[0] === ""){
             //Home page
-            content = <Home />
+            content = <Home />;
+
         } else if (params[0].toLowerCase() === "components") {
             //List components
             content = <ComponentList />;
@@ -113,39 +144,41 @@ class App extends Component {
             content = <PageManager id={params[1]} />;
         }
         else if (params[0].toLowerCase() == "applist") {
-            content = <AppList user_id={this.state.token} logOut={this.logOut}/>;
+            content = <AppList user_id={this.state.token} logOut={logOut}/>;
         }
         else if (params[0].toLowerCase() == "models") {
-            content = <ModelList app={params[1]} user_id={this.state.token} logOut={this.logOut}/>
+            content = <ModelList app={params[1]} user_id={this.state.token} logOut={logOut}/>;
         }
-        else if (params[0].toLowerCase() == "modelinstances") {
-            content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token} logOut={this.logOut}/>
+        else if (params[0] == "modelInstances") {
+            content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token} logOut={logOut}/>;
         }
-        else if (params[0].toLowerCase() == "modelInstancesTable") {
-            content = <InstanceTable app={params[1]} model={params[2]} logOut={this.logOut}/>
+        else if (params[0] == "modelInstancesTable") {
+            content = <InstanceTable app={params[1]} model={params[2]} logOut={logOut}/>;
         }
         else if (params[0].toLowerCase() == "instance") {
-            content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token} logOut={this.logOut}/>
+            content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token} logOut={logOut}/>;
         }
         else if (params[0].toLowerCase() == "login") {
-            content = <LogIn />
+            content = <LogIn />;
         }
         else if (params[0].toLowerCase() == "signup") {
-            content = <SignUp />
+            content = <SignUp />;
         }
         else if (params[0].toLowerCase() == "loggedin") {
-            content = <LoggedIn  logOut={this.logOut} />
+            content = <LoggedIn  logOut={logOut} />;
         }
         else if (params[0].toLowerCase() == "passwordresetrequest") {
-            content = <PasswordResetRequest />
+            content = <PasswordResetRequest />;
         }
         else if (params[0].toLowerCase() == "passwordreset") {
-            content = <PasswordReset  user_id={params[1]} />
+            content = <PasswordReset  user_id={params[1]} />;
+        }
         }
 
         return (
             <div className="App">
-                <Wrapper content={content} loaded={this.state.loaded} />
+                <Wrapper token={this.state.token} navbar={true} logOut={logOut}
+                    content={content} loaded={this.state.loaded} />
             </div>
         );
     }
