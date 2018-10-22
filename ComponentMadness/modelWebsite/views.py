@@ -499,8 +499,11 @@ def SendEmail(request):
     to_email = Email(request.POST['to_email'])
     subject = request.POST['subject']
     content = Content("text/html", request.POST['text'])
+    print ("\n\n\n\n",from_email, subject, to_email, content, "\n\n\n\n")
+
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
+    print("\n\n\n\n", response.status_code, response.body, response.headers, "\n\n\n\n")
 
     return JsonResponse({'status_code':str(response.status_code), 'body':str(response.body), 'headers':str(response.headers)})
 

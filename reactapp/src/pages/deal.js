@@ -17,6 +17,7 @@ class Deal extends Component {
       this.redeem = this.redeem.bind(this);
       this.redeemed = this.redeemed.bind(this);
       this.redemptionNumber = this.redemptionNumber.bind(this);
+      this.redirect = this.redirect.bind(this);
     }
 
     componentDidMount() {
@@ -105,8 +106,11 @@ class Deal extends Component {
       var file_name = this.props.user['id'] + '_' + result[0]['redemption']['id'] + '.jpg';
       console.log({'file_name': file_name, 'main_image':this.state.main_image, 'text': this.props.user['first_name'] + ' redeemed \n' + this.state.name + '\n on ' + date + '\n via PatronGate'})
       ajaxWrapper('POST','/redeem/',{'file_name': file_name, 'main_image':this.state.main_image, 'text': this.props.user['first_name'] + ' redeemed \n' + this.state.name + '\n on ' + date + '\n via PatronGate'}, console.log)
-      ajaxWrapper('POST','/api/email/', {'to_email':this.props.user['email'], 'from_email':'jeremy.thiesen1@gmail.com', 'subject':'Redeemed Coupon: ' + this.state.name + ' via Patron Gate', 'text':"<img src='http://patrongate.jthiesen1.webfactional.com/static/images/" + file_name + "'>"}, console.log)
-      window.location.href = '/redeemed/' + result[0]['redemption']['id'] + '/';
+      ajaxWrapper('POST','/api/email/', {'to_email':this.props.user['email'], 'from_email':'jeremy.thiesen1@gmail.com', 'subject':'Redeemed Coupon: ' + this.state.name + ' via Patron Gate', 'text':"<img src='http://patrongate.jthiesen1.webfactional.com/static/images/" + file_name + "'>"}, () => this.redirect(result[0]['redemption']['id']))
+    }
+
+    redirect(id) {
+        window.location.href = '/redeemed/' + id + '/';
     }
 
     render() {
