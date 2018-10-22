@@ -46,7 +46,7 @@ class SignUp extends Component {
 
         return (
             <Wrapper loaded={true} content={content} />
-             );
+        );
     }
 }
 export default SignUp;
