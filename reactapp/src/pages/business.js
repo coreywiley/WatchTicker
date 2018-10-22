@@ -86,19 +86,28 @@ class Business extends Component {
     render() {
 
         var dealCards = [];
+        var unPublishedDealCards = [];
         for (var index in this.state.deals) {
-          dealCards.push(<Card imageUrl={this.state.deals[index]['deal']['main_image']} imageAlt={this.state.deals[index]['deal']['name']} name={this.state.deals[index]['deal']['name']} description={this.state.deals[index]['deal']['description']} button={'Read More'} button_type={'primary'} link={'/deal/' + this.state.deals[index]['deal']['id'] + '/'} />)
+          if (this.state.deals.published == true) {
+            dealCards.push(<Card imageUrl={this.state.deals[index]['deal']['main_image']} imageAlt={this.state.deals[index]['deal']['name']} name={this.state.deals[index]['deal']['name']} description={this.state.deals[index]['deal']['description']} button={'Read More'} button_type={'primary'} link={'/deal/' + this.state.deals[index]['deal']['id'] + '/'} />)
+          }
+          else {
+            unPublishedDealCards.push(<Card imageUrl={this.state.deals[index]['deal']['main_image']} imageAlt={this.state.deals[index]['deal']['name']} name={this.state.deals[index]['deal']['name']} description={this.state.deals[index]['deal']['description']} button={'Read More'} button_type={'primary'} link={'/deal/' + this.state.deals[index]['deal']['id'] + '/'} />)
+          }
         }
 
         var publish = <div></div>
         var newDeal = <div></div>
+        var allDeals = <div></div>;
 
         if (this.props.is_staff == true) {
           newDeal = <Button href={'/dealForm/' + this.props.business_id + '/'} text={'New Deal'} type={'patron'} />
           publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /><Button href={"/couponMetrics/" + this.state.id + "/"} type={'patron'} text={'View Redemptions'} /></div></div>
+          allDeals = <div><br /><br /><h3>Unpublished Deals (Only visible to business owner and patron gate staff)</h3>{unPublishedDealCards}</div>
         }
-        else if (this.props.user_id == this.state.owner) {
+        if (this.props.user_id == this.state.owner) {
           newDeal = <Button href={'/dealForm/' + this.props.business_id + '/'} text={'New Deal'} type={'patron'} />
+          allDeals = <div><br /><br /><h3>Unpublished Deals (Only visible to business owner and patron gate staff)</h3>{unPublishedDealCards}</div>
           if (this.state.ask_for_publish == false) {
             publish = <div style={{'paddingTop':'10px', paddingBottom: '10px'}}><div style={{'float':'left'}}><Button clickHandler={this.publish} type={'success'} text={'Submit For Approval To Publish Your Business On Patron Gate'} /></div><div style={{'float':'right'}}><Button href={"/businessForm/" + this.state.id + "/"} type={'patron'} text={'Edit Details'} /><Button href={"/couponMetrics/" + this.state.id + "/"} type={'patron'} text={'View Redemptions'} /></div></div>
           }
@@ -228,6 +237,8 @@ class Business extends Component {
                 <h3 style={{'paddingTop':'35px'}}>Active Deals</h3>
                 {newDeal}
                 {dealCards}
+                {allDeals}
+
         </div>;
 
 

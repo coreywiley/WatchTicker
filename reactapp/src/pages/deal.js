@@ -32,11 +32,7 @@ class Deal extends Component {
           this.setState({redeemable: false})
         }
       }
-
-
         ajaxWrapper('GET','/api/home/redemption/?count&user=' + this.props.user_id + '&deal=' + this.props.deal_id, {}, this.redemptionNumber)
-
-
     }
 
     redemptionNumber(result) {
@@ -96,7 +92,6 @@ class Deal extends Component {
         ('0' + d.getDate()).slice(-2)
       ].join('-');
       ajaxWrapper('POST','/api/home/redemption/', {'date':date, 'user':this.props.user_id, 'deal': this.props.deal_id}, this.redeemed);
-
     }
 
     redeemed(result) {
@@ -106,7 +101,6 @@ class Deal extends Component {
         ('0' + (d.getMonth() + 1)).slice(-2),
         ('0' + d.getDate()).slice(-2)
       ].join('-');
-
 
       var file_name = this.props.user['id'] + '_' + result[0]['redemption']['id'] + '.jpg';
       console.log({'file_name': file_name, 'main_image':this.state.main_image, 'text': this.props.user['first_name'] + ' redeemed \n' + this.state.name + '\n on ' + date + '\n via PatronGate'})
@@ -144,6 +138,9 @@ class Deal extends Component {
       if (this.state.newPublish == true) {
         newPublish = <Alert text={'You just published your deal!'} type={'success'} />
       }
+      else if (this.state.published == false) {
+        newPublish = <Alert text={"Your deal isn't published yet."} type={'danger'} />
+      }
 
       var redeem = <div></div>
       if (this.props.user_id) {
@@ -171,9 +168,15 @@ class Deal extends Component {
           <meta name="description" content={this.state.name + ' with ' + this.state.business.name + '| PatronGate'} />
           <meta property="og:title" content={this.state.name + ' with ' + this.state.business.name + '| PatronGate'} />
         </MetaTags>
+                <div>
                 {publish}
-                {emailsSent}
+                </div>
+
                 <h1>{this.state.name} is available at <a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></h1>
+                <div>
+                {newPublish}
+                {emailsSent}
+                </div>
                 {number_of_redeems_available}
                 {valid_until}
                 <img src={this.state.main_image} style={{'width':'100%'}} />
