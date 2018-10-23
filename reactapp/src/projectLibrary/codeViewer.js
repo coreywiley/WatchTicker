@@ -9,8 +9,8 @@ import {
     Paragraph, RadioButton, TextArea, Header, TextAutocomplete
 } from 'library';
 
-import AdminTagSidebar from 'pages/adminTagSidebar.js';
-import AdminSidebar from 'pages/adminSidebar.js';
+import AdminTagSidebar from 'projectLibrary/adminTagSidebar.js';
+import AdminSidebar from 'projectLibrary/adminSidebar.js';
 
 
 class CodeViewer extends Component {

@@ -6,7 +6,6 @@ import Card from 'library/displayComponents/card.js';
 import List from 'library/functionalComponents/list.js';
 
 
-
 class PageList extends Component {
 
     render() {

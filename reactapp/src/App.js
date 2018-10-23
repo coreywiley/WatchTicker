@@ -26,7 +26,7 @@ import LoggedIn from './pages/scaffold/loggedIn.js';
 import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
 import PasswordReset from './pages/scaffold/passwordReset.js';
 
-import CodeViewer from './pages/codeViewer.js';
+import CodeViewer from './projectLibrary/codeViewer.js';
 
 
 class App extends Component {
@@ -176,7 +176,6 @@ class App extends Component {
         else if (params[0].toLowerCase() == "passwordreset") {
             content = <PasswordReset  user_id={params[1]} />;
         }
-
         else if (params[0].toLowerCase() == "viewer") {
             content = <CodeViewer user={this.state.user} />;
         }

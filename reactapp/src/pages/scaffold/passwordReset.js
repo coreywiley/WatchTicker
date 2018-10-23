@@ -3,7 +3,6 @@ import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 
 import {Form, TextInput, Select, PasswordInput} from 'library';
-import Navbar from 'projectLibrary/nav.js';
 
 class PasswordReset extends Component {
     constructor(props) {
