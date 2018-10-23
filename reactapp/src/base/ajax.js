@@ -1,16 +1,16 @@
 import $ from 'jquery';
 
-function handleerror(xhr, status, erro) {
-  console.log("Ajax Failure")
+function handleerror(xhr, status, error) {
+  console.log("Ajax Failure");
   console.log(xhr.responseText);
-  console.log(status)
-  console.log(erro)
+  console.log(status);
+  console.log(error);
 }
 
 function ajaxWrapper(type, url, data, returnFunc){
     if (type === "POST") {
         data["csrfmiddlewaretoken"] = window.secretReactVars["csrfmiddlewaretoken"];
-        console.log("CSRF", data['csrfmiddlewaretoken'])
+        console.log("CSRF", data['csrfmiddlewaretoken']);
     }
 
     var auth_token = '';
@@ -22,27 +22,27 @@ function ajaxWrapper(type, url, data, returnFunc){
         }
     }
 
-      $.ajax({
-          type: type,
-          url: url,
-          beforeSend: beforeSend,
-          data: data,
-          statusCode: {
+    $.ajax({
+        type: type,
+        url: url,
+        beforeSend: beforeSend,
+        data: data,
+        statusCode: {
             200: function(value) {
-              if (typeof(value) === "object" && "redirect" in value) {
-                  window.location = value['redirect'] + "?redirect=" + window.secretReactVars["BASE_URL"];
-              }
-              returnFunc(value);
+                if (typeof(value) === "object" && "redirect" in value) {
+                    window.location = value['redirect'] + "?redirect=" + window.secretReactVars["BASE_URL"];
+                }
+                returnFunc(value);
             },
             400: function(value) {
-              value = {'error': 'Bad Request'}
-              returnFunc(value);
+                value = {'error': 'Bad Request'};
+                returnFunc(value);
             },
             401: function(xhr) {
-              refreshToken(type,url,data,returnFunc);
+                refreshToken(type,url,data,returnFunc);
             }
-          },
-      });
+        },
+    });
 
 }
 
@@ -62,14 +62,9 @@ function refreshToken(type, url, data, returnFunc){
           data: refreshData,
           statusCode: {
             401: function(xhr) {
-              console.log('Refresh Token Expired')
-              localStorage.removeItem('token')
-              localStorage.removeItem('refresh_token')
-            },
-            401: function(xhr) {
-              console.log('Refresh Token Expired')
-              localStorage.removeItem('token')
-              localStorage.removeItem('refresh_token')
+              console.log('Refresh Token Expired');
+              localStorage.removeItem('token');
+              localStorage.removeItem('refresh_token');
             }
           },
           success: function (value) {
@@ -77,13 +72,10 @@ function refreshToken(type, url, data, returnFunc){
               ajaxWrapper(type, url, data, returnFunc)
           },
           error: function(xhr, status, error) {
-              handleerror(xhr,status,error)
-            console.log(xhr.responseText);
-            console.log(status)
-            console.log(error)
-            console.log('Refresh Token Expired')
-            localStorage.removeItem('token')
-            localStorage.removeItem('refresh_token')
+            handleerror(xhr,status,error);
+            console.log('Refresh Token Expired');
+            localStorage.removeItem('token');
+            localStorage.removeItem('refresh_token');
             window.location.href = window.location.href;
           }
       });

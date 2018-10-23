@@ -36,25 +36,34 @@ class Button extends React.Component {
     }
 
     render() {
-    	var type = "btn-" + this.props.type;
+        var type = "btn-" + this.props.type;
       var css = {}
       if (this.props.css) {
         css = this.props.css;
       }
-      var content = <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>
-      if (this.props.deleteType == true && this.state.modal == false) {
-        console.log("I am here");
-        content = <button className={"btn " + type} onClick={this.showModal} style={css}>{this.props.text}</button>
-      }
-      else if (this.props.deleteType == true && this.state.modal == true) {
-        var alt = <button className={"btn btn-success"} onClick={this.hideModal} style={{'margin':'15px'}}>Dont Delete</button>;
-        var button = <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>;
-        content = <Modal content={[alt,button]} show={true} title={'Are you sure?'} onHide={this.hideModal} />
-      }
 
-        return (
-            <button className={"btn " + type} onClick={this.click} num={this.props.num} style={css}>{this.props.text}</button>
-        );
+        if (this.props.deleteType == true && this.state.modal == false) {
+            console.log("I am here");
+            return (
+                <button className={"btn " + type} onClick={this.showModal}
+                num={this.props.num} style={css}>{this.props.text}</button>
+            );
+
+        } else if (this.props.deleteType == true && this.state.modal == true) {
+            var alt = <button className={"btn btn-success"} onClick={this.hideModal} style={{'margin':'15px'}}>Dont Delete</button>;
+            var button = <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>;
+            return (
+                <Modal content={[alt,button]} show={true} title={'Are you sure?'} onHide={this.hideModal} />
+            );
+
+        } else {
+            return (
+                <button className={"btn " + type} onClick={this.click}
+                num={this.props.num} style={css}>{this.props.text}</button>
+            );
+        }
+
+        return ();
     }
 }
 

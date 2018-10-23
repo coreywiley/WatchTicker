@@ -38,9 +38,16 @@ class SignUp extends Component {
 
         var submitUrl = "/users/signup/";
 
-        var content = <div className="container">
-                <h2>Sign Up</h2>
-                <Form components={Components} redirect={this.logIn} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
+        var content =
+        <div className="container">
+            <div className="row">
+                <div className="col-md-4"></div>
+                <div className="col-md-4">
+                    <h2>Sign Up</h2>
+                    <Form components={Components} redirect={this.logIn} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
+                </div>
+                <div className="col-md-4"></div>
+            </div>
         </div>;
 
 
