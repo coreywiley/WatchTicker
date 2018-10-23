@@ -24,15 +24,15 @@ class Button extends React.Component {
       this.setState({modal:false})
     }
 
-    click() {
-      console.log("Clicked");
-      if (this.props.href) {
-        window.location.href = this.props.href;
-      }
-      else if (this.props.clickHandler) {
-        console.log("Click Handler")
-        this.props.clickHandler();
-      }
+    click(e) {
+        e.preventDefault();
+        console.log("Clicked");
+        if (this.props.href) {
+            window.location.href = this.props.href;
+        }
+        else if (this.props.clickHandler) {
+            this.props.clickHandler(e);
+        }
     }
 
     render() {
@@ -53,9 +53,7 @@ class Button extends React.Component {
       }
 
         return (
-          <div>
-            {content}
-            </div>
+            <button className={"btn " + type} onClick={this.click} num={this.props.num} style={css}>{this.props.text}</button>
         );
     }
 }

@@ -12,17 +12,20 @@ function ajaxWrapper(type, url, data, returnFunc){
         data["csrfmiddlewaretoken"] = window.secretReactVars["csrfmiddlewaretoken"];
         console.log("CSRF", data['csrfmiddlewaretoken'])
     }
+
     var auth_token = '';
+    var beforeSend = null;
     if (localStorage.getItem('token')) {
-      auth_token = 'Bearer ' + localStorage.getItem('token')
+        auth_token = 'Bearer ' + localStorage.getItem('token');
+        beforeSend = function(request) {
+            request.setRequestHeader('Authorization', auth_token);
+        }
     }
 
       $.ajax({
           type: type,
           url: url,
-          beforeSend: function(request) {
-            request.setRequestHeader('Authorization', auth_token)
-          },
+          beforeSend: beforeSend,
           data: data,
           statusCode: {
             200: function(value) {
