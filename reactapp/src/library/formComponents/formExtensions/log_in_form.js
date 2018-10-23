@@ -39,7 +39,6 @@ class LogInForm extends Component {
             else {
               this.setState({error:value['error']})
             }
-
         }
         else {
           console.log("User",value);

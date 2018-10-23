@@ -102,26 +102,61 @@ class App extends Component {
         var params = this.getURL();
         console.log("Params", params);
 
-        var adminPages = ['applist','models','modelinstances','modelinstancestable','instance', 'managebusinesses']
-        var loggedInPages = ['manageYourBusinesses']
-        var route = params[0].toLowerCase()
-
-
-        var logOut = null;
-        if (this.state.token){
-            logOut = this.logOut;
-        }
+        var adminPages = [
+            'applist','models','modelinstances',
+            'modelinstancestable','instance'
+        ];
+        var loggedInPages = [];
+        var route = params[0].toLowerCase();
 
         var loading = <h1>Loading . . . </h1>;
         var content = null;
+
+        if (adminPages.indexOf(route) > -1 && this.state.loaded && !(this.state.user.is_staff)){
+            window.location = '/';
+        } else if (loggedInPages.indexOf(route) > -1 && this.state.loaded && typeof(this.state.user.id) != 'undefined'){
+            window.location = '/login/';
+        }
+
         if (params[0] === ""){
             //Home page
             content = <Home />;
 
-        } else if (params[0].toLowerCase() === "components") {
+        } else if (route === "components") {
             //List components
             content = <ComponentList />;
         }
+        else if (route == "applist") {
+            content = <AppList user_id={this.state.token}/>;
+        }
+        else if (route == "models") {
+            content = <ModelList app={params[1]} user_id={this.state.token}/>;
+        }
+        else if (route == "modelinstances") {
+            content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token}/>;
+        }
+        else if (route == "modelinstancestable") {
+            content = <InstanceTable app={params[1]} model={params[2]}/>;
+        }
+        else if (route == "instance") {
+            content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token}/>;
+        }
+        else if (route == "login") {
+            content = <LogIn />;
+        }
+        else if (route == "signup") {
+            content = <SignUp />;
+        }
+        else if (route == "loggedin") {
+            content = <LoggedIn  />;
+        }
+        else if (route == "passwordresetrequest") {
+            content = <PasswordResetRequest />;
+        }
+        else if (route == "passwordreset") {
+            content = <PasswordReset  user_id={params[1]} />;
+        }
+
 
         if (this.state.loaded == false) {
           return (
@@ -133,7 +168,7 @@ class App extends Component {
         else {
           return (
               <div className="App">
-                  <Nav user_id={this.state.user.id} style={{'backgroundColor':'#234f9c !important'}} is_staff={this.state.user.is_staff}/>
+                  <Nav user_id={this.state.user.id} is_staff={this.state.user.is_staff} logOut={this.logOut} />
                   <Wrapper content={content} loaded={this.state.loaded} />
                   <br />
                   <br />
@@ -141,37 +176,6 @@ class App extends Component {
             </div>
           );
         }
-        else if (params[0].toLowerCase() == "applist") {
-            content = <AppList user_id={this.state.token} logOut={logOut}/>;
-        }
-        else if (params[0].toLowerCase() == "models") {
-            content = <ModelList app={params[1]} user_id={this.state.token} logOut={logOut}/>;
-        }
-        else if (params[0].toLowerCase() == "modelinstances") {
-            content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token} logOut={logOut}/>;
-        }
-        else if (params[0].toLowerCase() == "modelInstancesTable") {
-            content = <InstanceTable app={params[1]} model={params[2]} logOut={logOut}/>;
-        }
-        else if (params[0].toLowerCase() == "instance") {
-            content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token} logOut={logOut}/>;
-        }
-        else if (params[0].toLowerCase() == "login") {
-            content = <LogIn />;
-        }
-        else if (params[0].toLowerCase() == "signup") {
-            content = <SignUp />;
-        }
-        else if (params[0].toLowerCase() == "loggedin") {
-            content = <LoggedIn  logOut={logOut} />;
-        }
-        else if (params[0].toLowerCase() == "passwordresetrequest") {
-            content = <PasswordResetRequest />;
-        }
-        else if (params[0].toLowerCase() == "passwordreset") {
-            content = <PasswordReset  user_id={params[1]} />;
-        }
-
     }
 }
 

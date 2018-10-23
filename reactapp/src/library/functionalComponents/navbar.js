@@ -15,7 +15,7 @@ class NavBar extends React.Component {
             }
         }
 
-        var logOut = <div></div>
+        var logOut = <div></div>;
         if (this.props.logOut) {
           logOut = <div className="form-inline">
             <Button type={'danger'} text={'Log Out'} clickHandler={this.props.logOut} />
@@ -23,7 +23,7 @@ class NavBar extends React.Component {
         }
 
         return (
-            <nav className={classes}>
+            <nav className={classes} style={this.props.style}>
               <a className="navbar-brand" href={this.props.nameLink}>{this.props.name}</a>
               <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>

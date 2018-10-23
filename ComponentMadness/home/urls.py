@@ -18,13 +18,13 @@ urlpatterns = [
     url(r'^users/', include('user.urls', namespace="user")),
     #Catch statements for React
     url(r'^$', Index, name='index'),
-    url(r'^(?P<param>\w+)/$', Index, name='index'),
     url(r'^(?P<param>\S+)/$', Index, name='index'),
-    url(r'^(?P<param>\w+)/(?P<param2>\w+)/$', Index, name='index'),
-    url(r'^(?P<param>\w+)/(?P<param2>\w+)/(?P<param3>\w+)/$', Index, name='index'),
-    url(r'^(?P<param>\w+)/(?P<param2>\w+)/(?P<param3>\w+)/(?P<param4>\w+)/$', Index, name='index'),
-    url(r'^(?P<param>\w+)/(?P<param2>\w+)/(?P<param3>\w+)/(?P<param4>\w+)/(?P<param5>\w+)/$', Index, name='index'),
-    url(r'^(?P<param>\w+)/(?P<param2>\w+)/(?P<param3>\w+)/(?P<param4>\w+)/(?P<param5>\w+)/(?P<param6>\w+)/$', Index, name='index'),
+    url(r'^(?P<param>\S+)/$', Index, name='index'),
+    url(r'^(?P<param>\S+)/(?P<param2>\S+)/$', Index, name='index'),
+    url(r'^(?P<param>\S+)/(?P<param2>\S+)/(?P<param3>\S+)/$', Index, name='index'),
+    url(r'^(?P<param>\S+)/(?P<param2>\S+)/(?P<param3>\S+)/(?P<param4>\S+)/$', Index, name='index'),
+    url(r'^(?P<param>\S+)/(?P<param2>\S+)/(?P<param3>\S+)/(?P<param4>\S+)/(?P<param5>\S+)/$', Index, name='index'),
+    url(r'^(?P<param>\S+)/(?P<param2>\S+)/(?P<param3>\S+)/(?P<param4>\S+)/(?P<param5>\S+)/(?P<param6>\S+)/$', Index, name='index'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
