@@ -28,6 +28,12 @@ class List extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.dataList) {
+            this.refreshData();
+        }
+    }
+
     refreshData() {
         var dataUrl = this.props.dataUrl;
 

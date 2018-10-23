@@ -28,6 +28,9 @@ def dumpInstance(modelName, fields, instance, related = [], only = []):
     jsonInstance[modelName] = {}
     jsonInstance[modelName]['unicode'] = str(instance)
 
+    if not instance:
+        return jsonInstance
+    
     #print ("Dumping")
     for field in fields:
         if len(only) > 0 and field[0] not in only:

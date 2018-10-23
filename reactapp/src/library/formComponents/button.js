@@ -18,11 +18,11 @@ class Button extends React.Component {
     }
 
     showModal() {
-      this.setState({modal:true})
+      this.setState({modal:true});
     }
 
     hideModal() {
-      this.setState({modal:false})
+      this.setState({modal:false});
     }
 
     click(e) {

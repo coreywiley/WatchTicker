@@ -99,13 +99,15 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
     excluded = {}
     orFilters = None
     newParameters = parameters.copy()
+    print ('\n\n',parameters,'\n\n')
     for parameter in parameters:
+
         if ',' in parameters[parameter]:
-            parameters[parameter] = [x for x in parameters[parameter].split(',') if x != ""]
+            newParameters[parameter] = [x for x in parameters[parameter].split(',') if x != ""]
         if parameters[parameter] == 'true':
-            parameters[parameter] = True
+            newParameters[parameter] = True
         elif parameters[parameter] == 'false':
-            parameters[parameter] = False
+            newParameters[parameter] = False
 
         if parameter.startswith("exclude__"):
             excluded[parameter.replace("exclude__", "")] = parameters[parameter]
@@ -121,7 +123,6 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             del newParameters[parameter]
 
     parameters = newParameters
-
     print ("Related : %s" % (related))
 
     # single instance
@@ -248,7 +249,7 @@ def addOrFilter(orFilters, key, value):
 
     return orFilters
 
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def deleteModelInstance(request,appLabel,modelName,id):
     print ('DELETING', appLabel, modelName, id)

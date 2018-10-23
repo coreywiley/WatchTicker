@@ -30,6 +30,7 @@ class Select extends Component {
     }
 
     optionsCallback(value) {
+      console.log("Options Callback", value);
         var options = [];
         for (var index in value) {
             var textValue = value[index];
@@ -89,8 +90,10 @@ class Select extends Component {
 
         if (this.props.multiple == true) {
             var value = this.props.value;
-            if (value.length == 0) {
-              value = this.props.defaultoption;
+            if (this.props.value) {
+              if (value.length == 0) {
+                value = this.props.defaultoption;
+              }
             }
         }
         else {
