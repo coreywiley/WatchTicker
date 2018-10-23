@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 import {Form, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput} from 'library';
-import Nav from 'projectLibrary/nav.js';
+
 
 let ComponentDict = {
     'AutoField': "TextInput",
@@ -24,7 +24,6 @@ class Instance extends Component {
 
         this.fieldSubmitCallback = this.fieldSubmitCallback.bind(this);
         this.defaultHandler = this.defaultHandler.bind(this);
-
     }
 
     componentDidMount() {

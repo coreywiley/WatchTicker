@@ -9,6 +9,7 @@ class Button extends React.Component {
 
       this.state = {
           modal: false,
+          hover: false,
       }
 
       this.showModal = this.showModal.bind(this);
@@ -41,6 +42,27 @@ class Button extends React.Component {
       if (this.props.css) {
         css = this.props.css;
       }
+        var hover = null;
+        if (this.props.hover){
+            var hoverCSS = {
+                position: 'absolute',
+                top:'0px',
+                right:'0px',
+                padding:'2px 10px',
+                margin: '2px',
+                borderRadius: '100px',
+                background: '#c82333',
+            };
+
+            var props = {
+                onMouseEnter: this.onMouseEnter.bind(this),
+                onMouseLeave: this.onMouseLeave.bind(this),
+            };
+
+            if (this.state.hover){
+                hover = <div className="hoverClose" style={hoverCSS}>x</div>;
+            }
+        }
 
         if (this.props.deleteType == true && this.state.modal == false) {
             console.log("I am here");
@@ -63,7 +85,6 @@ class Button extends React.Component {
             );
         }
 
-        return ();
     }
 }
 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {List, Link, Navbar} from 'library';
-import Nav from 'projectLibrary/nav.js';
 
 class AppList extends Component {
 

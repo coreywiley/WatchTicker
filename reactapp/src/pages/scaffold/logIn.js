@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 
 import Wrapper from 'base/wrapper.js';
-import Nav from 'projectLibrary/nav.js';
 
 import {
     Container, Button, Image, TextInput,
     List, Link, Accordion, Paragraph, RadioButton,
     TextArea, Header, LogInForm, PasswordInput
 } from 'library';
-import Navbar from 'projectLibrary/nav.js';
 
 class LogIn extends Component {
     constructor(props) {

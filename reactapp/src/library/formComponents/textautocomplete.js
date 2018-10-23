@@ -24,7 +24,8 @@ class TextAutocomplete extends Component {
             padding: "10px",
             left: "3px",
             borderRadius: "4px",
-            boxShadow: "2px 2px 5px rgba(0,0,0,.2)"
+            boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
+            zIndex: '100'
         }
 
 
@@ -43,7 +44,7 @@ class TextAutocomplete extends Component {
                     options.push(
                         <Button clickHandler={this.props.autocompleteSelect}
                             type="default" text={key} num={value} css={{marginLeft:"10px"}} />
-                        );
+                    );
                 }
             }
         }

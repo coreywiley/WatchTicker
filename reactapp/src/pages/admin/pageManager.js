@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 import Modal from 'library/functionalComponents/modal.js';
