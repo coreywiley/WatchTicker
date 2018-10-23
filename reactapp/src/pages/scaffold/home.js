@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Wrapper from 'base/wrapper.js';
+import MetaTags from 'react-meta-tags';
 
 import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header} from 'library';
 

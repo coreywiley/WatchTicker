@@ -26,6 +26,7 @@ class LogInForm extends Component {
     formSubmit() {
         console.log("Submitting", this.state, this.props.submitUrl);
         var data = this.state;
+        data['email'] = data['email'].toLowerCase()
         ajaxWrapper("POST",this.props.submitUrl, data, this.formSubmitCallback);
     }
 

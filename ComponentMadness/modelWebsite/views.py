@@ -502,8 +502,31 @@ def SendEmail(request):
     from_email = Email(request.POST['from_email'])
     to_email = Email(request.POST['to_email'])
     subject = request.POST['subject']
-    content = Content("text/plain", request.POST['text'])
+    content = Content("text/html", request.POST['text'])
+
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
 
     return JsonResponse({'status_code':str(response.status_code), 'body':str(response.body), 'headers':str(response.headers)})
+
+def PhotoUpload(request):
+    # get files
+    name = ''
+    if 'name' in request.POST:
+        name = request.POST['name']
+
+    uploaded_files = []
+    print (request.FILES)
+    print (request.FILES.getlist('files[]'))
+
+    for i in range(len(request.FILES.getlist('files[]'))):
+        file = request.FILES.getlist('files[]')[i]
+        url = settings.MEDIA_URL + name + '_' + file.name
+        print ("\n\n\n", settings.MEDIA_ROOT + name + '_' + file.name, "\n\n\n")
+        with open(settings.MEDIA_ROOT + name + '_' + file.name, 'wb+') as saveFile:
+            for chunk in file.chunks():
+                saveFile.write(chunk)
+
+        uploaded_files.append({'url': url, 'order': i, 'filename': name + '_' + file.name})
+    #return url to file
+    return JsonResponse({'uploaded_files':uploaded_files})

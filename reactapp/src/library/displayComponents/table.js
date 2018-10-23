@@ -60,7 +60,13 @@ class Table extends React.Component {
         }
 
         for (var i in this.state.data) {
-          rows.push(<TableRow data={this.state.data[i]} />)
+          if (this.state.data[i] == null || this.state.data[i] == undefined) {
+            rows.push(<TableRow data={""} />)
+          }
+          else {
+            rows.push(<TableRow data={this.state.data[i]} />)
+          }
+
         }
 
         if (headers.length == 0) {
@@ -69,7 +75,12 @@ class Table extends React.Component {
           }
 
           for (var i in this.props.data) {
-            rows.push(<TableRow data={this.props.data[i]} />)
+            if (this.state.data[i] == null || this.state.data[i] == undefined) {
+              rows.push(<TableRow data={""} />)
+            }
+            else {
+              rows.push(<TableRow data={this.state.data[i]} />)
+            }
           }
         }
 

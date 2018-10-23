@@ -44,6 +44,8 @@ function ajaxWrapper(type, url, data, returnFunc){
         },
     });
 
+
+
 }
 
 function refreshToken(type, url, data, returnFunc){

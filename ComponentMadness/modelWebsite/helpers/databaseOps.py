@@ -28,7 +28,11 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
             except:
                 print ("No Valid JSON data found!")
                 continue
-
+        elif field.get_internal_type() in ['DateTimeField', 'DateField']:
+            if requestFields[field.name] == '':
+                setattr(instance, field.name, None)
+            else:
+                setattr(instance, field.name, requestFields[field.name])
         elif field.get_internal_type() == 'BooleanField':
             print (field.name)
             if requestFields[field.name] in [False, 'False','false']:

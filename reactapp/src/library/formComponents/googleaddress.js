@@ -7,11 +7,12 @@ class GoogleAddress extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { address: '', street:'', state:'', street2:'', city:'',zip:''};
+    this.state = { address: '', street:'', state:'', street2:'', city:'',zipcode:''};
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleAddressChange = address => {
+    console.log("Handle Address", address)
     this.props.setFormState({street:address})
   };
 
@@ -44,6 +45,61 @@ class GoogleAddress extends Component {
   };
 
   render() {
+
+    var stateOptions = [
+      {'value':'AL','text':'AL'},
+      {'value':'AK','text':'AK'},
+      {'value':'AZ','text':'AZ'},
+      {'value':'AR','text':'AR'},
+      {'value':'CA','text':'CA'},
+      {'value':'CO','text':'CO'},
+      {'value':'CT','text':'CT'},
+      {'value':'DE','text':'DE'},
+      {'value':'FL','text':'FL'},
+      {'value':'GA','text':'GA'},
+      {'value':'HI','text':'HI'},
+      {'value':'ID','text':'ID'},
+      {'value':'IL','text':'IL'},
+      {'value':'KS','text':'KS'},
+      {'value':'KY','text':'KY'},
+      {'value':'LA','text':'LA'},
+      {'value':'ME','text':'ME'},
+      {'value':'MD','text':'MD'},
+      {'value':'MA','text':'MA'},
+      {'value':'MI','text':'MI'},
+      {'value':'MN','text':'MN'},
+      {'value':'MS','text':'MS'},
+      {'value':'MO','text':'MO'},
+      {'value':'MT','text':'MT'},
+      {'value':'NE','text':'NE'},
+      {'value':'NV','text':'NV'},
+      {'value':'NH','text':'NH'},
+      {'value':'NJ','text':'NJ'},
+      {'value':'NM','text':'NM'},
+      {'value':'NY','text':'NY'},
+      {'value':'NC','text':'NC'},
+      {'value':'ND','text':'ND'},
+      {'value':'OH','text':'OH'},
+      {'value':'OK','text':'OK'},
+      {'value':'OR','text':'OR'},
+      {'value':'PA','text':'PA'},
+      {'value':'RI','text':'RI'},
+      {'value':'SC','text':'SC'},
+      {'value':'TN','text':'TN'},
+      {'value':'TX','text':'TX'},
+      {'value':'UT','text':'UT'},
+      {'value':'VI','text':'VI'},
+      {'value':'VT','text':'VT'},
+      {'value':'VA','text':'VA'},
+      {'value':'WA','text':'WA'},
+      {'value':'WV','text':'WV'},
+      {'value':'WI','text':'WI'},
+      {'value':'WY','text':'WY'},
+      {'value':'GU','text':'GU'},
+      {'value':'PR','text':'PR'},
+    ]
+
+
     return (
     <div>
         <label>Street Address</label>
@@ -85,10 +141,10 @@ class GoogleAddress extends Component {
       <TextInput name={'city'} handlechange={this.props.handlechange} placeholder={'City'} label={'City'} value={this.props.city} />
       <div className="row container">
       <div className="col-sm-6">
-        <Select value={this.props.state} handlechange={this.props.handlechange} defaultoption={'State'} label={'State'} layout={'row'} options={[{'value':'CO','text':'CO'},{'value':'DE','text':'DE'},{'value':'NY','text':'NY'}]} name={'state'} />
+        <Select value={this.props.state} handlechange={this.props.handlechange} defaultoption={'State'} label={'State'} layout={'row'} options={stateOptions} name={'state'} />
       </div>
       <div className="col-sm-6">
-        <TextInput name={'zip'} label={'Zip Code'} handlechange={this.props.handlechange} placeholder={'Zip Code'} value={this.props.zip} layout={'row'} />
+        <TextInput name={'zipcode'} label={'Zip Code'} handlechange={this.props.handlechange} placeholder={'Zip Code'} value={this.props.zipcode} layout={'row'} />
       </div>
       </div>
       </div>

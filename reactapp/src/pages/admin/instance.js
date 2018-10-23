@@ -127,7 +127,6 @@ class Instance extends Component {
 
         var content =
         <div>
-          <Nav token={this.props.user_id} logOut={this.props.logOut} />
           {normForm}
           <FileInput {...FileProps} />
         </div>

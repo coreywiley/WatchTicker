@@ -8,7 +8,7 @@ import Navbar from 'projectLibrary/nav.js';
 class PasswordResetRequest extends Component {
     constructor(props) {
         super(props);
-        this.state = {'email':'', 'error':false, 'sent':false}
+        this.state = {'email':'', 'error':false, 'sent':false, 'loaded':true}
         this.emailCallback = this.emailCallback.bind(this);
         this.email = this.email.bind(this);
         this.userLookup = this.userLookup.bind(this);

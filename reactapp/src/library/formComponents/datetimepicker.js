@@ -13,7 +13,7 @@ class DateTimePicker extends Component {
       var value = '';
 
       if (this.props.display_time == false) {
-        value = e.format("M/DD/YYYY");
+        value = e.format("YYYY-M-DD");
       }
       else if (this.props.display_date == false) {
         value = e.format("hh:mm A");

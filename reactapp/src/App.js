@@ -17,7 +17,6 @@ import InstanceTable from './pages/admin/modelInstancesTable.js';
 
 //Scaffolding
 import Header from './base/header.js';
-import Footer from './base/footer.js';
 import Wrapper from './base/wrapper.js';
 import Home from './pages/scaffold/home.js';
 import LogIn from './pages/scaffold/logIn.js';
@@ -30,7 +29,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loaded: true,
+            loaded: false,
             csrfmiddlewaretoken: undefined,
             user:{}
         };
@@ -103,6 +102,11 @@ class App extends Component {
         var params = this.getURL();
         console.log("Params", params);
 
+        var adminPages = ['applist','models','modelinstances','modelinstancestable','instance', 'managebusinesses']
+        var loggedInPages = ['manageYourBusinesses']
+        var route = params[0].toLowerCase()
+
+
         var logOut = null;
         if (this.state.token){
             logOut = this.logOut;
@@ -118,18 +122,24 @@ class App extends Component {
             //List components
             content = <ComponentList />;
         }
-        else if (params[0].toLowerCase() === "logout") {
-            this.logOut();
+
+        if (this.state.loaded == false) {
+          return (
+              <div className="App">
+                  <Wrapper content={<div></div>} loaded={this.state.loaded} />
+              </div>
+          );
         }
-        else if (params[0].toLowerCase() === "component") {
-            //Single component page
-            content = <ComponentManager id={params[1]} />;
-        } else if (params[0].toLowerCase() === "pages") {
-            //List pages
-            content = <PageList />;
-        } else if (params[0].toLowerCase() === "page") {
-            //Single page
-            content = <PageManager id={params[1]} />;
+        else {
+          return (
+              <div className="App">
+                  <Nav user_id={this.state.user.id} style={{'backgroundColor':'#234f9c !important'}} is_staff={this.state.user.is_staff}/>
+                  <Wrapper content={content} loaded={this.state.loaded} />
+                  <br />
+                  <br />
+                  <Footer />
+            </div>
+          );
         }
         else if (params[0].toLowerCase() == "applist") {
             content = <AppList user_id={this.state.token} logOut={logOut}/>;
@@ -162,12 +172,6 @@ class App extends Component {
             content = <PasswordReset  user_id={params[1]} />;
         }
 
-        return (
-            <div className="App">
-                <Wrapper token={this.state.token} navbar={true} logOut={logOut}
-                    content={content} loaded={this.state.loaded} />
-            </div>
-        );
     }
 }
 
