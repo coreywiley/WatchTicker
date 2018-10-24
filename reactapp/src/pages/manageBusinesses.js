@@ -5,6 +5,53 @@ import MetaTags from 'react-meta-tags';
 
 import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, Button} from 'library';
 import Card from 'projectLibrary/businessCard.js';
+
+class PublishButton extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {'businesses':[], filters:{'type':'', 'city':'', 'state':''}, 'loaded':false};
+
+    this.publish = this.publish.bind(this);
+    this.unpublish = this.unpublish.bind(this);
+    this.reject = this.reject.bind(this);
+  }
+
+  publish() {
+    ajaxWrapper('POST','/api/email/',{'to_email': this.props.email, 'from_email': 'jeremy.thiesen1@gmail.com', 'subject':'Your business was published PatronGate', 'text': 'We are excited to tell you we have published your business from PatronGate. Please follow up with this email to ask any questions and you are welcome to check out <a href="http://patrongate.jthiesen1.webfactional.com/business/' + this.props.id + '/">your business page.</a>'}, console.log)
+    ajaxWrapper('POST', '/api/home/business/' + this.props.id + '/', {'published':true, 'rejected':false, 'ask_for_publish':false}, this.props.businessRefresh)
+  }
+
+  unpublish() {
+    ajaxWrapper('POST','/api/email/',{'to_email': this.props.email, 'from_email': 'jeremy.thiesen1@gmail.com', 'subject':'Your business has been un-published from PatronGate', 'text': 'We are sorry to tell you we have unpublished your business from PatronGate. Please follow up with this email to ask any questions and you are welcome to reappply via <a href="http://patrongate.jthiesen1.webfactional.com/business/' + this.props.id + '/">your business page.</a>'}, console.log)
+    ajaxWrapper('POST', '/api/home/business/' + this.props.id + '/', {'published':false, 'rejected':false, 'ask_for_publish':false}, this.props.businessRefresh)
+  }
+
+  reject() {
+    ajaxWrapper('POST','/api/email/',{'to_email': this.props.email, 'from_email': 'jeremy.thiesen1@gmail.com', 'subject':'Your business has been rejected from PatronGate', 'text': 'We are sorry to tell you we have rejected your business from PatronGate. Please follow up with this email to ask any questions and you are welcome to reappply via <a href="http://patrongate.jthiesen1.webfactional.com/business/' + this.props.id + '/">your business page.</a>'}, console.log)
+    ajaxWrapper('POST', '/api/home/business/' + this.props.id + '/', {'published':false, 'rejected':true, 'ask_for_publish': false}, this.props.businessRefresh)
+  }
+
+  render() {
+    if (this.props.type == 'unpublish') {
+      return (
+        <Button text={'Un-Publish'} clickHandler={this.unpublish} type={'danger'} />
+      );
+    }
+    else if (this.props.type == 'reject') {
+      return (
+        <Button text={'Reject'} clickHandler={this.reject} type={'danger'} />
+      );
+    }
+    else {
+      return (
+        <Button text={'Publish'} clickHandler={this.publish} type={'success'} />
+      );
+    }
+
+  }
+
+}
+
 class Businesses extends Component {
 
   constructor(props) {
@@ -13,6 +60,8 @@ class Businesses extends Component {
 
     this.businessCallback = this.businessCallback.bind(this);
     this.setGlobalState = this.setGlobalState.bind(this);
+    this.businessRefresh = this.businessRefresh.bind(this);
+
   }
 
     componentDidMount() {
@@ -37,20 +86,7 @@ class Businesses extends Component {
        this.setState(newState)
     }
 
-    publish(id, email) {
-      ajaxWrapper('POST','/api/email/',{'to_email': email, 'from_email': 'jeremy.thiesen1@gmail.com', 'subject':'Your business was published PatronGate', 'text': 'We are excited to tell you we have published your business from PatronGate. Please follow up with this email to ask any questions and you are welcome to check out <a href="localhost:8000/business/' + id + '/">your business page.</a>'})
-      ajaxWrapper('POST', '/api/home/business/' + id + '/', {'published':true, 'rejected':false, 'ask_for_publish':false}, this.businessRefresh)
-    }
 
-    unpublish(id, email) {
-      ajaxWrapper('POST','/api/email/',{'to_email': email, 'from_email': 'jeremy.thiesen1@gmail.com', 'subject':'Your business has been un-published from PatronGate', 'text': 'We are sorry to tell you we have unpublished your business from PatronGate. Please follow up with this email to ask any questions and you are welcome to reappply via <a href="localhost:8000/business/' + id + '/">your business page.</a>'})
-      ajaxWrapper('POST', '/api/home/business/' + id + '/', {'published':false, 'rejected':false, 'ask_for_publish':false}, this.businessRefresh)
-    }
-
-    reject(id, email) {
-      ajaxWrapper('POST','/api/email/',{'to_email': email, 'from_email': 'jeremy.thiesen1@gmail.com', 'subject':'Your business has been rejected from PatronGate', 'text': 'We are sorry to tell you we have rejected your business from PatronGate. Please follow up with this email to ask any questions and you are welcome to reappply via <a href="localhost:8000/business/' + id + '/">your business page.</a>'})
-      ajaxWrapper('POST', '/api/home/business/' + id + '/', {'published':false, 'rejected':true, 'ask_for_publish': false}, this.businessRefresh)
-    }
 
     render() {
       if (this.state.loaded) {
@@ -59,32 +95,33 @@ class Businesses extends Component {
         var rejectedTableRows = [];
         var workingOnTableRows = [];
 
+        var i = 0;
         for (var index in this.state.businesses) {
           var business = this.state.businesses[index];
           if (business.published == true) {
             publishedTableRows.push(<tr>
                 <td>{business.name}</td>
                 <td>{business.email}</td>
-                <td><Button text={'View Page'} href={'/business/' + business.id + '/'} type={'primary'} /></td>
-                <td><Button text={'Un-Publish'} href={() => this.unpublish(business.id, business.email)} type={'danger'} /></td>
-                <td><Button text={'Reject'} href={() => this.reject(business.id, business.email)} type={'danger'} /></td>
+                <td><Button key={index } text={'View Page'} href={'/business/' + business.id + '/'} type={'primary'} /></td>
+                <td><PublishButton id={business.id} email={business.email} type={'un-publish'} businessRefresh={this.businessRefresh} /></td>
+                <td><PublishButton id={business.id} email={business.email} type={'reject'} businessRefresh={this.businessRefresh}  /></td>
                 </tr>)
           }
           else if (business.published == false && business.ask_for_publish == true) {
             unpublishedTableRows.push(<tr>
                 <td>{business.name}</td>
                 <td>{business.email}</td>
-                <td><Button text={'View Page'} href={'/business/' + business.id + '/'} type={'primary'} /></td>
-                <td><Button text={'Publish'} href={() => this.publish(business.id, business.email)} type={'success'} /></td>
-                <td><Button text={'Reject'} href={() => this.reject(business.id, business.email)} type={'danger'} /></td>
+                <td><Button key={index} text={'View Page'} href={'/business/' + business.id + '/'} type={'primary'} /></td>
+                <td><PublishButton id={business.id} email={business.email} type={'publish'} businessRefresh={this.businessRefresh}  /></td>
+                <td><PublishButton id={business.id} email={business.email} type={'reject'} businessRefresh={this.businessRefresh}  /></td>
                 </tr>)
           }
           else if (business.rejected == true) {
             rejectedTableRows.push(<tr>
                 <td>{business.name}</td>
                 <td>{business.email}</td>
-                <td><Button text={'View Page'} href={'/business/' + business.id + '/'} type={'primary'} /></td>
-                <td><Button text={'Publish'} href={() => this.publish(business.id, business.email)} type={'success'} /></td>
+                <td><Button key={index} text={'View Page'} href={'/business/' + business.id + '/'} type={'primary'} /></td>
+                <td><PublishButton id={business.id} email={business.email} type={'publish'} businessRefresh={this.businessRefresh}  /></td>
                 </tr>)
           }
           else {
