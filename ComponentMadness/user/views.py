@@ -27,13 +27,40 @@ def GetUser(request):
 
     return JsonResponse(userData)
 
+@api_view(['POST'])
+@permission_classes((IsPostOrIsAuthenticated, ))
+def CheckForUser(request):
+    email = request.POST['email'].lower()
+    check = User.objects.filter(email=email).first()
+    if check:
+        return JsonResponse([{'user':{'email':check.email, 'id':check.id}}], safe=False)
+
+    return JsonResponse({'error':'No such user exists.'})
+
+@api_view(['POST'])
+@permission_classes((IsPostOrIsAuthenticated, ))
+def ResetPassword(request, user_id):
+    password = request.POST['password'].lower()
+    check = User.objects.filter(id=user_id).first()
+    if check:
+        check.set_password(password)
+        check.save()
+        return JsonResponse([{'user':{'email':check.email, 'id':check.id}}], safe=False)
+
+    return JsonResponse({'error':'No such user exists.'})
 
 @api_view(['POST'])
 @permission_classes((IsPostOrIsAuthenticated, ))
 def UserSignUp(request):
+    email = request.POST['email'].lower()
+    check = User.objects.filter(email=email).first()
+    if check:
+        return JsonResponse({'error':'A user with that email already exists.'})
+
+
     user = createAndUpdateModel(request._request, 'user', 'user', [])[0]['user']
 
-    email = request.POST['email'].lower()
+
     password = request.POST['password']
 
     return TokenObtainPairView.as_view()(request._request)

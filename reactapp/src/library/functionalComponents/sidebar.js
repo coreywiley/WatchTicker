@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
     Image
 } from 'library';
+import Wrapper from 'base/wrapper.js';
 
 class Sidebar extends Component {
     constructor(props) {

@@ -34,7 +34,7 @@ class PasswordInput extends Component {
               valid = ' is-blank'
               passwordConfirm = <div className={"form-group " + this.props.layout}>
                   <label>Confirm Password</label>
-                  <input type="password" className={"form-control" + valid} name="password_confirm" onChange={(e) => {this.verifyPassword(e); this.props.handleChange(e)}} value={this.state.password_confirm} />
+                  <input type="password" className={"form-control" + valid} name="password_confirm" onChange={(e) => this.verifyPassword(e)} value={this.state.password_confirm} />
 
                 </div>
             }
@@ -43,7 +43,7 @@ class PasswordInput extends Component {
                 valid = ' is-invalid';
                 passwordConfirm = <div className={"form-group " + this.props.layout}>
                     <label>Confirm Password</label>
-                    <input type="password" className={"form-control" + valid} name="password_confirm" onChange={(e) => {this.verifyPassword(e); this.props.handleChange(e)}} value={this.state.password_confirm} />
+                    <input type="password" className={"form-control" + valid} name="password_confirm" onChange={(e) => this.verifyPassword(e)} value={this.state.password_confirm} />
                     <div className="invalid-feedback">
                       Passwords Do Not Match!
                     </div>
@@ -53,7 +53,7 @@ class PasswordInput extends Component {
             else {
               passwordConfirm = <div className={"form-group " + this.props.layout}>
                   <label>Confirm Password</label>
-                  <input type="password" className={"form-control" + valid} name="password_confirm" onChange={(e) => {this.verifyPassword(e); this.props.handleChange(e)}} value={this.state.password_confirm} />
+                  <input type="password" className={"form-control" + valid} name="password_confirm" onChange={(e) => this.verifyPassword(e)} value={this.state.password_confirm} />
                   <div className="valid-feedback">
                       Passwords Match!
                     </div>

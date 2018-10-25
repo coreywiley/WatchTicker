@@ -2,27 +2,32 @@ import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 
-import {Form, TextInput, Select, PasswordInput, Navbar} from 'library';
+import {Form, TextInput, Select, PasswordInput, Navbar, Alert} from 'library';
 
 class SignUp extends Component {
     constructor(props) {
         super(props);
+        this.state = {'error':null}
         this.logIn = this.logIn.bind(this);
     }
 
     logIn(value) {
         console.log(value);
-
-        localStorage.setItem('token', value['access']);
-        localStorage.setItem('refresh_token', value['refresh'])
-
-        if (localStorage.getItem('redirect')) {
-            var redirect = localStorage.getItem('redirect');
-            localStorage.removeItem('redirect')
-            window.location.href = redirect;
+        if (value['error']) {
+          this.setState(value)
         }
         else {
-            window.location.href = '/';
+          localStorage.setItem('token', value['access']);
+          localStorage.setItem('refresh_token', value['refresh'])
+
+          if (localStorage.getItem('redirect')) {
+              var redirect = localStorage.getItem('redirect');
+              localStorage.removeItem('redirect')
+              window.location.href = redirect;
+          }
+          else {
+              window.location.href = '/';
+          }
         }
     }
 
@@ -38,6 +43,11 @@ class SignUp extends Component {
 
         var submitUrl = "/users/signup/";
 
+        var error = null;
+        if (this.state.error) {
+          error = <Alert type={'danger'} text={this.state.error} />
+        }
+
         var content =
         <div className="container">
             <div className="row">
@@ -45,6 +55,7 @@ class SignUp extends Component {
                 <div className="col-md-4">
                     <h2>Sign Up</h2>
                     <Form components={Components} redirect={this.logIn} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
+                    {error}
                 </div>
                 <div className="col-md-4"></div>
             </div>

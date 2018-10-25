@@ -24,10 +24,11 @@ class PasswordResetRequest extends Component {
     }
 
     userLookup() {
-      ajaxWrapper('GET','/api/user/user/?email=' + this.state.email, {}, this.email)
+      ajaxWrapper('POST', '/users/userCheck/', {'email':this.state.email}, this.email)
     }
 
     email(result) {
+      console.log('EMAIL', result);
       if (result.length > 0) {
         var user = result[0]['user']
         ajaxWrapper('POST','/api/email/', {'to_email':user.email, 'from_email':'jeremy.thiesen1@gmail.com','subject':'Password Reset','text':'You can reset your password at .../passwordReset/' + user.id +'/'}, this.emailCallback)
@@ -44,8 +45,6 @@ class PasswordResetRequest extends Component {
 
     render() {
         var email_props = {'value':this.state.email,'name':'email','label':'Email:','placeholder': 'component@madness.com', 'handlechange':this.handleChange}
-
-        var submitUrl = "/api/user/user/";
 
         var alert = <div></div>;
         if (this.state.error == true) {

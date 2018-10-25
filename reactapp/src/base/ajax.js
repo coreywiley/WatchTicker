@@ -78,7 +78,7 @@ function refreshToken(type, url, data, returnFunc){
             console.log('Refresh Token Expired');
             localStorage.removeItem('token');
             localStorage.removeItem('refresh_token');
-            window.location.href = window.location.href;
+            //window.location.href = window.location.href;
           }
       });
 

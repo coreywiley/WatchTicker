@@ -24,6 +24,10 @@ import SignUp from './pages/scaffold/signUp.js';
 import LoggedIn from './pages/scaffold/loggedIn.js';
 import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
 import PasswordReset from './pages/scaffold/passwordReset.js';
+import Nav from 'projectLibrary/nav.js';
+import Footer from 'projectLibrary/footer.js';
+
+import Test from './pages/modelEditAndView/WYSIWYG.js';
 
 class App extends Component {
     constructor(props) {
@@ -41,22 +45,26 @@ class App extends Component {
 
     componentDidMount() {
         ajaxWrapper("GET", "/api/csrfmiddlewaretoken/", {}, this.ajaxCallback);
-        ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));
-        var path = window.location.href.toLowerCase();
+
+        var path = this.getURL()[0].toLowerCase();
 
         var token = localStorage.getItem('token');
+
+        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset']
+
         if (token) {
+            ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));
             this.setState({token: token});
-            if (path.indexOf('login') > -1 || window.location.pathname == "/") {
+            if (path.indexOf('login') > -1) {
                 window.location.href = '/viewer/';
             }
-        } else if (path.indexOf('login') == -1 && path.indexOf('signup') == -1 &&
-                    window.location.pathname != "/") {
+        } else if (loginNoRedirects.indexOf(path) == -1 && window.location.pathname != "/") {
             window.location.href = '/login/';
         }
     }
 
     loadUser(result){
+      console.log("Load User Result", result)
         this.setState({
             user: result
         });
@@ -155,6 +163,9 @@ class App extends Component {
         }
         else if (route == "passwordreset") {
             content = <PasswordReset  user_id={params[1]} />;
+        }
+        else if (route == "test") {
+            content = <Test user_id={params[1]} />;
         }
 
 

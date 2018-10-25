@@ -16,7 +16,7 @@ class PasswordReset extends Component {
         var ComponentProps = [password_props];
         var defaults = {'password':''};
 
-        var submitUrl = "/api/user/user/" + this.props.user_id + "/";
+        var submitUrl = "/users/resetPassword/" + this.props.user_id + "/";
 
         var content = <div className="container">
                 <h2>Reset Password</h2>
@@ -25,7 +25,7 @@ class PasswordReset extends Component {
 
 
         return (
-            <Wrapper loaded={this.state.loaded}  content={content} />
+            <Wrapper loaded={true}  content={content} />
          );
     }
 }
