@@ -9,6 +9,7 @@ from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, 
 from user.permissions import staff_required
 from django.views.decorators.csrf import csrf_exempt
 from modelWebsite.helpers.databaseOps import insert
+import datetime
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -269,6 +270,8 @@ def writeComponents(request):
     #components = Component.objects.exclude(name__in = ['Test', "Dynamic Importer Example"]).all()
     components = getFilesFromFolder(filepath)
 
+
+
     filepath = os.path.join(filepath, "index.js")
     importNames = "";
     with open(filepath, "w") as file:
@@ -336,164 +339,165 @@ def writeComponents(request):
 
     return HttpResponse("")
 
+def writeModelPageTemplates(request):
+    filepath = os.path.join(os.getcwd(), "..", "reactapp", "src", "pages", "modelEditAndView")
+    editTemplatePath = os.path.join(filepath, "editTemplate.js")
+    viewTemplatePath = os.path.join(filepath, "viewTemplate.js")
+    models = apps.get_models()
 
-import pprint
+    models = apps.get_models()
+    djangoApps = []
+    for app in apps.get_app_configs():
+        appName = app.name
 
-def getFilesFromFolder(folder):
-    #Read a folder file system into python as a dictionary
-    entries = {}
-
-    for file in os.listdir(folder):
-        #Avoid Word temp files
-        if file.startswith("~"):
-            continue
-
-        if file == 'index.js':
-            continue
-
-        path = folder + "\\" + file
-        if os.path.isfile(path):
-            #Add file to dictionary with full path as the value
-            key = file.replace('.js', '').capitalize()
-            value = './%s' % (path.split('reactapp\\src\\library\\')[-1].replace('\\', '/'))
-
-            entries[key] = value
-
-        elif os.path.isdir(path):
-            #Add a folder and recursivly search its children
-            entries[file] = getFilesFromFolder(path)
-
-    pp = pprint.PrettyPrinter()
-    pp.pprint(entries)
-
-    return entries
-
-
-
-def PageEditor(request):
-    if request.method == "GET":
-        components = Component.objects.filter()
-        componentDataFields = ComponentDataField.objects.filter()
-
-        componentList = []
-        detailedComponents = {}
-        for component in components:
-            temp = {'id': component.id, 'name':component.name,'description':component.description, 'fields':[]}
-            tempData = {}
-            for dataField in componentDataFields:
-                print (dataField.component_id_id)
-                print (component.name)
-                if dataField.component_id_id == component.id:
-                    temp['fields'].append({'name':dataField.name})
-                    tempData[dataField.name] = {'html_id':dataField.html_id, 'attribute_to_change':dataField.attribute_to_change}
-            detailedComponents[component.name] = {'id':component.id,'html':component.html,'dataStructure':tempData}
-            componentList.append(temp)
-
-        fieldDict = {}
-        for field in Field.objects.all():
-            if field.model_id not in fieldDict:
-                fieldDict[field.model_id] = []
-            tempField = {'name':field.name,'id':field.id,'fieldType':field.fieldType,'default':field.default,'blank':field.blank,'model_id':field.model_id}
-            fieldDict[field.model_id].append(tempField)
-
-        modelDicts = []
-        for model in Model.objects.all():
-            modelDicts.append({'name':model.name, 'id':model.id, 'fields': fieldDict[model.id]})
-            print (fieldDict[model.id])
-
-        return render(request, 'pageEditor.html', {'componentList':componentList, 'detailedComponents':detailedComponents, 'modelDicts':modelDicts})
-
-
-    elif request.method == "POST":
-        #some sort of saving
-
-        requestData = json.loads(request.POST['componentData'])
-        name = request.POST['name']
-        url = request.POST['url']
-        components = requestData['components']
-
-        page = Page()
-        page.name = name
-        page.url = url
-        page.save()
-
-
-        i = 0
-        for component in components:
-            componentCheck = Component.objects.filter(id=int(component['id'])).first()
-            tempComponent = PageComponent()
-            tempComponent.page_id = page
-            tempComponent.component_id = componentCheck
-            tempComponent.order = i
-            i += 1
-
-            if 'data_url' in component and component['data_url'] != '':
-                tempComponent.data_url = component['data_url']
-
-            if 'data' in component and component['data'] != {}:
-                tempComponent.data = component['data']
-
-            tempComponent.save()
-        return JsonResponse({'success':True})
-
-
-def PageDisplay(request, url):
-    user = None
-    if request.user.is_authenticated:
-        user = request.user
-
-
-    query_split = [x.split('=') for x in request.META['QUERY_STRING'].split('&')]
-
-    parameters = {}
-
-    if query_split[0][0] != '':
-        for param in query_split:
-            parameters['{{'+param[0]+'}}'] = param[1]
-
-    if user and '{{userId}}' not in parameters:
-        parameters['{{userId}}'] = user.id
-
-    page = Page.objects.filter(url=url).first()
-
-    pageComponents = PageComponent.objects.filter(page_id=page.id).order_by('order')
-
-    componentDataFields = ComponentDataField.objects.filter()
-
-    buildComponents = []
-    for pageComponent in pageComponents:
-        print ("I'm Here!!")
-        component = Component.objects.filter(id=pageComponent.component_id_id).first()
-        temp = {'name': component.name, 'description': component.description, 'fields': []}
-        tempData = {}
-        for dataField in componentDataFields:
-            if dataField.component_id_id == component.id:
-                temp['fields'].append({'name': dataField.name})
-                tempData[dataField.name] = {'html_id':dataField.html_id,'attribute_to_change':dataField.attribute_to_change}
-
-        if pageComponent.data_url != '':
-            buildComponents.append({'html': component.html, 'dataStructure': tempData, 'data_url':pageComponent.data_url})
-        else:
-            if isinstance(pageComponent.data, str):
-                jsonStr = pageComponent.data.replace("'",'"')
-                jsonObj = json.loads(jsonStr)
-            else:
-                jsonObj = pageComponent.data
-            buildComponents.append({'html': component.html, 'dataStructure': tempData, 'data': jsonObj})
-
-
-        models = Model.objects.all()
-        fields = Field.objects.all()
-
-        modelDict = {}
         for model in models:
-            modelDict[model.id] = {'id':model.id, 'name':model.name, 'fields':[]}
+            if model._meta.app_label == appName:
+                modelName = model.__name__
+                defaultDict = {}
+                componentList = []
+                formComponentList = []
+                componentProps = {}
+                formComponentProps = {}
+                for field in model._meta.get_fields():
+                    fieldName = field.name
+                    fieldLabel = fieldName.title()
+                    fieldType = field.get_internal_type()
 
-        for field in fields:
-            fieldItems = {'id':field.id, 'name': field.name, 'fieldType':field.fieldType, 'default': field.default, 'blank':field.blank}
-            modelDict[field.model_id]['fields'].append(fieldItems)
+                    try:
+                        fieldDefault = field.get_default()
+                    except:
+                        fieldDefault = ''
 
-    return render(request, 'pageBuilder.html',{'buildComponents': buildComponents, 'parameters':parameters, 'modelDict':modelDict})
+                    if fieldType == 'ForeignKey':
+                        relatedApp = field.related_model._meta.app_label
+                        relatedModel = field.related_model._meta.object_name.lower()
+
+                    if fieldDefault == True:
+                        defaultDict[fieldName] = 'true'
+                    elif fieldDefault == False:
+                        defaultDict[fieldName] = 'false'
+                    elif isinstance(fieldDefault, datetime.datetime):
+                        defaultDict[fieldName] = fieldDefault.strftime('%m/%d/%Y')
+                    elif fieldDefault != None:
+                        defaultDict[fieldName] = fieldDefault
+                    else:
+                        defaultDict[fieldName] = ''
+
+                    if fieldType == 'AutoField':
+                        componentList.append("Paragraph")
+                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
+                        formComponentList.append("TextInput")
+                        formComponentProps[fieldName] = {'name':fieldName, 'label':fieldLabel, 'placeholder': fieldName, 'value':''}
+
+                    elif fieldType == 'CharField':
+                        componentList.append("Paragraph")
+                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
+                        formComponentList.append("TextInput")
+                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel, 'placeholder': fieldName, 'value': ''}
+
+                    elif fieldType == 'TextField':
+                        componentList.append("MultiLineText")
+                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
+                        formComponentList.append("TextArea")
+                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel, 'placeholder': fieldName, 'value': ''}
+
+                    elif fieldType in ['DecimalField','FloatField','IntegerField']:
+                        componentList.append("Paragraph")
+                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
+                        formComponentList.append("NumberInput")
+                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel, 'placeholder': 0, 'value': 0}
+
+                    elif fieldType == 'BooleanField':
+                        componentList.append("Paragraph")
+                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
+                        formComponentList.append("Select")
+                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel, 'placeholder': 'Please Choose One', 'value': 'false', 'options': [['true','True'],['false','False']]}
+
+                    elif fieldType == 'DateField':
+                        componentList.append("Paragraph")
+                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
+                        formComponentList.append("TextInput")
+                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel, 'placeholder': '2020-10-24', 'value': '', 'display_time': 'false'}
+
+                    elif fieldType == 'DateTimeField':
+                        componentList.append("Paragraph")
+                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
+                        formComponentList.append("TextInput")
+                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel, 'placeholder': '2020-10-24 14:23:01', 'value': '', 'display_time': 'true'}
+
+                    elif fieldType == 'ForeignKey':
+                        componentList.append("Paragraph")
+                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
+                        formComponentList.append("Select")
+                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel,'placeholder': fieldName, 'value': '', 'optionsUrl': '/api/%s/%s/' % (relatedApp,relatedModel), 'optionsUrlMap':{'text':'{name}','value':'{id}'}}
+
+                #turning lists and dicts into strings
+                defaults = "{"
+                for fieldName in defaultDict:
+                    defaults += "'" + fieldName + "' : '" + defaultDict[fieldName] + "', "
+
+                componentListString = "var componentList = ["
+                formComponentListString = "var componentList = ["
+                for i in range(len(componentList)):
+                    if i != 0:
+                        componentListString += ", "
+                        formComponentListString += ", "
+
+                    componentListString += componentList[i]
+                    formComponentListString += formComponentList[i]
+
+                componentListString += "];"
+                formComponentListString += "];"
+
+                componentPropsString = ''
+                formComponentPropsString = ''
+                i = 0
+                listString = 'var ComponentProps = ['
+                for fieldName in componentProps:
+                    componentPropsString += 'var ' + fieldName + ' = ' + json.dumps(componentProps[fieldName]) + ';\n'
+                    formComponentPropsString += 'var ' + fieldName + ' = ' + json.dumps(formComponentProps[fieldName]) + ';\n'
+                    if i != 0:
+                        listString += ", "
+                    else:
+                        i += 1
+                    listString += fieldName
+
+                componentPropsString += listString
+                formComponentPropsString += listString
+
+                editTemplate = open(editTemplatePath, "r").read()
+                viewTemplate = open(viewTemplatePath, "r").read()
+
+                editTemplate = editTemplate.replace("*App*", appName)
+                editTemplate = editTemplate.replace("*Object*", modelName)
+                editTemplate = editTemplate.replace("*CapitalObject*", modelName.title())
+                editTemplate = editTemplate.replace("*Defaults*", defaults)
+                editTemplate = editTemplate.replace("*ComponentProps*", componentPropsString)
+                editTemplate = editTemplate.replace("*ComponentList*", componentListString)
+                editTemplate = editTemplate.replace("*FormComponentList*", formComponentListString)
+                editTemplate = editTemplate.replace("*FormComponentProps*", formComponentPropsString)
+
+                viewTemplate = viewTemplate.replace("*App*", appName)
+                viewTemplate = viewTemplate.replace("*Object*", modelName)
+                viewTemplate = viewTemplate.replace("*CapitalObject*", modelName.title())
+                viewTemplate = viewTemplate.replace("*Defaults*", defaults)
+                viewTemplate = viewTemplate.replace("*ComponentProps*", componentPropsString)
+                viewTemplate = viewTemplate.replace("*ComponentList*", componentListString)
+                viewTemplate = viewTemplate.replace("*FormComponentList*", formComponentListString)
+                viewTemplate = viewTemplate.replace("*FormComponentProps*", formComponentPropsString)
+
+                newEditTemplate = os.path.join(filepath, "edit" + modelName + ".js")
+                newViewTemplate = os.path.join(filepath, modelName + ".js")
+
+                with open(newEditTemplate, "w") as file:
+                    file.write(editTemplate)
+
+                with open(newViewTemplate, "w") as file:
+                    file.write(viewTemplate)
+
+
+    return JsonResponse({'success':True})
+
 
 def SendEmail(request):
     # using SendGrid's Python Library

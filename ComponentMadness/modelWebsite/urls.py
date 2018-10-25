@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from modelWebsite.views import getModels, getModelInstanceJson, deleteModelInstance, \
-    getApps, getModelFieldsJson, writeComponents, CSRFMiddlewareToken, SendEmail, PhotoUpload
+    getApps, getModelFieldsJson, writeComponents, writeModelPageTemplates, CSRFMiddlewareToken, SendEmail, PhotoUpload
 
 app_name = 'api'
 
@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^(?P<appLabel>[a-zA-Z]+)/(?P<modelName>[a-zA-Z_]+)/$', getModelInstanceJson, name='getModelInstance'),
 
     url(r'^writeComponents/$', writeComponents, name = "writeComponents"),
+    url(r'^writeTemplates/$', writeModelPageTemplates, name = "writeModelPageTemplates"),
     url(r'^email/$', SendEmail, name='email'),
     url(r'^photoUpload/$',PhotoUpload, name='photoUpload')
 
