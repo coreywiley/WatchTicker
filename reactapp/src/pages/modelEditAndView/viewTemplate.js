@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import Wrapper from 'base/wrapper.js';
 import ajaxWrapper from 'base/ajax.js';
-import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Card} from 'library';
+import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Card, MultiLineText} from 'library';
 
 class *CapitalObject* extends Component {
     constructor(props) {
@@ -25,13 +25,13 @@ class *CapitalObject* extends Component {
 
     render() {
 
-      *ComponentProps*
-      *ComponentList*
+*ComponentProps*
+
 
       var content =
         <div className="container">
           <Header size={1} text={this.state.name} />
-          {componentList}
+*ComponentList*
         </div>;
 
         return (

@@ -353,13 +353,15 @@ def writeModelPageTemplates(request):
         for model in models:
             if model._meta.app_label == appName:
                 modelName = model.__name__
-                defaultDict = {}
-                componentList = []
-                formComponentList = []
-                componentProps = {}
-                formComponentProps = {}
+                componentListString = ""
+                formComponentListString = "\t\t\t\tvar Components = ["
+                componentPropsString = ''
+                formComponentPropsString = ''
+                defaults = "{"
+                listString = '\t\t\tvar ComponentProps = ['
+                i = 0
                 for field in model._meta.get_fields():
-                    fieldName = field.name
+                    fieldName = field.name.lower()
                     fieldLabel = fieldName.title()
                     fieldType = field.get_internal_type()
 
@@ -372,95 +374,82 @@ def writeModelPageTemplates(request):
                         relatedApp = field.related_model._meta.app_label
                         relatedModel = field.related_model._meta.object_name.lower()
 
+                    #defaults
                     if fieldDefault == True:
-                        defaultDict[fieldName] = 'true'
+                        fieldDefault = 'true'
                     elif fieldDefault == False:
-                        defaultDict[fieldName] = 'false'
+                        fieldDefault = 'false'
                     elif isinstance(fieldDefault, datetime.datetime):
-                        defaultDict[fieldName] = fieldDefault.strftime('%m/%d/%Y')
+                        fieldDefault = fieldDefault.strftime('%m/%d/%Y')
+                    elif isinstance(fieldDefault, dict):
+                        fieldDefault = json.dumps(fieldDefault)
                     elif fieldDefault != None:
-                        defaultDict[fieldName] = fieldDefault
+                        fieldDefault = fieldDefault
                     else:
-                        defaultDict[fieldName] = ''
+                        fieldDefault = ''
 
+                    defaults += "'%s' : '" + fieldDefault + "', "
+
+                    #components and their props
                     if fieldType == 'AutoField':
-                        componentList.append("Paragraph")
-                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
-                        formComponentList.append("TextInput")
-                        formComponentProps[fieldName] = {'name':fieldName, 'label':fieldLabel, 'placeholder': fieldName, 'value':''}
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName,fieldName)
+                        formComponentListString += "TextInput"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': ''};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
 
                     elif fieldType == 'CharField':
-                        componentList.append("Paragraph")
-                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
-                        formComponentList.append("TextInput")
-                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel, 'placeholder': fieldName, 'value': ''}
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "TextInput"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': ''};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
 
                     elif fieldType == 'TextField':
-                        componentList.append("MultiLineText")
-                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
-                        formComponentList.append("TextArea")
-                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel, 'placeholder': fieldName, 'value': ''}
+                        componentListString += "\t\t\t\t\t\t<MultiLineText {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "TextArea"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': ''};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
 
                     elif fieldType in ['DecimalField','FloatField','IntegerField']:
-                        componentList.append("Paragraph")
-                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
-                        formComponentList.append("NumberInput")
-                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel, 'placeholder': 0, 'value': 0}
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "NumberInput"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': 0, 'value': 0};\n" % (fieldName, fieldName, fieldLabel)
 
                     elif fieldType == 'BooleanField':
-                        componentList.append("Paragraph")
-                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
-                        formComponentList.append("Select")
-                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel, 'placeholder': 'Please Choose One', 'value': 'false', 'options': [['true','True'],['false','False']]}
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "Select"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'options': [[true,'True'],[false,'False']]};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
 
                     elif fieldType == 'DateField':
-                        componentList.append("Paragraph")
-                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
-                        formComponentList.append("TextInput")
-                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel, 'placeholder': '2020-10-24', 'value': '', 'display_time': 'false'}
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "TextInput"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'display_time': false};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
 
                     elif fieldType == 'DateTimeField':
-                        componentList.append("Paragraph")
-                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
-                        formComponentList.append("TextInput")
-                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel, 'placeholder': '2020-10-24 14:23:01', 'value': '', 'display_time': 'true'}
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "TextInput"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'display_time': true};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
 
                     elif fieldType == 'ForeignKey':
-                        componentList.append("Paragraph")
-                        componentProps[fieldName] = {'text': 'this.state.' + fieldName}
-                        formComponentList.append("Select")
-                        formComponentProps[fieldName] = {'name': fieldName, 'label': fieldLabel,'placeholder': fieldName, 'value': '', 'optionsUrl': '/api/%s/%s/' % (relatedApp,relatedModel), 'optionsUrlMap':{'text':'{name}','value':'{id}'}}
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "Select"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': '', 'optionsUrl': '/api/%s/%s/', 'optionsUrlMap': {'text':'{name}','value':'{id}'}};\n" % (fieldName, fieldName, fieldLabel, fieldLabel, relatedApp,relatedModel)
 
-                #turning lists and dicts into strings
-                defaults = "{"
-                for fieldName in defaultDict:
-                    defaults += "'" + fieldName + "' : '" + defaultDict[fieldName] + "', "
-
-                componentListString = "var componentList = ["
-                formComponentListString = "var componentList = ["
-                for i in range(len(componentList)):
                     if i != 0:
-                        componentListString += ", "
+                        listString += ", "
                         formComponentListString += ", "
 
-                    componentListString += componentList[i]
-                    formComponentListString += formComponentList[i]
+                    i += 1
+                    listString += fieldName
+
+                listString += "];"
 
                 componentListString += "];"
                 formComponentListString += "];"
-
-                componentPropsString = ''
-                formComponentPropsString = ''
-                i = 0
-                listString = 'var ComponentProps = ['
-                for fieldName in componentProps:
-                    componentPropsString += 'var ' + fieldName + ' = ' + json.dumps(componentProps[fieldName]) + ';\n'
-                    formComponentPropsString += 'var ' + fieldName + ' = ' + json.dumps(formComponentProps[fieldName]) + ';\n'
-                    if i != 0:
-                        listString += ", "
-                    else:
-                        i += 1
-                    listString += fieldName
 
                 componentPropsString += listString
                 formComponentPropsString += listString
@@ -469,7 +458,7 @@ def writeModelPageTemplates(request):
                 viewTemplate = open(viewTemplatePath, "r").read()
 
                 editTemplate = editTemplate.replace("*App*", appName)
-                editTemplate = editTemplate.replace("*Object*", modelName)
+                editTemplate = editTemplate.replace("*Object*", modelName.lower())
                 editTemplate = editTemplate.replace("*CapitalObject*", modelName.title())
                 editTemplate = editTemplate.replace("*Defaults*", defaults)
                 editTemplate = editTemplate.replace("*ComponentProps*", componentPropsString)

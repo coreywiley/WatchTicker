@@ -28,9 +28,9 @@ class Edit*CapitalObject* extends Component {
 
     render() {
 
-        *FormComponentList*
+*FormComponentList*
 
-        *FormComponentProps*
+*FormComponentProps*
 
         var defaults = this.state;
 
@@ -46,14 +46,14 @@ class Edit*CapitalObject* extends Component {
 
 
         var title = <Header text={'Create New *CapitalObject*'} size={2} />
-        if (this.props.course_id) {
+        if (this.props.*Object*_id) {
           title = <Header text={'Edit *CapitalObject*: ' + this.state.name} size={2} />
         }
 
 
         var content = <div className="container">
                 {title}
-                <Form components={Components} redirectUrl={"/*Object*/{id}"} componentProps={ComponentProps} deleteUrl={deleteUrl} submitUrl={submitUrl} defaults={defaults} />
+                <Form components={Components} redirectUrl={"/*Object*/{id}/"} componentProps={ComponentProps} deleteUrl={deleteUrl} submitUrl={submitUrl} defaults={defaults} />
                 <br />
         </div>;
 
