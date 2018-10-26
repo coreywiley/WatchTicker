@@ -137,12 +137,14 @@ class Form extends Component {
     }
 
     formSubmitCallback (value) {
-        console.log("Value",value);
+        console.log("Form Submit Value",value);
 
         if (typeof(value[0]) != 'undefined'){
             if (this.props.setGlobalState) {
                 if (this.props.globalStateName) {
-                    this.setState(value[0][this.props.objectName], () => this.props.setGlobalState(this.props.globalStateName,this.state));
+                  var returnObj = value[0][this.props.objectName];
+                  console.log("Return Obj", value[0], this.props.objectName, returnObj)
+                    this.setState(value[0][this.props.objectName], () => this.props.setGlobalState(this.props.globalStateName,value[0][this.props.objectName]));
                 } else {
                     this.setState(value[0][this.props.objectName], this.props.setGlobalState('Form',this.state));
                 }

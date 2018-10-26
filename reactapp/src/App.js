@@ -39,8 +39,7 @@ class App extends Component {
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
-        this.getUserInfo = this.getUserInfo.bind(this);
-        this.getUserInfoCallback = this.getUserInfoCallback.bind(this);
+        this.loadUser = this.loadUser.bind(this);
     }
 
     componentDidMount() {
@@ -66,7 +65,7 @@ class App extends Component {
     loadUser(result){
       console.log("Load User Result", result)
         this.setState({
-            user: result
+            user: result, loaded: true,
         });
     }
 
@@ -83,19 +82,10 @@ class App extends Component {
         window.secretReactVars["csrfmiddlewaretoken"] = value.csrfmiddlewaretoken;
 
         this.setState({
-            loaded: true,
             csrfmiddlewaretoken: value.csrfmiddlewaretoken
         });
     }
 
-    getUserInfo() {
-      console.log("Get User Info")
-      ajaxWrapper('GET', '/users/user/', {}, this.getUserInfoCallback)
-    }
-
-    getUserInfoCallback(result) {
-      this.setState({'user': result, loaded:true})
-    }
 
     getURL() {
         var url = window.location.pathname;
@@ -120,52 +110,55 @@ class App extends Component {
         var loading = <h1>Loading . . . </h1>;
         var content = null;
 
-        if (adminPages.indexOf(route) > -1 && this.state.loaded && !(this.state.user.is_staff)){
-            window.location = '/';
-        } else if (loggedInPages.indexOf(route) > -1 && this.state.loaded && typeof(this.state.user.id) != 'undefined'){
-            window.location = '/login/';
-        }
+        if (this.state.loaded) {
+          if (adminPages.indexOf(route) > -1 && this.state.loaded && !(this.state.user.is_staff)){
+              //window.location = '/';
+              console.log("Not an admin", this.state.loaded, this.state.user)
+          } else if (loggedInPages.indexOf(route) > -1 && this.state.loaded && typeof(this.state.user.id) != 'undefined'){
+              //window.location = '/login/';
+              console.log("Need to be logged in");
+          }
+          else if (params[0] === ""){
+              //Home page
+              content = <Home />;
 
-        if (params[0] === ""){
-            //Home page
-            content = <Home />;
-
-        } else if (route === "components") {
-            //List components
-            content = <ComponentList />;
-        }
-        else if (route == "applist") {
-            content = <AppList user_id={this.state.token}/>;
-        }
-        else if (route == "models") {
-            content = <ModelList app={params[1]} user_id={this.state.token}/>;
-        }
-        else if (route == "modelinstances") {
-            content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token}/>;
-        }
-        else if (route == "modelinstancestable") {
-            content = <InstanceTable app={params[1]} model={params[2]}/>;
-        }
-        else if (route == "instance") {
-            content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token}/>;
-        }
-        else if (route == "login") {
-            content = <LogIn />;
-        }
-        else if (route == "signup") {
-            content = <SignUp />;
-        }
-        else if (route == "loggedin") {
-            content = <LoggedIn  />;
-        }
-        else if (route == "passwordresetrequest") {
-            content = <PasswordResetRequest />;
-        }
-        else if (route == "passwordreset") {
-            content = <PasswordReset  user_id={params[1]} />;
-        }
-        else if (route == "test") {
-            content = <Test user_id={params[1]} />;
+          } else if (route === "components") {
+              //List components
+              content = <ComponentList />;
+          }
+          else if (route == "applist") {
+              content = <AppList user_id={this.state.token}/>;
+          }
+          else if (route == "models") {
+              content = <ModelList app={params[1]} user_id={this.state.token}/>;
+          }
+          else if (route == "modelinstances") {
+              content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token}/>;
+          }
+          else if (route == "modelinstancestable") {
+              content = <InstanceTable app={params[1]} model={params[2]}/>;
+          }
+          else if (route == "instance") {
+              content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token}/>;
+          }
+          else if (route == "login") {
+              content = <LogIn />;
+          }
+          else if (route == "signup") {
+              content = <SignUp />;
+          }
+          else if (route == "loggedin") {
+              content = <LoggedIn  />;
+          }
+          else if (route == "passwordresetrequest") {
+              content = <PasswordResetRequest />;
+          }
+          else if (route == "passwordreset") {
+              content = <PasswordReset  user_id={params[1]} />;
+          }
+          else if (route == "test") {
+              content = <Test id={params[1]} />;
+          }
         }
 
 
