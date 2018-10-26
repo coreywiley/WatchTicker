@@ -103,7 +103,7 @@ class Businesses extends Component {
                 <td>{business.name}</td>
                 <td>{business.email}</td>
                 <td><Button key={index } text={'View Page'} href={'/business/' + business.id + '/'} type={'primary'} /></td>
-                <td><PublishButton id={business.id} email={business.email} type={'un-publish'} businessRefresh={this.businessRefresh} /></td>
+                <td><PublishButton id={business.id} email={business.email} type={'unpublish'} businessRefresh={this.businessRefresh} /></td>
                 <td><PublishButton id={business.id} email={business.email} type={'reject'} businessRefresh={this.businessRefresh}  /></td>
                 </tr>)
           }
