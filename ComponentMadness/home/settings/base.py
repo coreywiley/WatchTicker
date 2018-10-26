@@ -113,12 +113,12 @@ DATABASES = {
         'NAME': 'patrongate',
         'USER': 'patrongate',
         'PASSWORD': '-7tHS5=??=fcv+J;',
-        'HOST': '127.0.0.1',
+        'HOST': '207.38.86.148',
         'PORT': '5432'
     }
 }
 
-DATABASE_URL = '127.0.0.1:5432'
+DATABASE_URL = '207.38.86.148:5432'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
