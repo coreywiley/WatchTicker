@@ -27,7 +27,11 @@ import PasswordReset from './pages/scaffold/passwordReset.js';
 import Nav from 'projectLibrary/nav.js';
 import Footer from 'projectLibrary/footer.js';
 
-import Test from './pages/modelEditAndView/WYSIWYG.js';
+import Event from './pages/modelEditAndView/Event.js';
+import EditEvent from './pages/editEvent.js';
+import EventList from './pages/modelEditAndView/listEvent.js';
+
+import TimeSelect from './projectLibrary/timeSelect.js';
 
 class App extends Component {
     constructor(props) {
@@ -59,6 +63,9 @@ class App extends Component {
             }
         } else if (loginNoRedirects.indexOf(path) == -1 && window.location.pathname != "/") {
             window.location.href = '/login/';
+        }
+        else {
+          this.setState({'loaded':true})
         }
     }
 
@@ -156,8 +163,17 @@ class App extends Component {
           else if (route == "passwordreset") {
               content = <PasswordReset  user_id={params[1]} />;
           }
-          else if (route == "test") {
-              content = <Test id={params[1]} />;
+          else if (route == "event") {
+              content = <Event event_id={params[1]} />;
+          }
+          else if (route == "editevent") {
+              content = <EditEvent user={this.state.user} event_id={params[1]} />;
+          }
+          else if (route == "eventlist") {
+              content = <EventList />;
+          }
+          else if (route == "calendar") {
+            content = <TimeSelect month={'November'} />
           }
         }
 

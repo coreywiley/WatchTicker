@@ -39,6 +39,7 @@ function ajaxWrapper(type, url, data, returnFunc){
                 returnFunc(value);
             },
             401: function(xhr) {
+                console.log("URL", url)
                 refreshToken(type,url,data,returnFunc);
             }
         },
