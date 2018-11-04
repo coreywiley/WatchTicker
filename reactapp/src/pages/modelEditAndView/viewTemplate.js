@@ -19,7 +19,7 @@ class *CapitalObject* extends Component {
 
     objectCallback(result) {
       var *Object* = result[0]['*Object*'];
-      course['loaded'] = true;
+      *Object*['loaded'] = true;
       this.setState(*Object*)
     }
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 
-import {Form, TextInput, Select, PasswordInput, Header, TextArea, NumberInput} from 'library';
+import {Form, TextInput, Select, PasswordInput, Header, TextArea, NumberInput, DateTimePicker} from 'library';
 
 class Edit*CapitalObject* extends Component {
     constructor(props) {
@@ -18,11 +18,14 @@ class Edit*CapitalObject* extends Component {
         if(this.props.*Object*_id) {
           ajaxWrapper('GET','/api/*App*/*Object*/' + this.props.*Object*_id + '/', {}, this.objectCallback);
         }
+        else {
+          this.setState({loaded:true})
+        }
     }
 
     objectCallback(result) {
       var *Object* = result[0]['*Object*'];
-      course['loaded'] = true;
+      *Object*['loaded'] = true;
       this.setState(*Object*)
     }
 
@@ -53,7 +56,7 @@ class Edit*CapitalObject* extends Component {
 
         var content = <div className="container">
                 {title}
-                <Form components={Components} redirectUrl={"/*Object*/{id}/"} componentProps={ComponentProps} deleteUrl={deleteUrl} submitUrl={submitUrl} defaults={defaults} />
+                <Form components={Components} redirectUrl={"/*Object*/{id}/"} objectName={'*Object*'} componentProps={ComponentProps} deleteUrl={deleteUrl} submitUrl={submitUrl} defaults={defaults} />
                 <br />
         </div>;
 
