@@ -4,10 +4,50 @@ import {Card, Header, Button} from 'library';
 
 
 class TimeChoice extends React.Component {
+    constructor(props) {
+      super(props)
+
+      this.submitTime = this.submitTime.bind(this);
+      this.redirectCode = this.redirectCode.bind(this);
+      this.eventCallback = this.eventCallback.bind(this);
+      this.email = this.email.bind(this);
+    }
+
+    submitTime() {
+      var date = this.props.date.getFullYear() + '-' + (this.props.date.getMonth() + 1) + '-' + this.props.date.getDate();
+      var hour = this.props.hour;
+      console.log("Hour",hour, this.props.ampm)
+      if (this.props.ampm == ' AM' && this.props.hour == 12) {
+        hour = 0;
+      }
+      else if (this.props.ampm == ' PM' && this.props.hour != 12) {
+        hour = hour + 12;
+      }
+      console.log("Hour2",hour);
+
+      date += ' ' + hour + ':' + this.props.minute
+
+      console.log("Date",date);
+      ajaxWrapper('POST','/api/home/event/' + this.props.event_id + '/', {'schedule_start_time':date}, this.eventCallback)
+    }
+
+    eventCallback(result) {
+      ajaxWrapper('GET','/api/home/event/' + result[0]['event']['id'] + '/?related=host', {}, this.email)
+    }
+
+    email(result) {
+      console.log("Email", result)
+      ajaxWrapper('POST','/api/email/', {'to_email': result[0]['event']['host']['email'], 'from_email':'jeremy.thiesen1@gmail.com', 'subject':'Someone booked a time for ' + result[0]['event']['name'], 'text':'Someone booked a time for your event at ' + result[0]['event']['schedule_start_time']}, this.redirectCode)
+    }
+
+    redirectCode() {
+      window.location.href = '/thankyou/'
+    }
+
     render() {
 
         return (
-            <Card name={this.props.time} />
+            <div onClick={this.submitTime}><Card name={this.props.time} /></div>
         );
     }
 }
@@ -114,7 +154,7 @@ class TimeSections extends React.Component {
           var ampm = " AM"
         }
 
-        times.push(<TimeChoice time={hour + ":" + minute + ampm} />);
+        times.push(<TimeChoice date={this.props.date} event_id={this.props.event_id} time={hour + ":" + minute + ampm} hour={hour} minute={minute} ampm={ampm} />);
       }
     }
 
@@ -133,7 +173,7 @@ class Day extends React.Component {
       return (
         <div>
           <Header size={3} text={this.props.day} />
-          <TimeSections />
+          <TimeSections event_id={this.props.event_id} date={this.props.date} />
         </div>
       );
   }
@@ -158,21 +198,39 @@ class Week extends React.Component {
 }
 
 class MonthDay extends React.Component {
+
   constructor(props) {
     super(props);
 
+    this.state = {'hover':false}
     this.chooseDay = this.chooseDay.bind(this);
-
+    this.toggleHover = this.toggleHover.bind(this);
   }
 
   chooseDay() {
     this.props.setDate(this.props.date, 'Daily')
   }
 
+  toggleHover() {
+    this.setState({hover: !this.state.hover})
+  }
+
   render() {
 
+    var backgroundColor = '#fff';
+    var color = '#000';
+
+    if (this.state.hover) {
+      backgroundColor = 'blue';
+      color = '#fff';
+    }
+    else if (!this.props.thisMonth) {
+      backgroundColor = '#999';
+    }
+
+
     return (
-      <div style={{'display':'inline', 'padding':'20px', 'height':'20px'}} onClick={this.chooseDay}>{this.props.day}</div>
+      <td style={{'padding':'30px', 'fontSize': '30px','backgroundColor':backgroundColor, 'color':color}} onClick={this.chooseDay} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>{this.props.day}</td>
     );
   }
 }
@@ -193,7 +251,6 @@ class Month extends React.Component {
     this.setState({'monthIndex':index - 1})
     var firstDay = new Date(this.state.currentDate.getFullYear(), this.state.currentDate.getMonth() + this.state.monthIndex - 1, 1, 0, 0, 0, 0)
     this.props.setDate(firstDay, 'Monthly')
-
   }
 
   forward() {
@@ -220,35 +277,42 @@ class Month extends React.Component {
     var days = [];
     var startDate = this.addDays(firstDay, -1*firstDay.getDay())
 
-    for (var i = 0; i < 7; i++) {
-      days.push(<div style={{'display':'inline', 'padding':'20px', 'height':'20px'}}>{dayData[i]}</div>)
-    }
-    days.push(<br />)
-    for (var i = 0; i < 42; i++) {
-        var currentDate = this.addDays(startDate, i);
-        if (i % 7 == 0 && i != 0) {
-          days.push(<br />)
-          if (currentDate.getMonth() != firstDay.getMonth()) {
-            i = 42;
-          }
-          else {
-            var dayString = currentDate.getDate();
-            if (currentDate.getDate() < 10) {
-              dayString = '0' + currentDate.getDate()
-            }
-            days.push(<MonthDay day={dayString} date={currentDate} setDate={this.props.setDate} />)
-          }
+    var dayRow = [];
+
+    for (var i = 1; i < 49; i++) {
+        var currentDate = this.addDays(startDate, i-1);
+
+        var thisMonth = true;
+        if (currentDate.getMonth() != firstDay.getMonth()) {
+          thisMonth = false;
         }
 
+        if (i % 7 == 0 && i != 1) {
+          var dayString = currentDate.getDate();
+          if (currentDate.getDate() < 10) {
+            dayString = '0' + currentDate.getDate()
+          }
+          dayRow.push(<MonthDay thisMonth={thisMonth} day={dayString} date={currentDate} setDate={this.props.setDate} />)
+
+          days.push(<tr>{dayRow}</tr>)
+          var dayRow = [];
+
+          if (currentDate.getMonth() != firstDay.getMonth()) {
+            i = 49;
+          }
+
+        }
         else {
           var dayString = currentDate.getDate();
           if (currentDate.getDate() < 10) {
             dayString = '0' + currentDate.getDate()
           }
-          days.push(<MonthDay day={dayString} date={currentDate} setDate={this.props.setDate} />)
+          dayRow.push(<MonthDay thisMonth={thisMonth} day={dayString} date={currentDate} setDate={this.props.setDate} />)
         }
 
     }
+
+    console.log("Days!", days.length)
 
     return (
       <div>
@@ -256,7 +320,18 @@ class Month extends React.Component {
         <Button text={'Back'} clickHandler={this.back} type={'primary'} />
         <Button text={'Forward'} clickHandler={this.forward} type={'primary'} />
         <br />
-        {days}
+        <table>
+          <tr>
+            <th>Sunday</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+          </tr>
+          {days}
+        </table>
       </div>
     );
   }
@@ -304,7 +379,7 @@ class Year extends React.Component {
         for (var i = 0; i < 4; i++) {
           var indexDate = this.addDays(this.state.currentDate, this.state.index + i);
           var dateString = monthData[indexDate.getMonth()] + " " + indexDate.getDate() + ", " + indexDate.getFullYear()
-          days.push(<div className='col-md-3'><Day day={dateString} /></div>)
+          days.push(<div className='col-md-3'><Day event_id={this.props.event_id} day={dateString} date={indexDate} /></div>)
         }
 
         return (
@@ -344,9 +419,9 @@ class View extends React.Component {
 
 
   render() {
-    var dateView = <Month setDate={this.setDate} date={this.state.currentDate} />
+    var dateView = <Month event_id={this.props.event_id} setDate={this.setDate} date={this.state.currentDate} />
     if (this.state.view == 'Daily') {
-      dateView = <Year setDate={this.setDate} date={this.state.currentDate} />
+      dateView = <Year event_id={this.props.event_id} setDate={this.setDate} date={this.state.currentDate} />
     }
 
     var alternateView = 'Monthly';
@@ -355,7 +430,7 @@ class View extends React.Component {
     }
 
     return (
-      <div>
+      <div className="container">
         <Button text={'View ' + alternateView} clickHandler={this.changeView}  type={'primary'} />
         {dateView}
       </div>

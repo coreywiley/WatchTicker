@@ -32,6 +32,7 @@ import EditEvent from './pages/editEvent.js';
 import EventList from './pages/modelEditAndView/listEvent.js';
 
 import TimeSelect from './projectLibrary/timeSelect.js';
+import ThankYou from './pages/thankyou.js';
 
 class App extends Component {
     constructor(props) {
@@ -164,7 +165,7 @@ class App extends Component {
               content = <PasswordReset  user_id={params[1]} />;
           }
           else if (route == "event") {
-              content = <Event event_id={params[1]} />;
+              content = <TimeSelect event_id={params[1]} />;
           }
           else if (route == "editevent") {
               content = <EditEvent user={this.state.user} event_id={params[1]} />;
@@ -173,7 +174,10 @@ class App extends Component {
               content = <EventList />;
           }
           else if (route == "calendar") {
-            content = <TimeSelect month={'November'} />
+            content = <TimeSelect event_id={params[1]} />
+          }
+          else if (route == "thankyou") {
+            content = <ThankYou />
           }
         }
 
