@@ -33,6 +33,8 @@ import EventList from './pages/modelEditAndView/listEvent.js';
 
 import TimeSelect from './projectLibrary/timeSelect.js';
 import ThankYou from './pages/thankyou.js';
+import EventSteps from './pages/eventSteps.js';
+import EventSignUp from './pages/eventSignUp.js';
 
 class App extends Component {
     constructor(props) {
@@ -54,7 +56,7 @@ class App extends Component {
 
         var token = localStorage.getItem('token');
 
-        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset']
+        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset', 'eventsignup']
 
         if (token) {
             ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));
@@ -178,6 +180,12 @@ class App extends Component {
           }
           else if (route == "thankyou") {
             content = <ThankYou />
+          }
+          else if (route == "eventSteps") {
+            content = <EventSteps event_id={params[1]} />
+          }
+          else if (route == "eventSignUp") {
+            content = <EventSignUp event_id={params[1]} />
           }
         }
 

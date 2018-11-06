@@ -31,13 +31,13 @@ class EditEvent extends Component {
 
     render() {
 
-			var Components = [TextInput, TextArea, NumberInput, Small, Select, ];
+			var Components = [Select, TextInput, TextArea, NumberInput, Small, Select];
 
       var event_types = [
         {'text':'Book Me (Allow People To Book Into Your Schedule)', 'value':'Book Me'},
-        {'text':'One Time Meeting (Find One Time For A Group)', 'value':'One Time Meeting'},
-        {'text':'Daily Recurring Meeting (Find A Repeating Time For A Group)', 'value':'Recurring Meeting'},
-        {'text':'Weekly Recurring Meeting (Find A Repeating Time For A Group)', 'value':'Recurring Meeting'},
+        {'text':'One Time Event (Find One Time For A Group)', 'value':'One Time Meeting'},
+        {'text':'Daily Recurring Event (Find A Repeating Time For A Group)', 'value':'Recurring Meeting'},
+        {'text':'Weekly Recurring Event (Find A Repeating Time For A Group)', 'value':'Recurring Meeting'},
       ]
 
       /*
@@ -51,7 +51,7 @@ class EditEvent extends Component {
 			var length = {'name': 'length', 'label': 'Amount of Time In Minutes', 'placeholder': 0, 'value': 0};
       var length_help = {'text':'If its a multi-day trip. Minutes per day is 1440 for one, 2880 for two, 4320 for three days.'}
 			var holidays = {'name': 'holidays', 'label': 'Be Able To Book On Holidays', 'placeholder': 'Holidays', 'value': false, 'options': [{'value':true,'text':'Yes'},{'value':false,'text':'No'}]};
-			var ComponentProps = [name, description, length, length_help, holidays];
+			var ComponentProps = [event_type, name, description, length, length_help, holidays];
 
         var defaults = this.state;
 
