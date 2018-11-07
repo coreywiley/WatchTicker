@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import ajaxWrapper from '../base/ajax.js';
 import {Button} from 'library';
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile
+} from "react-device-detect";
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -25,7 +31,7 @@ class Navbar extends React.Component {
         var links = [];
         if (this.props.links) {
             for (var index in this.props.links) {
-                links.push(<li key={index} className="nav-item"><a className="nav-link" href={this.props.links[index][0]}>{this.props.links[index][1]}</a></li>)
+                links.push(<li key={index} className="nav-item"><a className="nav-link" style={{'min-width':'125px'}} href={this.props.links[index][0]}>{this.props.links[index][1]}</a></li>)
             }
         }
 
@@ -68,9 +74,16 @@ class Navbar extends React.Component {
                 </div>
                 </div>
               </nav>
+              <MobileView>
+              <ul class="nav nav-pills nav-fill" style={{'height':'43px', 'borderBottom':'1px solid #eee', 'overflow-x':'scroll','flex-wrap':'nowrap'}}>
+                {links}
+              </ul>
+              </MobileView>
+              <BrowserView>
               <ul class="nav nav-pills nav-fill" style={{'height':'43px', 'borderBottom':'1px solid #eee'}}>
                 {links}
               </ul>
+              </BrowserView>
             </div>
         );
     }

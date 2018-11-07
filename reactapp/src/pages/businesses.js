@@ -18,7 +18,7 @@ class Businesses extends Component {
   }
 
     componentDidMount() {
-        ajaxWrapper('GET','/api/home/business/?published=True', {}, this.businessCallback)
+        ajaxWrapper('GET','/api/home/business/?related=review&published=True', {}, this.businessCallback)
     }
 
     businessCallback(result) {
@@ -66,8 +66,7 @@ class Businesses extends Component {
               if (this.state.filters.state == '' || this.state.filters.state == 'All' || (this.state.filters.state == business['state'])) {
                 var businessText = business.name + business.description + business.monday_special + business.tuesday_special + business.wednesday_special + business.thursday_special + business.friday_special  + business.saturday_special + business.sunday_special;
                 if (this.state.filters.search == '' || businessText.toLowerCase().indexOf(this.state.filters.search.toLowerCase()) > -1) {
-                  businessCards.push(<Card address={business['address']} imageUrl={business['main_image']} imageAlt={business['name']} name={business['name']} description={business['description'].substring(0,130) + '...'} button={'Read More'} button_type={'primary'} link={'/business/' + business['id'] + '/'} />)
-
+                  businessCards.push(<Card address={business['address']} reviews={business['review']} imageUrl={business['main_image']} imageAlt={business['name']} name={business['name']} description={business['description'].substring(0,130) + '...'} button={'Read More'} button_type={'primary'} link={'/business/' + business['id'] + '/'} />)
                 }
               }
             }

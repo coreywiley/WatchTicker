@@ -2,13 +2,22 @@ import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 import MetaTags from 'react-meta-tags';
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile
+} from "react-device-detect";
 
-import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Link, Button, Alert, MultiLineText, PageBreak} from 'library';
+import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Link, Button, Alert, MultiLineText, PageBreak, Stars} from 'library';
+
+import Review from 'projectLibrary/review.js';
+import ReviewForm from 'projectLibrary/reviewForm.js';
 
 class Deal extends Component {
     constructor(props) {
       super(props);
-      this.state = {'business':{'name':'', 'id':0}, 'name':'','description':'', 'published':false, 'emails_sent':false, 'redeemable':true, 'totalRedemptions':0, 'number_of_redeems_available':0, 'newPublish':false};
+      this.state = {'business':{'name':'', 'id':0}, 'name':'','description':'', 'published':false, 'emails_sent':false, 'redeemable':true, 'totalRedemptions':0, 'number_of_redeems_available':0, 'overallTotalRedemptions':0, 'number_of_total_redeems_available':0, 'newPublish':false};
 
       this.dealCallback = this.dealCallback.bind(this);
       this.publish = this.publish.bind(this);
@@ -17,11 +26,17 @@ class Deal extends Component {
       this.redeem = this.redeem.bind(this);
       this.redeemed = this.redeemed.bind(this);
       this.redemptionNumber = this.redemptionNumber.bind(this);
+      this.totalRedemptionNumber = this.totalRedemptionNumber.bind(this);
       this.redirect = this.redirect.bind(this);
+      this.getDeal = this.getDeal.bind(this);
+    }
+
+    getDeal() {
+      ajaxWrapper('GET','/api/home/deal/' + this.props.deal_id + '/?related=business,business__review,business__review__user', {}, this.dealCallback)
     }
 
     componentDidMount() {
-        ajaxWrapper('GET','/api/home/deal/' + this.props.deal_id + '/?related=business', {}, this.dealCallback)
+        this.getDeal();
     }
 
     checkIfRedeemable(deal) {
@@ -34,6 +49,7 @@ class Deal extends Component {
         }
       }
         ajaxWrapper('GET','/api/home/redemption/?count&user=' + this.props.user_id + '&deal=' + this.props.deal_id, {}, this.redemptionNumber)
+        ajaxWrapper('GET','/api/home/redemption/?count&deal=' + this.props.deal_id, {}, this.totalRedemptionNumber)
     }
 
     redemptionNumber(result) {
@@ -44,6 +60,18 @@ class Deal extends Component {
       }
       else {
         this.setState({totalRedemptions:result['count']})
+      }
+    }
+
+    totalRedemptionNumber(result) {
+      var totalRedemptions = result['count'];
+      console.log("Total Redemptions", totalRedemptions);
+
+      if (totalRedemptions >= this.state.number_of_total_redeems_available && this.state.number_of_total_redeems_available > 0) {
+        this.setState({overallTotalRedemptions:result['count'], redeemable:false})
+      }
+      else {
+        this.setState({overallTotalRedemptions:result['count']})
       }
     }
 
@@ -161,9 +189,9 @@ class Deal extends Component {
         redeem = <Button href={'/signUp/'} type={'success'} css={{'width':'100%'}} text={'Sign Up To Redeem'} />
       }
 
-      var number_of_redeems_available = <p style={{'margin':'0px'}}>This deal can be redeemed a total of {this.state.number_of_redeems_available} times.</p>
+      var number_of_redeems_available = <p style={{'margin':'0px'}}>You can redeem this deal a total of {this.state.number_of_redeems_available} times.</p>
       if (this.state.number_of_redeems_available == 0) {
-        number_of_redeems_available = <p style={{'margin':'0px'}}>This deal can be redeemed unlimited times.</p>
+        number_of_redeems_available = <p style={{'margin':'0px'}}>You can redeem this deal unlimited times.</p>
       }
 
       var valid_until = <div></div>
@@ -171,57 +199,123 @@ class Deal extends Component {
         valid_until = <p style={{'margin':'0px'}}>Valid Until: {this.state.valid_until}</p>
       }
 
+      var reviews = [];
+      if (this.state.business.review && this.state.business.review.length == 0) {
+        reviews = <p>There are no reviews yet.</p>
+      }
+      else {
+        for (var index in this.state.business.review) {
+          var review = this.state.business.review[index]['review']
+          reviews.push(<Review {...review} />)
+        }
+      }
 
-        var content = <div className="container">
-        <MetaTags>
+      var askForReview = <p>Please Sign Up and Redeem A Coupon Before Writing A Review.</p>
+      if (this.state.totalRedemptions > 0 && this.props.user.id) {
+        var reviewed = false;
+        for (var index in this.state.business.review) {
+          if (this.state.business.review[index]['review']['user']['id'] == this.props.user.id) {
+            reviewed = true;
+          }
+        }
+
+        if (reviewed) {
+          var askForReview = <p>You've already left a review.</p>
+        }
+        else {
+          askForReview = <ReviewForm user={this.props.user.id} business={this.state.business.id} refreshData={this.getDeal} />
+        }
+
+      }
+
+
+      var titles = <div>
+      <div>
+      {publish}
+      </div>
+        <h1 style={{'margin':'0px'}}><a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></h1>
+        <p style={{'color':'#666','margin':'0px'}}>{this.state.business.city}, {this.state.business.state}</p>
+        <p style={{'margin':'1px'}}><i class="fas fa-tag"></i> {this.state.name} at <a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></p>
+
+        <div>
+        {newPublish}
+        {emailsSent}
+        </div>
+      </div>
+
+      var dealInfo = <div>
+
+        <img src={this.state.main_image} style={{'width':'100%'}} />
+        <br/>
+        <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Highlights</h3>
+        <PageBreak />
+        <br/>
+        <MultiLineText text={this.state.description} />
+        <br/>
+        <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>About <a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></h3>
+        <PageBreak />
+        <br/>
+        <MultiLineText text={this.state.business.description} />
+        <br/>
+
+        <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Customer Reviews</h3>
+        <PageBreak />
+        <br/>
+        {askForReview}
+        {reviews}
+        <br/>
+
+        <iframe src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyDnsYmrV7t2Bx5DH0NFcb5eSFR-Ii4kMb4&q=" + this.state.business.address} width="800" height="600" frameborder="0" style={{'border':'0'}} allowfullscreen></iframe>
+        </div>
+
+        var couponInfo = <div>
+        <h4 style={{'margin':'0px'}}>{this.state.name}</h4>
+        <p style={{'margin':'0px'}}>This deal has been redeemed {this.state.overallTotalRedemptions} times.</p>
+        {number_of_redeems_available}
+        {valid_until}
+        <p>You have redeemed this coupon {this.state.totalRedemptions} times.</p>
+
+        {redeem}
+        </div>
+
+        var meta = <MetaTags>
           <title>{this.state.name} with {this.state.business.name}| PatronGate</title>
           <meta name="description" content={this.state.name + ' with ' + this.state.business.name + '| PatronGate'} />
           <meta property="og:title" content={this.state.name + ' with ' + this.state.business.name + '| PatronGate'} />
         </MetaTags>
 
+      if (isMobile) {
+        var content = <div className="container-fluid">
+                  {meta}
+                  {titles}
+                  {dealInfo}
+
+                    <div style={{'position':'fixed','bottom':'0px', backgroundColor:'white', 'zIndex':100, 'left':'0px','width':'100%', 'padding':'10px'}}>
+                      {couponInfo}
+                  </div>
+        </div>;
+      }
+      else {
+        var content = <div className="container">
+                  {meta}
                 <div className='row'>
                   <div className='col-md-12'>
-                  <div>
-                  {publish}
+                    {titles}
                   </div>
-                    <h1 style={{'margin':'0px'}}><a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></h1>
-                    <p style={{'color':'#666','margin':'0px'}}>{this.state.business.city}, {this.state.business.state}</p>
-                    <p style={{'margin':'1px'}}><i class="fas fa-tag"></i> {this.state.name} at <a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></p>
-                  </div>
+
                   <div className='col-md-8' style={{'paddingRight':'10px', 'borderRight':'1px solid #ccc'}}>
-
-                    <div>
-                    {newPublish}
-                    {emailsSent}
-                    </div>
-
-                    <img src={this.state.main_image} style={{'width':'100%'}} />
-                    <br/>
-                    <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Highlights</h3>
-                    <PageBreak />
-                    <br/>
-                    <MultiLineText text={this.state.description} />
-                    <br/>
-                    <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>About <a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></h3>
-                    <PageBreak />
-                    <br/>
-                    <MultiLineText text={this.state.business.description} />
-                    <br/>
-                    <iframe src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyDnsYmrV7t2Bx5DH0NFcb5eSFR-Ii4kMb4&q=" + this.state.business.address} width="800" height="600" frameborder="0" style={{'border':'0'}} allowfullscreen></iframe>
+                    {dealInfo}
                   </div>
                   <div className='col-md-4' style={{'paddingLeft':'10px'}}>
                     <div id="coupon">
-                      <h4 style={{'margin':'0px'}}>{this.state.name}</h4>
-                      {number_of_redeems_available}
-                      {valid_until}
-                      <p>You have redeemed this coupon {this.state.totalRedemptions} times.</p>
-
-                      {redeem}
+                      {couponInfo}
                     </div>
                   </div>
                 </div>
 
         </div>;
+      }
+
 
 
         return (

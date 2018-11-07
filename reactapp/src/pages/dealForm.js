@@ -22,22 +22,21 @@ class DealForm extends Component {
     }
 
     dealCallback(result) {
-      console.log("Here", result)
       var business = result[0]['deal']
       business['business'] = business['business_id']
-      console.log("Business",business)
       this.setState(business)
     }
 
     render() {
-        var Components = [TextInput, Select, TextArea, DateTimePicker, NumberInput, PhotoInput];
+        var Components = [TextInput, Select, TextArea, DateTimePicker, NumberInput, NumberInput, PhotoInput];
         var name = {'value':'','name':'name','label':'Name','placeholder': 'Patron Gate', 'required':true}
         var type = {'value':'', 'name':'type', 'label':'Type Of Deal', 'options':[{'value':'Drink Deal','text':'Drink Deal'},{'value':'Food Deal','text':'Food Deal'}]}
         var description = {'value':'','name':'description','label':'Description','placeholder': 'We are a Vikings bar! Make sure you are here for the game on Sunday!'}
         var valid_until = {'value':'', 'name':'valid_until', 'label':'Date the Deal is Valid Until. Leave Blank For Always Available.', 'display_time':false}
-        var number_of_redeems_available = {'value':0, 'name':'number_of_redeems_available', 'label':'Number of times someone can redeem this coupon. Keep at 0 for unlimited.'}
+        var number_of_total_redeems_available = {'value':0, 'name':'number_of_total_redeems_available', 'label':'Number of times this coupon can be redeemed in total. Keep at 0 for unlimited.'}
+        var number_of_redeems_available = {'value':0, 'name':'number_of_redeems_available', 'label':'Number of times any one person can redeem this coupon. Keep at 0 for unlimited.'}
         var main_image = {'value':'', 'name':'main_image', 'label':'Display Image', 'multiple':false}
-        var ComponentProps = [name, type, description, valid_until, number_of_redeems_available, main_image];
+        var ComponentProps = [name, type, description, valid_until, number_of_total_redeems_available, number_of_redeems_available, main_image];
         var defaults = this.state;
 
         var title = <h2>Create A Deal</h2>

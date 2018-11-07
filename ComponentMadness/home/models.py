@@ -56,6 +56,7 @@ class Deal(models.Model):
     valid_until = models.DateField(null=True)
     last_published = models.DateTimeField(default = datetime.datetime.now)
     type = models.CharField(max_length=255, blank=True, default="")
+    number_of_total_redeems_available = models.IntegerField(default = 0)
     number_of_redeems_available = models.IntegerField(default = 0)
 
     def __str__(self):
@@ -67,3 +68,10 @@ class Redemption(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='redemptions')
     date = models.DateField()
 
+class Review(models.Model):
+    id = models.AutoField(primary_key=True)
+    business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='review')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='review')
+    rating = models.IntegerField(default = 0)
+    feedback = models.TextField(blank=True, default="")
+    date = models.DateField(default = datetime.datetime.now)

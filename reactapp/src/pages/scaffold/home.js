@@ -35,7 +35,7 @@ class Home extends Component {
             <br/>
             <div className="container">
               <h4 style={{'fontWeight':'bold'}}>PatronGate helps you find food and drink specials in your city, Lets explore.</h4>
-              <Deals user_id={this.props.user_id} limit={3} filters={false} title={false} />
+              <Deals user_id={this.props.user_id} limit={3} filters={false} toggleFilters={false} title={false} />
               <Button type={'patron'} text={'See More'} href={'/deals/'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
               <br />
               <br />
@@ -45,7 +45,7 @@ class Home extends Component {
 
             <div className="container">
               <h4 style={{'fontWeight':'bold'}}>Popular on PatronGate.</h4>
-              <Deals user_id={this.props.user_id} limit={12} filters={false} title={false} order_by={'redemptions'}/>
+              <Deals user_id={this.props.user_id} limit={12} filters={false} toggleFilters={false} title={false} order_by={'redemptions'}/>
               <Button type={'patron'} text={'See More'} href={'/deals/'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
               <br />
               <br />

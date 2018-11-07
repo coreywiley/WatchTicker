@@ -3,13 +3,14 @@ import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 import MetaTags from 'react-meta-tags';
 
-import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Button, Header, MultiLineText} from 'library';
+import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Button, Header, MultiLineText, PageBreak} from 'library';
 import Card from 'projectLibrary/dealCard.js';
+import Review from 'projectLibrary/review.js';
 
 class Business extends Component {
     constructor(props) {
       super(props);
-      this.state = {'follow':{}, 'deals': [], 'published':false, 'name':'','description':'', 'email':'', 'phone': '', 'website':'','owner': this.props.user_id, 'address':'', 'street':'', 'street2':'', 'city':'','state':'','zipcode':'', 'loaded':false};
+      this.state = {'follow':{}, 'deals': [], 'review':[], 'published':false, 'name':'','description':'', 'email':'', 'phone': '', 'website':'','owner': this.props.user_id, 'address':'', 'street':'', 'street2':'', 'city':'','state':'','zipcode':'', 'loaded':false};
 
       this.businessCallback = this.businessCallback.bind(this);
       this.followCallback = this.followCallback.bind(this);
@@ -22,7 +23,7 @@ class Business extends Component {
 
     componentDidMount() {
         this.changeFollowCallback();
-        ajaxWrapper('GET','/api/home/business/' + this.props.business_id + '/?related=deals', {}, this.businessCallback)
+        ajaxWrapper('GET','/api/home/business/' + this.props.business_id + '/?related=deals,review,review__user', {}, this.businessCallback)
     }
 
     changeFollowCallback() {
@@ -84,6 +85,17 @@ class Business extends Component {
     }
 
     render() {
+
+      var reviews = [];
+      if (this.state.review && this.state.review.length == 0) {
+        reviews = <p>There are no reviews yet.</p>
+      }
+      else {
+        for (var index in this.state.review) {
+          var review = this.state.review[index]['review']
+          reviews.push(<Review {...review} />)
+        }
+      }
 
         var dealCards = [];
         var unPublishedDealCards = [];
@@ -216,6 +228,11 @@ class Business extends Component {
                 {specialsDisplay}
                 <h4>About {this.state.name}</h4>
                 <MultiLineText text={this.state.description} />
+                <br/>
+                <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Customer Reviews</h3>
+                <PageBreak />
+                <br/>
+                {reviews}
                 <br/>
                 <iframe src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyDnsYmrV7t2Bx5DH0NFcb5eSFR-Ii4kMb4&q=" + this.state.address} width="800" height="600" frameborder="0" style={{'border':'0'}} allowfullscreen></iframe>
 

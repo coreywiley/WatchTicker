@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
-
+import {Stars} from 'library';
 //<Card name={this.state.deals[index]['name']} description={this.state.deals[index]['description']} button={'Read More'} button_type={'primary'} link={'/deal/' + this.state.deals[index]['id'] + '/'} />
 class Card extends React.Component {
     constructor(props) {
@@ -18,12 +18,22 @@ class Card extends React.Component {
 
         var image = <img className="card-img-top" src={this.props.imageUrl} alt={this.props.imageAlt} style={{'max-height':'228px'}}/>
 
+        var review = null;
+        if (this.props.reviews && this.props.reviews.length > 0) {
+          var totalReview = 0;
+          for (var index in this.props.reviews) {
+            totalReview += this.props.reviews[index]['review']['rating'];
+          }
+          var averageReview = Math.floor(totalReview/this.props.reviews.length)
+          var review = <div><Stars filled={averageReview} /> ({this.props.reviews.length})</div>
+        }
+
         return (
-            <div className="card col-md-4 col-xs-12 dealCard" style={{'padding':'0px', 'cursor':'pointer', 'height':'350px'}} data-id={this.props.data_id} onClick={this.redirect}>
+            <div className="card col-md-4 col-xs-12 dealCard" style={{'padding':'5px', 'cursor':'pointer', 'height':'375'}} data-id={this.props.data_id} onClick={this.redirect}>
               {image}
               <div className="card-body">
                 <h5 className="card-title" style={{'margin':'0px', 'fontWeight':'bold'}}>{this.props.name}</h5>
-                <p className="card-text" style={{'color':'#999'}}>{this.props.description.substring(0,110)}...<br/><br/>{this.props.city}</p>
+                <p className="card-text" style={{'color':'#999'}}>{this.props.description.substring(0,110)}...<br/><br/>{this.props.city}<br/>{review}</p>
               </div>
             </div>
         );

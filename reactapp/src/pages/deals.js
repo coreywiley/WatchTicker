@@ -3,7 +3,7 @@ import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 import MetaTags from 'react-meta-tags';
 
-import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress} from 'library';
+import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, Button} from 'library';
 
 import Card from 'projectLibrary/dealCard.js';
 import RadioList from 'projectLibrary/radioList.js';
@@ -17,10 +17,11 @@ class Deals extends Component {
       search = this.props.search;
     }
 
-    this.state = {deals:[], filters:{'deal_type':'All', 'business_type':'All', 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
+    this.state = {deals:[], show_filters:true, filters:{'deal_type':'All', 'business_type':'All', 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
 
     this.dealCallback = this.dealCallback.bind(this);
     this.setGlobalState = this.setGlobalState.bind(this);
+    this.toggleFilters = this.toggleFilters.bind(this);
   }
 
     componentDidMount() {
@@ -30,10 +31,14 @@ class Deals extends Component {
       }
 
       if (this.props.limit) {
-        ajaxWrapper('GET','/api/home/deal/?order_by=' + order_by + '&business__published=True&published=True&related=business&limit=' + this.props.limit, {}, this.dealCallback)
+        ajaxWrapper('GET','/api/home/deal/?order_by=' + order_by + '&business__published=True&published=True&related=business,business__review&limit=' + this.props.limit, {}, this.dealCallback)
       }
       else {
-        ajaxWrapper('GET','/api/home/deal/?order_by=' + order_by + '&business__published=True&published=True&related=business', {}, this.dealCallback)
+        ajaxWrapper('GET','/api/home/deal/?order_by=' + order_by + '&business__published=True&published=True&related=business,business__review', {}, this.dealCallback)
+      }
+
+      if (this.props.filters == false) {
+        this.setState({'show_filters':false})
       }
     }
 
@@ -49,6 +54,10 @@ class Deals extends Component {
       var newState = {}
       newState[name] = value
        this.setState(newState)
+    }
+
+    toggleFilters() {
+      this.setState({'show_filters':!this.state.show_filters})
     }
 
     render() {
@@ -90,7 +99,7 @@ class Deals extends Component {
                 if (this.state.filters.state == '' || this.state.filters.state == 'All' || (this.state.filters.state == deal['business']['state'])) {
                   var dealText = deal.name + deal.description;
                   if (this.state.filters.search == '' || dealText.toLowerCase().indexOf(this.state.filters.search.toLowerCase()) > -1) {
-                    dealCards.push(<Card imageUrl={deal['main_image']} imageAlt={deal['name']} name={deal['name']} description={deal['description']} city={deal['business']['city']} button={'Read More'} button_type={'primary'} link={'/deal/' + deal['id'] + '/'} />)
+                    dealCards.push(<Card imageUrl={deal['main_image']} imageAlt={deal['name']} name={deal['name']} description={deal['description']} city={deal['business']['city']} reviews={deal['business']['review']} button={'Read More'} button_type={'primary'} link={'/deal/' + deal['id'] + '/'} />)
                   }
                 }
               }
@@ -99,7 +108,7 @@ class Deals extends Component {
         }
 
 
-        var Components = [TextInput,RadioList,RadioList,RadioList,RadioList];
+        var Components = [TextInput, RadioList, RadioList, RadioList, RadioList];
         var deal_type = {'value':'', 'name':'deal_type', 'label':'Type Of Deal', 'options':deal_types, 'defaultoption':''}
         var business_type = {'value':'', 'name':'business_type', 'label':'Type Of Restaurant', 'options':business_types,  'defaultoption':''}
         var city = {'value':'', 'name':'city', 'label':'City', 'options':cities, 'defaultoption':''}
@@ -110,7 +119,7 @@ class Deals extends Component {
         var defaults = this.state.filters;
 
         var filters = null;
-        if (this.props.filters != false) {
+        if (this.state.show_filters != false) {
           var filters = <div className="col-md-4">
                   <Form components={Components} componentProps={ComponentProps} defaults={defaults} objectName={'business'} setGlobalState={this.setGlobalState} globalStateName={'filters'} autoSetGlobalState={true}/>
           </div>;
@@ -132,6 +141,11 @@ class Deals extends Component {
 
         }
 
+        var toggleFilters = null;
+        if (this.props.toggleFilters != false) {
+          var toggleFilters = <Button type={'light'} text={'Toggle Filters'} clickHandler={this.toggleFilters} />;
+        }
+
         var content = <div className="container">
         <MetaTags>
           <title>Best Deals and Coupons</title>
@@ -139,6 +153,7 @@ class Deals extends Component {
           <meta property="og:title" content="Best Deals and Coupons" />
         </MetaTags>
                 {title}
+                {toggleFilters}
                 <br/>
                 {filters}
                 <div className="row">
