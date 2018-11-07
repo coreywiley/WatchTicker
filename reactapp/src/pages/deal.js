@@ -3,7 +3,7 @@ import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 import MetaTags from 'react-meta-tags';
 
-import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Link, Button, Alert, MultiLineText} from 'library';
+import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, TextArea, Link, Button, Alert, MultiLineText, PageBreak} from 'library';
 
 class Deal extends Component {
     constructor(props) {
@@ -59,7 +59,7 @@ class Deal extends Component {
         if (result[index]['follow']['notifications'] == true) {
           emails_sent += 1
           var user = result[index]['follow']['user']
-          ajaxWrapper('POST','/api/email/',{'to_email':user['email'], 'from_email':'jeremy.thiesen1@gmail.com', 'subject': this.state.business.name + ' has a new deal for you!', 'text': this.state.business.name + ' just published a new deal for you via Patron Gate. <a href="http://patrongate.jthiesen1.webfactional.com/deal/' + this.props.deal_id + '">' + this.state.name + '</a>'}, console.log)
+          ajaxWrapper('POST','/api/email/',{'to_email':user['email'], 'from_email':'patrongate@gmail.com', 'subject': this.state.business.name + ' has a new deal for you!', 'text': this.state.business.name + ' just published a new deal for you via Patron Gate. <a href="http://patrongate.jthiesen1.webfactional.com/deal/' + this.props.deal_id + '">' + this.state.name + '</a>'}, console.log)
         }
 
       }
@@ -106,7 +106,7 @@ class Deal extends Component {
       var file_name = this.props.user['id'] + '_' + result[0]['redemption']['id'] + '.jpg';
       console.log({'file_name': file_name, 'main_image':this.state.main_image, 'text': this.props.user['first_name'] + ' redeemed \n' + this.state.name + '\n on ' + date + '\n via PatronGate'})
       ajaxWrapper('POST','/redeem/',{'file_name': file_name, 'main_image':this.state.main_image, 'text': this.props.user['first_name'] + ' redeemed \n' + this.state.name + '\n on ' + date + '\n via PatronGate'}, console.log)
-      ajaxWrapper('POST','/api/email/', {'to_email':this.props.user['email'], 'from_email':'jeremy.thiesen1@gmail.com', 'subject':'Redeemed Coupon: ' + this.state.name + ' via Patron Gate', 'text':"<img src='http://patrongate.jthiesen1.webfactional.com/static/images/" + file_name + "'>"}, () => this.redirect(result[0]['redemption']['id']))
+      ajaxWrapper('POST','/api/email/', {'to_email':this.props.user['email'], 'from_email':'patrongate@gmail.com', 'subject':'Redeemed Coupon: ' + this.state.name + ' via Patron Gate', 'text':"<img src='http://patrongate.jthiesen1.webfactional.com/static/images/" + file_name + "'>"}, () => this.redirect(result[0]['redemption']['id']))
     }
 
     redirect(id) {
@@ -122,18 +122,18 @@ class Deal extends Component {
           emailsSent = <Alert type={"success"} text={"Emails To " + this.state.totalEmails + " Followers Have Been Sent!"} />
         }
         if (this.state.published == false) {
-          publish = <div style={{'padding':'10px'}}>
+          publish = <div style={{'padding':'10px'}}><br/>
             <div style={{'float':'left'}}><Button clickHandler={this.publish} type={'success'} text={'Publish Your Deal On Patron Gate and to all your followers'} /></div>
-            <div style={{'float':'right'}}><Button href={"/dealForm/" + this.state.business.id + "/" + this.props.deal_id + "/"} type={'primary'} text={'Edit Deal'} /></div>
+            <div style={{'float':'right'}}><Button href={"/dealForm/" + this.state.business.id + "/" + this.props.deal_id + "/"} type={'primary'} text={'Edit Deal'} /></div><br/>
           </div>
         }
         else {
-          publish = <div>
+          publish = <div><br/>
                       <div style={{'float':'left'}}>
                         <Button clickHandler={this.remove} type={'danger'} text={'Remove Your Deal From Patron Gate'} />
                         <Button clickHandler={this.publish} type={'success'} text={'Re-publish Your Deal On Patron Gate'} />
                       </div>
-                      <div style={{'float':'right'}}><Button href={"/dealForm/" + this.state.business.id + "/" + this.props.deal_id + "/"} type={'primary'} text={'Edit Deal'} /></div>
+                      <div style={{'float':'right'}}><Button href={"/dealForm/" + this.state.business.id + "/" + this.props.deal_id + "/"} type={'primary'} text={'Edit Deal'} /></div><br/>
                     </div>
         }
       }
@@ -148,23 +148,29 @@ class Deal extends Component {
 
       var redeem = <div></div>
       if (this.props.user_id) {
-        if (this.state.redeemable == true) {
-          redeem = <div><Button clickHandler={this.redeem} type={'patron'} text={'Redeem'} /><p><strong>When clicking redeem, you are redeeming the coupon for use today. It will be invalid after today</strong></p></div>
+        if (this.state.redeemable) {
+          redeem = <div><Button clickHandler={this.redeem} css={{'width':'100%'}} type={'patron'} text={'Redeem'} /><p><strong>When clicking redeem, you are redeeming the coupon for use today. It will be invalid after today</strong></p></div>
         }
+        else {
+          redeem = <div><Button clickHandler={console.log} css={{'width':'100%'}} type={'patron'} text={'Cannot Redeem'} disabled={true} /><p><strong>When clicking redeem, you are redeeming the coupon for use today. It will be invalid after today</strong></p></div>
+        }
+
+
       }
       else {
-        redeem = <Button href={'/signUp/'} type={'success'} text={'Sign Up To Redeem'} />
+        redeem = <Button href={'/signUp/'} type={'success'} css={{'width':'100%'}} text={'Sign Up To Redeem'} />
       }
 
-      var number_of_redeems_available = <p>This deal can be redeemed a total of {this.state.number_of_redeems_available} times.</p>
+      var number_of_redeems_available = <p style={{'margin':'0px'}}>This deal can be redeemed a total of {this.state.number_of_redeems_available} times.</p>
       if (this.state.number_of_redeems_available == 0) {
-        number_of_redeems_available = <p>This deal can be redeemed unlimited times.</p>
+        number_of_redeems_available = <p style={{'margin':'0px'}}>This deal can be redeemed unlimited times.</p>
       }
 
       var valid_until = <div></div>
       if (this.state.valid_until != null) {
-        valid_until = <p>Valid Until: {this.state.valid_until}</p>
+        valid_until = <p style={{'margin':'0px'}}>Valid Until: {this.state.valid_until}</p>
       }
+
 
         var content = <div className="container">
         <MetaTags>
@@ -172,22 +178,48 @@ class Deal extends Component {
           <meta name="description" content={this.state.name + ' with ' + this.state.business.name + '| PatronGate'} />
           <meta property="og:title" content={this.state.name + ' with ' + this.state.business.name + '| PatronGate'} />
         </MetaTags>
-                <div>
-                {publish}
-                </div>
 
-                <h1>{this.state.name} is available at <a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></h1>
-                <div>
-                {newPublish}
-                {emailsSent}
+                <div className='row'>
+                  <div className='col-md-12'>
+                  <div>
+                  {publish}
+                  </div>
+                    <h1 style={{'margin':'0px'}}><a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></h1>
+                    <p style={{'color':'#666','margin':'0px'}}>{this.state.business.city}, {this.state.business.state}</p>
+                    <p style={{'margin':'1px'}}><i class="fas fa-tag"></i> {this.state.name} at <a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></p>
+                  </div>
+                  <div className='col-md-8' style={{'paddingRight':'10px', 'borderRight':'1px solid #ccc'}}>
+
+                    <div>
+                    {newPublish}
+                    {emailsSent}
+                    </div>
+
+                    <img src={this.state.main_image} style={{'width':'100%'}} />
+                    <br/>
+                    <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Highlights</h3>
+                    <PageBreak />
+                    <br/>
+                    <MultiLineText text={this.state.description} />
+                    <br/>
+                    <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>About <a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></h3>
+                    <PageBreak />
+                    <br/>
+                    <MultiLineText text={this.state.business.description} />
+                    <br/>
+                    <iframe src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyDnsYmrV7t2Bx5DH0NFcb5eSFR-Ii4kMb4&q=" + this.state.business.address} width="800" height="600" frameborder="0" style={{'border':'0'}} allowfullscreen></iframe>
+                  </div>
+                  <div className='col-md-4' style={{'paddingLeft':'10px'}}>
+                    <div id="coupon">
+                      <h4 style={{'margin':'0px'}}>{this.state.name}</h4>
+                      {number_of_redeems_available}
+                      {valid_until}
+                      <p>You have redeemed this coupon {this.state.totalRedemptions} times.</p>
+
+                      {redeem}
+                    </div>
+                  </div>
                 </div>
-                {number_of_redeems_available}
-                {valid_until}
-                <img src={this.state.main_image} style={{'width':'100%'}} />
-                <h3>About the Deal</h3>
-                <MultiLineText text={this.state.description} />
-                {redeem}
-                <p>You have redeemed this coupon {this.state.totalRedemptions} times.</p>
 
         </div>;
 

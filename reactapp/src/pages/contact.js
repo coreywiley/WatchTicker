@@ -29,7 +29,7 @@ class Home extends Component {
     }
 
     send() {
-      ajaxWrapper('POST','/api/email/', {'to_email':'jeremy.thiesen1@gmail.com', 'from_email': 'jeremy.thiesen1@gmail.com', 'subject':'Contact From Patrongate: ' + this.state.contact.subject, 'text':this.state.contact.message + '<br/><br/><p>Sent From: ' + this.state.contact.email + '</p>'}, this.sent)
+      ajaxWrapper('POST','/api/email/', {'to_email':'patrongate@gmail.com', 'from_email': 'patrongate@gmail.com', 'subject':'Contact From Patrongate: ' + this.state.contact.subject, 'text':this.state.contact.message + '<br/><br/><p>Sent From: ' + this.state.contact.email + '</p>'}, this.sent)
     }
 
     sent(result) {

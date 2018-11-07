@@ -31,37 +31,30 @@ class Home extends Component {
             <meta name="description" content="Connect With Local Businesses in your Area, Coupons and Deals Finder Based on Your Location." />
             <meta property="og:title" content="PatronGate" />
           </MetaTags>
-            <div style={{textAlign:"center"}}>
-              <div style={{'background-image': 'url(http://beta.patrongate.com/wp-content/uploads/2018/07/roof.jpg)'}} class="homepage-cover page-cover entry-cover entry-cover--home entry-cover--solid has-image">
-                <div class="cover-wrapper container">
-                  <div class="listify_widget_search_listings">
-                    <div class="home-widget-section-title">
-                      <h1 class="home-widget-title" style={{'fontSize':'45px', 'fontWeight':'bold'}}>Explore Local Businesses</h1>
-                      <p class="home-widget-description">PatronGate helps you find food and drink specials in your city, Lets explore.</p>
-                    </div>
-                    <div class="search-filters-home">
-                      <div class="job_search_form job_search_form--count-2">
-                        <Button href={'/businesses/'} text={"Search"} type={'patron'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px'}} />
-                      </div>
-                    </div>
-          				</div>
-                </div>
-                </div>
-
-            </div>
             <br/>
             <br/>
-            <br/>
-            <div style={{textAlign:"center"}}>
-              <Deals user_id={this.props.user_id} limit={6} />
+            <div className="container">
+              <h4 style={{'fontWeight':'bold'}}>PatronGate helps you find food and drink specials in your city, Lets explore.</h4>
+              <Deals user_id={this.props.user_id} limit={3} filters={false} title={false} />
               <Button type={'patron'} text={'See More'} href={'/deals/'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
               <br />
               <br />
               <br />
               <br />
             </div>
+
+            <div className="container">
+              <h4 style={{'fontWeight':'bold'}}>Popular on PatronGate.</h4>
+              <Deals user_id={this.props.user_id} limit={12} filters={false} title={false} order_by={'redemptions'}/>
+              <Button type={'patron'} text={'See More'} href={'/deals/'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
+              <br />
+              <br />
+              <br />
+              <br />
+            </div>
+
             <div class="feature-callout text-center image-cover" style={{"background-color": "#ffffff"}}>
-    					<div class="feature-callout-cover has-overlay" style={{"background-image":"url(http://beta.patrongate.com/wp-content/uploads/2018/01/widget-callout-1.jpg)","background-position": "center center"}}>
+    					<div class="feature-callout-cover has-overlay" style={{"background-image":"url(/static/images/widget-callout-1.jpg)","background-position": "center center"}}>
 
     						<div class="container">
     							<div class="row">

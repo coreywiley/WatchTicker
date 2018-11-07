@@ -4,24 +4,36 @@ import Wrapper from 'base/wrapper.js';
 import MetaTags from 'react-meta-tags';
 
 import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress} from 'library';
+
 import Card from 'projectLibrary/dealCard.js';
+import RadioList from 'projectLibrary/radioList.js';
 
 class Deals extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {deals:[], filters:{'deal_type':'', 'business_type':'', 'city':'', 'state':'', 'search':''}, 'loaded':false};
+    var search = '';
+    if (this.props.search) {
+      search = this.props.search;
+    }
+
+    this.state = {deals:[], filters:{'deal_type':'All', 'business_type':'All', 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
 
     this.dealCallback = this.dealCallback.bind(this);
     this.setGlobalState = this.setGlobalState.bind(this);
   }
 
     componentDidMount() {
+      var order_by = "-last_published";
+      if (this.props.order_by) {
+        order_by = this.props.order_by;
+      }
+
       if (this.props.limit) {
-        ajaxWrapper('GET','/api/home/deal/?order_by=-last_published&business__published=True&published=True&related=business&limit=' + this.props.limit, {}, this.dealCallback)
+        ajaxWrapper('GET','/api/home/deal/?order_by=' + order_by + '&business__published=True&published=True&related=business&limit=' + this.props.limit, {}, this.dealCallback)
       }
       else {
-        ajaxWrapper('GET','/api/home/deal/?order_by=-last_published&business__published=True&published=True&related=business', {}, this.dealCallback)
+        ajaxWrapper('GET','/api/home/deal/?order_by=' + order_by + '&business__published=True&published=True&related=business', {}, this.dealCallback)
       }
     }
 
@@ -42,10 +54,10 @@ class Deals extends Component {
     render() {
 
         var dealCards = [];
-        var cities = [];
-        var states = [];
-        var business_types = [];
-        var deal_types = [];
+        var cities = ['All'];
+        var states = ['All'];
+        var business_types = ['All'];
+        var deal_types = ['All'];
         var usedCities = [];
         var usedState = [];
         var usedDealTypes = [];
@@ -54,29 +66,31 @@ class Deals extends Component {
         if (this.state.loaded == true) {
         for (var index in this.state.deals) {
           var deal = this.state.deals[index]
-          if (this.state.filters.deal_type == '' || (this.state.filters.deal_type == deal['type'])) {
-            if (this.state.filters.business_type == '' || (this.state.filters.business_type == deal['business']['type'])) {
-              if (this.state.filters.city == '' || (this.state.filters.city == deal['business']['city'])) {
-                if (this.state.filters.state == '' || (this.state.filters.state == deal['business']['state'])) {
+          if (usedDealTypes.indexOf(deal['type']) == -1) {
+            deal_types.push(deal['type'])
+            usedDealTypes.push(deal['type'])
+          }
+          if (usedBusinessTypes.indexOf(deal['business']['type']) == -1) {
+            business_types.push(deal['business']['type'])
+            usedBusinessTypes.push(deal['business']['type'])
+          }
+          if (usedCities.indexOf(deal['business']['city']) == -1) {
+            cities.push(deal['business']['city'])
+            usedCities.push(deal['business']['city'])
+          }
+          if (usedState.indexOf(deal['business']['state']) == -1) {
+            states.push(deal['business']['state'])
+            usedState.push(deal['business']['state'])
+          }
+
+
+          if (this.state.filters.deal_type == '' || this.state.filters.deal_type == 'All' || (this.state.filters.deal_type == deal['type'])) {
+            if (this.state.filters.business_type == '' || this.state.filters.business_type == 'All' || (this.state.filters.business_type == deal['business']['type'])) {
+              if (this.state.filters.city == '' || this.state.filters.city == 'All' || (this.state.filters.city == deal['business']['city'])) {
+                if (this.state.filters.state == '' || this.state.filters.state == 'All' || (this.state.filters.state == deal['business']['state'])) {
                   var dealText = deal.name + deal.description;
                   if (this.state.filters.search == '' || dealText.toLowerCase().indexOf(this.state.filters.search.toLowerCase()) > -1) {
-                    dealCards.push(<Card imageUrl={deal['main_image']} imageAlt={deal['name']} name={deal['name']} description={deal['description']} button={'Read More'} button_type={'primary'} link={'/deal/' + deal['id'] + '/'} />)
-                    if (usedDealTypes.indexOf(deal['type']) == -1) {
-                      deal_types.push({'value':deal['type'], 'text':deal['type']})
-                      usedDealTypes.push(deal['type'])
-                    }
-                    if (usedBusinessTypes.indexOf(deal['business']['type']) == -1) {
-                      business_types.push({'value':deal['business']['type'], 'text':deal['business']['type']})
-                      usedBusinessTypes.push(deal['business']['type'])
-                    }
-                    if (usedCities.indexOf(deal['business']['city']) == -1) {
-                      cities.push({'value':deal['business']['city'], 'text':deal['business']['city']})
-                      usedCities.push(deal['business']['city'])
-                    }
-                    if (usedState.indexOf(deal['business']['state']) == -1) {
-                      states.push({'value':deal['business']['state'], 'text':deal['business']['state']})
-                      usedState.push(deal['business']['state'])
-                    }
+                    dealCards.push(<Card imageUrl={deal['main_image']} imageAlt={deal['name']} name={deal['name']} description={deal['description']} city={deal['business']['city']} button={'Read More'} button_type={'primary'} link={'/deal/' + deal['id'] + '/'} />)
                   }
                 }
               }
@@ -85,20 +99,38 @@ class Deals extends Component {
         }
 
 
-        var Components = [Select,Select,Select,Select, TextInput];
-        var deal_type = {'value':'', 'name':'deal_type', 'label':'Type Of Deal', 'options':deal_types, 'layout':'col-md-3 col-xs-6', 'defaultoption':''}
-        var business_type = {'value':'', 'name':'business_type', 'label':'Type Of Restaurant', 'options':business_types, 'layout':'col-md-3 col-xs-6', 'defaultoption':''}
-        var city = {'value':'', 'name':'city', 'label':'City', 'options':cities, 'layout':'col-md-3 col-xs-6', 'defaultoption':''}
-        var state = {'value':'', 'name':'state', 'label':'State', 'options':states, 'layout':'col-md-3 col-xs-6', 'defaultoption':''}
-        var search = {'value':'', 'name':'search', 'label':'Search Anything', 'layout':'col-md-12 col-xs-12', 'defaultoption':''}
+        var Components = [TextInput,RadioList,RadioList,RadioList,RadioList];
+        var deal_type = {'value':'', 'name':'deal_type', 'label':'Type Of Deal', 'options':deal_types, 'defaultoption':''}
+        var business_type = {'value':'', 'name':'business_type', 'label':'Type Of Restaurant', 'options':business_types,  'defaultoption':''}
+        var city = {'value':'', 'name':'city', 'label':'City', 'options':cities, 'defaultoption':''}
+        var state = {'value':'', 'name':'state', 'label':'State', 'options':states,  'defaultoption':''}
+        var search = {'value':'', 'name':'search', 'label':'Search Anything',  'defaultoption':''}
 
-        var ComponentProps = [deal_type, business_type, city, state, search];
+        var ComponentProps = [search, deal_type, business_type, city, state];
         var defaults = this.state.filters;
 
-        var title = <h2>Filter</h2>
-        var filters = <div className="container">
-                <Form components={Components} layout={'row'} componentProps={ComponentProps} defaults={defaults} objectName={'business'} setGlobalState={this.setGlobalState} globalStateName={'filters'} autoSetGlobalState={true}/>
-        </div>;
+        var filters = null;
+        if (this.props.filters != false) {
+          var filters = <div className="col-md-4">
+                  <Form components={Components} componentProps={ComponentProps} defaults={defaults} objectName={'business'} setGlobalState={this.setGlobalState} globalStateName={'filters'} autoSetGlobalState={true}/>
+          </div>;
+        }
+
+
+        var title = null;
+        if (this.props.title != false) {
+          if (this.props.search) {
+            title = <div><h1 style={{'color':'#717a8f', fontSize:'30px'}}>results for '{this.props.search}'</h1>
+            <div style={{'width':'100%','borderBottom':'1px solid #ddd'}}></div>
+            </div>
+          }
+          else {
+            title = <div><h1 style={{'color':'#717a8f', fontSize:'30px'}}>Local Coupons & Deals of the Week</h1>
+            <div style={{'width':'100%','borderBottom':'1px solid #ddd'}}></div>
+            </div>
+          }
+
+        }
 
         var content = <div className="container">
         <MetaTags>
@@ -106,10 +138,12 @@ class Deals extends Component {
           <meta name="description" content="About on PatronGate | You're hungry and we're here to help ..." />
           <meta property="og:title" content="Best Deals and Coupons" />
         </MetaTags>
-                <h1 style={{'color':'#717a8f', fontSize:'30px'}}>Local Coupons & Deals of the Week</h1>
-                <p  style={{'color':'#949db2', fontSize:'16px'}}>Discover local businesses, see their daily specials and deals</p>
+                {title}
+                <br/>
                 {filters}
-                {dealCards}
+                <div className="row">
+                  {dealCards}
+                </div>
         </div>;
       }
       else{

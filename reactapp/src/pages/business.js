@@ -206,9 +206,9 @@ class Business extends Component {
                 <meta name="description" content={this.state.description} />
                 <meta property="og:title" content={this.state.name} />
               </MetaTags>
-                <div className='col-md-8'>
+                <div className='col-md-8' style={{'borderRight':'1px solid #ccc', 'paddingRight':'10px'}}>
                 {publish}
-                <h2 style={{'paddingTop':'10px', paddingBottom: '10px'}}>{this.state.name}</h2>
+                <h2 style={{'paddingTop':'10px', 'marginBottom': '0px'}}>{this.state.name}</h2>
                 <p>{this.state.address}</p>
                 <img src={this.state.main_image} style={{'width':'100%'}} />
                 {following}
@@ -216,8 +216,11 @@ class Business extends Component {
                 {specialsDisplay}
                 <h4>About {this.state.name}</h4>
                 <MultiLineText text={this.state.description} />
+                <br/>
+                <iframe src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyDnsYmrV7t2Bx5DH0NFcb5eSFR-Ii4kMb4&q=" + this.state.address} width="800" height="600" frameborder="0" style={{'border':'0'}} allowfullscreen></iframe>
+
                 </div>
-                <div className='col-md-4'>
+                <div className='col-md-4' style={{'paddingLeft':'10px'}}>
                   <h3>Contact {this.state.name}</h3>
                   <div style={{'marginLeft':'10px'}}>
                     {email}

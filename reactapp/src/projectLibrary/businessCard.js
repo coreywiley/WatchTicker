@@ -3,6 +3,15 @@ import resolveVariables from 'base/resolver.js';
 
 //<Card name={this.state.deals[index]['name']} description={this.state.deals[index]['description']} button={'Read More'} button_type={'primary'} link={'/deal/' + this.state.deals[index]['id'] + '/'} />
 class Card extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.redirect = this.redirect.bind(this);
+  }
+
+  redirect() {
+    window.location.href = this.props.link;
+  }
 
     render() {
         var button = <a href={this.props.link} className={"btn btn-patron"}>{this.props.button}</a>;
@@ -10,13 +19,11 @@ class Card extends React.Component {
         var image = <img className="card-img-top" src={this.props.imageUrl} alt={this.props.imageAlt} />
 
         return (
-            <div className="card col-md-4" style={{'padding':'0px'}} data-id={this.props.data_id} >
+            <div className="card col-md-4 dealCard" style={{'padding':'0px', 'cursor':'pointer', 'height':'350px'}} data-id={this.props.data_id} >
               {image}
               <div className="card-body">
-                <h5 className="card-title">{this.props.name}</h5>
-                <p className="card-text">{this.props.description}</p>
-                <p className="card-text">{this.props.address}</p>
-                {button}
+                <h5 className="card-title" style={{'margin':'0px', 'fontWeight':'bold'}}>{this.props.name}</h5>
+                <p className="card-text" style={{'color':'#999'}}>{this.props.description.substring(0,100)}...<br/>{this.props.address}</p>
               </div>
             </div>
         );

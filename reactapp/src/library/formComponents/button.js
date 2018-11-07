@@ -41,7 +41,14 @@ class Button extends React.Component {
       if (this.props.css) {
         css = this.props.css;
       }
-      var content = <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>
+
+      if (this.props.disabled) {
+        var content = <button className={"btn " + type} onClick={this.click} style={css} disabled>{this.props.text}</button>
+      }
+      else {
+        var content = <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>
+      }
+
       if (this.props.deleteType == true && this.state.modal == false) {
         console.log("I am here");
         content = <button className={"btn " + type} onClick={this.showModal} style={css}>{this.props.text}</button>

@@ -72,7 +72,7 @@ class App extends Component {
     }
 
     ajaxCallback(value) {
-
+      console.log("CSRF", value)
         window.secretReactVars["csrfmiddlewaretoken"] = value.csrfmiddlewaretoken;
         var token = localStorage.getItem('token')
         if (token) {
@@ -80,6 +80,7 @@ class App extends Component {
                 window.location.href = '/';
             }
             else {
+
                 this.setState({csrfmiddlewaretoken: value.csrfmiddlewaretoken, token: token}, this.getUserInfo);
             }
         }
@@ -192,7 +193,7 @@ class App extends Component {
               content = <EditUser user_id={this.state.user.id} />
           }
           else if (params[0].toLowerCase() == "deals") {
-              content = <Deals user_id={this.state.user.id} />
+              content = <Deals user_id={this.state.user.id} search={params[1]} />
           }
           else if (params[0].toLowerCase() == "businesses") {
               content = <Businesses user_id={this.state.user.id} />

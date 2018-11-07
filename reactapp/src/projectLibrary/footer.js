@@ -14,7 +14,7 @@ class Footer extends React.Component {
                   <div className="footer-widget-column col-xs-12 col-sm-12 col-lg-5">
                     <aside id="text-1" className="footer-widget widget_text">
                       <div className="textwidget">
-                        <img src="http://beta.patrongate.com/wp-content/uploads/2018/07/pg_v3.png" style={{'width': '159px', 'marginBottom': '1em'}} />
+                        <img src="/static/images/pg_v3.png" style={{'width': '159px', 'marginBottom': '1em'}} />
                         <p>At PatronGate our purpose is to connect people with great local businesses.  Discover and search for exclusive deals on meals, drink specials, and more!</p>
                         <p>Made in the USA</p>
                         <p></p>

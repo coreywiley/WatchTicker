@@ -17,17 +17,17 @@ class PublishButton extends Component {
   }
 
   publish() {
-    ajaxWrapper('POST','/api/email/',{'to_email': this.props.email, 'from_email': 'jeremy.thiesen1@gmail.com', 'subject':'Your business was published PatronGate', 'text': 'We are excited to tell you we have published your business from PatronGate. Please follow up with this email to ask any questions and you are welcome to check out <a href="http://patrongate.jthiesen1.webfactional.com/business/' + this.props.id + '/">your business page.</a>'}, console.log)
+    ajaxWrapper('POST','/api/email/',{'to_email': this.props.email, 'from_email': 'patrongate@gmail.com', 'subject':'Your business was published PatronGate', 'text': 'We are excited to tell you we have published your business from PatronGate. Please follow up with this email to ask any questions and you are welcome to check out <a href="http://patrongate.jthiesen1.webfactional.com/business/' + this.props.id + '/">your business page.</a>'}, console.log)
     ajaxWrapper('POST', '/api/home/business/' + this.props.id + '/', {'published':true, 'rejected':false, 'ask_for_publish':false}, this.props.businessRefresh)
   }
 
   unpublish() {
-    ajaxWrapper('POST','/api/email/',{'to_email': this.props.email, 'from_email': 'jeremy.thiesen1@gmail.com', 'subject':'Your business has been un-published from PatronGate', 'text': 'We are sorry to tell you we have unpublished your business from PatronGate. Please follow up with this email to ask any questions and you are welcome to reappply via <a href="http://patrongate.jthiesen1.webfactional.com/business/' + this.props.id + '/">your business page.</a>'}, console.log)
+    ajaxWrapper('POST','/api/email/',{'to_email': this.props.email, 'from_email': 'patrongate@gmail.com', 'subject':'Your business has been un-published from PatronGate', 'text': 'We are sorry to tell you we have unpublished your business from PatronGate. Please follow up with this email to ask any questions and you are welcome to reappply via <a href="http://patrongate.jthiesen1.webfactional.com/business/' + this.props.id + '/">your business page.</a>'}, console.log)
     ajaxWrapper('POST', '/api/home/business/' + this.props.id + '/', {'published':false, 'rejected':false, 'ask_for_publish':false}, this.props.businessRefresh)
   }
 
   reject() {
-    ajaxWrapper('POST','/api/email/',{'to_email': this.props.email, 'from_email': 'jeremy.thiesen1@gmail.com', 'subject':'Your business has been rejected from PatronGate', 'text': 'We are sorry to tell you we have rejected your business from PatronGate. Please follow up with this email to ask any questions and you are welcome to reappply via <a href="http://patrongate.jthiesen1.webfactional.com/business/' + this.props.id + '/">your business page.</a>'}, console.log)
+    ajaxWrapper('POST','/api/email/',{'to_email': this.props.email, 'from_email': 'patrongate@gmail.com', 'subject':'Your business has been rejected from PatronGate', 'text': 'We are sorry to tell you we have rejected your business from PatronGate. Please follow up with this email to ask any questions and you are welcome to reappply via <a href="http://patrongate.jthiesen1.webfactional.com/business/' + this.props.id + '/">your business page.</a>'}, console.log)
     ajaxWrapper('POST', '/api/home/business/' + this.props.id + '/', {'published':false, 'rejected':true, 'ask_for_publish': false}, this.props.businessRefresh)
   }
 
