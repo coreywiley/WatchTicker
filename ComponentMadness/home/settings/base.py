@@ -113,7 +113,7 @@ DATABASES = {
         'NAME': 'patrongate',
         'USER': 'patrongate',
         'PASSWORD': '-7tHS5=??=fcv+J;',
-        'HOST': 'patrongate.c4xmo8vgxph5.us-west-1.rds.amazonaws.com',
+        'HOST': '207.38.86.148',
         'PORT': '5432'
     }
 }
