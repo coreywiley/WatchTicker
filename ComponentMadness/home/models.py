@@ -45,6 +45,7 @@ class Follow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follows')
     business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='follows')
     notifications = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(default=datetime.datetime.now)
 
 class Deal(models.Model):
     id = models.AutoField(primary_key=True)
