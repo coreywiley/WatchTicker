@@ -32,7 +32,11 @@ class EventList extends Component {
       var events = [];
       for (var index in this.state.events) {
         var event = this.state.events[index];
-        events.push(<Card name={event.name} description={event.description} button_type={'primary'} button={'View'} link={'/event/' + event.id + '/'} />)
+        var buttons = [<Button type={'primary'} text={'View'} href={'/event/' + event.id + '/'} />,
+                       <Button type={'info'} text={'Edit Availability'} href={'/event/' + event.id + '/'} />,
+                       <Button type={'danger'} text={'Delete'} href={'/event/' + event.id + '/delete/'} deleteType={true} />];
+
+        events.push(<Card name={event.name} description={event.description} buttons={buttons} />)
       }
 
       var content =

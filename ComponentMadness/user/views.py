@@ -52,8 +52,10 @@ def ResetPassword(request, user_id):
 @api_view(['POST'])
 @permission_classes((IsPostOrIsAuthenticated, ))
 def UserSignUp(request):
+    print ('User Sign Up Request')
     email = request.POST['email'].lower()
     check = User.objects.filter(email=email).first()
+    print ('Here', check)
     if check:
         return JsonResponse({'error':'A user with that email already exists.'})
 

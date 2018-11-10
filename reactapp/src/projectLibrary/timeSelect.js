@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import ajaxWrapper from '../base/ajax.js';
 import {Card, Header, Button} from 'library';
-
+import Availability from 'projectLibrary/availability.js';
 
 class TimeChoice extends React.Component {
     constructor(props) {
       super(props)
 
       this.submitTime = this.submitTime.bind(this);
-      this.redirectCode = this.redirectCode.bind(this);
-      this.eventCallback = this.eventCallback.bind(this);
-      this.email = this.email.bind(this);
     }
 
     submitTime() {
@@ -28,20 +25,7 @@ class TimeChoice extends React.Component {
       date += ' ' + hour + ':' + this.props.minute
 
       console.log("Date",date);
-      ajaxWrapper('POST','/api/home/event/' + this.props.event_id + '/', {'schedule_start_time':date}, this.eventCallback)
-    }
-
-    eventCallback(result) {
-      ajaxWrapper('GET','/api/home/event/' + result[0]['event']['id'] + '/?related=host', {}, this.email)
-    }
-
-    email(result) {
-      console.log("Email", result)
-      ajaxWrapper('POST','/api/email/', {'to_email': result[0]['event']['host']['email'], 'from_email':'jeremy.thiesen1@gmail.com', 'subject':'Someone booked a time for ' + result[0]['event']['name'], 'text':'Someone booked a time for your event at ' + result[0]['event']['schedule_start_time']}, this.redirectCode)
-    }
-
-    redirectCode() {
-      window.location.href = '/thankyou/'
+      this.props.chooseAvailbility(date)
     }
 
     render() {
@@ -154,7 +138,7 @@ class TimeSections extends React.Component {
           var ampm = " AM"
         }
 
-        times.push(<TimeChoice date={this.props.date} event_id={this.props.event_id} time={hour + ":" + minute + ampm} hour={hour} minute={minute} ampm={ampm} />);
+        times.push(<TimeChoice date={this.props.date} chooseAvailbility={this.props.chooseAvailbility} time={hour + ":" + minute + ampm} hour={hour} minute={minute} ampm={ampm} />);
       }
     }
 
@@ -173,7 +157,7 @@ class Day extends React.Component {
       return (
         <div>
           <Header size={3} text={this.props.day} />
-          <TimeSections event_id={this.props.event_id} date={this.props.date} />
+          <TimeSections chooseAvailbility={this.props.chooseAvailbility} date={this.props.date} />
         </div>
       );
   }
@@ -186,7 +170,7 @@ class Week extends React.Component {
         var dayList = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
         var days = [];
         for (var i = 0; i < 7; i++) {
-          days.push(<div className='col-md-3'><Day day={dayList[i]} /></div>)
+          days.push(<div className='col-md-3'><Day chooseAvailbility={this.props.chooseAvailbility} day={dayList[i]} /></div>)
         }
 
         return (
@@ -292,7 +276,7 @@ class Month extends React.Component {
           if (currentDate.getDate() < 10) {
             dayString = '0' + currentDate.getDate()
           }
-          dayRow.push(<MonthDay thisMonth={thisMonth} day={dayString} date={currentDate} setDate={this.props.setDate} />)
+          dayRow.push(<MonthDay chooseAvailbility={this.props.chooseAvailbility} thisMonth={thisMonth} day={dayString} date={currentDate} setDate={this.props.setDate} />)
 
           days.push(<tr>{dayRow}</tr>)
           var dayRow = [];
@@ -307,7 +291,7 @@ class Month extends React.Component {
           if (currentDate.getDate() < 10) {
             dayString = '0' + currentDate.getDate()
           }
-          dayRow.push(<MonthDay thisMonth={thisMonth} day={dayString} date={currentDate} setDate={this.props.setDate} />)
+          dayRow.push(<MonthDay chooseAvailbility={this.props.chooseAvailbility} thisMonth={thisMonth} day={dayString} date={currentDate} setDate={this.props.setDate} />)
         }
 
     }
@@ -379,7 +363,7 @@ class Year extends React.Component {
         for (var i = 0; i < 4; i++) {
           var indexDate = this.addDays(this.state.currentDate, this.state.index + i);
           var dateString = monthData[indexDate.getMonth()] + " " + indexDate.getDate() + ", " + indexDate.getFullYear()
-          days.push(<div className='col-md-3'><Day event_id={this.props.event_id} day={dateString} date={indexDate} /></div>)
+          days.push(<div className='col-md-3'><Day chooseAvailbility={this.props.chooseAvailbility} day={dateString} date={indexDate} /></div>)
         }
 
         return (
@@ -419,9 +403,9 @@ class View extends React.Component {
 
 
   render() {
-    var dateView = <Month event_id={this.props.event_id} setDate={this.setDate} date={this.state.currentDate} />
+    var dateView = <Month chooseAvailbility={this.props.chooseAvailability} setDate={this.setDate} date={this.state.currentDate} />
     if (this.state.view == 'Daily') {
-      dateView = <Year event_id={this.props.event_id} setDate={this.setDate} date={this.state.currentDate} />
+      dateView = <Year chooseAvailbility={this.props.chooseAvailability} setDate={this.setDate} date={this.state.currentDate} />
     }
 
     var alternateView = 'Monthly';
@@ -429,11 +413,16 @@ class View extends React.Component {
       alternateView = 'Daily'
     }
 
+    var content = <div>
+      <Button text={'View ' + alternateView} clickHandler={this.changeView}  type={'primary'} />
+      {dateView}
+    </div>
+    if (this.props.recurring) {
+      content = <div><Day chooseAvailbility={this.props.chooseAvailability} /></div>
+    }
+
     return (
-      <div className="container">
-        <Button text={'View ' + alternateView} clickHandler={this.changeView}  type={'primary'} />
-        {dateView}
-      </div>
+      <Wrapper loaded={true} content={content} />
     );
   }
 }

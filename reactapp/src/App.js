@@ -31,7 +31,7 @@ import Event from './pages/modelEditAndView/Event.js';
 import EditEvent from './pages/editEvent.js';
 import EventList from './pages/modelEditAndView/listEvent.js';
 
-import TimeSelect from './projectLibrary/timeSelect.js';
+import Availability from './projectLibrary/availability.js';
 import ThankYou from './pages/thankyou.js';
 import EventSteps from './pages/eventSteps.js';
 import EventSignUp from './pages/eventSignUp.js';
@@ -167,16 +167,13 @@ class App extends Component {
               content = <PasswordReset  user_id={params[1]} />;
           }
           else if (route == "event") {
-              content = <TimeSelect event_id={params[1]} />;
+              content = <Availability event_id={params[1]} user_id={this.state.user.id} />;
           }
           else if (route == "editevent") {
               content = <EditEvent user={this.state.user} event_id={params[1]} />;
           }
           else if (route == "eventlist") {
               content = <EventList />;
-          }
-          else if (route == "calendar") {
-            content = <TimeSelect event_id={params[1]} />
           }
           else if (route == "thankyou") {
             content = <ThankYou />
