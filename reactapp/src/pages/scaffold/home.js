@@ -34,7 +34,7 @@ class Home extends Component {
             <br/>
             <br/>
             <div className="container">
-              <h4 style={{'fontWeight':'bold'}}>PatronGate helps you find food and drink specials in your city, Lets explore.</h4>
+              <h4 style={{'fontWeight':'bold'}}>PatronGate helps you find the best deals around town, let's explore.</h4>
               <Deals user_id={this.props.user_id} limit={3} filters={false} toggleFilters={false} title={false} />
               <Button type={'patron'} text={'See More'} href={'/deals/'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
               <br />

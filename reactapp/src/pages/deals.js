@@ -8,16 +8,28 @@ import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddre
 import Card from 'projectLibrary/dealCard.js';
 import RadioList from 'projectLibrary/radioList.js';
 
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile
+} from "react-device-detect";
+
 class Deals extends Component {
 
   constructor(props) {
     super(props);
     var search = '';
+    var business_type = 'All';
     if (this.props.search) {
       search = this.props.search;
+      if (search.startsWith("type:")) {
+        business_type = search.substring(5);
+        search = '';
+      }
     }
 
-    this.state = {deals:[], show_filters:true, filters:{'deal_type':'All', 'business_type':'All', 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
+    this.state = {deals:[], show_filters:true, filters:{'deal_type':'All', 'business_type':business_type, 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
 
     this.dealCallback = this.dealCallback.bind(this);
     this.setGlobalState = this.setGlobalState.bind(this);
@@ -146,7 +158,13 @@ class Deals extends Component {
           var toggleFilters = <Button type={'light'} text={'Toggle Filters'} clickHandler={this.toggleFilters} />;
         }
 
-        var content = <div className="container">
+
+        var divClass = "container"
+        if (isMobile) {
+          divClass = "container-fluid"
+        }
+
+        var content = <div className={divClass}>
         <MetaTags>
           <title>Best Deals and Coupons</title>
           <meta name="description" content="About on PatronGate | You're hungry and we're here to help ..." />

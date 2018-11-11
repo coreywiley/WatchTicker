@@ -105,12 +105,12 @@ class Nav extends React.Component {
         console.log("Nav User Id", this.props.user_id)
         if (this.props.user_id) {
           var businessLink = ["/manageYourBusinesses/",'Manage Your Businesses'];
-          var signUpLinks = [['/editUser/','Account Details'], ['/logOut/','Log Out']]
-          var links = [['/how-it-works/','How It Works'], ['/deals/','Deals Of The Week'], ['/businesses/','Local Businesses'], businessLink];
+          var signUpLinks = [['/how-it-works/','How It Works'], ['/businesses/','Local Businesses'], businessLink, ['/editUser/','Account Details'], ['/logOut/','Log Out']]
+          var links = [['/deals/type:Restaurant/','Restaurants'],['/deals/type:Bar/','Bar'],['/deals/type:Food Truck/','Food Truck']];
         }
         else {
-          var links = [['/how-it-works/','How It Works'], ['/deals/','Deals Of The Week'], ['/businesses/','Local Businesses'], ['/signUp/business/','Add Your Listing']];
-          var signUpLinks = [['/signUp/','Sign Up'], ['/logIn/','Log In']]
+          var links = [['/deals/type:Restaurant/','Restaurants'],['/deals/type:Bar/','Bar'],['/deals/type:Food Truck/','Food Truck']];
+          var signUpLinks = [['/how-it-works/','How It Works'], ['/businesses/','Local Businesses'], ['/signUp/business/','Add Your Listing'], ['/signUp/','Sign Up'], ['/logIn/','Log In']]
         }
 
 

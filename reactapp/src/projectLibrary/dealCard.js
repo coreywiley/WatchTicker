@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
 import {Stars} from 'library';
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile
+} from "react-device-detect";
 //<Card name={this.state.deals[index]['name']} description={this.state.deals[index]['description']} button={'Read More'} button_type={'primary'} link={'/deal/' + this.state.deals[index]['id'] + '/'} />
 class Card extends React.Component {
     constructor(props) {
@@ -28,8 +34,13 @@ class Card extends React.Component {
           var review = <div><Stars filled={averageReview} /> ({this.props.reviews.length})</div>
         }
 
+        var padding = '5px';
+        if (isMobile) {
+          padding = '0px';
+        }
+
         return (
-            <div className="card col-md-4 col-xs-12 dealCard" style={{'padding':'5px', 'cursor':'pointer', 'height':'375'}} data-id={this.props.data_id} onClick={this.redirect}>
+            <div className="card col-md-4 col-xs-12 dealCard" style={{'padding':padding, 'cursor':'pointer', 'height':'375'}} data-id={this.props.data_id} onClick={this.redirect}>
               {image}
               <div className="card-body">
                 <h5 className="card-title" style={{'margin':'0px', 'fontWeight':'bold'}}>{this.props.name}</h5>

@@ -3,7 +3,7 @@ import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 import MetaTags from 'react-meta-tags';
 
-import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, PageBreak} from 'library';
+import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddress, PageBreak, Button} from 'library';
 import Card from 'projectLibrary/businessCard.js';
 import RadioList from 'projectLibrary/radioList.js';
 
@@ -11,10 +11,11 @@ class Businesses extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {'businesses':[], filters:{'type':'All', 'city':'All', 'state':'All', 'search':''}, 'loaded':false};
+    this.state = {'businesses':[], show_filters:true, filters:{'type':'All', 'city':'All', 'state':'All', 'search':''}, 'loaded':false};
 
     this.businessCallback = this.businessCallback.bind(this);
     this.setGlobalState = this.setGlobalState.bind(this);
+    this.toggleFilters = this.toggleFilters.bind(this);
   }
 
     componentDidMount() {
@@ -33,6 +34,10 @@ class Businesses extends Component {
       var newState = {}
       newState[name] = value
        this.setState(newState)
+    }
+
+    toggleFilters() {
+      this.setState({'show_filters':!this.state.show_filters})
     }
 
     render() {
@@ -84,9 +89,20 @@ class Businesses extends Component {
         var defaults = this.state.filters;
 
         var title = <h2>Filter</h2>
-        var filters = <div className="container">
-                <Form components={Components} componentProps={ComponentProps} defaults={defaults} objectName={'business'} setGlobalState={this.setGlobalState} globalStateName={'filters'} autoSetGlobalState={true}/>
-        </div>;
+
+        var filters = null;
+        if (this.state.show_filters != false) {
+          var filters = <div className="col-md-4">
+                  <Form components={Components} componentProps={ComponentProps} defaults={defaults} objectName={'business'} setGlobalState={this.setGlobalState} globalStateName={'filters'} autoSetGlobalState={true}/>
+          </div>;
+        }
+
+        var toggleFilters = null;
+        if (this.props.toggleFilters != false) {
+          var toggleFilters = <Button type={'light'} text={'Toggle Filters'} clickHandler={this.toggleFilters} />;
+        }
+
+
 
         var content = <div className="container">
         <MetaTags>
@@ -98,13 +114,11 @@ class Businesses extends Component {
                 <h4 style={{'marginTop':'0px'}}>Discover whats right around the corner.</h4>
                 <PageBreak />
                 <br/>
+                {toggleFilters}
+                <br/>
+                {filters}
                 <div className='row'>
-                  <div className='col-md-4'>
-                    {filters}
-                  </div>
-                  <div className='col-md-8'>
                     {businessCards}
-                  </div>
                 </div>
         </div>;
       }

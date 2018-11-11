@@ -31,10 +31,8 @@ class Home extends Component {
         <meta name="description" content="How it Works on PatronGate | PatronGate offers a simple way ..." />
         <meta property="og:title" content="How It Works" />
       </MetaTags>
-      <div style={{"background-image": "url(/static/images/page-how-it-works-featured-image.jpg)"}} class="page-cover page-cover--default has-image">
   		<h1 class="page-title cover-wrapper" style={{'fontWeight':'bold', fontSize: '30px'}}>
   		How it Works</h1>
-  	</div>
       <div class="entry-content container" style={{'fontSize':'20px', marginTop:'30px'}}>
           <p>PatronGate offers a simple way to connect with potential customers in your neighborhood, allowing you to take a step back from marketing your business so you can focus on your service or products. Elegant, simple and easy to use, PatronGate offers a way to generate revenue without the headaches.</p>
           <p style={{"text-align": "center"}}><i style={{'color':' #234f9c'}} class="fa fa-check-square-o" aria-hidden="true"></i> 1. Submit Your Listing to Create an Account</p>
