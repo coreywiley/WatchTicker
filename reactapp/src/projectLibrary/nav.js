@@ -4,7 +4,7 @@ import {Navbar} from 'library';
 
 class Nav extends React.Component {
     render() {
-        var name = <div><img style={{'marginRight':'10px'}} src='/static/images/logo.png' height="125" /></div>;
+        var name = <div>Calendar</div>;
         if (this.props.user_id) {
           var links = [];
         }

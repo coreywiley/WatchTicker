@@ -4,12 +4,31 @@ import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 
 import {Form, TextInput, Select, PasswordInput, Header, TextArea, NumberInput, DateTimePicker, Button, Checkbox} from 'library';
+import TimeSelect from 'projectLibrary/timeSelect.js';
 
 class AddScheduleTime extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {'recurring':false, 'choice':'start_time', 'start_time' : '', 'end_time' : '', 'available' : true, 'repeat_monday' : false, 'repeat_tuesday' : false, 'repeat_wednesday' : false, 'repeat_thursday' : false, 'repeat_friday' : false, 'repeat_saturday' : false, 'repeat_sunday' : false, 'user' : '', 'event' : ''};
+        if (this.props.id) {
+          var repeat_days = ['repeat_sunday','repeat_monday','repeat_tuesday','repeat_wednesday','repeat_thursday','repeat_friday','repeat_saturday']
+          var newState = JSON.parse(JSON.stringify(this.props));
+          newState['show_calendar'] = false;
+          newState['choice'] = 'start_time'
+
+          var recurring = false;
+          for (var index in repeat_days) {
+            if (this.props[repeat_days[index]] == true) {
+              recurring = true;
+            }
+          }
+          newState['recurring'] = recurring
+
+          this.state = newState;
+        }
+        else {
+          this.state = {'show_calendar':false, 'recurring':false, 'choice':'start_time', 'start_time' : 'Click To Choose', 'end_time' : 'Click To Choose', 'available' : false, 'repeat_monday' : false, 'repeat_tuesday' : false, 'repeat_wednesday' : false, 'repeat_thursday' : false, 'repeat_friday' : false, 'repeat_saturday' : false, 'repeat_sunday' : false, 'user' : this.props.user_id, 'event' : this.props.event_id};
+        }
 
         this.objectCallback = this.objectCallback.bind(this);
         this.chooseStartTime = this.chooseStartTime.bind(this);
@@ -23,6 +42,10 @@ class AddScheduleTime extends Component {
         this.repeat_friday = this.repeat_friday.bind(this);
         this.repeat_saturday = this.repeat_saturday.bind(this);
         this.repeat_sunday = this.repeat_sunday.bind(this);
+        this.save = this.save.bind(this);
+        this.delete = this.delete.bind(this);
+        this.chooseAvailability = this.chooseAvailability.bind(this);
+        this.changeAvailabilityState = this.changeAvailabilityState.bind(this);
     }
 
     componentDidMount(value) {
@@ -41,11 +64,18 @@ class AddScheduleTime extends Component {
     }
 
     chooseStartTime() {
-      this.props.toggleCalendar('start_time', this.state.recurring);
+      this.setState({'choosing':'start_time', 'show_calendar':true});
     }
 
     chooseEndTime() {
-      this.props.toggleCalendar('end_time', this.state.recurring);
+      this.setState({'choosing':'end_time', 'show_calendar':true});
+    }
+
+    chooseAvailability(value) {
+      var newState = {}
+      newState[this.state.choosing] = value;
+      newState['show_calendar'] = false;
+      this.setState(newState);
     }
 
     chooseRecurringTime() {
@@ -54,6 +84,24 @@ class AddScheduleTime extends Component {
 
     chooseOneTime() {
       this.setState({'recurring':false})
+    }
+
+    changeAvailabilityState(newState) {
+      this.setState(newState)
+    }
+
+    save() {
+      var data = this.state;
+      if (this.props.id) {
+        ajaxWrapper('POST', '/api/home/scheduletime/' + this.props.id + '/',data, this.props.refreshData)
+      }
+      else {
+        ajaxWrapper('POST', '/api/home/scheduletime/',data, this.props.refreshData)
+      }
+    }
+
+    delete() {
+      ajaxWrapper('POST', '/api/home/scheduletime/' + this.props.id + '/delete/',{}, this.props.refreshData)
     }
 
 
@@ -82,21 +130,32 @@ class AddScheduleTime extends Component {
     render() {
 
 
-			var available = {'name': 'available', 'value': this.state.available, 'layout':'form-inline', 'options': [{'value':true,'text':'available'},{'value':false,'text':'un-available'}]};
+			var available = {'name': 'available', 'defaultoption':false, 'setFormState': this.changeAvailabilityState,'value': this.state.available, 'layout':'form-inline', 'options': [{'value':true,'text':'available'},{'value':false,'text':'un-available'}]};
 
       var recurringType = 'outline-primary';
       var oneTimeType = 'primary';
-      var start_time_text = this.props.start_time;
-      var end_time_text = this.props.end_time;
+      var start_time_text = this.state.start_time;
+      var end_time_text = this.state.end_time;
       if (this.state.recurring) {
         recurringType = 'primary';
         oneTimeType = 'outline-primary'
 
         if (start_time_text != 'Click To Choose') {
-          start_time_text = this.props.start_time.split(" ")[1]
+          if (this.state.start_time.split(" ")[1]) {
+            start_time_text = this.state.start_time.split(" ")[1]
+          }
+          else {
+            start_time_text = this.state.start_time.split("T")[1]
+          }
+
         }
         if (end_time_text != 'Click To Choose') {
-          end_time_text = this.props.end_time.split(" ")[1]
+          if (this.state.end_time.split(" ")[1]) {
+            end_time_text = this.state.end_time.split(" ")[1]
+          }
+          else {
+            end_time_text = this.state.end_time.split("T")[1]
+          }
         }
       }
 
@@ -117,7 +176,7 @@ class AddScheduleTime extends Component {
 
         var recurringCheck = [];
         if (this.state.recurring) {
-          recurringCheck.push(<p>Every</p>)
+          recurringCheck.push(<p style={{'margin':'0px'}}>Every</p>)
           recurringCheck.push(<Checkbox {...repeat_monday} />)
           recurringCheck.push(<Checkbox {...repeat_tuesday} />)
           recurringCheck.push(<Checkbox {...repeat_wednesday} />)
@@ -125,6 +184,18 @@ class AddScheduleTime extends Component {
           recurringCheck.push(<Checkbox {...repeat_friday} />)
           recurringCheck.push(<Checkbox {...repeat_saturday} />)
           recurringCheck.push(<Checkbox {...repeat_sunday} />)
+          recurringCheck.push(<br />)
+        }
+
+        var buttons = [];
+        buttons.push(<Button type={'outline-success'} text={'Save'} clickHandler={this.save} />)
+        if (this.props.id) {
+          buttons.push(<Button type={'outline-danger'} text={'Delete'} deleteType={true} clickHandler={this.delete} />)
+        }
+
+        var calendar = null;
+        if (this.state.show_calendar) {
+          calendar = <TimeSelect recurring={this.state.recurring} chooseAvailability={this.chooseAvailability} scheduleTimes={this.props.scheduleTimes} />
         }
 
         return (
@@ -133,6 +204,9 @@ class AddScheduleTime extends Component {
             <Button text={'One-Time'} type={oneTimeType} clickHandler={this.chooseOneTime} />
             <p>I'm <div style={{'display':'inline-block'}}><Select {...available} /></div> between <Button text={start_time_text} type={'outline-primary'} clickHandler={this.chooseStartTime} /> and <Button text={end_time_text} type={'outline-primary'} clickHandler={this.chooseEndTime} /></p>
             {recurringCheck}
+            {buttons}
+            <br />
+            {calendar}
           </div>
              );
     }

@@ -4,22 +4,26 @@ import Wrapper from 'base/wrapper.js';
 import ajaxWrapper from 'base/ajax.js';
 import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Card, MultiLineText} from 'library';
 import AddScheduleTime from 'projectLibrary/AddScheduleTime.js';
-import TimeSelect from 'projectLibrary/timeSelect.js';
 
 
 class Availability extends Component {
     constructor(props) {
         super(props);
-        this.state = {'scheduletimes':[], 'show_calendar':false, 'start_time':'Click To Choose', 'end_time':'Click To Choose', 'choosing':'', 'recurring':false}
+        this.state = {'scheduletimes':[]}
 
         this.objectCallback = this.objectCallback.bind(this);
         this.toggleCalendar = this.toggleCalendar.bind(this);
         this.chooseAvailability = this.chooseAvailability.bind(this);
+        this.refreshData = this.refreshData.bind(this);
     }
 
     componentDidMount() {
-      console.log('/api/home/scheduletime/?user=' + this.props.user_id + '&event=' + this.props.event_id)
+      this.refreshData();
+    }
+
+    refreshData() {
       ajaxWrapper('GET','/api/home/scheduletime/?user=' + this.props.user_id + '&event=' + this.props.event_id, {}, this.objectCallback);
+      this.setState({'start_time':'Click To Choose', 'end_time':'Click To Choose'})
     }
 
     objectCallback(result) {
@@ -44,25 +48,19 @@ class Availability extends Component {
     }
 
     render() {
-      console.log("Here");
 
       var scheduletimes = [];
       for (var index in this.state.scheduletimes) {
         var scheduletime = this.state.scheduletimes[index];
-        scheduletimes.push(<p>Start Time: {scheduletime.start_time}, End Time: {scheduletime.end_time}, Available: {scheduletime.available}</p>)
-      }
-
-      var calendar = null;
-      if (this.state.show_calendar) {
-        calendar = <TimeSelect recurring={this.state.recurring} chooseAvailability={this.chooseAvailability} />
+        scheduletimes.push(<div style={{'width':'100%', 'borderBottom':'2px solid black', 'marginBottom':'10px'}}></div>)
+        scheduletimes.push(<AddScheduleTime {...scheduletime} refreshData={this.refreshData} toggleCalendar={this.toggleCalendar} key={index} scheduleTimes={this.state.scheduletimes} />)
       }
 
       var content =
         <div className="container">
-          {calendar}
           <Header size={2} text={'Let Us Know Your Availability For: [EVENT]'} />
           <br />
-          <AddScheduleTime event_id={this.props.event_id} user_id={this.props.user_id} start_time={this.state.start_time} end_time={this.state.end_time} toggleCalendar={this.toggleCalendar} />
+          <AddScheduleTime event_id={this.props.event_id} user_id={this.props.user_id} key={-1} refreshData={this.refreshData} scheduleTimes={this.state.scheduletimes} />
           <br />
           {scheduletimes}
         </div>;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ajaxWrapper from '../base/ajax.js';
 import {Card, Header, Button} from 'library';
 import Availability from 'projectLibrary/availability.js';
+import Wrapper from 'base/wrapper.js';
 
 class TimeChoice extends React.Component {
     constructor(props) {
@@ -20,18 +21,17 @@ class TimeChoice extends React.Component {
       else if (this.props.ampm == ' PM' && this.props.hour != 12) {
         hour = hour + 12;
       }
-      console.log("Hour2",hour);
 
       date += ' ' + hour + ':' + this.props.minute
 
-      console.log("Date",date);
-      this.props.chooseAvailbility(date)
+      this.props.chooseAvailability(date)
     }
+
 
     render() {
 
         return (
-            <div onClick={this.submitTime}><Card name={this.props.time} /></div>
+            <div onClick={this.submitTime}><Card css={this.props.style} name={this.props.time} /></div>
         );
     }
 }
@@ -69,6 +69,8 @@ class TimeSections extends React.Component {
     this.setState({'openTimes':4})
   }
 
+
+
   render() {
     var timeSections = [<span>Early Morning<br />(12am - 6am)</span>,<span>Morning<br />(6am - 12pm)</span>,<span>Afternoon<br />(12pm - 6pm)</span>,<span>Night<br />(6pm - 12am)</span>]
     var times = [];
@@ -103,22 +105,76 @@ class TimeSections extends React.Component {
         sectionHeader = <div><p>{timeSections[openTimes - 1]}</p><Button type={'primary'} text={'Back To All Times'} clickHandler={this.openAll} /></div>
       }
       else if (openTimes == 2) {
-        startingIndex = 24
+        startingIndex = 12
         sectionHeader = <div><p>{timeSections[openTimes - 1]}</p><Button type={'primary'} text={'Back To All Times'} clickHandler={this.openAll} /></div>
       }
       else if (openTimes == 3) {
-        startingIndex = 48
+        startingIndex = 24
         sectionHeader = <div><p>{timeSections[openTimes - 1]}</p><Button type={'primary'} text={'Back To All Times'} clickHandler={this.openAll} /></div>
       }
       else if (openTimes == 4) {
-        startingIndex = 72
+        startingIndex = 36
         sectionHeader = <div><p>{timeSections[openTimes - 1]}</p><Button type={'primary'} text={'Back To All Times'} clickHandler={this.openAll} /></div>
       }
 
       times.push(sectionHeader);
 
-      for (var i = startingIndex; i < startingIndex + 24; i++) {
-        var hour = Math.floor(i/4);
+      for (var i = startingIndex; i < startingIndex + 12; i++) {
+        console.log("Hello", this.props.scheduleTimes)
+        var hour = Math.floor(i/2);
+        var minute = (i % 2) * 30;
+
+        var color = 'black';
+        var repeat_days = ['repeat_sunday','repeat_monday','repeat_tuesday','repeat_wednesday','repeat_thursday','repeat_friday','repeat_saturday']
+        for (var index in this.props.scheduleTimes) {
+
+          var scheduletime = this.props.scheduleTimes[index];
+
+          var repeat = false;
+          for (var index in repeat_days) {
+            if (scheduletime[repeat_days[index]] == true) {
+              repeat = true;
+            }
+          }
+
+          console.log("Repeat Variable", repeat)
+          if (repeat) {
+            var day = this.props.date.getDay();
+            console.log("Repeat!!", day, scheduletime[repeat_days[day]])
+            if (scheduletime[repeat_days[day]]) {
+              var start_time = scheduletime['start_time'].split("T")[1]
+              var startHour = parseInt(start_time.split(":")[0])
+              var startMinute = parseInt(start_time.split(":")[1])
+
+              var end_time = scheduletime['end_time'].split("T")[1]
+              var endHour = parseInt(end_time.split(":")[0])
+              var endMinute = parseInt(end_time.split(":")[1])
+              console.log("Start and End Time", startHour, startMinute, endHour, endMinute, hour, minute)
+              if (startHour > endHour) {
+                if ((hour < startHour || (hour == startHour && minute <= startMinute)) || (hour > endHour  || (hour == endHour && minute >= endMinute))) {
+                  if (scheduletime['available']) {
+                    color = 'green';
+                  }
+                  else {
+                    color = 'red';
+                  }
+                }
+              }
+              else {
+                if ((hour > startHour || (hour == startHour && minute >= startMinute)) && (hour < endHour || (hour == endHour && minute < endMinute))) {
+                  if (scheduletime['available']) {
+                    color = 'green';
+                  }
+                  else {
+                    color = 'red';
+                  }
+                }
+              }
+            }
+          }
+        }
+
+
         if (hour == 0) {
           hour = 12;
         }
@@ -126,19 +182,19 @@ class TimeSections extends React.Component {
           hour = hour - 12
         }
 
-        var minute = (i % 4) * 15;
+
         if (minute == 0) {
           minute = '00'
         }
 
-        if (i > 47) {
+        if (i > 23) {
           var ampm = " PM"
         }
         else {
           var ampm = " AM"
         }
 
-        times.push(<TimeChoice date={this.props.date} chooseAvailbility={this.props.chooseAvailbility} time={hour + ":" + minute + ampm} hour={hour} minute={minute} ampm={ampm} />);
+        times.push(<TimeChoice date={this.props.date} style={{'color':color}} chooseAvailability={this.props.chooseAvailability} scheduleTimes={this.props.scheduleTimes} time={hour + ":" + minute + ampm} hour={hour} minute={minute} ampm={ampm} />);
       }
     }
 
@@ -157,7 +213,7 @@ class Day extends React.Component {
       return (
         <div>
           <Header size={3} text={this.props.day} />
-          <TimeSections chooseAvailbility={this.props.chooseAvailbility} date={this.props.date} />
+          <TimeSections chooseAvailability={this.props.chooseAvailability} scheduleTimes={this.props.scheduleTimes} date={this.props.date} />
         </div>
       );
   }
@@ -170,7 +226,7 @@ class Week extends React.Component {
         var dayList = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
         var days = [];
         for (var i = 0; i < 7; i++) {
-          days.push(<div className='col-md-3'><Day chooseAvailbility={this.props.chooseAvailbility} day={dayList[i]} /></div>)
+          days.push(<div className='col-md-3'><Day chooseAvailability={this.props.chooseAvailability} scheduleTimes={this.props.scheduleTimes} day={dayList[i]} /></div>)
         }
 
         return (
@@ -276,7 +332,7 @@ class Month extends React.Component {
           if (currentDate.getDate() < 10) {
             dayString = '0' + currentDate.getDate()
           }
-          dayRow.push(<MonthDay chooseAvailbility={this.props.chooseAvailbility} thisMonth={thisMonth} day={dayString} date={currentDate} setDate={this.props.setDate} />)
+          dayRow.push(<MonthDay chooseAvailability={this.props.chooseAvailability} scheduleTimes={this.props.scheduleTimes} thisMonth={thisMonth} day={dayString} date={currentDate} setDate={this.props.setDate} />)
 
           days.push(<tr>{dayRow}</tr>)
           var dayRow = [];
@@ -291,7 +347,7 @@ class Month extends React.Component {
           if (currentDate.getDate() < 10) {
             dayString = '0' + currentDate.getDate()
           }
-          dayRow.push(<MonthDay chooseAvailbility={this.props.chooseAvailbility} thisMonth={thisMonth} day={dayString} date={currentDate} setDate={this.props.setDate} />)
+          dayRow.push(<MonthDay chooseAvailability={this.props.chooseAvailability} scheduleTimes={this.props.scheduleTimes} thisMonth={thisMonth} day={dayString} date={currentDate} setDate={this.props.setDate} />)
         }
 
     }
@@ -363,7 +419,7 @@ class Year extends React.Component {
         for (var i = 0; i < 4; i++) {
           var indexDate = this.addDays(this.state.currentDate, this.state.index + i);
           var dateString = monthData[indexDate.getMonth()] + " " + indexDate.getDate() + ", " + indexDate.getFullYear()
-          days.push(<div className='col-md-3'><Day chooseAvailbility={this.props.chooseAvailbility} day={dateString} date={indexDate} /></div>)
+          days.push(<div className='col-md-3'><Day chooseAvailability={this.props.chooseAvailability} scheduleTimes={this.props.scheduleTimes} day={dateString} date={indexDate} /></div>)
         }
 
         return (
@@ -403,9 +459,9 @@ class View extends React.Component {
 
 
   render() {
-    var dateView = <Month chooseAvailbility={this.props.chooseAvailability} setDate={this.setDate} date={this.state.currentDate} />
+    var dateView = <Month chooseAvailability={this.props.chooseAvailability} scheduleTimes={this.props.scheduleTimes} setDate={this.setDate} date={this.state.currentDate} />
     if (this.state.view == 'Daily') {
-      dateView = <Year chooseAvailbility={this.props.chooseAvailability} setDate={this.setDate} date={this.state.currentDate} />
+      dateView = <Year chooseAvailability={this.props.chooseAvailability} scheduleTimes={this.props.scheduleTimes} setDate={this.setDate} date={this.state.currentDate} />
     }
 
     var alternateView = 'Monthly';
@@ -418,7 +474,7 @@ class View extends React.Component {
       {dateView}
     </div>
     if (this.props.recurring) {
-      content = <div><Day chooseAvailbility={this.props.chooseAvailability} /></div>
+      content = <div><Day date={this.state.currentDate} chooseAvailability={this.props.chooseAvailability} scheduleTimes={this.props.scheduleTimes} /></div>
     }
 
     return (
