@@ -7,6 +7,13 @@ import {Form, TextInput, Select, PasswordInput, Navbar, NumberInput, GoogleAddre
 import Card from 'projectLibrary/dealCard.js';
 import Review from 'projectLibrary/review.js';
 
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile
+} from "react-device-detect";
+
 class Business extends Component {
     constructor(props) {
       super(props);
@@ -212,32 +219,59 @@ class Business extends Component {
           specialsDisplay = <div><Header text={'Weekly Specials'} size={3} />{specials}</div>
         }
 
-        var content = <div className="container">
+        var container = 'container';
+        var businessDetails = <div className='col-md-8' style={{'borderRight':'1px solid #ccc', 'paddingRight':'10px'}}>
+                        {publish}
+                        <h2 style={{'paddingTop':'10px', 'marginBottom': '0px'}}>{this.state.name}</h2>
+                        <p>{this.state.address}</p>
+                        <img src={this.state.main_image} style={{'width':'100%'}} />
+                        {following}
+                        {notifications}
+                        {specialsDisplay}
+                        <h4>About {this.state.name}</h4>
+                        <MultiLineText text={this.state.description} />
+                        <br/>
+                        <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Customer Reviews</h3>
+                        <PageBreak />
+                        <br/>
+                        {reviews}
+                        <br/>
+                        <iframe src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyDnsYmrV7t2Bx5DH0NFcb5eSFR-Ii4kMb4&q=" + this.state.address} width="800" height="600" frameborder="0" style={{'border':'0'}} allowfullscreen></iframe>
+                        </div>
+
+        if (isMobile) {
+          container= 'container-fluid';
+          businessDetails = <div>
+                          {publish}
+                          <h2 style={{'paddingTop':'10px', 'paddingLeft':'15px', 'marginBottom': '0px'}}>{this.state.name}</h2>
+                          <p style={{'paddingLeft':'15px'}}>{this.state.address}</p>
+                          <img src={this.state.main_image} style={{'width':'100%'}} />
+                          <div style={{'paddingLeft':'15px'}}>
+                          {following}
+                          {notifications}
+                          {specialsDisplay}
+                          <h4>About {this.state.name}</h4>
+                          <MultiLineText text={this.state.description} />
+                          <br/>
+                          <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Customer Reviews</h3>
+                          <PageBreak />
+                          <br/>
+                          {reviews}
+                          <br/>
+                          <iframe src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyDnsYmrV7t2Bx5DH0NFcb5eSFR-Ii4kMb4&q=" + this.state.address} width="800" height="600" frameborder="0" style={{'border':'0'}} allowfullscreen></iframe>
+                          </div>
+                          </div>
+
+        }
+
+        var content = <div className={container} style={{'padding':'0px'}}>
               <MetaTags>
                 <title>{this.state.name} | PatronGate</title>
                 <meta name="description" content={this.state.description} />
                 <meta property="og:title" content={this.state.name} />
               </MetaTags>
-                <div className='col-md-8' style={{'borderRight':'1px solid #ccc', 'paddingRight':'10px'}}>
-                {publish}
-                <h2 style={{'paddingTop':'10px', 'marginBottom': '0px'}}>{this.state.name}</h2>
-                <p>{this.state.address}</p>
-                <img src={this.state.main_image} style={{'width':'100%'}} />
-                {following}
-                {notifications}
-                {specialsDisplay}
-                <h4>About {this.state.name}</h4>
-                <MultiLineText text={this.state.description} />
-                <br/>
-                <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Customer Reviews</h3>
-                <PageBreak />
-                <br/>
-                {reviews}
-                <br/>
-                <iframe src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyDnsYmrV7t2Bx5DH0NFcb5eSFR-Ii4kMb4&q=" + this.state.address} width="800" height="600" frameborder="0" style={{'border':'0'}} allowfullscreen></iframe>
-
-                </div>
-                <div className='col-md-4' style={{'paddingLeft':'10px'}}>
+                {businessDetails}
+                <div className='col-md-4 col-xs-12' style={{'paddingLeft':'10px'}}>
                   <h3>Contact {this.state.name}</h3>
                   <div style={{'marginLeft':'10px'}}>
                     {email}

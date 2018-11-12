@@ -28,15 +28,17 @@ class DealForm extends Component {
     }
 
     render() {
-        var Components = [TextInput, Select, TextArea, DateTimePicker, NumberInput, NumberInput, PhotoInput];
+        var Components = [TextInput, Select, TextArea, TextArea, TextArea, DateTimePicker, NumberInput, NumberInput, PhotoInput];
         var name = {'value':'','name':'name','label':'Name','placeholder': 'Patron Gate', 'required':true}
         var type = {'value':'', 'name':'type', 'label':'Type Of Deal', 'options':[{'value':'Drink Deal','text':'Drink Deal'},{'value':'Food Deal','text':'Food Deal'}]}
         var description = {'value':'','name':'description','label':'Description','placeholder': 'We are a Vikings bar! Make sure you are here for the game on Sunday!'}
+        var fine_print = {'value':'','name':'fine_print','label':'Any Fine Print?','placeholder': 'This coupon is only redeemable on Sunday!'}
+        var what_you_get = {'value':'','name':'what_you_get','label':'What the customer will get.','placeholder': 'You will get a free...'}
         var valid_until = {'value':'', 'name':'valid_until', 'label':'Date the Deal is Valid Until. Leave Blank For Always Available.', 'display_time':false}
         var number_of_total_redeems_available = {'value':0, 'name':'number_of_total_redeems_available', 'label':'Number of times this coupon can be redeemed in total. Keep at 0 for unlimited.'}
         var number_of_redeems_available = {'value':0, 'name':'number_of_redeems_available', 'label':'Number of times any one person can redeem this coupon. Keep at 0 for unlimited.'}
         var main_image = {'value':'', 'name':'main_image', 'label':'Display Image', 'multiple':false}
-        var ComponentProps = [name, type, description, valid_until, number_of_total_redeems_available, number_of_redeems_available, main_image];
+        var ComponentProps = [name, type, description, fine_print, what_you_get, valid_until, number_of_total_redeems_available, number_of_redeems_available, main_image];
         var defaults = this.state;
 
         var title = <h2>Create A Deal</h2>

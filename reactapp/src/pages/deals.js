@@ -20,11 +20,13 @@ class Deals extends Component {
   constructor(props) {
     super(props);
     var search = '';
-    var business_type = 'All';
+    var business_type = ['All'];
     if (this.props.search) {
       search = this.props.search;
       if (search.startsWith("type:")) {
-        business_type = search.substring(5);
+        if (search == 'type:FoodAndDrink') {
+          business_type = ['Food Truck','Restaurant','Bar'];
+        }
         search = '';
       }
     }
@@ -64,7 +66,42 @@ class Deals extends Component {
 
     setGlobalState(name, value) {
       var newState = {}
-      newState[name] = value
+      console.log("Set Global", name, value, typeof(value['business_type']))
+      if (name == 'filters' && typeof(value['business_type']) == 'string') {
+        console.log("Here")
+        newState['filters'] = value
+        var tempValue = this.state.filters.business_type.slice();
+        if (typeof(tempValue) == 'string') {
+          if (this.props.search == 'type:FoodAndDrink')
+          tempValue = ['Restaurant','Food Truck','Bar']
+        }
+
+        if (value['business_type'] == 'All') {
+          console.log("All together now.")
+          newState['filters']['business_type'] = ['All']
+        }
+        else if (tempValue.indexOf(value['business_type']) > -1) {
+          console.log("I'm here now.")
+
+          tempValue.splice(tempValue.indexOf(value['business_type']), 1)
+          newState['filters']['business_type'] = tempValue;
+        }
+        else {
+          console.log("I'm over here now.")
+          if (tempValue.indexOf('All') > -1) {
+            newState['filters']['business_type'] = [value['business_type']]
+          }
+          else {
+            tempValue.push(value['business_type'])
+            newState['filters']['business_type'] = tempValue;
+          }
+
+        }
+      }
+      else {
+        newState[name] = value
+      }
+
        this.setState(newState)
     }
 
@@ -106,7 +143,7 @@ class Deals extends Component {
 
 
           if (this.state.filters.deal_type == '' || this.state.filters.deal_type == 'All' || (this.state.filters.deal_type == deal['type'])) {
-            if (this.state.filters.business_type == '' || this.state.filters.business_type == 'All' || (this.state.filters.business_type == deal['business']['type'])) {
+            if (this.state.filters.business_type.length == 0 || this.state.filters.business_type.indexOf('All') > -1 || this.state.filters.business_type.indexOf(deal['business']['type']) > -1) {
               if (this.state.filters.city == '' || this.state.filters.city == 'All' || (this.state.filters.city == deal['business']['city'])) {
                 if (this.state.filters.state == '' || this.state.filters.state == 'All' || (this.state.filters.state == deal['business']['state'])) {
                   var dealText = deal.name + deal.description;

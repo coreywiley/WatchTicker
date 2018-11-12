@@ -75,12 +75,12 @@ class Navbar extends React.Component {
                 </div>
               </nav>
               <MobileView>
-              <ul class="nav nav-pills nav-fill" style={{'height':'43px', 'borderBottom':'1px solid #eee', 'overflow-x':'scroll','flex-wrap':'nowrap'}}>
+              <ul class="nav nav-pills nav-fill" style={{'height':'43px', 'borderBottom':'1px solid #eee', 'overflow-x':'scroll','flex-wrap':'nowrap', 'backgroundColor':'white', 'marginLeft':'0px'}}>
                 {links}
               </ul>
               </MobileView>
               <BrowserView>
-              <ul class="nav nav-pills nav-fill" style={{'height':'43px', 'borderBottom':'1px solid #eee'}}>
+              <ul class="nav nav-pills nav-fill" style={{'height':'43px', 'borderBottom':'1px solid #eee', 'backgroundColor':'white'}}>
                 {links}
               </ul>
               </BrowserView>
@@ -106,24 +106,32 @@ class Nav extends React.Component {
         if (this.props.user_id) {
           var businessLink = ["/manageYourBusinesses/",'Manage Your Businesses'];
           var signUpLinks = [['/how-it-works/','How It Works'], ['/businesses/','Local Businesses'], businessLink, ['/editUser/','Account Details'], ['/logOut/','Log Out']]
-          var links = [['/deals/type:Restaurant/','Restaurants'],['/deals/type:Bar/','Bar'],['/deals/type:Food Truck/','Food Truck']];
+          var links = [['/deals/type:FoodAndDrink/','Food And Drink']];
         }
         else {
-          var links = [['/deals/type:Restaurant/','Restaurants'],['/deals/type:Bar/','Bar'],['/deals/type:Food Truck/','Food Truck']];
+          var links = [['/deals/type:FoodAndDrink/','Food And Drink']];
           var signUpLinks = [['/how-it-works/','How It Works'], ['/businesses/','Local Businesses'], ['/signUp/business/','Add Your Listing'], ['/signUp/','Sign Up'], ['/logIn/','Log In']]
         }
 
 
 
         if (this.props.is_staff == true) {
-          links.push(['/appList/','Admin'])
-          links.push(['/manageBusinesses/','Manage Businesses'])
+          signUpLinks.push(['/appList/','Admin'])
+          signUpLinks.push(['/manageBusinesses/','Manage Businesses'])
         }
 
         return (
-            <div>
+          <div>
+            <BrowserView>
+              <div style={{'marginBottom':'115px'}}></div>
+            </BrowserView>
+            <MobileView>
+              <div style={{'marginBottom':'140px'}}></div>
+            </MobileView>
+            <div style={{'position':'fixed', 'top':'0px','zIndex':10000, 'width':'100%'}}>
               <Navbar nameLink={'/'} name={name} links={links} style={this.props.style} signUpLinks={signUpLinks} />
             </div>
+          </div>
         );
     }
 }

@@ -247,6 +247,7 @@ class Deal extends Component {
 
         <img src={this.state.main_image} style={{'width':'100%'}} />
         <br/>
+        <div style={{'padding':'15px'}}>
         <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Highlights</h3>
         <PageBreak />
         <br/>
@@ -263,9 +264,22 @@ class Deal extends Component {
         <br/>
         {askForReview}
         {reviews}
+
+        <br/>
+        <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>The Fine Print</h3>
+        <PageBreak />
+        <br/>
+        <MultiLineText text={this.state.fine_print} />
         <br/>
 
         <iframe src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyDnsYmrV7t2Bx5DH0NFcb5eSFR-Ii4kMb4&q=" + this.state.business.address} width="800" height="600" frameborder="0" style={{'border':'0'}} allowfullscreen></iframe>
+
+        <br/>
+        <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>What You'll Get</h3>
+        <PageBreak />
+        <br/>
+        <MultiLineText text={this.state.what_you_get} />
+        </div>
         </div>
 
         var couponInfo = <div>
@@ -285,9 +299,11 @@ class Deal extends Component {
         </MetaTags>
 
       if (isMobile) {
-        var content = <div className="container-fluid">
+        var content = <div className="container-fluid" style={{'padding':'0px'}}>
                   {meta}
+                  <div  style={{'padding':'15px'}}>
                   {titles}
+                  </div>
                   {dealInfo}
 
                     <div style={{'position':'fixed','bottom':'0px', backgroundColor:'white', 'zIndex':100, 'left':'0px','width':'100%', 'padding':'10px'}}>

@@ -51,6 +51,8 @@ class Deal(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.TextField(blank=True, default="")
     description = models.TextField(blank=True, default="")
+    fine_print = models.TextField(blank=True, default="")
+    what_you_get = models.TextField(blank=True, default="")
     business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='deals')
     main_image = models.URLField(blank=True, default="http://atlantabeststeamers.com/wp-content/uploads/sites/30/2015/11/hotdeal.png")
     published = models.BooleanField(default=False)

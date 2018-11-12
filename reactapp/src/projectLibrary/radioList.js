@@ -11,11 +11,20 @@ class ButtonGroup extends React.Component {
     	    var active = "fa";
           var checkBoxCSS = {'border':'1px solid black','borderRadius':'4px','display':'inline-block','width':'19px','height':'19px'}
     	    css = {'margin':'2px', 'display':'block','textAlign':'left', 'margin':'0px','padding':'0px'}
-    	    if (String(this.props.value) == String(this.props.options[index])) {
-    	        active = "fa fa-check"
+          if (typeof(this.props.value) == 'string') {
+      	    if (String(this.props.value) == String(this.props.options[index])) {
+      	        active = "fa fa-check"
+                checkBoxCSS['backgroundColor'] = '#234f9c'
+                checkBoxCSS['color'] = 'white';
+      	    }
+          }
+          else {
+            if (this.props.value.indexOf(this.props.options[index]) > -1) {
+              active = "fa fa-check"
               checkBoxCSS['backgroundColor'] = '#234f9c'
               checkBoxCSS['color'] = 'white';
-    	    }
+            }
+          }
 	        buttons.push(<label style={css} className={"btn" + type}>
             <input type="radio" name={this.props.name} value={this.props.options[index]} onClick={this.props.handlechange} id={this.props.options[index]} /><span className={active} style={checkBoxCSS}></span> {this.props.options[index]}
             </label>);

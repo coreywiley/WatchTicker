@@ -5,6 +5,14 @@ import MetaTags from 'react-meta-tags';
 
 import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header} from 'library';
 import Deals from '../deals.js';
+
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile
+} from "react-device-detect";
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +32,11 @@ class Home extends Component {
         var addBusiness = <Button href={"/manageYourBusinesses/"} text={"Add Your Business"} type={'patron'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
       }
 
+      var container = 'container';
+      if (isMobile) {
+        container = 'container-fluid'
+      }
+
       var content =
         <div className=''>
           <MetaTags>
@@ -33,8 +46,8 @@ class Home extends Component {
           </MetaTags>
             <br/>
             <br/>
-            <div className="container">
-              <h4 style={{'fontWeight':'bold'}}>PatronGate helps you find the best deals around town, let's explore.</h4>
+            <div className={container} style={{'padding':'0px'}}>
+              <h4 style={{'fontWeight':'bold', 'padding':'15px'}}>PatronGate helps you find the best deals around town, let's explore.</h4>
               <Deals user_id={this.props.user_id} limit={3} filters={false} toggleFilters={false} title={false} />
               <Button type={'patron'} text={'See More'} href={'/deals/'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
               <br />
@@ -43,8 +56,8 @@ class Home extends Component {
               <br />
             </div>
 
-            <div className="container">
-              <h4 style={{'fontWeight':'bold'}}>Popular on PatronGate.</h4>
+            <div className={container}  style={{'padding':'0px'}}>
+              <h4 style={{'fontWeight':'bold', 'padding':'15px'}}>Popular on PatronGate.</h4>
               <Deals user_id={this.props.user_id} limit={12} filters={false} toggleFilters={false} title={false} order_by={'redemptions'}/>
               <Button type={'patron'} text={'See More'} href={'/deals/'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
               <br />
