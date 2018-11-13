@@ -193,7 +193,7 @@ class App extends Component {
               content = <EditUser user_id={this.state.user.id} />
           }
           else if (params[0].toLowerCase() == "deals") {
-              content = <Deals user_id={this.state.user.id} search={params[1]} />
+              content = <Deals user_id={this.state.user.id} search={params[1]} address={params[2]} latLng={params[3]} />
           }
           else if (params[0].toLowerCase() == "businesses") {
               content = <Businesses user_id={this.state.user.id} />

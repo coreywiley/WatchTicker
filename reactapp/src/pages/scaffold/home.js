@@ -44,10 +44,8 @@ class Home extends Component {
             <meta name="description" content="Connect With Local Businesses in your Area, Coupons and Deals Finder Based on Your Location." />
             <meta property="og:title" content="PatronGate" />
           </MetaTags>
-            <br/>
-            <br/>
             <div className={container} style={{'padding':'0px'}}>
-              <h4 style={{'fontWeight':'bold', 'padding':'15px'}}>PatronGate helps you find the best deals around town, let's explore.</h4>
+              <h4 style={{'fontWeight':'bold', 'paddingLeft':'15px'}}>PatronGate helps you find the best deals around town, let's explore.</h4>
               <Deals user_id={this.props.user_id} limit={3} filters={false} toggleFilters={false} title={false} />
               <Button type={'patron'} text={'See More'} href={'/deals/'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
               <br />

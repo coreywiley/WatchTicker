@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ajaxWrapper from '../base/ajax.js';
-import {Button} from 'library';
+import {Button, GoogleAddress} from 'library';
 import {
   BrowserView,
   MobileView,
@@ -12,9 +12,13 @@ class Navbar extends React.Component {
     constructor(props) {
       super(props);
 
-      this.state = {'search':''}
+      this.state = {'search':'', 'location':'', 'mobile_search':false, address: '', street:'', state:'', street2:'', city:'',zipcode:''}
 
       this.search = this.search.bind(this);
+      this.toggleSearch = this.toggleSearch.bind(this);
+      this.handleChange = this.handleChange.bind(this);
+      this.handleLocationChange = this.handleLocationChange.bind(this);
+      this.setFormState = this.setFormState.bind(this);
     }
 
     handleChange = (e) => {
@@ -23,8 +27,23 @@ class Navbar extends React.Component {
        this.setState(newState);
     }
 
+    handleLocationChange = (e) => {
+       var newState = {};
+       newState['location'] = e.target.value;
+       this.setState(newState);
+    }
+
+    setFormState(newState) {
+      console.log("New State", newState)
+      this.setState(newState)
+    }
+
+    toggleSearch() {
+      this.setState({'mobile_search': !this.state.mobile_search})
+    }
+
     search() {
-      window.location.href = '/deals/' + this.state.search + '/'
+      window.location.href = '/deals/' + this.state.search + '/' + this.state.address.split(' ').join('_') + '/' + this.state.lat + ',' + this.state.lng + '/';
     }
 
     render() {
@@ -49,41 +68,67 @@ class Navbar extends React.Component {
             <Button type={'danger'} text={'Log Out'} clickHandler={this.props.logOut} />
           </div>
         }
-
+        //<input class="form-control mr-sm-2" type="search" placeholder="Location" aria-label="Search" value={this.state.location} onChange={this.handleLocationChange} style={{'width':'40%'}} />
         console.log("Nav details", this.props.style)
+
+        if (this.state.mobile_search) {
+          var content =<div>
+            <nav className="navbar navbar-expand-lg navbar-dark nav-bg" style={this.props.style}>
+              <div className="container" style={{'width':'100%'}}>
+              <div className="row">
+                <input className="form-control" type="text" placeholder="Search" aria-label="Search" value={this.state.search} onChange={this.handleChange} style={{'marginLeft':'10px', 'marginRight':'10px'}}/><br/>
+                <div style={{'marginTop':'5px', 'marginLeft':'10px', 'marginRight':'10px','width':'100%'}}>
+                <GoogleAddress {...this.state} extras={false} setFormState={this.setFormState} />
+                </div>
+                <br/>
+                <div>
+                  <button className="btn btn-outline-light col-xs-4" onClick={this.toggleSearch} style={{'margin':'10px', 'width':'auto'}}>Cancel</button>
+                  <div className="col-xs-4"></div>
+                  <button className="btn btn-outline-search col-xs-4" onClick={this.search}  style={{'margin':'10px', 'width':'auto'}}><span className="fa fa-search"></span> Search</button>
+                </div>
+                </div>
+              </div>
+            </nav>
+            </div>
+        }
+        else {
+
+
+          var content =<div>
+            <nav className="navbar navbar-expand-lg navbar-dark nav-bg" style={this.props.style}>
+              <div className="container">
+              <a className="navbar-brand" href={this.props.nameLink}>{this.props.name}</a>
+
+                  <button class="btn btn-outline-search" onClick={this.toggleSearch}><span className="fa fa-search"></span> Search</button>
+
+
+              <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+              </button>
+
+              <div className="collapse navbar-collapse" id="navbarNav">
+                <ul className="navbar-nav ml-auto">
+                  {signUpLinks}
+                </ul>
+              </div>
+              </div>
+            </nav>
+            <MobileView>
+            <ul class="nav nav-pills nav-fill" style={{'height':'43px', 'borderBottom':'1px solid #eee', 'overflow-x':'scroll','flex-wrap':'nowrap', 'backgroundColor':'white', 'marginLeft':'0px'}}>
+              {links}
+            </ul>
+            </MobileView>
+            <BrowserView>
+            <ul class="nav nav-pills nav-fill" style={{'height':'43px', 'borderBottom':'1px solid #eee', 'backgroundColor':'white'}}>
+              {links}
+            </ul>
+            </BrowserView>
+          </div>;
+        }
 
         return (
             <div>
-              <nav className="navbar navbar-expand-lg navbar-dark nav-bg" style={this.props.style}>
-                <div className="container">
-                <a className="navbar-brand" href={this.props.nameLink}>{this.props.name}</a>
-
-                <div class="form-inline" style={{'width':'50%'}}>
-                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value={this.state.search} onChange={this.handleChange} style={{'width':'75%'}} />
-                  <button class="btn btn-outline-search my-2 my-sm-0" onClick={this.search}><span className="fa fa-search"></span></button>
-                </div>
-
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                  <span className="navbar-toggler-icon"></span>
-                </button>
-
-                <div className="collapse navbar-collapse" id="navbarNav">
-                  <ul className="navbar-nav ml-auto">
-                    {signUpLinks}
-                  </ul>
-                </div>
-                </div>
-              </nav>
-              <MobileView>
-              <ul class="nav nav-pills nav-fill" style={{'height':'43px', 'borderBottom':'1px solid #eee', 'overflow-x':'scroll','flex-wrap':'nowrap', 'backgroundColor':'white', 'marginLeft':'0px'}}>
-                {links}
-              </ul>
-              </MobileView>
-              <BrowserView>
-              <ul class="nav nav-pills nav-fill" style={{'height':'43px', 'borderBottom':'1px solid #eee', 'backgroundColor':'white'}}>
-                {links}
-              </ul>
-              </BrowserView>
+              {content}
             </div>
         );
     }
@@ -123,7 +168,7 @@ class Nav extends React.Component {
         return (
           <div>
             <BrowserView>
-              <div style={{'marginBottom':'115px'}}></div>
+              <div style={{'marginBottom':'150px'}}></div>
             </BrowserView>
             <MobileView>
               <div style={{'marginBottom':'140px'}}></div>

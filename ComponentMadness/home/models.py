@@ -15,6 +15,8 @@ class Business(models.Model):
     city = models.CharField(max_length=255, blank=True, default="")
     state = models.CharField(max_length=255, blank=True, default="")
     zipcode = models.CharField(max_length=255, blank=True, default="")
+    lat = models.FloatField(default = 0)
+    lng = models.FloatField(default = 0)
     main_image = models.URLField(blank=True, default="https://groveliving.com/wp-content/uploads/2015/02/Restaurant.jpg")
     description = models.TextField(blank=True, default="")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_businesses')

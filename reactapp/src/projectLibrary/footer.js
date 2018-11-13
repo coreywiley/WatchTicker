@@ -39,7 +39,6 @@ class Footer extends React.Component {
                         <ul id="menu-company" className="menu">
                           <li id="menu-item-11" className="menu-item menu-item-type-custom menu-item-object-custom menu-item-11"><a href="/contact/">Customer Support</a></li>
                           <li id="menu-item-12" className="menu-item menu-item-type-custom menu-item-object-custom menu-item-12"><a href="/about/">About PatronGate</a></li>
-                          <li id="menu-item-53" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-53"><a href="/deals/">Deals of the Week</a></li>
                         </ul>
                       </div>
                     </aside>

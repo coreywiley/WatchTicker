@@ -36,6 +36,9 @@ class Deals extends Component {
     this.dealCallback = this.dealCallback.bind(this);
     this.setGlobalState = this.setGlobalState.bind(this);
     this.toggleFilters = this.toggleFilters.bind(this);
+    this.deg2rad = this.deg2rad.bind(this);
+    this.getDistanceFromLatLonInKm = this.getDistanceFromLatLonInKm.bind(this);
+    this.sortByKey = this.sortByKey.bind(this);
   }
 
     componentDidMount() {
@@ -109,6 +112,33 @@ class Deals extends Component {
       this.setState({'show_filters':!this.state.show_filters})
     }
 
+    deg2rad(deg) {
+      return deg * (Math.PI/180)
+    }
+
+    getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+      var R = 6371; // Radius of the earth in km
+      var dLat = this.deg2rad(lat2-lat1);  // deg2rad below
+      var dLon = this.deg2rad(lon2-lon1);
+      var a =
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+        Math.sin(dLon/2) * Math.sin(dLon/2)
+        ;
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      var d = R * c; // Distance in km
+      return d;
+    }
+
+
+
+    sortByKey(array, key) {
+        return array.sort(function(a, b) {
+            var x = a[key]; var y = b[key];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+    }
+
     render() {
 
         var dealCards = [];
@@ -122,8 +152,30 @@ class Deals extends Component {
         var usedBusinessTypes = [];
 
         if (this.state.loaded == true) {
-        for (var index in this.state.deals) {
-          var deal = this.state.deals[index]
+
+
+          if (this.props.latLng) {
+            var dealList = [];
+            var latLng = this.props.latLng.split(',')
+            var lat = latLng[0];
+            var lng = latLng[1];
+
+            for (var index in this.state.deals) {
+              var deal = this.state.deals[index];
+              var distance = (this.getDistanceFromLatLonInKm(lat,lng,deal.business.lat,deal.business.lng) * .62 * 1.3).toFixed(1); //changing to miles and then adding in 1.3x for slightly better estimation with roads.
+              deal['distance'] = distance;
+              dealList.push(deal);
+            }
+            console.log("Deal List",dealList)
+             dealList = this.sortByKey(dealList, 'distance')
+             console.log("dealList Sorted", dealList)
+          }
+          else {
+            var dealList = this.state.deals;
+          }
+
+        for (var index in dealList) {
+          var deal = dealList[index]
           if (usedDealTypes.indexOf(deal['type']) == -1) {
             deal_types.push(deal['type'])
             usedDealTypes.push(deal['type'])
@@ -148,7 +200,7 @@ class Deals extends Component {
                 if (this.state.filters.state == '' || this.state.filters.state == 'All' || (this.state.filters.state == deal['business']['state'])) {
                   var dealText = deal.name + deal.description;
                   if (this.state.filters.search == '' || dealText.toLowerCase().indexOf(this.state.filters.search.toLowerCase()) > -1) {
-                    dealCards.push(<Card imageUrl={deal['main_image']} imageAlt={deal['name']} name={deal['name']} description={deal['description']} city={deal['business']['city']} reviews={deal['business']['review']} button={'Read More'} button_type={'primary'} link={'/deal/' + deal['id'] + '/'} />)
+                    dealCards.push(<Card distance={deal['distance']} imageUrl={deal['main_image']} imageAlt={deal['name']} name={deal['name']} description={deal['description']} city={deal['business']['city']} reviews={deal['business']['review']} button={'Read More'} button_type={'primary'} link={'/deal/' + deal['id'] + '/'} />)
                   }
                 }
               }
@@ -175,15 +227,22 @@ class Deals extends Component {
         }
 
 
+        var location = null;
+        if (this.props.address) {
+          var location = <p>Sorting by distance from <strong>{this.props.address.split('_').join(' ')}</strong></p>
+        }
+
         var title = null;
         if (this.props.title != false) {
           if (this.props.search) {
             title = <div><h1 style={{'color':'#717a8f', fontSize:'30px'}}>results for '{this.props.search}'</h1>
+            {location}
             <div style={{'width':'100%','borderBottom':'1px solid #ddd'}}></div>
             </div>
           }
           else {
             title = <div><h1 style={{'color':'#717a8f', fontSize:'30px'}}>Local Coupons & Deals of the Week</h1>
+            {location}
             <div style={{'width':'100%','borderBottom':'1px solid #ddd'}}></div>
             </div>
           }
@@ -200,6 +259,8 @@ class Deals extends Component {
         if (isMobile) {
           divClass = "container-fluid"
         }
+
+
 
         var content = <div className={divClass}>
         <MetaTags>
