@@ -57,7 +57,7 @@ class GoogleAddress extends Component {
     currentState['state'] = state;
     currentState['country'] = country;
 
-    this.props.setFormState({address: address, street: street, state:state, city:city, country: country});
+    this.props.setFormState({address: address, street: address, state:state, city:city, country: country});
   };
 
   render() {
