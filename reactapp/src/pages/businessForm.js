@@ -32,7 +32,7 @@ class BusinessForm extends Component {
     render() {
         var Components = [TextInput,Select, GoogleAddress,TextArea, TextInput, TextInput, TextInput, PhotoInput, TextInput, TextInput, TextInput, TextInput, Header, TextInput, TextInput, TextInput, TextInput, TextInput, TextInput, TextInput];
         var name = {'value':'','name':'name','label':'Name','placeholder': 'Patron Gate', 'required':true}
-        var type = {'value':'', 'name':'type', 'label':'Type Of Restaurant', 'options':[{'value':'Bar','text':'Bar'},{'value':'Restaurant','text':'Restaurant'}, {'value':'Food Truck','text':'Food Truck'}]}
+        var type = {'value':'', 'name':'type', 'label':'Type Of Restaurant', 'options':[{'value':'Coffee House','text':'Coffee House'},{'value':'Bar','text':'Bar'},{'value':'Restaurant','text':'Restaurant'}, {'value':'Food Truck','text':'Food Truck'}]}
         var google_address = {'names':['address','street','street2','city','state','zipcode']}
         var description = {'value':'','name':'description','label':'Description','placeholder': 'We are a Vikings bar! Make sure you are here for the game on Sunday!'}
         var email = {'value':'','name':'email','label':'Email','placeholder': 'somanydeals@patrongate.com'}

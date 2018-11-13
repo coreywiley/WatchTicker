@@ -25,7 +25,7 @@ class Deals extends Component {
       search = this.props.search;
       if (search.startsWith("type:")) {
         if (search == 'type:FoodAndDrink') {
-          business_type = ['Food Truck','Restaurant','Bar'];
+          business_type = ['Food Truck','Restaurant','Bar','Coffee House'];
         }
         search = '';
       }
