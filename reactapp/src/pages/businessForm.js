@@ -34,10 +34,10 @@ class BusinessForm extends Component {
         var name = {'value':'','name':'name','label':'Name','placeholder': 'Patron Gate', 'required':true}
         var type = {'value':'', 'name':'type', 'label':'Type Of Restaurant', 'options':[{'value':'Coffee House','text':'Coffee House'},{'value':'Bar','text':'Bar'},{'value':'Restaurant','text':'Restaurant'}, {'value':'Food Truck','text':'Food Truck'}]}
         var google_address = {'names':['address','street','street2','city','state','zipcode']}
-        var description = {'value':'','name':'description','label':'Description','placeholder': 'We are a Vikings bar! Make sure you are here for the game on Sunday!'}
-        var email = {'value':'','name':'email','label':'Email','placeholder': 'somanydeals@patrongate.com'}
-        var phone = {'value':'','name':'phone','label':'Phone','placeholder': '(303) 819-9716'}
-        var website = {'value':'','name':'website','label':'Website','placeholder': 'http://www.patrongate.com'}
+        var description = {'value':'','name':'description','label':'Description','placeholder': ''}
+        var email = {'value':'','name':'email','label':'Email','placeholder': ''}
+        var phone = {'value':'','name':'phone','label':'Phone','placeholder': ''}
+        var website = {'value':'','name':'website','label':'Website','placeholder': ''}
         var main_image = {'value':'', 'name':'main_image', 'label':'Display Image', 'multiple':false}
         var facebook = {'value':'','name':'facebook','label':'Facebook Link','placeholder': 'Facebook Url', 'required': false}
         var twitter = {'value':'','name':'twitter','label':'Twitter Link','placeholder': 'Twitter Url', 'required':false}
@@ -45,13 +45,13 @@ class BusinessForm extends Component {
         var yelp = {'value':'','name':'yelp','label':'Yelp Link','placeholder': 'Yelp! Url', 'required':false}
 
         var specials = {'text':'Weekly Specials', 'size':3}
-        var monday = {'value':'','name':'monday_special','label':'Monday Special','placeholder': '1/2 Off Seafood Mondays', 'required':false}
-        var tuesday = {'value':'','name':'tuesday_special','label':'Tuesday Special','placeholder': '1/2 Off Tacos Tuesday', 'required':false}
-        var wednesday = {'value':'','name':'wednesday_special','label':'Wednesday Special','placeholder': 'Free Drinks Til 6!', 'required':false}
-        var thursday = {'value':'','name':'thursday_special','label':'Thursday Special','placeholder': 'Ladies Night! Ladies drink free.', 'required':false}
-        var friday = {'value':'','name':'friday_special','label':'Friday Special','placeholder': 'Fire It Up With A Free Pizza Friday', 'required':false}
-        var saturday = {'value':'','name':'saturday_special','label':'Saturday Special','placeholder': 'Saturday 1/2 Off Well Drinks', 'required':false}
-        var sunday = {'value':'','name':'sunday_special','label':'Sunday Special','placeholder': 'Sunday Football 1/2 Drinks All Day', 'required':false}
+        var monday = {'value':'','name':'monday_special','label':'Monday Special','placeholder': '', 'required':false}
+        var tuesday = {'value':'','name':'tuesday_special','label':'Tuesday Special','placeholder': '', 'required':false}
+        var wednesday = {'value':'','name':'wednesday_special','label':'Wednesday Special','placeholder': '', 'required':false}
+        var thursday = {'value':'','name':'thursday_special','label':'Thursday Special','placeholder': '', 'required':false}
+        var friday = {'value':'','name':'friday_special','label':'Friday Special','placeholder': '', 'required':false}
+        var saturday = {'value':'','name':'saturday_special','label':'Saturday Special','placeholder': '', 'required':false}
+        var sunday = {'value':'','name':'sunday_special','label':'Sunday Special','placeholder': '', 'required':false}
 
 
         var ComponentProps = [name, type, google_address, description, email, phone, website, main_image, facebook, twitter, instagram, yelp, specials, monday, tuesday, wednesday, thursday, friday, saturday, sunday];
