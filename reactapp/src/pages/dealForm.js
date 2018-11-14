@@ -63,7 +63,7 @@ class DealForm extends Component {
           <meta property="og:title" content="Create A New Deal" />
         </MetaTags>
                 {title}
-                <Form components={Components} redirectUrl={redirectUrl} componentProps={ComponentProps} submitUrl={submitUrl} deleteUrl={deleteUrl} deleteRedirectUrl={deleteRedirectUrl} defaults={defaults} objectName={'deal'} submitButtonType={'patron'} />
+                <Form submit_on_enter={false} components={Components} redirectUrl={redirectUrl} componentProps={ComponentProps} submitUrl={submitUrl} deleteUrl={deleteUrl} deleteRedirectUrl={deleteRedirectUrl} defaults={defaults} objectName={'deal'} submitButtonType={'patron'} />
         </div>;
 
 
