@@ -195,25 +195,25 @@ class Business extends Component {
 
         var specials = []
         if (this.state.monday_special != '') {
-          specials.push(<p><strong>Monday - </strong>{this.state.monday_special}</p>)
+          specials.push(<p><strong>Monday - </strong><MultiLineText text={this.state.monday_special} /></p>)
         }
         if (this.state.tuesday_special != '') {
-          specials.push(<p><strong>Tuesday - </strong>{this.state.tuesday_special}</p>)
+          specials.push(<p><strong>Tuesday - </strong><MultiLineText text={this.state.tuesday_special} /></p>)
         }
         if (this.state.wednesday_special != '') {
-          specials.push(<p><strong>Wednesday - </strong>{this.state.wednesday_special}</p>)
+          specials.push(<p><strong>Wednesday - </strong><MultiLineText text={this.state.wednesday_special} /></p>)
         }
         if (this.state.thursday_special != '') {
-          specials.push(<p><strong>Thursday - </strong>{this.state.thursday_special}</p>)
+          specials.push(<p><strong>Thursday - </strong><MultiLineText text={this.state.thursday_special} /></p>)
         }
         if (this.state.friday_special != '') {
-          specials.push(<p><strong>Friday - </strong>{this.state.friday_special}</p>)
+          specials.push(<p><strong>Friday - </strong><MultiLineText text={this.state.friday_special} /></p>)
         }
         if (this.state.saturday_special != '') {
-          specials.push(<p><strong>Saturday - </strong>{this.state.saturday_special}</p>)
+          specials.push(<p><strong>Saturday - </strong><MultiLineText text={this.state.saturday_special} /></p>)
         }
         if (this.state.sunday_special != '') {
-          specials.push(<p><strong>Sunday - </strong>{this.state.sunday_special}</p>)
+          specials.push(<p><strong>Sunday - </strong><MultiLineText text={this.state.sunday_special} /></p>)
         }
 
         var specialsDisplay = <div></div>
