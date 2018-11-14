@@ -80,7 +80,7 @@ class BusinessForm extends Component {
         </MetaTags>
                 {title}
                 <p>You can save and edit later if you need more time.</p>
-                <Form components={Components} redirectUrl={redirectUrl} componentProps={ComponentProps} deleteUrl={deleteUrl} deleteRedirectUrl={deleteRedirectUrl} submitUrl={submitUrl} defaults={defaults} objectName={'business'} />
+                <Form submit_on_enter={false} components={Components} redirectUrl={redirectUrl} componentProps={ComponentProps} deleteUrl={deleteUrl} deleteRedirectUrl={deleteRedirectUrl} submitUrl={submitUrl} defaults={defaults} objectName={'business'} />
         </div>;
 
 

@@ -187,6 +187,7 @@ class Form extends Component {
     handleKeyPress = (event) => {
       if (this.props.submit_on_enter != false) {
         if(event.key == 'Enter') {
+          console.log("Im submitting!!!")
           this.formSubmit()
         }
       }
