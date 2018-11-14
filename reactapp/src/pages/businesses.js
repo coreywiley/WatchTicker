@@ -19,7 +19,7 @@ class Businesses extends Component {
   }
 
     componentDidMount() {
-        ajaxWrapper('GET','/api/home/business/?related=review&published=True', {}, this.businessCallback)
+        ajaxWrapper('GET','/api/home/business/?order_by=-id&related=review&published=True', {}, this.businessCallback)
     }
 
     businessCallback(result) {

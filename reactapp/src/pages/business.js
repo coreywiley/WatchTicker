@@ -107,7 +107,9 @@ class Business extends Component {
         var dealCards = [];
         var unPublishedDealCards = [];
         for (var index in this.state.deals) {
-          if (this.state.deals.published == true) {
+          var deal = this.state.deals[index];
+          console.log("Deal?", deal)
+          if (this.state.deals[index]['deal']['published'] == true) {
             dealCards.push(<Card imageUrl={this.state.deals[index]['deal']['main_image']} imageAlt={this.state.deals[index]['deal']['name']} name={this.state.deals[index]['deal']['name']} description={this.state.deals[index]['deal']['description']} button={'Read More'} button_type={'primary'} link={'/deal/' + this.state.deals[index]['deal']['id'] + '/'} />)
           }
           else {

@@ -1,0 +1,84 @@
+.fixedTop {
+      position:fixed;
+      top: 5px;
+      width:20%;
+    }
+
+    .labels {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      span {
+        color: #666;
+      }
+    }
+
+      ::selection {
+        background: #22498e !important; /* WebKit/Blink Browsers */
+      }
+      ::-webkit-selection {
+        background: #22498e !important; /* WebKit/Blink Browsers */
+      }
+      ::-moz-selection {
+        background: #22498e !important; /* Gecko Browsers */
+      }
+
+      .nav-bg {
+        background: #234f9c !important;
+      }
+
+      .nav-link {
+        color:#333;
+      }
+
+      .dealCard {
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .dealCard:hover {
+        border-bottom: 1px solid #666;
+      }
+
+      .nav-link:hover {
+        border-bottom: 3px solid #234f9c;
+        color:#000;
+      }
+
+      .btn-outline-search {
+        color:white;
+        border-color:white;
+        background-color: transparent;
+      }
+
+      .btn-outline-search:hover {
+        color:#999;
+        border-color:#999;
+        background-color: transparent;
+      }
+
+      .btn-patron {
+        color: white;
+        background-color:#234f9c;
+        border-color: #234f9c;
+      }
+
+body {
+  font-family:"Karla","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:normal;}
+}
+
+    .progress .progress-bar {
+      -webkit-transition: none;
+      -moz-transition: none;
+      -ms-transition: none;
+      -o-transition: none;
+      transition: none;
+      }
+
+      @media print {
+        .no-print {
+          display:none;
+        }
+      }

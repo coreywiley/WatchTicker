@@ -30,7 +30,7 @@ class BusinessForm extends Component {
     }
 
     render() {
-        var Components = [TextInput,Select, GoogleAddress,TextArea, TextInput, TextInput, TextInput, PhotoInput, TextInput, TextInput, TextInput, TextInput, Header, TextInput, TextInput, TextInput, TextInput, TextInput, TextInput, TextInput];
+        var Components = [TextInput,Select, GoogleAddress,TextArea, TextInput, TextInput, TextInput, PhotoInput, TextInput, TextInput, TextInput, TextInput, Header, TextArea, TextArea, TextArea, TextArea, TextArea, TextArea, TextArea];
         var name = {'value':'','name':'name','label':'Name','placeholder': 'Patron Gate', 'required':true}
         var type = {'value':'', 'name':'type', 'label':'Type Of Restaurant', 'options':[{'value':'Coffee House','text':'Coffee House'},{'value':'Bar','text':'Bar'},{'value':'Restaurant','text':'Restaurant'}, {'value':'Food Truck','text':'Food Truck'}]}
         var google_address = {'names':['address','street','street2','city','state','zipcode']}

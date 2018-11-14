@@ -19,6 +19,13 @@ class Navbar extends React.Component {
       this.handleChange = this.handleChange.bind(this);
       this.handleLocationChange = this.handleLocationChange.bind(this);
       this.setFormState = this.setFormState.bind(this);
+      this.handleKeyPress = this.handleKeyPress.bind(this);
+    }
+
+    handleKeyPress = (event) => {
+      if(event.key == 'Enter') {
+        this.search()
+      }
     }
 
     handleChange = (e) => {
@@ -76,7 +83,7 @@ class Navbar extends React.Component {
             <nav className="navbar navbar-expand-lg navbar-dark nav-bg" style={this.props.style}>
               <div className="container" style={{'width':'100%'}}>
               <div className="row">
-                <input className="form-control" type="text" placeholder="Search" aria-label="Search" value={this.state.search} onChange={this.handleChange} style={{'marginLeft':'10px', 'marginRight':'10px'}}/><br/>
+                <input onKeyPress={this.handleKeyPress} className="form-control" type="text" placeholder="Search" aria-label="Search" value={this.state.search} onChange={this.handleChange} style={{'marginLeft':'10px', 'marginRight':'10px'}}/><br/>
                 <div style={{'marginTop':'5px', 'marginLeft':'10px', 'marginRight':'10px','width':'100%'}}>
                 <GoogleAddress {...this.state} extras={false} setFormState={this.setFormState} />
                 </div>
