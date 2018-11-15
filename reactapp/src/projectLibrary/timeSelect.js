@@ -30,8 +30,22 @@ class TimeChoice extends React.Component {
 
     render() {
 
+        var canMake = [];
+        var cantMake = [];
+        for (var index in this.props.canMake) {
+          var user = this.props.canMake[index];
+          canMake.push(<p style={{'color':'green'}}>{user['first_name'] + ' ' + user['last_name']} can make it.</p>)
+        }
+
+        for (var index in this.props.cantMake) {
+          var user = this.props.cantMake[index];
+          cantMake.push(<p style={{'color':'red'}}>{user['first_name'] + ' ' + user['last_name']} can make it.</p>)
+        }
+
+        var description = <div>{canMake}{cantMake}</div>
+
         return (
-            <div onClick={this.submitTime}><Card css={this.props.style} name={this.props.time} /></div>
+            <div onClick={this.submitTime}><Card css={this.props.style} name={this.props.time} description={description} /></div>
         );
     }
 }
@@ -120,6 +134,9 @@ class TimeSections extends React.Component {
       times.push(sectionHeader);
 
       for (var i = startingIndex; i < startingIndex + 12; i++) {
+        var canMake = [];
+        var cantMake = [];
+        var display = true;
         console.log("Hello", this.props.scheduleTimes)
         var hour = Math.floor(i/2);
         var minute = (i % 2) * 30;
@@ -153,20 +170,44 @@ class TimeSections extends React.Component {
               if (startHour > endHour) {
                 if ((hour < startHour || (hour == startHour && minute <= startMinute)) || (hour > endHour  || (hour == endHour && minute >= endMinute))) {
                   if (scheduletime['available']) {
-                    color = 'green';
+                    var required = false;
+                    if (required) {
+                      display = true;
+                    }
+                    else {
+                      canMake.push(scheduletime.user)
+                    }
                   }
                   else {
-                    color = 'red';
+                    var required = false;
+                    if (required) {
+                      display = false;
+                    }
+                    else {
+                      cantMake.push(scheduletime.user)
+                    }
                   }
                 }
               }
               else {
                 if ((hour > startHour || (hour == startHour && minute >= startMinute)) && (hour < endHour || (hour == endHour && minute < endMinute))) {
                   if (scheduletime['available']) {
-                    color = 'green';
+                    var required = false;
+                    if (required) {
+                      display = true;
+                    }
+                    else {
+                      canMake.push(scheduletime.user)
+                    }
                   }
                   else {
-                    color = 'red';
+                    var required = false;
+                    if (required) {
+                      display = false;
+                    }
+                    else {
+                      cantMake.push(scheduletime.user)
+                    }
                   }
                 }
               }
@@ -194,7 +235,9 @@ class TimeSections extends React.Component {
           var ampm = " AM"
         }
 
-        times.push(<TimeChoice date={this.props.date} style={{'color':color}} chooseAvailability={this.props.chooseAvailability} scheduleTimes={this.props.scheduleTimes} time={hour + ":" + minute + ampm} hour={hour} minute={minute} ampm={ampm} />);
+        if (display) {
+          times.push(<TimeChoice canMake={canMake} cantMake={cantMake} date={this.props.date} style={{'color':color}} chooseAvailability={this.props.chooseAvailability} scheduleTimes={this.props.scheduleTimes} time={hour + ":" + minute + ampm} hour={hour} minute={minute} ampm={ampm} />);
+        }
       }
     }
 

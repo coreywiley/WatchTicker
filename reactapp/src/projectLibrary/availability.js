@@ -22,7 +22,7 @@ class Availability extends Component {
     }
 
     refreshData() {
-      ajaxWrapper('GET','/api/home/scheduletime/?user=' + this.props.user_id + '&event=' + this.props.event_id, {}, this.objectCallback);
+      ajaxWrapper('GET','/api/home/scheduletime/?related=user&user=' + this.props.user_id + '&event=' + this.props.event_id, {}, this.objectCallback);
       this.setState({'start_time':'Click To Choose', 'end_time':'Click To Choose'})
     }
 
