@@ -100,7 +100,12 @@ class Form extends Component {
               }
           }
 
-          ajaxWrapper("POST",this.props.submitUrl, data, this.formSubmitCallback);
+          if (this.props.submit) {
+            this.props.submit(data)
+          }
+          else {
+            ajaxWrapper("POST",this.props.submitUrl, data, this.formSubmitCallback);
+          }
         }
     }
 
@@ -231,7 +236,7 @@ class Form extends Component {
         }
 
         var buttons = [];
-        if (this.props.submitUrl) {
+        if (this.props.submitUrl || this.props.submit) {
             var classes = "btn btn-primary";
             if (this.props.submitButtonType) {
               classes = "btn btn-" + this.props.submitButtonType;

@@ -9,38 +9,58 @@ class EditInvite extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {'event' : '', 'user' : '', 'going' : 'false', 'want_to_go' : 'false', 'read' : 'false', 'required' : 'false', 'last_interaction' : '10/31/2018'};
+        this.state = {...this.props};
 
-        this.objectCallback = this.objectCallback.bind(this);
+        this.formCallback = this.formCallback.bind(this);
+        this.submit = this.submit.bind(this);
+        this.userCheck = this.userCheck.bind(this);
+        this.userCheckCallback = this.userCheckCallback.bind(this);
+        this.userCreatedCallback = this.userCreatedCallback.bind(this);
     }
 
-    componentDidMount(value) {
-        if(this.props.invite_id) {
-          ajaxWrapper('GET','/api/home/invite/' + this.props.invite_id + '/', {}, this.objectCallback);
-        }
-        else {
-          this.setState({loaded:true})
-        }
+
+    formCallback(result) {
+      this.props.refreshData();
     }
 
-    objectCallback(result) {
-      var invite = result[0]['invite'];
-      invite['loaded'] = true;
-      this.setState(invite)
+
+    submit(data) {
+      console.log("Submit")
+      var email = data['email']
+      var required = data['requiredInvite']
+
+      this.setState({email:email, required: required}, this.userCheck)
+
+    }
+
+    userCheck() {
+      console.log("User Check", this.state.email)
+      ajaxWrapper('GET','/api/user/user/?email=' + this.state.email, {}, this.userCheckCallback)
+    }
+
+    userCheckCallback(result) {
+      console.log("User Check", result)
+      if (result.length > 0) {
+        var user = result[0]['user'];
+        ajaxWrapper('POST','/api/home/invite/',{event: this.props.event, user: user.id, required:this.state.required}, this.props.refreshData)
+      }
+      else {
+        ajaxWrapper('POST','/api/user/user/',{'email':this.state.email},this.userCreatedCallback)
+      }
+    }
+
+    userCreatedCallback(result) {
+      console.log("User Created Callback", result)
+      var user = result[0]['user'];
+      ajaxWrapper('POST','/api/home/invite/',{event: this.props.event, user: user.id, required:this.state.required}, this.props.refreshData)
     }
 
     render() {
 
-				var Components = [Select, Select, Select, Select, Select, Select, DateTimePicker, ];
-
-			var event = {'name': 'event', 'label': 'Event', 'placeholder': 'Event', 'value': '', 'optionsUrl': '/api/home/event/', 'optionsUrlMap': {'text':'{event.unicode}','value':'{event.id}'}};
-			var user = {'name': 'user', 'label': 'User', 'placeholder': 'User', 'value': '', 'optionsUrl': '/api/user/user/', 'optionsUrlMap': {'text':'{user.unicode}','value':'{user.id}'}};
-			var going = {'name': 'going', 'label': 'Going', 'placeholder': 'Going', 'value': false, 'options': [{'value':true,'text':'True'},{'value':false,'text':'False'}]};
-			var want_to_go = {'name': 'want_to_go', 'label': 'Want_To_Go', 'placeholder': 'Want_To_Go', 'value': false, 'options': [{'value':true,'text':'True'},{'value':false,'text':'False'}]};
-			var read = {'name': 'read', 'label': 'Read', 'placeholder': 'Read', 'value': false, 'options': [{'value':true,'text':'True'},{'value':false,'text':'False'}]};
-			var required = {'name': 'required', 'label': 'Required', 'placeholder': 'Required', 'value': false, 'options': [{'value':true,'text':'True'},{'value':false,'text':'False'}]};
-			var last_interaction = {'name': 'last_interaction', 'label': 'Last_Interaction', 'placeholder': 'Last_Interaction', 'value': false, 'display_time': true};
-			var ComponentProps = [event, user, going, want_to_go, read, required, last_interaction];
+			var Components = [TextInput,Select];
+      var email = {'name': 'email', 'label': 'Email', 'value': '', 'placeholder':'email@email.com', 'required':true};
+			var required = {'name': 'requiredInvite', 'label': 'Does this person need to be here?', 'required':true, 'value': false, 'options': [{'value':true,'text':'True'},{'value':false,'text':'False'}]};
+			var ComponentProps = [email, required];
 
         var defaults = this.state;
 
@@ -50,20 +70,12 @@ class EditInvite extends Component {
         }
 
         var deleteUrl = undefined;
-        if (this.props.invite_id) {
-          deleteUrl = "/api/home/invite/" + this.props.invite_id + "/delete/";
+        if (this.props.id) {
+          deleteUrl = "/api/home/invite/" + this.props.id + "/delete/";
         }
-
-
-        var title = <Header text={'Create New Invite'} size={2} />
-        if (this.props.invite_id) {
-          title = <Header text={'Edit Invite: ' + this.state.name} size={2} />
-        }
-
 
         var content = <div className="container">
-                {title}
-                <Form components={Components} redirectUrl={"/invite/{id}/"} objectName={'invite'} componentProps={ComponentProps} deleteUrl={deleteUrl} submitUrl={submitUrl} defaults={defaults} />
+                <Form components={Components} refreshData={this.props.refreshData} objectName={'invite'} componentProps={ComponentProps} deleteUrl={deleteUrl} submit={this.submit} refreshData={this.formCallback} defaults={defaults} />
                 <br />
         </div>;
 

@@ -35,6 +35,7 @@ import Availability from './projectLibrary/availability.js';
 import ThankYou from './pages/thankyou.js';
 import EventSteps from './pages/eventSteps.js';
 import EventSignUp from './pages/eventSignUp.js';
+import Invites from './projectLibrary/listInvite.js';
 
 class App extends Component {
     constructor(props) {
@@ -167,7 +168,7 @@ class App extends Component {
               content = <PasswordReset  user_id={params[1]} />;
           }
           else if (route == "event") {
-              content = <Availability event_id={params[1]} user_id={this.state.user.id} />;
+              content = <Availability event_id={params[1]} user_id={this.state.user.id} invite_id={params[2]} />;
           }
           else if (route == "editevent") {
               content = <EditEvent user={this.state.user} event_id={params[1]} />;
@@ -183,6 +184,9 @@ class App extends Component {
           }
           else if (route == "eventSignUp") {
             content = <EventSignUp event_id={params[1]} />
+          }
+          else if (route == 'invites') {
+            content = <Invites event_id={params[1]} user={this.state.user} />
           }
         }
 

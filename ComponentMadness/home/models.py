@@ -26,13 +26,15 @@ class Invite(models.Model):
     want_to_go = models.BooleanField(default=False)
     read = models.BooleanField(default=False)
     required = models.BooleanField(default=False)
-    last_interaction = models.DateTimeField(default=datetime.datetime.now)
+    last_interaction = models.DateTimeField(default=None, null=True, blank=True)
 
 class ScheduleTime(models.Model):
     id = models.AutoField(primary_key=True)
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
+    timezone = models.CharField(default='UTC', max_length=120)
     available = models.BooleanField(default=False)
+    required = models.BooleanField(default=False)
     repeat_monday = models.BooleanField(default=False)
     repeat_tuesday = models.BooleanField(default=False)
     repeat_wednesday = models.BooleanField(default=False)

@@ -41,6 +41,8 @@ class User(AbstractBaseUser):
     type = models.CharField(max_length=7, choices=(('User', 'User'), ('Parent', 'Parent')), default='User')
     imageUrl = models.CharField(max_length=120, blank=True, default="")
 
+    set_up = models.BooleanField(default=False)
+
     notifications = models.BooleanField(default=False)
 
     parent = models.ForeignKey('User', related_name='children', blank=True, null=True, on_delete=models.CASCADE)
