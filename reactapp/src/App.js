@@ -27,7 +27,7 @@ import PasswordReset from './pages/scaffold/passwordReset.js';
 import Nav from 'projectLibrary/nav.js';
 import Footer from 'projectLibrary/footer.js';
 
-import Test from './pages/modelEditAndView/WYSIWYG.js';
+import Question from './pages/Question.js';
 
 class App extends Component {
     constructor(props) {
@@ -57,8 +57,9 @@ class App extends Component {
             if (path.indexOf('login') > -1) {
                 window.location.href = '/viewer/';
             }
-        } else if (loginNoRedirects.indexOf(path) == -1 && window.location.pathname != "/") {
-            window.location.href = '/login/';
+        } 
+        else {
+          this.setState({loaded:true})
         }
     }
 
@@ -157,7 +158,7 @@ class App extends Component {
               content = <PasswordReset  user_id={params[1]} />;
           }
           else if (route == "test") {
-              content = <Test id={params[1]} />;
+              content = <Question id={params[1]} />;
           }
         }
 

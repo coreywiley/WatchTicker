@@ -4,33 +4,39 @@ import Wrapper from 'base/wrapper.js';
 import ajaxWrapper from 'base/ajax.js';
 import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Card, MultiLineText} from 'library';
 
-class *CapitalObject* extends Component {
+class Answer extends Component {
     constructor(props) {
         super(props);
-        this.state = *Defaults*
+        this.state = {'question' : '', 'answer' : '', 'user' : ''}
 
         this.objectCallback = this.objectCallback.bind(this);
     }
 
     componentDidMount() {
-      ajaxWrapper('GET','/api/*App*/*Object*/' + this.props.*Object*_id + '/', {}, this.objectCallback);
+      ajaxWrapper('GET','/api/home/answer/' + this.props.answer_id + '/', {}, this.objectCallback);
     }
 
     objectCallback(result) {
-      var *Object* = result[0]['*Object*'];
-      *Object*['loaded'] = true;
-      this.setState(*Object*)
+      var answer = result[0]['answer'];
+      answer['loaded'] = true;
+      this.setState(answer)
     }
 
     render() {
 
-*ComponentProps*
+			var question = {'text': this.state.question};
+			var answer = {'text': this.state.answer};
+			var user = {'text': this.state.user};
+			var ComponentProps = [question, answer, user];
 
 
       var content =
         <div className="container">
           <Header size={1} text={this.state.name} />
-*ComponentList*
+						<Paragraph {...ComponentProps[0]} />
+						<MultiLineText {...ComponentProps[1]} />
+						<Paragraph {...ComponentProps[2]} />
+
         </div>;
 
         return (
@@ -39,4 +45,4 @@ class *CapitalObject* extends Component {
     }
 }
 
-export default *CapitalObject*;
+export default Answer;

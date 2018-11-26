@@ -343,16 +343,21 @@ def writeModelPageTemplates(request):
     filepath = os.path.join(os.getcwd(), "..", "reactapp", "src", "pages", "modelEditAndView")
     editTemplatePath = os.path.join(filepath, "editTemplate.js")
     viewTemplatePath = os.path.join(filepath, "viewTemplate.js")
+    listTemplatePath = os.path.join(filepath, "listTemplate.js")
     models = apps.get_models()
 
     models = apps.get_models()
     djangoApps = []
     for app in apps.get_app_configs():
         appName = app.name
+        if appName != 'home':
+            continue
 
         for model in models:
             if model._meta.app_label == appName:
                 modelName = model.__name__
+                print (modelName)
+
                 componentListString = ""
                 formComponentListString = "\t\t\t\tvar Components = ["
                 componentPropsString = ''
@@ -362,6 +367,9 @@ def writeModelPageTemplates(request):
                 i = 0
                 for field in model._meta.get_fields():
                     fieldName = field.name.lower()
+                    if fieldName == 'id' or field.auto_created:
+                        continue
+
                     fieldLabel = fieldName.title()
                     fieldType = field.get_internal_type()
 
@@ -370,7 +378,7 @@ def writeModelPageTemplates(request):
                     except:
                         fieldDefault = ''
 
-                    if fieldType == 'ForeignKey':
+                    if fieldType in ['ForeignKey', 'ManyToManyField']:
                         relatedApp = field.related_model._meta.app_label
                         relatedModel = field.related_model._meta.object_name.lower()
 
@@ -388,7 +396,6 @@ def writeModelPageTemplates(request):
                     else:
                         fieldDefault = ''
 
-                    defaults += "'%s' : '" + fieldDefault + "', "
 
                     #components and their props
                     if fieldType == 'AutoField':
@@ -419,36 +426,46 @@ def writeModelPageTemplates(request):
                         componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
                         componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
                         formComponentListString += "Select"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'options': [[true,'True'],[false,'False']]};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'options': [{'value':true,'text':'True'},{'value':false,'text':'False'}]};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
 
                     elif fieldType == 'DateField':
                         componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
                         componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "TextInput"
+                        formComponentListString += "DateTimePicker"
                         formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'display_time': false};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
 
                     elif fieldType == 'DateTimeField':
                         componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
                         componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "TextInput"
+                        formComponentListString += "DateTimePicker"
                         formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'display_time': true};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
 
                     elif fieldType == 'ForeignKey':
                         componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
                         componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
                         formComponentListString += "Select"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': '', 'optionsUrl': '/api/%s/%s/', 'optionsUrlMap': {'text':'{name}','value':'{id}'}};\n" % (fieldName, fieldName, fieldLabel, fieldLabel, relatedApp,relatedModel)
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': '', 'optionsUrl': '/api/%s/%s/', 'optionsUrlMap': {'text':'{%s.unicode}','value':'{%s.id}'}};\n" % (fieldName, fieldName, fieldLabel, fieldLabel, relatedApp,relatedModel, relatedModel, relatedModel)
 
+                    elif fieldType == 'ManyToManyField':
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "Select"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': '', 'optionsUrl': '/api/%s/%s/', 'optionsUrlMap': {'text':'{%s.unicode}','value':'{%s.id}'}, 'multiple':true};\n" % (fieldName, fieldName, fieldLabel, fieldLabel, relatedApp,relatedModel, relatedModel, relatedModel)
+
+
+                    formComponentListString += ", "
                     if i != 0:
                         listString += ", "
-                        formComponentListString += ", "
+                        defaults += ", '%s' : '%s'" % (fieldName, str(fieldDefault))
+                    else:
+                        defaults += "'%s' : '%s'" % (fieldName, str(fieldDefault))
 
                     i += 1
                     listString += fieldName
 
+                defaults += "}"
                 listString += "];"
 
-                componentListString += "];"
                 formComponentListString += "];"
 
                 componentPropsString += listString
@@ -456,6 +473,7 @@ def writeModelPageTemplates(request):
 
                 editTemplate = open(editTemplatePath, "r").read()
                 viewTemplate = open(viewTemplatePath, "r").read()
+                listTemplate = open(listTemplatePath, "r").read()
 
                 editTemplate = editTemplate.replace("*App*", appName)
                 editTemplate = editTemplate.replace("*Object*", modelName.lower())
@@ -467,7 +485,7 @@ def writeModelPageTemplates(request):
                 editTemplate = editTemplate.replace("*FormComponentProps*", formComponentPropsString)
 
                 viewTemplate = viewTemplate.replace("*App*", appName)
-                viewTemplate = viewTemplate.replace("*Object*", modelName)
+                viewTemplate = viewTemplate.replace("*Object*", modelName.lower())
                 viewTemplate = viewTemplate.replace("*CapitalObject*", modelName.title())
                 viewTemplate = viewTemplate.replace("*Defaults*", defaults)
                 viewTemplate = viewTemplate.replace("*ComponentProps*", componentPropsString)
@@ -475,14 +493,23 @@ def writeModelPageTemplates(request):
                 viewTemplate = viewTemplate.replace("*FormComponentList*", formComponentListString)
                 viewTemplate = viewTemplate.replace("*FormComponentProps*", formComponentPropsString)
 
+                listTemplate = listTemplate.replace("*App*", appName)
+                listTemplate = listTemplate.replace("*Object*", modelName.lower())
+                listTemplate = listTemplate.replace("*CapitalObject*", modelName.title())
+
                 newEditTemplate = os.path.join(filepath, "edit" + modelName + ".js")
                 newViewTemplate = os.path.join(filepath, modelName + ".js")
+                newListTemplate = os.path.join(filepath, "list" + modelName + ".js")
 
                 with open(newEditTemplate, "w") as file:
                     file.write(editTemplate)
 
                 with open(newViewTemplate, "w") as file:
                     file.write(viewTemplate)
+
+                with open(newListTemplate, "w") as file:
+                    file.write(listTemplate)
+
 
 
     return JsonResponse({'success':True})
