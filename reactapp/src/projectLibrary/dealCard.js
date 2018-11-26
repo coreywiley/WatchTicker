@@ -40,7 +40,7 @@ class Card extends React.Component {
         }
 
         var distance = null;
-        if (this.props.distance) {
+        if (this.props.distance != "NaN" && this.props.distance) {
           distance = <p>~{this.props.distance} miles</p>
         }
 

@@ -11,7 +11,7 @@ class Businesses extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {'businesses':[], show_filters:true, filters:{'type':'All', 'city':'All', 'state':'All', 'search':''}, 'loaded':false};
+    this.state = {'businesses':[], show_filters:true, filters:{'type':'All', 'city':'All', 'state':'All', 'search':this.props.search}, 'loaded':false};
 
     this.businessCallback = this.businessCallback.bind(this);
     this.setGlobalState = this.setGlobalState.bind(this);
@@ -33,11 +33,41 @@ class Businesses extends Component {
     setGlobalState(name, value) {
       var newState = {}
       newState[name] = value
-       this.setState(newState)
+
+      var search = value['search'];
+      console.log("Search Value", search)
+      this.setState(newState, this.props.setGlobalSearch(search))
     }
 
     toggleFilters() {
       this.setState({'show_filters':!this.state.show_filters})
+    }
+
+    deg2rad(deg) {
+      return deg * (Math.PI/180)
+    }
+
+    getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+      var R = 6371; // Radius of the earth in km
+      var dLat = this.deg2rad(lat2-lat1);  // deg2rad below
+      var dLon = this.deg2rad(lon2-lon1);
+      var a =
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+        Math.sin(dLon/2) * Math.sin(dLon/2)
+        ;
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      var d = R * c; // Distance in km
+      return d;
+    }
+
+
+
+    sortByKey(array, key) {
+        return array.sort(function(a, b) {
+            var x = a[key]; var y = b[key];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
     }
 
     render() {
@@ -51,8 +81,30 @@ class Businesses extends Component {
         var usedTypes = [];
 
         if (this.state.loaded == true) {
-        for (var index in this.state.businesses) {
-          var business = this.state.businesses[index]
+
+
+          if (this.props.latLng) {
+            var businessesList = [];
+            var latLng = this.props.latLng.split(',')
+            var lat = latLng[0];
+            var lng = latLng[1];
+
+            for (var index in this.state.businesses) {
+              var business = this.state.businesses[index];
+              var distance = (this.getDistanceFromLatLonInKm(lat,lng, business.lat, business.lng) * .62 * 1.3).toFixed(1); //changing to miles and then adding in 1.3x for slightly better estimation with roads.
+              business['distance'] = distance;
+              businessesList.push(business);
+            }
+            console.log("businessesList List",businessesList)
+             businessesList = this.sortByKey(businessesList, 'distance')
+             console.log("businessesList Sorted", businessesList)
+          }
+          else {
+            var businessesList = this.state.businesses;
+          }
+
+        for (var index in businessesList) {
+          var business = businessesList[index]
           if (usedTypes.indexOf(business['type']) == -1) {
             types.push(business['type'])
             usedTypes.push(business['type'])
@@ -70,8 +122,8 @@ class Businesses extends Component {
             if (this.state.filters.city == '' || this.state.filters.city == 'All' || (this.state.filters.city == business['city'])) {
               if (this.state.filters.state == '' || this.state.filters.state == 'All' || (this.state.filters.state == business['state'])) {
                 var businessText = business.name + business.description + business.monday_special + business.tuesday_special + business.wednesday_special + business.thursday_special + business.friday_special  + business.saturday_special + business.sunday_special;
-                if (this.state.filters.search == '' || businessText.toLowerCase().indexOf(this.state.filters.search.toLowerCase()) > -1) {
-                  businessCards.push(<Card address={business['address']} reviews={business['review']} imageUrl={business['main_image']} imageAlt={business['name']} name={business['name']} description={business['description'].substring(0,130) + '...'} button={'Read More'} button_type={'primary'} link={'/business/' + business['id'] + '/'} />)
+                if (this.props.search == '' || this.props.search == undefined || businessText.toLowerCase().indexOf(this.props.search.toLowerCase()) > -1) {
+                  businessCards.push(<Card distance={business['distance']} address={business['address']} reviews={business['review']} imageUrl={business['main_image']} imageAlt={business['name']} name={business['name']} description={business['description'].substring(0,130) + '...'} button={'Read More'} button_type={'primary'} link={'/business/' + business['id'] + '/'} />)
                 }
               }
             }
@@ -83,15 +135,16 @@ class Businesses extends Component {
         var type = {'value':'', 'name':'type', 'label':'Type Of Restaurant', 'options':types, 'defaultoption':''}
         var city = {'value':'', 'name':'city', 'label':'City', 'options':cities, 'defaultoption':''}
         var state = {'value':'', 'name':'state', 'label':'State', 'options':states, 'defaultoption':''}
-        var search = {'value':'', 'name':'search', 'label':'Search Anything', 'defaultoption':''}
+        var search = {'value':this.props.search, 'name':'search', 'label':'Search Anything', 'defaultoption':''}
 
         var ComponentProps = [search, type, city, state];
         var defaults = this.state.filters;
+        defaults['search'] = this.props.search;
 
         var title = <h2>Filter</h2>
 
         var filters = null;
-        if (this.state.show_filters != false) {
+        if (this.props.filters != false && this.state.show_filters != false) {
           var filters = <div className="col-md-4">
                   <Form components={Components} componentProps={ComponentProps} defaults={defaults} objectName={'business'} setGlobalState={this.setGlobalState} globalStateName={'filters'} autoSetGlobalState={true}/>
           </div>;

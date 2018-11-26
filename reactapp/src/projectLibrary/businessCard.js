@@ -39,11 +39,17 @@ class Card extends React.Component {
           padding = '0px';
         }
 
+        var distance = null;
+        if (this.props.distance != "NaN" && this.props.distance) {
+          distance = <p>~{this.props.distance} miles</p>
+        }
+
         return (
-            <div className="card col-md-4 dealCard" style={{'padding':padding, 'cursor':'pointer', 'height':'375px'}} onClick={this.redirect} data-id={this.props.data_id} >
+            <div className="card col-md-4 dealCard" style={{'padding':padding, 'cursor':'pointer', 'height':'475px'}} onClick={this.redirect} data-id={this.props.data_id} >
               {image}
               <div className="card-body">
                 <h5 className="card-title" style={{'margin':'0px', 'fontWeight':'bold'}}>{this.props.name}</h5>
+                {distance}
                 <p className="card-text" style={{'color':'#999'}}>{this.props.description.substring(0,100)}...<br/>{this.props.address}<br/>{review}</p>
               </div>
             </div>

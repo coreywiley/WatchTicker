@@ -15,6 +15,8 @@ import {
   isMobile
 } from "react-device-detect";
 
+import Businesses from './businesses.js';
+
 class Deals extends Component {
 
   constructor(props) {
@@ -39,6 +41,7 @@ class Deals extends Component {
     this.deg2rad = this.deg2rad.bind(this);
     this.getDistanceFromLatLonInKm = this.getDistanceFromLatLonInKm.bind(this);
     this.sortByKey = this.sortByKey.bind(this);
+    this.setGlobalSearch = this.setGlobalSearch.bind(this);
   }
 
     componentDidMount() {
@@ -105,7 +108,7 @@ class Deals extends Component {
         newState[name] = value
       }
 
-       this.setState(newState)
+       this.setState(newState, this.setGlobalSearch(newState['filters']['search']))
     }
 
     toggleFilters() {
@@ -137,6 +140,12 @@ class Deals extends Component {
             var x = a[key]; var y = b[key];
             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         });
+    }
+
+    setGlobalSearch(search) {
+      var filters = this.state.filters;
+      filters['search'] = search;
+      this.setState({'filters':filters}, this.props.setGlobalSearch(search));
     }
 
     render() {
@@ -199,7 +208,7 @@ class Deals extends Component {
               if (this.state.filters.city == '' || this.state.filters.city == 'All' || (this.state.filters.city == deal['business']['city'])) {
                 if (this.state.filters.state == '' || this.state.filters.state == 'All' || (this.state.filters.state == deal['business']['state'])) {
                   var dealText = deal.name + deal.description;
-                  if (this.state.filters.search == '' || dealText.toLowerCase().indexOf(this.state.filters.search.toLowerCase()) > -1) {
+                  if (this.props.search == '' || !this.props.search || dealText.toLowerCase().indexOf(this.props.search.toLowerCase()) > -1) {
                     dealCards.push(<Card distance={deal['distance']} imageUrl={deal['main_image']} imageAlt={deal['name']} name={deal['name']} description={deal['description']} city={deal['business']['city']} reviews={deal['business']['review']} button={'Read More'} button_type={'primary'} link={'/deal/' + deal['id'] + '/'} />)
                   }
                 }
@@ -250,8 +259,10 @@ class Deals extends Component {
         }
 
         var toggleFilters = null;
+        var businesses = null;
         if (this.props.toggleFilters != false) {
           var toggleFilters = <Button type={'light'} text={'Toggle Filters'} clickHandler={this.toggleFilters} />;
+          var businesses = <Businesses setGlobalSearch={this.setGlobalSearch} user_id={this.props.user_id} search={this.props.search} address={this.props.address} latLng={this.props.latLng} />
         }
 
 
@@ -275,6 +286,9 @@ class Deals extends Component {
                 <div className="row">
                   {dealCards}
                 </div>
+                <br/>
+                <br/>
+                {businesses}
         </div>;
       }
       else{

@@ -29,18 +29,21 @@ class Navbar extends React.Component {
     }
 
     handleChange = (e) => {
-       var newState = {};
-       newState['search'] = e.target.value;
-       this.setState(newState);
+       var search = e.target.value;
+       this.props.setGlobalSearch(search);
     }
 
     handleLocationChange = (e) => {
        var newState = {};
        newState['location'] = e.target.value;
+       console.log("Location", newState)
        this.setState(newState);
     }
 
     setFormState(newState) {
+      if (newState.lat) {
+        this.props.setGlobalAddress(this.state.address, newState.lat + ',' + newState.lng);
+      }
       console.log("New State", newState)
       this.setState(newState)
     }
@@ -50,14 +53,14 @@ class Navbar extends React.Component {
     }
 
     search() {
-      window.location.href = '/deals/' + this.state.search + '/' + this.state.address.split(' ').join('_') + '/' + this.state.lat + ',' + this.state.lng + '/';
+      window.location.href = '/deals/' + this.props.search + '/' + this.state.address.split(' ').join('_') + '/' + this.state.lat + ',' + this.state.lng + '/';
     }
 
     render() {
         var links = [];
         if (this.props.links) {
             for (var index in this.props.links) {
-                links.push(<li key={index} className="nav-item"><a className="nav-link" style={{'min-width':'125px'}} href={this.props.links[index][0]}>{this.props.links[index][1]}</a></li>)
+                links.push(<li key={index} className="nav-item"><a className="nav-link" style={{'minWidth':'125px'}} href={this.props.links[index][0]}>{this.props.links[index][1]}</a></li>)
             }
         }
 
@@ -83,7 +86,7 @@ class Navbar extends React.Component {
             <nav className="navbar navbar-expand-lg navbar-dark nav-bg" style={this.props.style}>
               <div className="container" style={{'width':'100%'}}>
               <div className="row">
-                <input onKeyPress={this.handleKeyPress} className="form-control" type="text" placeholder="Search" aria-label="Search" value={this.state.search} onChange={this.handleChange} style={{'marginLeft':'10px', 'marginRight':'10px'}}/><br/>
+                <input onKeyPress={this.handleKeyPress} className="form-control" type="text" placeholder="Search" aria-label="Search" value={this.props.search} onChange={this.handleChange} style={{'marginLeft':'10px', 'marginRight':'10px'}}/><br/>
                 <div style={{'marginTop':'5px', 'marginLeft':'10px', 'marginRight':'10px','width':'100%'}}>
                 <GoogleAddress {...this.state} extras={false} setFormState={this.setFormState} />
                 </div>
@@ -157,12 +160,12 @@ class Nav extends React.Component {
         console.log("Nav User Id", this.props.user_id)
         if (this.props.user_id) {
           var businessLink = ["/manageYourBusinesses/",'Manage Your Businesses'];
-          var signUpLinks = [['/how-it-works/','How It Works'], ['/businesses/','Local Businesses'], businessLink, ['/editUser/','Account Details'], ['/logOut/','Log Out']]
+          var signUpLinks = [['/how-it-works/','How It Works'], businessLink, ['/editUser/','Account Details'], ['/logOut/','Log Out']]
           var links = [['/deals/type:FoodAndDrink/','Food And Drink']];
         }
         else {
           var links = [['/deals/type:FoodAndDrink/','Food And Drink']];
-          var signUpLinks = [['/how-it-works/','How It Works'], ['/businesses/','Local Businesses'], ['/signUp/business/','Add Your Listing'], ['/signUp/','Sign Up'], ['/logIn/','Log In']]
+          var signUpLinks = [['/how-it-works/','How It Works'], ['/signUp/business/','Add Your Listing'], ['/signUp/','Sign Up'], ['/logIn/','Log In']]
         }
 
 
@@ -181,7 +184,7 @@ class Nav extends React.Component {
               <div style={{'marginBottom':'140px'}}></div>
             </MobileView>
             <div style={{'position':'fixed', 'top':'0px','zIndex':10000, 'width':'100%'}}>
-              <Navbar nameLink={'/'} name={name} links={links} style={this.props.style} signUpLinks={signUpLinks} />
+              <Navbar nameLink={'/'} setGlobalAddress={this.props.setGlobalAddress} search={this.props.search} setGlobalSearch={this.props.setGlobalSearch} name={name} links={links} style={this.props.style} signUpLinks={signUpLinks} />
             </div>
           </div>
         );

@@ -50,15 +50,42 @@ import ManageBusinesses from './pages/manageBusinesses.js';
 class App extends Component {
     constructor(props) {
         super(props);
+
+        var params = this.getURL();
+        var search = '';
+        var address = null;
+        var latLng = null;
+        if (params[0] == 'deals') {
+          if (params[1]) {
+            search = params[1];
+          }
+          latLng = params[3];
+          address = params[2];
+        }
+
         this.state = {
             loaded: false,
             csrfmiddlewaretoken: undefined,
-            user:{'id':'', 'name':''}
+            user:{'id':'', 'name':''},
+            search: search,
+            latLng: latLng,
+            address: address,
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
         this.getUserInfoCallback = this.getUserInfoCallback.bind(this);
+        this.setGlobalSearch = this.setGlobalSearch.bind(this);
+        this.setGlobalAddress = this.setGlobalAddress.bind(this);
+
+    }
+
+    setGlobalSearch(search) {
+      this.setState({'search':search})
+    }
+
+    setGlobalAddress(address, latLng) {
+      this.setState({'address':address, latLng: latLng})
     }
 
     componentDidMount() {
@@ -193,7 +220,7 @@ class App extends Component {
               content = <EditUser user_id={this.state.user.id} />
           }
           else if (params[0].toLowerCase() == "deals") {
-              content = <Deals user_id={this.state.user.id} search={params[1]} address={params[2]} latLng={params[3]} />
+              content = <Deals user_id={this.state.user.id} search={this.state.search} setGlobalSearch={this.setGlobalSearch} address={this.state.address} latLng={this.state.latLng} />
           }
           else if (params[0].toLowerCase() == "businesses") {
               content = <Businesses user_id={this.state.user.id} />
@@ -240,7 +267,7 @@ class App extends Component {
         else {
           return (
               <div className="App">
-                  <Nav user_id={this.state.user.id} style={{'backgroundColor':'#234f9c !important'}} is_staff={this.state.user.is_staff}/>
+                  <Nav setGlobalAddress={this.setGlobalAddress} search={this.state.search} setGlobalSearch={this.setGlobalSearch} user_id={this.state.user.id} style={{'backgroundColor':'#234f9c !important'}} is_staff={this.state.user.is_staff}/>
                   <Wrapper content={content} loaded={this.state.loaded} />
                   <br />
                   <br />

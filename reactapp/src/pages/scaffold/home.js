@@ -5,6 +5,7 @@ import MetaTags from 'react-meta-tags';
 
 import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header} from 'library';
 import Deals from '../deals.js';
+import Businesses from '../businesses.js';
 
 import {
   BrowserView,
@@ -21,9 +22,6 @@ class Home extends Component {
         };
     }
 
-    setGlobalState() {
-
-    }
 
     render() {
 
@@ -57,6 +55,15 @@ class Home extends Component {
             <div className={container}  style={{'padding':'0px'}}>
               <h4 style={{'fontWeight':'bold', 'padding':'15px'}}>Popular on PatronGate.</h4>
               <Deals user_id={this.props.user_id} limit={12} filters={false} toggleFilters={false} title={false} order_by={'redemptions'}/>
+              <Button type={'patron'} text={'See More'} href={'/deals/'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
+              <br />
+              <br />
+              <br />
+              <br />
+            </div>
+
+            <div className={container}  style={{'padding':'0px'}}>
+              <Businesses user_id={this.props.user_id} limit={12} filters={false} show_filters={false} toggleFilters={false} title={false} order_by={'redemptions'}/>
               <Button type={'patron'} text={'See More'} href={'/deals/'} css={{'fontSize':'15px', paddingLeft: '50px', paddingRight:'50px', paddingTop:'15px', paddingBottom: '15px'}} />
               <br />
               <br />
