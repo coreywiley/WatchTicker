@@ -175,18 +175,24 @@ class Deal extends Component {
       }
 
       var redeem = <div></div>
-      if (this.props.user_id) {
-        if (this.state.redeemable) {
-          redeem = <div><Button clickHandler={this.redeem} css={{'width':'100%'}} type={'patron'} text={'Redeem'} /><p><strong>When clicking redeem, you are redeeming the coupon for use today. It will be invalid after today</strong></p></div>
-        }
-        else {
-          redeem = <div><Button clickHandler={console.log} css={{'width':'100%'}} type={'patron'} text={'Cannot Redeem'} disabled={true} /><p><strong>When clicking redeem, you are redeeming the coupon for use today. It will be invalid after today</strong></p></div>
-        }
 
-
+      if (this.state.ad) {
+        redeem = <div><Button css={{'width':'100%'}} type={'patron'} text={'Redeem In Store Only'} disabled={true} /><p><strong>This deal is available in the store to anyone who comes in person.</strong></p></div>
       }
       else {
-        redeem = <Button href={'/signUp/'} type={'success'} css={{'width':'100%'}} text={'Sign Up To Redeem'} />
+        if (this.props.user_id) {
+          if (this.state.redeemable) {
+            redeem = <div><Button clickHandler={this.redeem} css={{'width':'100%'}} type={'patron'} text={'Redeem'} /><p><strong>When clicking redeem, you are redeeming the coupon for use today. It will be invalid after today</strong></p></div>
+          }
+          else {
+            redeem = <div><Button clickHandler={console.log} css={{'width':'100%'}} type={'patron'} text={'Cannot Redeem'} disabled={true} /><p><strong>When clicking redeem, you are redeeming the coupon for use today. It will be invalid after today</strong></p></div>
+          }
+
+
+        }
+        else {
+          redeem = <Button href={'/signUp/'} type={'success'} css={{'width':'100%'}} text={'Sign Up To Redeem'} />
+        }
       }
 
       var number_of_redeems_available = <p style={{'margin':'0px'}}>You can redeem this deal a total of {this.state.number_of_redeems_available} times.</p>
@@ -280,17 +286,28 @@ class Deal extends Component {
         <br/>
         <MultiLineText text={this.state.what_you_get} />
         </div>
-        </div>
+        </div>;
 
-        var couponInfo = <div>
-        <h4 style={{'margin':'0px'}}>{this.state.name}</h4>
-        <p style={{'margin':'0px'}}>This deal has been redeemed {this.state.overallTotalRedemptions} times.</p>
-        {number_of_redeems_available}
-        {valid_until}
-        <p>You have redeemed this coupon {this.state.totalRedemptions} times.</p>
 
-        {redeem}
-        </div>
+        if (this.state.ad) {
+          var couponInfo = <div>
+          <h4 style={{'margin':'0px'}}>{this.state.name}</h4>
+          {valid_until}
+
+          {redeem}
+          </div>
+        }
+        else {
+          var couponInfo = <div>
+          <h4 style={{'margin':'0px'}}>{this.state.name}</h4>
+          <p style={{'margin':'0px'}}>This deal has been redeemed {this.state.overallTotalRedemptions} times.</p>
+          {number_of_redeems_available}
+          {valid_until}
+          <p>You have redeemed this coupon {this.state.totalRedemptions} times.</p>
+
+          {redeem}
+          </div>
+        }
 
         var meta = <MetaTags>
           <title>{this.state.name} with {this.state.business.name}| PatronGate</title>

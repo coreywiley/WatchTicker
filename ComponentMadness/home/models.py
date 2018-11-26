@@ -63,6 +63,7 @@ class Deal(models.Model):
     type = models.CharField(max_length=255, blank=True, default="")
     number_of_total_redeems_available = models.IntegerField(default = 0)
     number_of_redeems_available = models.IntegerField(default = 0)
+    ad = models.BooleanField(default=False)
 
     def __str__(self):
         return u"{}".format(self.name)

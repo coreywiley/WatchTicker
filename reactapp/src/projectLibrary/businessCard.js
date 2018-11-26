@@ -22,7 +22,7 @@ class Card extends React.Component {
     render() {
         var button = <a href={this.props.link} className={"btn btn-patron"}>{this.props.button}</a>;
 
-        var image = <img className="card-img-top" src={this.props.imageUrl} alt={this.props.imageAlt} />
+        var image = <img className="card-img-top" style={{'maxHeight':'325px'}} src={this.props.imageUrl} alt={this.props.imageAlt} />
 
         var review = null;
         if (this.props.reviews && this.props.reviews.length > 0) {
