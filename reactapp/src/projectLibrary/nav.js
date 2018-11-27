@@ -53,7 +53,7 @@ class Navbar extends React.Component {
     }
 
     search() {
-      window.location.href = '/deals/' + this.props.search + '/' + this.state.address.split(' ').join('_') + '/' + this.state.lat + ',' + this.state.lng + '/';
+      window.location.href = '/deals/' + this.props.search.split(' ').join('_') + '/' + this.state.address.split(' ').join('_') + '/' + this.state.lat + ',' + this.state.lng + '/';
     }
 
     render() {
