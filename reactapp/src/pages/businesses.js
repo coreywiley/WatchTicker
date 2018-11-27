@@ -11,7 +11,24 @@ class Businesses extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {'businesses':[], show_filters:true, filters:{'type':'All', 'city':'All', 'state':'All', 'search':this.props.search}, 'loaded':false};
+
+    var search = this.props.search;
+    var business_type = 'All';
+
+    if (this.props.search) {
+      if (search.startsWith("type:")) {
+        if (search == 'type:FoodAndDrink') {
+          business_type = ['Food Truck','Restaurant','Bar','Coffee House'];
+        }
+        search = '';
+        this.props.setGlobalSearch('')
+      }
+    }
+
+
+    this.state = {'businesses':[], show_filters:true, filters:{'type':business_type, 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
+
+
 
     this.businessCallback = this.businessCallback.bind(this);
     this.setGlobalState = this.setGlobalState.bind(this);
