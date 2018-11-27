@@ -8,7 +8,7 @@ class EditQuestion extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {'name' : '', 'factoid' : ''};
+        this.state = {'name' : '', 'factoid' : '', 'user':this.props.user.id};
 
         this.objectCallback = this.objectCallback.bind(this);
     }
@@ -25,44 +25,38 @@ class EditQuestion extends Component {
     objectCallback(result) {
       var question = result[0]['question'];
       question['loaded'] = true;
+      question['question'] = question['id']
       this.setState(question)
     }
 
     render() {
 
-      var componentList = [{'component':'TextInput', 'props': {'name': 'name', 'label': 'Name', 'placeholder': 'Name', 'value': ''}}, {'component':'TextArea', 'props':{'name': 'factoid', 'label': 'Factoid', 'placeholder': 'Factoid', 'value': ''}}]
+      var defaults = this.state;
 
-      var componentDict = {'TextInput':TextInput, 'TextArea':TextArea}
+      var componentList = [{'component':Header, 'props': {'text':this.state.name, 'size':3}}]
+      if (this.state.component == 'TextInput') {
+        var props = JSON.parse(this.state.props);
+        props['name'] = 'input';
+        defaults['input'] = '';
+        componentList.push({'component':TextInput, 'props': props})
+      }
+
       var Components = [];
       var ComponentProps = [];
 
       for (var index in componentList) {
         var component = componentList[index];
-        Components.push(componentDict[component.component])
+        Components.push(component.component)
         ComponentProps.push(component.props)
       }
 
-        var defaults = this.state;
-
-        var submitUrl = "/api/home/question/";
-        if (this.props.question_id) {
-          submitUrl += this.props.question_id + '/';
+        var submitUrl = "/api/home/answer/";
+        if (this.props.answer_id) {
+          submitUrl += this.props.answer_id + '/';
         }
 
         var deleteUrl = undefined;
-        if (this.props.question_id) {
-          deleteUrl = "/api/home/question/" + this.props.question_id + "/delete/";
-        }
-
-
-        var title = <Header text={'Create New Question'} size={2} />
-        if (this.props.question_id) {
-          title = <Header text={'Edit Question: ' + this.state.name} size={2} />
-        }
-
-
         var content = <div className="container">
-                {title}
                 <Form components={Components} redirectUrl={"/question/{id}/"} objectName={'question'} componentProps={ComponentProps} deleteUrl={deleteUrl} submitUrl={submitUrl} defaults={defaults} />
                 <br />
         </div>;

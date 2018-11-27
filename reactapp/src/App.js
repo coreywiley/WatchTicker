@@ -28,6 +28,8 @@ import Nav from 'projectLibrary/nav.js';
 import Footer from 'projectLibrary/footer.js';
 
 import Question from './pages/Question.js';
+import EditQuestion from './pages/editQuestion.js';
+
 
 class App extends Component {
     constructor(props) {
@@ -57,7 +59,7 @@ class App extends Component {
             if (path.indexOf('login') > -1) {
                 window.location.href = '/viewer/';
             }
-        } 
+        }
         else {
           this.setState({loaded:true})
         }
@@ -157,8 +159,11 @@ class App extends Component {
           else if (route == "passwordreset") {
               content = <PasswordReset  user_id={params[1]} />;
           }
-          else if (route == "test") {
-              content = <Question id={params[1]} />;
+          else if (route == "question") {
+              content = <Question user={this.state.user} question_id={params[1]} />;
+          }
+          else if (route == "editquestion") {
+              content = <EditQuestion id={params[1]} />;
           }
         }
 

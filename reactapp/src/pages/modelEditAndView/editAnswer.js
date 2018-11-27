@@ -32,7 +32,7 @@ class EditAnswer extends Component {
 
 				var Components = [Select, TextArea, Select, ];
 
-			var question = {'name': 'question', 'label': 'Question', 'placeholder': 'Question', 'value': '', 'optionsUrl': '/api/home/component/', 'optionsUrlMap': {'text':'{component.unicode}','value':'{component.id}'}};
+			var question = {'name': 'question', 'label': 'Question', 'placeholder': 'Question', 'value': '', 'optionsUrl': '/api/home/question/', 'optionsUrlMap': {'text':'{question.unicode}','value':'{question.id}'}};
 			var answer = {'name': 'answer', 'label': 'Answer', 'placeholder': 'Answer', 'value': ''};
 			var user = {'name': 'user', 'label': 'User', 'placeholder': 'User', 'value': '', 'optionsUrl': '/api/user/user/', 'optionsUrlMap': {'text':'{user.unicode}','value':'{user.id}'}};
 			var ComponentProps = [question, answer, user];

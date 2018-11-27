@@ -7,7 +7,7 @@ import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion
 class Question extends Component {
     constructor(props) {
         super(props);
-        this.state = {'name' : '', 'factoid' : ''}
+        this.state = {'name' : '', 'factoid' : '', 'order' : 'true', 'component' : '', 'props' : ''}
 
         this.objectCallback = this.objectCallback.bind(this);
     }
@@ -26,7 +26,10 @@ class Question extends Component {
 
 			var name = {'text': this.state.name};
 			var factoid = {'text': this.state.factoid};
-			var ComponentProps = [name, factoid];
+			var order = {'text': this.state.order};
+			var component = {'text': this.state.component};
+			var props = {'text': this.state.props};
+			var ComponentProps = [name, factoid, order, component, props];
 
 
       var content =
@@ -34,6 +37,9 @@ class Question extends Component {
           <Header size={1} text={this.state.name} />
 						<Paragraph {...ComponentProps[0]} />
 						<MultiLineText {...ComponentProps[1]} />
+						<Paragraph {...ComponentProps[2]} />
+						<Paragraph {...ComponentProps[3]} />
+						<MultiLineText {...ComponentProps[4]} />
 
         </div>;
 

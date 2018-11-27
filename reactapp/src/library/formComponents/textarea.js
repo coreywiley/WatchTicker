@@ -21,7 +21,8 @@ class TextArea extends Component {
                     rows={this.props.rows}
                     onChange={this.props.handlechange}
                     onBlur={this.props.onBlur}
-                    value={this.props.value}>
+                    value={this.props.value}
+                    placeholder={this.props.placeholder}>
                 </textarea>
               </div>
         )
