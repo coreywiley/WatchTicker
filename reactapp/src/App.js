@@ -57,7 +57,7 @@ class App extends Component {
         var latLng = null;
         if (params[0] == 'deals') {
           if (params[1]) {
-            search = params[1].splt('_').join(' ');
+            search = params[1].split('_').join(' ');
           }
           latLng = params[3];
           address = params[2];
