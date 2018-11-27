@@ -51,6 +51,41 @@ class Businesses extends Component {
       var newState = {}
       newState[name] = value
 
+      if (name == 'filters' && typeof(value['business_type']) == 'string') {
+        console.log("Here")
+        newState['filters'] = value
+        var tempValue = this.state.filters.business_type.slice();
+        if (typeof(tempValue) == 'string') {
+          if (this.props.search == 'type:FoodAndDrink')
+          tempValue = ['Restaurant','Food Truck','Bar']
+        }
+
+        if (value['business_type'] == 'All') {
+          console.log("All together now.")
+          newState['filters']['business_type'] = ['All']
+        }
+        else if (tempValue.indexOf(value['business_type']) > -1) {
+          console.log("I'm here now.")
+
+          tempValue.splice(tempValue.indexOf(value['business_type']), 1)
+          newState['filters']['business_type'] = tempValue;
+        }
+        else {
+          console.log("I'm over here now.")
+          if (tempValue.indexOf('All') > -1) {
+            newState['filters']['business_type'] = [value['business_type']]
+          }
+          else {
+            tempValue.push(value['business_type'])
+            newState['filters']['business_type'] = tempValue;
+          }
+
+        }
+      }
+      else {
+        newState[name] = value
+      }
+
       var search = value['search'];
       console.log("Search Value", search)
       this.setState(newState, this.props.setGlobalSearch(search))
@@ -135,7 +170,7 @@ class Businesses extends Component {
             usedState.push(business['state'])
           }
 
-          if (this.state.filters.type == '' || this.state.filters.type == 'All' || (this.state.filters.type == business['type'])) {
+          if (this.state.filters.type.length == 0 || this.state.filters.type.indexOf('All') > -1 || this.state.filters.type.indexOf(business['type']) > -1) {
             if (this.state.filters.city == '' || this.state.filters.city == 'All' || (this.state.filters.city == business['city'])) {
               if (this.state.filters.state == '' || this.state.filters.state == 'All' || (this.state.filters.state == business['state'])) {
                 var businessText = business.name + business.description + business.monday_special + business.tuesday_special + business.wednesday_special + business.thursday_special + business.friday_special  + business.saturday_special + business.sunday_special;
