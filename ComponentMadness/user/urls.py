@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^userCheck/$', CheckForUser, name='CheckForUser'),
     url(r'^signup/$', UserSignUp, name='UserSignUp'),
     url(r'^resetPassword/(?P<user_id>\S+)/$', ResetPassword, name='resetPassword'),
+
 ]

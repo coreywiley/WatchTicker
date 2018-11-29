@@ -29,7 +29,13 @@ class Button extends React.Component {
         e.preventDefault();
         console.log("Clicked");
         if (this.props.href) {
-            window.location.href = this.props.href;
+            if (this.props.target == '_blank') {
+                var win = window.open(this.props.href, '_blank');
+                win.focus();
+            }
+            else {
+              window.location.href = this.props.href;
+            }
         }
         else if (this.props.clickHandler) {
             this.props.clickHandler(e);
@@ -37,13 +43,13 @@ class Button extends React.Component {
     }
 
     render() {
-        var type = "btn-" + this.props.type;
+      var type = "btn-" + this.props.type;
       var css = {}
       if (this.props.css) {
         css = this.props.css;
       }
         var hover = null;
-        if (this.props.hover){
+        if (this.props.hover) {
             var hoverCSS = {
                 position: 'absolute',
                 top:'0px',

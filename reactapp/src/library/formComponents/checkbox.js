@@ -5,7 +5,7 @@ class Checkbox extends Component {
 
     render() {
         var checked = false;
-        if (this.props.checked == true) {
+        if (this.props.checked == true || this.props.checked == "true") {
             checked = true
         }
         //using this instead of indexOf because I was having trouble with "4" and 4.
@@ -20,7 +20,7 @@ class Checkbox extends Component {
         return (
             <div className="custom-control custom-checkbox">
                 <input type="checkbox" className="custom-control-input" checked={checked} id={this.props.name + "-" + this.props.value}
-                    name={this.props.name} onChange={this.props.onChange} value={this.props.value} />
+                    name={this.props.name} onChange={this.props.handlechange} value={!checked} />
                 <label className="custom-control-label" htmlFor={this.props.name + "-" + this.props.value}>{this.props.label}</label>
             </div>
         )

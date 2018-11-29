@@ -52,6 +52,7 @@ class Form extends Component {
 
         var newCompleteState = this.state;
         newCompleteState[name] = e.target.value;
+        console.log("Form State Change", newState)
        this.setState(newState, this.setGlobalState(newCompleteState));
     }
 
@@ -164,7 +165,10 @@ class Form extends Component {
           window.location.href = this.props.deleteRedirectUrl;
         }
         else if (this.props.redirectUrl) {
-            if (this.props.objectName) {
+            if (value['success'] == true) {
+              window.location.href = this.props.redirectUrl;
+            }
+            else if (this.props.objectName) {
                  var redirectUrl = resolveVariables({'redirectUrl':this.props.redirectUrl}, value[0][this.props.objectName]);
             }
             else {

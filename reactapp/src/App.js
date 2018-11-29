@@ -29,7 +29,8 @@ import Footer from 'projectLibrary/footer.js';
 
 import Question from './pages/Question.js';
 import EditQuestion from './pages/editQuestion.js';
-
+import QuestionList from './pages/questionList.js';
+import OnBoarding from './pages/onboarding.js';
 
 class App extends Component {
     constructor(props) {
@@ -163,7 +164,13 @@ class App extends Component {
               content = <Question user={this.state.user} question_id={params[1]} />;
           }
           else if (route == "editquestion") {
-              content = <EditQuestion id={params[1]} />;
+              content = <EditQuestion question_id={params[1]} />;
+          }
+          else if (route == "questionlist") {
+              content = <QuestionList />;
+          }
+          else if (route == "onboarding") {
+              content = <OnBoarding user={this.state.user} />;
           }
         }
 

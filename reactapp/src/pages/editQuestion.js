@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
 
-import {Form, TextInput, Select, PasswordInput, Header, TextArea, NumberInput, DateTimePicker} from 'library';
+import {Form, TextInput, Select, PasswordInput, Header, TextArea, NumberInput, DateTimePicker, Checkbox} from 'library';
 
 class EditQuestion extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {'name' : '', 'factoid' : '', 'order' : 'true', 'component' : '', 'props' : ''};
+        this.state = {'name' : '', 'factoid' : '', 'component' : '', 'props' : '', 'loaded':false};
 
         this.objectCallback = this.objectCallback.bind(this);
         this.setGlobalState = this.setGlobalState.bind(this);
@@ -28,12 +28,19 @@ class EditQuestion extends Component {
       var newState = {};
       for (var index in state) {
         if (['name','factoid','order','component','props','required','loaded'].indexOf(index) == -1) {
-          console.log("Prop Incoming", index, props)
-          props[index] = state[index]
+          if (index == 'options') {
+            var options = [];
+            var split = state[index].split(',');
+            for (var i in split) {
+              options.push({'text':split[i].trim(), 'value':split[i].trim()})
+            }
+            props[index] = options;
+          }
+          else {
+            props[index] = state[index]
+          }
         }
-
         newState[index] = state[index]
-
       }
 
       newState['props'] = JSON.stringify(props);
@@ -43,19 +50,33 @@ class EditQuestion extends Component {
 
     objectCallback(result) {
       var question = result[0]['question'];
+      var props = JSON.parse(question['props'])
+
+      for (var index in props) {
+        if (index == 'options') {
+          var options = [];
+          for (var i in props[index]) {
+            options.push(props[index][i]['value']);
+          }
+          question[index] = options.join(',')
+        }
+        else {
+          question[index] = props[index]
+        }
+      }
+
       question['loaded'] = true;
       this.setState(question)
     }
 
     render() {
 
-			var Components = [TextInput, TextArea, NumberInput, Select];
+			var Components = [TextInput, TextArea, Select];
 
 			var name = {'name': 'name', 'label': 'Question', 'placeholder': 'How old are you?', 'value': ''};
 			var factoid = {'name': 'factoid', 'label': 'Factoid', 'placeholder': 'If you are over 50, you are 5% more likely to contract breast cancer.', 'value': ''};
-			var order = {'name': 'order', 'label': 'Order', 'placeholder': 1, 'value': 0};
-			var component = {'name': 'component', 'label': 'Answer Type', 'defaultoption': 'Select', 'options': [{'text': 'Select','value': 'Select'},{'text': 'Short Text Input','value':'TextInput'},{'text':'Long Text Input','value':'TextArea'},{'text': 'Date/Time Picker','value':'DateTimePicker'}]};
-			var ComponentProps = [name, factoid, order, component];
+			var component = {'name': 'component', 'label': 'Answer Type', 'defaultoption': '', 'options': [{'text': 'Select','value': 'Select'},{'text': 'Select Multiple','value': 'MultiSelect'},{'text': 'Short Text Input','value':'TextInput'},{'text':'Long Text Input','value':'TextArea'},{'text': 'Date/Time Picker','value':'DateTimePicker'}]};
+			var ComponentProps = [name, factoid, component];
       var defaults = this.state;
 
       if (this.state.component == 'TextInput') {
@@ -76,15 +97,50 @@ class EditQuestion extends Component {
           defaults['placeholder'] = '';
         }
       }
+      else if (this.state.component == 'DateTimePicker') {
+        Components.push(Header)
+        ComponentProps.push({'text':'Answer Details', 'size':4})
+
+        if (!defaults['display_time']) {
+          defaults['display_time'] = false;
+        }
+        Components.push(Checkbox)
+        ComponentProps.push({'name':'display_time', 'label':'Select Time?','checked':defaults['display_time']})
+
+        if (!defaults['display_date']) {
+          defaults['display_date'] = true;
+        }
+        Components.push(Checkbox)
+        ComponentProps.push({'name':'display_date', 'label':'Select Date?','checked':defaults['display_date']})
+
+      }
+      else if (this.state.component == 'Select') {
+        Components.push(Header)
+        ComponentProps.push({'text':'Answer Details', 'size':4})
+        Components.push(TextArea)
+        ComponentProps.push({'name':'options', 'label':'Add All The Choices, seperated by commas. Other (Specify/Date) will allow you to fill out an option.', 'placeholder':'Choice 1,Choice 2,...'})
+        if (!defaults['options']) {
+          defaults['options'] = '';
+        }
+      }
+      else if (this.state.component == 'MultiSelect') {
+        Components.push(Header)
+        ComponentProps.push({'text':'Answer Details', 'size':4})
+        Components.push(TextArea)
+        ComponentProps.push({'name':'options', 'label':'Add All The Choices, seperated by commas. Other (Specify/Date) will allow you to fill out an option.', 'placeholder':'Choice 1,Choice 2,...'})
+        if (!defaults['options']) {
+          defaults['options'] = '';
+        }
+      }
 
 
 
         var submitUrl = null;
         if (this.state.props != '') {
           var submitUrl = "/api/home/question/";
-        }
-        else if (this.props.question_id) {
-          submitUrl += this.props.question_id + '/';
+          if (this.props.question_id) {
+            submitUrl += this.props.question_id + '/';
+          }
         }
 
         var deleteUrl = undefined;
@@ -101,7 +157,7 @@ class EditQuestion extends Component {
 
         var content = <div className="container">
                 {title}
-                <Form components={Components} redirectUrl={"/question/{id}/"} objectName={'question'} componentProps={ComponentProps} setGlobalState={this.setGlobalState} autoSetGlobalState={true} globalStateName={'question'} deleteUrl={deleteUrl} submitUrl={submitUrl} defaults={defaults} />
+                <Form components={Components} redirectUrl={"/questionList/"} objectName={'question'} componentProps={ComponentProps} setGlobalState={this.setGlobalState} autoSetGlobalState={true} globalStateName={'question'} deleteUrl={deleteUrl} submitUrl={submitUrl} defaults={defaults} />
                 <br />
         </div>;
 
