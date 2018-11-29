@@ -20,6 +20,29 @@ class Businesses extends Component {
         if (search == 'type:FoodAndDrink') {
           business_type = ['Food Truck','Restaurant','Bar','Coffee House'];
         }
+        else if (search == 'type:PersonalServices') {
+          business_type = ['Taxes'];
+        }
+        else if (search == 'type:Automotive') {
+          business_type = ['Auto Cleaning','Auto Repair'];
+        }
+        else if (search == 'type:Retail') {
+          business_type = ['Arts and Crafts','Clothing and Accessories','Flowers','Sweets and Baskets'];
+        }
+        else if (search == 'type:HealthAndFitness') {
+          business_type = ['Dental','Gyms and Weightloss'];
+        }
+        else if (search == 'type:HomeServices') {
+          business_type = ['Lawn and Garden','HVAC and Electrical','Plumbing','Cleaning Services'];
+        }
+        else if (search == 'type:BeautyAndSpas') {
+          business_type = ['Barbers','Nail Salons','Hair Salons','Massage'];
+        }
+        else if (search == 'type:Pets') {
+          business_type = ['Pet Boarding','Pet Health','Pet Grooming'];
+        }
+
+
         search = '';
         this.props.setGlobalSearch('')
       }
