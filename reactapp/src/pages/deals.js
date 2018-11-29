@@ -29,6 +29,28 @@ class Deals extends Component {
         if (search == 'type:FoodAndDrink') {
           business_type = ['Food Truck','Restaurant','Bar','Coffee House'];
         }
+        else if (search == 'type:PersonalServices') {
+          business_type = ['Taxes'];
+        }
+        else if (search == 'type:Automotive') {
+          business_type = ['Auto Cleaning','Auto Repair'];
+        }
+        else if (search == 'type:Retail') {
+          business_type = ['Arts and Crafts','Clothing and Accessories','Flowers','Sweets and Baskets'];
+        }
+        else if (search == 'type:HealthAndFitness') {
+          business_type = ['Dental','Gyms and Weightloss'];
+        }
+        else if (search == 'type:HomeServices') {
+          business_type = ['Lawn and Garden','HVAC and Electrical','Plumbing','Cleaning Services'];
+        }
+        else if (search == 'type:BeautyAndSpas') {
+          business_type = ['Barbers','Nail Salons','Hair Salons','Massage'];
+        }
+        else if (search == 'type:Pets') {
+          business_type = ['Pet Boarding','Pet Health','Pet Grooming'];
+        }
+
         search = '';
       }
     }
@@ -132,8 +154,6 @@ class Deals extends Component {
       var d = R * c; // Distance in km
       return d;
     }
-
-
 
     sortByKey(array, key) {
         return array.sort(function(a, b) {
@@ -262,7 +282,9 @@ class Deals extends Component {
         var businesses = null;
         if (this.props.toggleFilters != false) {
           var toggleFilters = <Button type={'light'} text={'Toggle Filters'} clickHandler={this.toggleFilters} />;
-          var businesses = <Businesses setGlobalSearch={this.setGlobalSearch} user_id={this.props.user_id} search={this.props.search} address={this.props.address} latLng={this.props.latLng} />
+          if (this.props.show_businesses != false) {
+            var businesses = <Businesses setGlobalSearch={this.setGlobalSearch} user_id={this.props.user_id} search={this.props.search} address={this.props.address} latLng={this.props.latLng} />
+          }
         }
 
 

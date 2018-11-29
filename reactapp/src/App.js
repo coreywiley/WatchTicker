@@ -222,8 +222,11 @@ class App extends Component {
           else if (params[0].toLowerCase() == "deals") {
               content = <Deals user_id={this.state.user.id} search={this.state.search} setGlobalSearch={this.setGlobalSearch} address={this.state.address} latLng={this.state.latLng} />
           }
+          else if (params[0].toLowerCase() == "justdeals") {
+              content = <Deals user_id={this.state.user.id} search={this.state.search} setGlobalSearch={this.setGlobalSearch} address={this.state.address} latLng={this.state.latLng} show_businesses={false} />
+          }
           else if (params[0].toLowerCase() == "businesses") {
-              content = <Businesses user_id={this.state.user.id} />
+              content = <Businesses user_id={this.state.user.id} search={this.state.search} setGlobalSearch={this.setGlobalSearch} address={this.state.address} latLng={this.state.latLng} />
           }
           else if (params[0].toLowerCase() == "business") {
               content = <Business user_id={this.state.user.id} business_id={params[1]} is_staff={this.state.user.is_staff} />

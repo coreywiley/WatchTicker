@@ -60,7 +60,7 @@ class Navbar extends React.Component {
         var links = [];
         if (this.props.links) {
             for (var index in this.props.links) {
-                links.push(<li key={index} className="nav-item"><a className="nav-link" style={{'minWidth':'125px'}} href={this.props.links[index][0]}>{this.props.links[index][1]}</a></li>)
+                links.push(<li key={index} className="nav-item"><a className="nav-link" style={{'minWidth':'150px'}} href={this.props.links[index][0]}>{this.props.links[index][1]}</a></li>)
             }
         }
 
@@ -161,14 +161,12 @@ class Nav extends React.Component {
         if (this.props.user_id) {
           var businessLink = ["/manageYourBusinesses/",'Manage Your Businesses'];
           var signUpLinks = [['/how-it-works/','How It Works'], businessLink, ['/editUser/','Account Details'], ['/logOut/','Log Out']]
-          var links = [['/deals/type:FoodAndDrink/','Food And Drink']];
+          var links = [['/deals/type:FoodAndDrink/','Food And Drink'],['/deals/type:PersonalServices/','Personal Services'],['/deals/type:Automotive/','Automotive'],['/deals/type:Retail/','Retail'],['/deals/type:HealthAndFitness/','Health And Fitness'],['/deals/type:HomeServices/','Home Services'],['/deals/type:BeautyAndSpas/','Beauty And Spas'],['/deals/type:Pets/','Pets']];
         }
         else {
-          var links = [['/deals/type:FoodAndDrink/','Food And Drink']];
+          var links = [['/deals/type:FoodAndDrink/','Food And Drink'],['/deals/type:PersonalServices/','Personal Services'],['/deals/type:Automotive/','Automotive'],['/deals/type:Retail/','Retail'],['/deals/type:HealthAndFitness/','Health And Fitness'],['/deals/type:HomeServices/','Home Services'],['/deals/type:BeautyAndSpas/','Beauty And Spas'],['/deals/type:Pets/','Pets']];
           var signUpLinks = [['/how-it-works/','How It Works'], ['/signUp/business/','Add Your Listing'], ['/signUp/','Sign Up'], ['/logIn/','Log In']]
         }
-
-
 
         if (this.props.is_staff == true) {
           signUpLinks.push(['/appList/','Admin'])

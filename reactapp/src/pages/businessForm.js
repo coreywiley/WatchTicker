@@ -30,9 +30,17 @@ class BusinessForm extends Component {
     }
 
     render() {
+
+      var business_types = ['Food Truck','Restaurant','Bar','Coffee House','Taxes','Auto Cleaning','Auto Repair','Arts and Crafts','Clothing and Accessories','Flowers','Sweets and Baskets','Dental','Gyms and Weightloss','Lawn and Garden','HVAC and Electrical','Plumbing','Cleaning Services','Barbers','Nail Salons','Hair Salons','Massage','Pet Boarding','Pet Health','Pet Grooming']
+      var business_options = [];
+      for (var index in business_types) {
+        var business_type = business_types[index];
+        business_options.push({'value':business_type,'text':business_type})
+      }
+
         var Components = [TextInput,Select, GoogleAddress,TextArea, TextInput, TextInput, TextInput, PhotoInput, TextInput, TextInput, TextInput, TextInput, Header, TextArea, TextArea, TextArea, TextArea, TextArea, TextArea, TextArea];
         var name = {'value':'','name':'name','label':'Name','placeholder': 'Patron Gate', 'required':true}
-        var type = {'value':'', 'name':'type', 'label':'Type Of Restaurant', 'options':[{'value':'Coffee House','text':'Coffee House'},{'value':'Bar','text':'Bar'},{'value':'Restaurant','text':'Restaurant'}, {'value':'Food Truck','text':'Food Truck'}]}
+        var type = {'value':'', 'name':'type', 'label':'Type Of Restaurant', 'options':business_options}
         var google_address = {'names':['address','street','street2','city','state','zipcode']}
         var description = {'value':'','name':'description','label':'Description','placeholder': ''}
         var email = {'value':'','name':'email','label':'Email','placeholder': ''}
