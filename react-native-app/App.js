@@ -8,16 +8,23 @@ import SignUp from './pages/scaffold/signup.js';
 import NavBar from './library/navbar.js';
 import OnBoarding from './pages/onboarding.js';
 import Customize from './pages/customize.js';
+import Doctors from './pages/doctors.js';
+import AddDoctor from './pages/addDoctor.js';
+import FAQs from './pages/faq.js';
+import Journal from './pages/journal.js';
+import JournalEntries from './pages/journalEntries.js';
+import Resources from './pages/resources.js';
 
 class App extends React.Component {
   constructor(props) {
   		super(props);
   		this.state = {
-  			page: 'customize',
+  			page: 'doctors',
         loading: true,
-        league:undefined,
+        doctor: undefined,
+        journal: undefined,
+        customize: undefined,
         userId: 1,
-        game:undefined
   		};
   		this.setGlobalState = this.setGlobalState.bind(this);
       this.saveCreds = this.saveCreds.bind(this);
@@ -32,7 +39,8 @@ class App extends React.Component {
   async componentDidMount() {
     await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Quicksand: require("./assets/fonts/Quicksand.ttf"),
     });
     var newState = {loading: false}
 
@@ -68,11 +76,11 @@ class App extends React.Component {
   }
 
 
-      setGlobalState(item, value) {
-          var newState = {}
-          newState[item] = value;
-          this.setState(newState);
-      }
+    setGlobalState(item, value) {
+        var newState = {}
+        newState[item] = value;
+        this.setState(newState);
+    }
 
     handleChange(name,value) {
       console.log("Hello");
@@ -81,6 +89,7 @@ class App extends React.Component {
   render() {
     var header;
     var body;
+    var footer = null;
     if (this.state.page == 'logIn') {
         header = <NavBar title={'Log In'} back={false} />;
         body = <LogIn userId={this.state.userId} setGlobalState={this.setGlobalState} />;
@@ -90,12 +99,31 @@ class App extends React.Component {
         body = <SignUp csrfmiddlewaretoken={this.state.csrfmiddlewaretoken} setGlobalState={this.setGlobalState} />;
     }
     else if (this.state.page == 'onboarding') {
-        header = <NavBar title={'On Boarding'} back={false} logOut={this.logOut} />;
         body = <OnBoarding setGlobalState={this.setGlobalState} userId={this.state.userId} />;
     }
     else if (this.state.page == 'customize') {
-        header = <NavBar title={'Customize'} back={false} logOut={this.logOut} />;
         body = <Customize setGlobalState={this.setGlobalState} userId={this.state.userId} />;
+    }
+    else if (this.state.page == 'doctors') {
+        header = <NavBar title={'Doctors'} back={false} logOut={this.logOut} />;
+        body = <Doctors setGlobalState={this.setGlobalState} userId={this.state.userId} />;
+    }
+    else if (this.state.page == 'addDoctor') {
+        header = <NavBar title={'Edit Doctor'} back={false} logOut={this.logOut} />;
+        body = <AddDoctor setGlobalState={this.setGlobalState} userId={this.state.userId} doctor={this.state.doctor}/>;
+    }
+    else if (this.state.page == 'faqs') {
+        header = <NavBar title={'FAQs'} backPage={'resources'} setGlobalState={this.setGlobalState} />;
+        body = <FAQs setGlobalState={this.setGlobalState} userId={this.state.userId} />;
+    }
+    else if (this.state.page == 'journal') {
+        body = <Journal setGlobalState={this.setGlobalState} userId={this.state.userId} journal={this.state.journal} customize={this.state.customize} />;
+    }
+    else if (this.state.page == 'journalEntries') {
+        body = <JournalEntries setGlobalState={this.setGlobalState} userId={this.state.userId} />;
+    }
+    else if (this.state.page == 'resources') {
+        body = <Resources setGlobalState={this.setGlobalState} userId={this.state.userId} />;
     }
 
 

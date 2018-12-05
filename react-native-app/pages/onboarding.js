@@ -1,21 +1,43 @@
 import React from 'react';
-import { StyleSheet, View, AsyncStorage } from 'react-native';
+import { TouchableWithoutFeedback, Image,StyleSheet, View, AsyncStorage, ScrollView } from 'react-native';
 import ajaxWrapper from '../base/ajax.js';
-import { Form, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Text, Card, CheckBox, CardItem, List, ListItem, InputGroup, Input, Spinner, Item, Label, Textarea} from 'native-base';
-import ScrollView from '../library/scrollview.js';
+import { Form, Container, Header, Title, Content,Left, Right, Body, Card, CheckBox, CardItem, List, ListItem, InputGroup, Input, Spinner, Item, Label, Textarea} from 'native-base';
+import DateTimePicker from '../library/DateTimePicker.js';
 import ButtonSelect from '../library/buttonSelect.js';
+import {LinearGradient} from 'expo';
+import Button from '../localLibrary/button.js';
+import Footer from '../localLibrary/footer.js';
+import Text from '../library/text.js';
+
+class Factoid extends React.Component {
+  render() {
+    return (
+      <View style={{'marginTop':150, 'alignItems':'center', justifyContent:'center'}}>
+        <View style={{backgroundColor:'white', 'alignItems':'center', justifyContent:'center', 'width':'80%', borderRadius:25, padding:20, paddingBottom: 40}}>
+          <Text style={{'color':'purple', lineHeight:30, textAlign:'center'}}>{this.props.factoid}</Text>
+        </View>
+        <TouchableWithoutFeedback onPress={this.props.close} style={{'alignItems':'center', justifyContent:'center', flex: 1}}>
+          <View style={{'textAlign':'center', 'position':'absolute','bottom':-25, 'height':50, width:50, borderRadius:50, backgroundColor: 'white', zIndex:100}}>
+            <Text style={{color:'#a657a1', borderColor:'#a657a1', 'textAlign':'center',marginTop:10, marginLeft:10, fontSize:24, 'height':32, width:32, borderRadius:15, borderWidth:1, backgroundColor: 'white', zIndex:100}}>X</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    )
+  }
+}
 
 class Onboarding extends React.Component {
   constructor(props) {
       super(props);
 
-      this.state = {'questions' : [], 'currentQuestion' : 0, loaded:false, 'answers':{}};
+      this.state = {'questions' : [], 'currentQuestion' : 0, loaded:false, 'answers':{}, 'info':false};
       this.objectCallback = this.objectCallback.bind(this);
       this.next = this.next.bind(this);
       this.prev = this.prev.bind(this);
       this.handleChange = this.handleChange.bind(this);
       this.answersCallback = this.answersCallback.bind(this);
       this.answerCallback = this.answerCallback.bind(this);
+      this.info = this.info.bind(this);
   }
 
     componentDidMount(value) {
@@ -138,6 +160,14 @@ class Onboarding extends React.Component {
       this.setState({'currentQuestion': this.state.currentQuestion - 1, 'answer':currentAnswer})
     }
 
+    home() {
+      console.log("Home")
+    }
+
+    info() {
+      this.setState({'info':!this.state.info})
+    }
+
     answerCallback(result) {
       console.log("Answer Callback", result)
       var answer = result[0]['answer'];
@@ -167,7 +197,7 @@ class Onboarding extends React.Component {
             var pickerItems = [];
             for (var index in props['options']) {
               var value = props['options'][index]['value'];
-              pickerItems.push(<Item><ButtonSelect answer={this.state.answer} handleChange={this.handleChange} name={'answer'} value={value}/></Item>)
+              pickerItems.push(<ButtonSelect answer={this.state.answer} handleChange={this.handleChange} name={'answer'} value={value}/>)
             }
 
             var item = <View>
@@ -180,7 +210,7 @@ class Onboarding extends React.Component {
             var pickerItems = [];
             for (var index in props['options']) {
               var value = props['options'][index]['value'];
-              pickerItems.push(<Item><ButtonSelect multi={true} answer={this.state.answer} handleChange={this.handleChange} name={'answer'} value={value}/></Item>)
+              pickerItems.push(<ButtonSelect multi={true} answer={this.state.answer} handleChange={this.handleChange} name={'answer'} value={value}/>)
 
             }
 
@@ -193,50 +223,80 @@ class Onboarding extends React.Component {
             props['name'] = 'answer';
             var pickerItems = [];
 
-            var item = <Item><ScrollView answer={this.state.answer} handleChange={this.handleChange} date={true} /></Item>;
+            var item = <DateTimePicker name={'answer'} answer={this.state.answer} handleChange={this.handleChange} date={true} />;
 
             }
 
           var next = null;
 
           if (this.state.answer != '' || this.state.answer != []) {
-            var next = <Button onPress={() => this.next()} full>
-              <Text>Next Question</Text>
+            var next = <Button onPress={() => this.next()} text={'Submit'} selected={true}>
             </Button>;
           }
           else if (this.state.currentQuestion == this.state.questions.length - 1) {
-            next = <Button onPress={() => this.next()} full>
-              <Text>Complete On-Boarding</Text>
+            next = <Button onPress={() => this.next()} text={'Complete On-Boarding'}  selected={true}>
             </Button>;
           }
 
-          var prev = null;
-          if (this.state.currentQuestion != 0) {
-            prev = <Button danger={true} onPress={() => this.prev()} full>
-              <Text>Previous Question</Text>
-            </Button>;
+
+          if (this.state.info == false) {
+            var colors = ['#bd83b9', '#7d5d9b'];
+          }
+          else {
+            var colors = ['#52bfa6', '#3e8797'];
           }
 
+          var circles = [];
+          for (var i = 0; i < this.state.questions.length; i++) {
+            var color = '#a657a1';
+            if (i > this.state.currentQuestion) {
+              color = '#d6afd2';
+            }
+            circles.push(<View style={{'backgroundColor':color, height: 6, width:6, borderRadius:3, margin:3}}></View>)
+          }
+
+
+          var content = [];
+
+          if (this.state.info) {
+              var question = this.state.questions[this.state.currentQuestion];
+            content.push(<Factoid close={this.info} factoid={question.factoid} />)
+          }
+          else {
+            content.push(<View style={{'flexDirection':'row', 'flexWrap':'wrap','alignItems':'flex-start', 'marginTop':40, marginBottom:60}}>
+            {circles}
+            </View>)
+            content.push(<Text style={{color:'white', textAlign:'center', padding:10}}>{this.state.questions[this.state.currentQuestion]['name']}</Text>)
+            content.push(item);
+            content.push(next);
+            content.push(<View style={{'marginBottom':200}} />)
+
+          }
 
 
           return (
-              <View>
-                <Form>
-                  <Text>{this.state.questions[this.state.currentQuestion]['name']}</Text>
-                  <InputGroup>
-                        {item}
-                  </InputGroup>
-                  </Form>
-                  {next}
-                  {prev}
+            <View>
+            <LinearGradient
+              colors={colors}
+              style={{alignItems: 'center', 'height':'100%', 'width':'100%'}}>
+
+              <ScrollView style={{'height':'100%','width':'100%'}}>
+              <View style={{alignItems:'center', justifyContent:'center'}}>
+                {content}
+                </View>
+              </ScrollView>
+              <Footer prev={this.prev} home={this.home} info={this.info}/>
+              </LinearGradient>
               </View>
           );
         }
         else {
           return (
-            <View>
-                  <Text>Welcome To On-Boarding</Text>
-              </View>
+            <LinearGradient
+              colors={['#bd83b9', '#7d5d9b']}
+              style={{ padding: 15, alignItems: 'center', 'height':'100%'}}>
+                  <Image source={require('../assets/Norma_1.png')} />
+              </LinearGradient>
           );
         }
 

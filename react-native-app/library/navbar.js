@@ -8,7 +8,7 @@ class NavBar extends React.Component {
 
     render() {
       backButton = <Button onPress={() => this.props.setGlobalState('page',this.props.backPage)} transparent>
-                <Icon name='chevron-left' style={{'color':'white'}} />
+                <Icon name='chevron-left' style={{'color':'white', fontSize: 20}} />
               </Button>;
       if (this.props.back == false) {
           backButton = <View></View>;
@@ -22,16 +22,13 @@ class NavBar extends React.Component {
         var logOutAction=<View></View>;
       }
 
-      return (<Header>
+      return (<Header style={{backgroundColor: '#bb81b8'}}>
             <Left>
               {backButton}
             </Left>
             <Body>
-              <Title>{this.props.title}</Title>
+              <Title style={{'fontFamily':'Quicksand', color:'white'}}>{this.props.title}</Title>
             </Body>
-            <Right>
-              {logOutAction}
-            </Right>
           </Header>
         )
     }

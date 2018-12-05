@@ -7,7 +7,7 @@ from user.models import User
 
 class Question(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=120, blank=True, default="")
+    name = models.CharField(max_length=1200, blank=True, default="")
     factoid = models.TextField(blank=True, default="")
     order = models.IntegerField(default=0)
     component = models.CharField(max_length=120, blank=True, default="")
@@ -32,3 +32,39 @@ class Customize(models.Model):
     nipple_color = models.IntegerField(default=0)
     masectomy = models.IntegerField(default=0)
     user = models.IntegerField(default=0)
+
+class Journal(models.Model):
+    id = models.AutoField(primary_key=True)
+    date = models.DateField(default=datetime.datetime.now)
+    notes = models.TextField(default='')
+    user = models.IntegerField(default=0)
+
+class Symptom(models.Model):
+    id = models.AutoField(primary_key=True)
+    journal = models.ForeignKey(Journal, on_delete=models.CASCADE, related_name='symptoms')
+    x_coord = models.IntegerField(default=0)
+    y_coord = models.IntegerField(default=0)
+    symptom = models.CharField(max_length=120, blank=False, default="")
+
+class Doctor(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=1200, blank=True, default = "")
+    type = models.CharField(max_length=120, blank=True, default = "")
+    phone = models.CharField(max_length=120, blank=True, default="")
+    email = models.CharField(max_length=120, blank=True, default="")
+    notes = models.TextField(blank=True, default="")
+    next_appointment = models.DateField(null=True)
+    reminder = models.BooleanField(default=False)
+    user = models.IntegerField(default=0)
+
+class FAQ(models.Model):
+    id = models.AutoField(primary_key=True)
+    question = models.CharField(max_length=1200, blank=True, default="")
+    answer = models.TextField(blank=True, default="")
+    order = models.IntegerField(default=0)
+    archived = models.BooleanField(default=True)
+    preview_order = models.IntegerField(default=0)
+    preview_archived = models.BooleanField(default=True)
+
+    def __str__(self):
+        return u"{}".format(self.question)
