@@ -14,32 +14,33 @@ class Businesses extends Component {
 
     var search = this.props.search;
     var business_type = 'All';
+    var businesses_allowed = 'All';
 
     if (this.props.search) {
       if (search.startsWith("type:")) {
         if (search == 'type:FoodAndDrink') {
-          business_type = ['Food Truck','Restaurant','Bar','Coffee House'];
+          businesses_allowed = ['Food Truck','Restaurant','Bar','Coffee House'];
         }
         else if (search == 'type:PersonalServices') {
-          business_type = ['Taxes'];
+          businesses_allowed = ['Taxes'];
         }
         else if (search == 'type:Automotive') {
-          business_type = ['Auto Cleaning','Auto Repair'];
+          businesses_allowed = ['Auto Cleaning','Auto Repair'];
         }
         else if (search == 'type:Retail') {
-          business_type = ['Arts and Crafts','Clothing and Accessories','Flowers','Sweets and Baskets'];
+          businesses_allowed = ['Arts and Crafts','Clothing and Accessories','Flowers','Sweets and Baskets'];
         }
         else if (search == 'type:HealthAndFitness') {
-          business_type = ['Dental','Gyms and Weightloss'];
+          businesses_allowed = ['Dental','Gyms and Weightloss'];
         }
         else if (search == 'type:HomeServices') {
-          business_type = ['Lawn and Garden','HVAC and Electrical','Plumbing','Cleaning Services'];
+          businesses_allowed = ['Lawn and Garden','HVAC and Electrical','Plumbing','Cleaning Services'];
         }
         else if (search == 'type:BeautyAndSpas') {
-          business_type = ['Barbers','Nail Salons','Hair Salons','Massage'];
+          businesses_allowed = ['Barbers','Nail Salons','Hair Salons','Massage'];
         }
         else if (search == 'type:Pets') {
-          business_type = ['Pet Boarding','Pet Health','Pet Grooming'];
+          businesses_allowed = ['Pet Boarding','Pet Health','Pet Grooming'];
         }
 
 
@@ -49,7 +50,7 @@ class Businesses extends Component {
     }
 
 
-    this.state = {'businesses':[], show_filters:true, filters:{'type':business_type, 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
+    this.state = {'businesses':[], 'businesses_allowed':businesses_allowed, show_filters:true, filters:{'type':business_type, 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
 
 
 
@@ -180,25 +181,33 @@ class Businesses extends Component {
 
         for (var index in businessesList) {
           var business = businessesList[index]
-          if (usedTypes.indexOf(business['type']) == -1) {
-            types.push(business['type'])
-            usedTypes.push(business['type'])
-          }
-          if (usedCities.indexOf(business['city']) == -1) {
-            cities.push(business['city'])
-            usedCities.push(business['city'])
-          }
-          if (usedState.indexOf(business['state']) == -1) {
-            states.push(business['state'])
-            usedState.push(business['state'])
+          var allowed = true;
+          if (this.state.businesses_allowed != 'All' && this.state.businesses_allowed.indexOf(business['type']) == -1) {
+            allowed = false;
           }
 
-          if (this.state.filters.type.length == 0 || this.state.filters.type.indexOf('All') > -1 || this.state.filters.type.indexOf(business['type']) > -1) {
-            if (this.state.filters.city == '' || this.state.filters.city == 'All' || (this.state.filters.city == business['city'])) {
-              if (this.state.filters.state == '' || this.state.filters.state == 'All' || (this.state.filters.state == business['state'])) {
-                var businessText = business.name + business.description + business.monday_special + business.tuesday_special + business.wednesday_special + business.thursday_special + business.friday_special  + business.saturday_special + business.sunday_special;
-                if (this.props.search == '' || this.props.search == undefined || businessText.toLowerCase().indexOf(this.props.search.toLowerCase()) > -1) {
-                  businessCards.push(<Card distance={business['distance']} address={business['address']} reviews={business['review']} imageUrl={business['main_image']} imageAlt={business['name']} name={business['name']} description={business['description'].substring(0,130) + '...'} button={'Read More'} button_type={'primary'} link={'/business/' + business['id'] + '/'} />)
+          if (business && allowed) {
+            if (usedTypes.indexOf(business['type']) == -1) {
+              types.push(business['type'])
+              usedTypes.push(business['type'])
+            }
+            if (usedCities.indexOf(business['city']) == -1) {
+              cities.push(business['city'])
+              usedCities.push(business['city'])
+            }
+            if (usedState.indexOf(business['state']) == -1) {
+              states.push(business['state'])
+              usedState.push(business['state'])
+            }
+            if (this.state.businesses_allowed == 'All' || this.state.businesses_allowed.indexOf(business['type'])) {
+              if (this.state.filters.type.length == 0 || this.state.filters.type.indexOf('All') > -1 || this.state.filters.type.indexOf(business['type']) > -1) {
+                if (this.state.filters.city == '' || this.state.filters.city == 'All' || (this.state.filters.city == business['city'])) {
+                  if (this.state.filters.state == '' || this.state.filters.state == 'All' || (this.state.filters.state == business['state'])) {
+                    var businessText = business.name + business.description + business.monday_special + business.tuesday_special + business.wednesday_special + business.thursday_special + business.friday_special  + business.saturday_special + business.sunday_special;
+                    if (this.props.search == '' || this.props.search == undefined || businessText.toLowerCase().indexOf(this.props.search.toLowerCase()) > -1) {
+                      businessCards.push(<Card distance={business['distance']} address={business['address']} reviews={business['review']} imageUrl={business['main_image']} imageAlt={business['name']} name={business['name']} description={business['description'].substring(0,130) + '...'} button={'Read More'} button_type={'primary'} link={'/business/' + business['id'] + '/'} />)
+                    }
+                  }
                 }
               }
             }
@@ -207,7 +216,7 @@ class Businesses extends Component {
 
 
         var Components = [TextInput, RadioList,RadioList,RadioList];
-        var type = {'value':'', 'name':'type', 'label':'Type Of Restaurant', 'options':types, 'defaultoption':''}
+        var type = {'value':'', 'name':'type', 'label':'Type Of Business', 'options':types, 'defaultoption':''}
         var city = {'value':'', 'name':'city', 'label':'City', 'options':cities, 'defaultoption':''}
         var state = {'value':'', 'name':'state', 'label':'State', 'options':states, 'defaultoption':''}
         var search = {'value':this.props.search, 'name':'search', 'label':'Search Anything', 'defaultoption':''}

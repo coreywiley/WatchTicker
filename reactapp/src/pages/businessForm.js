@@ -40,7 +40,7 @@ class BusinessForm extends Component {
 
         var Components = [TextInput,Select, GoogleAddress,TextArea, TextInput, TextInput, TextInput, PhotoInput, TextInput, TextInput, TextInput, TextInput, Header, TextArea, TextArea, TextArea, TextArea, TextArea, TextArea, TextArea];
         var name = {'value':'','name':'name','label':'Name','placeholder': 'Patron Gate', 'required':true}
-        var type = {'value':'', 'name':'type', 'label':'Type Of Restaurant', 'options':business_options}
+        var type = {'value':'', 'name':'type', 'label':'Type Of Business', 'options':business_options}
         var google_address = {'names':['address','street','street2','city','state','zipcode']}
         var description = {'value':'','name':'description','label':'Description','placeholder': ''}
         var email = {'value':'','name':'email','label':'Email','placeholder': ''}

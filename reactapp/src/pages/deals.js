@@ -23,39 +23,40 @@ class Deals extends Component {
     super(props);
     var search = '';
     var business_type = ['All'];
+    var business_allowed = 'All'
     if (this.props.search) {
       search = this.props.search;
       if (search.startsWith("type:")) {
         if (search == 'type:FoodAndDrink') {
-          business_type = ['Food Truck','Restaurant','Bar','Coffee House'];
+          business_allowed = ['Food Truck','Restaurant','Bar','Coffee House'];
         }
         else if (search == 'type:PersonalServices') {
-          business_type = ['Taxes'];
+          business_allowed = ['Taxes'];
         }
         else if (search == 'type:Automotive') {
-          business_type = ['Auto Cleaning','Auto Repair'];
+          business_allowed = ['Auto Cleaning','Auto Repair'];
         }
         else if (search == 'type:Retail') {
-          business_type = ['Arts and Crafts','Clothing and Accessories','Flowers','Sweets and Baskets'];
+          business_allowed = ['Arts and Crafts','Clothing and Accessories','Flowers','Sweets and Baskets'];
         }
         else if (search == 'type:HealthAndFitness') {
-          business_type = ['Dental','Gyms and Weightloss'];
+          business_allowed = ['Dental','Gyms and Weightloss'];
         }
         else if (search == 'type:HomeServices') {
-          business_type = ['Lawn and Garden','HVAC and Electrical','Plumbing','Cleaning Services'];
+          business_allowed = ['Lawn and Garden','HVAC and Electrical','Plumbing','Cleaning Services'];
         }
         else if (search == 'type:BeautyAndSpas') {
-          business_type = ['Barbers','Nail Salons','Hair Salons','Massage'];
+          business_allowed = ['Barbers','Nail Salons','Hair Salons','Massage'];
         }
         else if (search == 'type:Pets') {
-          business_type = ['Pet Boarding','Pet Health','Pet Grooming'];
+          business_allowed = ['Pet Boarding','Pet Health','Pet Grooming'];
         }
 
         search = '';
       }
     }
 
-    this.state = {deals:[], show_filters:true, filters:{'deal_type':'All', 'business_type':business_type, 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
+    this.state = {deals:[], businesses_allowed: business_allowed, show_filters:true, filters:{'deal_type':'All', 'business_type':business_type, 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
 
     this.dealCallback = this.dealCallback.bind(this);
     this.setGlobalState = this.setGlobalState.bind(this);
@@ -205,31 +206,41 @@ class Deals extends Component {
 
         for (var index in dealList) {
           var deal = dealList[index]
-          if (usedDealTypes.indexOf(deal['type']) == -1) {
-            deal_types.push(deal['type'])
-            usedDealTypes.push(deal['type'])
-          }
-          if (usedBusinessTypes.indexOf(deal['business']['type']) == -1) {
-            business_types.push(deal['business']['type'])
-            usedBusinessTypes.push(deal['business']['type'])
-          }
-          if (usedCities.indexOf(deal['business']['city']) == -1) {
-            cities.push(deal['business']['city'])
-            usedCities.push(deal['business']['city'])
-          }
-          if (usedState.indexOf(deal['business']['state']) == -1) {
-            states.push(deal['business']['state'])
-            usedState.push(deal['business']['state'])
+
+          var allowed = true;
+          if (this.state.businesses_allowed != 'All' && this.state.businesses_allowed.indexOf(deal['business']['type']) == -1) {
+            allowed = false;
           }
 
+          if (deal && allowed) {
 
-          if (this.state.filters.deal_type == '' || this.state.filters.deal_type == 'All' || (this.state.filters.deal_type == deal['type'])) {
-            if (this.state.filters.business_type.length == 0 || this.state.filters.business_type.indexOf('All') > -1 || this.state.filters.business_type.indexOf(deal['business']['type']) > -1) {
-              if (this.state.filters.city == '' || this.state.filters.city == 'All' || (this.state.filters.city == deal['business']['city'])) {
-                if (this.state.filters.state == '' || this.state.filters.state == 'All' || (this.state.filters.state == deal['business']['state'])) {
-                  var dealText = deal.name + deal.description;
-                  if (this.props.search == '' || !this.props.search || dealText.toLowerCase().indexOf(this.props.search.toLowerCase()) > -1) {
-                    dealCards.push(<Card distance={deal['distance']} imageUrl={deal['main_image']} imageAlt={deal['name']} name={deal['name']} description={deal['description']} city={deal['business']['city']} reviews={deal['business']['review']} button={'Read More'} button_type={'primary'} link={'/deal/' + deal['id'] + '/'} />)
+
+            if (usedDealTypes.indexOf(deal['type']) == -1) {
+              deal_types.push(deal['type'])
+              usedDealTypes.push(deal['type'])
+            }
+            if (usedBusinessTypes.indexOf(deal['business']['type']) == -1) {
+              business_types.push(deal['business']['type'])
+              usedBusinessTypes.push(deal['business']['type'])
+            }
+            if (usedCities.indexOf(deal['business']['city']) == -1) {
+              cities.push(deal['business']['city'])
+              usedCities.push(deal['business']['city'])
+            }
+            if (usedState.indexOf(deal['business']['state']) == -1) {
+              states.push(deal['business']['state'])
+              usedState.push(deal['business']['state'])
+            }
+
+
+            if (this.state.filters.deal_type == '' || this.state.filters.deal_type == 'All' || (this.state.filters.deal_type == deal['type'])) {
+              if (this.state.filters.business_type.length == 0 || this.state.filters.business_type.indexOf('All') > -1 || this.state.filters.business_type.indexOf(deal['business']['type']) > -1) {
+                if (this.state.filters.city == '' || this.state.filters.city == 'All' || (this.state.filters.city == deal['business']['city'])) {
+                  if (this.state.filters.state == '' || this.state.filters.state == 'All' || (this.state.filters.state == deal['business']['state'])) {
+                    var dealText = deal.name + deal.description;
+                    if (this.props.search == '' || !this.props.search || dealText.toLowerCase().indexOf(this.props.search.toLowerCase()) > -1) {
+                      dealCards.push(<Card distance={deal['distance']} imageUrl={deal['main_image']} imageAlt={deal['name']} name={deal['name']} description={deal['description']} city={deal['business']['city']} reviews={deal['business']['review']} button={'Read More'} button_type={'primary'} link={'/deal/' + deal['id'] + '/'} />)
+                    }
                   }
                 }
               }
@@ -240,7 +251,7 @@ class Deals extends Component {
 
         var Components = [TextInput, RadioList, RadioList, RadioList, RadioList];
         var deal_type = {'value':'', 'name':'deal_type', 'label':'Type Of Deal', 'options':deal_types, 'defaultoption':''}
-        var business_type = {'value':'', 'name':'business_type', 'label':'Type Of Restaurant', 'options':business_types,  'defaultoption':''}
+        var business_type = {'value':'', 'name':'business_type', 'label':'Type Of Business', 'options':business_types,  'defaultoption':''}
         var city = {'value':'', 'name':'city', 'label':'City', 'options':cities, 'defaultoption':''}
         var state = {'value':'', 'name':'state', 'label':'State', 'options':states,  'defaultoption':''}
         var search = {'value':'', 'name':'search', 'label':'Search Anything',  'defaultoption':''}
