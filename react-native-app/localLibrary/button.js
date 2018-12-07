@@ -11,6 +11,10 @@ class NormaButton extends React.Component {
       var textColor = 'white'
       var colors = ['#52bfa6', '#3e8797'];
     }
+    if (this.props.purple) {
+      var colors = ['#bd83b9', '#7d5d9b'];
+      textColor = 'white';
+    }
 
     var style = {'width':170, paddingLeft:15, paddingRight:15, height: 50, 'margin':10, 'justifyContent':'center', 'alignItems':'center', 'borderRadius':50, 'elevation':1};
     if (this.props.width) {

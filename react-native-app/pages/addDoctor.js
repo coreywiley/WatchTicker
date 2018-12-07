@@ -1,9 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, AsyncStorage, Image} from 'react-native';
+import { StyleSheet, View, AsyncStorage, Image, TouchableWithoutFeedback} from 'react-native';
 import ajaxWrapper from '../base/ajax.js';
-import { Form, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Text, Card, CheckBox, CardItem, List, ListItem, InputGroup, Input, Spinner, Item, Label, Textarea} from 'native-base';
+import { Form, Container, Header, Title, Content, Footer, FooterTab, Left, Right, Body, Card, CheckBox, CardItem, List, ListItem, InputGroup, Input, Spinner, Item, Label, Textarea} from 'native-base';
 import DateTimePicker from '../library/DateTimePicker.js';
 import ButtonSelect from '../library/buttonSelect.js';
+import Text from '../library/text.js';
+import Button from '../localLibrary/button.js';
+import {LinearGradient} from 'expo';
+
+var close = require('../assets/settings/close.png')
 
 class AddDoctor extends React.Component {
   constructor(props) {
@@ -94,22 +99,22 @@ class AddDoctor extends React.Component {
 
         if (this.state.loaded) {
           //name
-          var name = <Item><Text>Name</Text><Input onChangeText={(text) => this.handleChange('name',text)} value={this.state.name} /></Item>;
+          var name = <View style={{'flexDirection':'row', borderBottomWidth:1, borderColor:'#bbb', height:'10%'}}><Text style={{color:'#6bc8b3'}}>Name:</Text><Input style={{color:'#a657a1', height:'100%', 'fontFamily':'Quicksand'}} onChangeText={(text) => this.handleChange('name',text)} value={this.state.name} /></View>;
 
           //type
-          var type = <Item><Text>Type</Text><Input onChangeText={(text) => this.handleChange('type',text)} value={this.state.type} /></Item>;
+          var type = <View style={{'flexDirection':'row', borderBottomWidth:1, borderColor:'#bbb', height:'10%'}}><Text style={{color:'#6bc8b3'}}>Type:</Text><Input style={{color:'#a657a1', 'fontFamily':'Quicksand', height:'100%'}} onChangeText={(text) => this.handleChange('type',text)} value={this.state.type} /></View>;
 
           //email
-          var email = <Item><Input onChangeText={(text) => this.handleChange('email',text)} value={this.state.email} /></Item>;
+          var email = <View style={{'flexDirection':'row', borderBottomWidth:1, borderColor:'#bbb', height:'10%'}}><Text style={{color:'#6bc8b3'}}>Email:</Text><Input style={{color:'#a657a1', 'fontFamily':'Quicksand', height:'100%'}} onChangeText={(text) => this.handleChange('email',text)} value={this.state.email} /></View>;
 
           //phone
-          var phone = <Item><Input onChangeText={(text) => this.handleChange('phone',text)} value={this.state.phone} /></Item>;
+          var phone = <View style={{'flexDirection':'row', borderBottomWidth:1, borderColor:'#bbb', height:'10%'}}><Text style={{color:'#6bc8b3'}}>Phone:</Text><Input style={{color:'#a657a1', 'fontFamily':'Quicksand', height:'100%'}} onChangeText={(text) => this.handleChange('phone',text)} value={this.state.phone} /></View>;
 
           //notes
-          var notes = <Item><Textarea style={{'width':'100%'}} onChangeText={(text) => this.handleChange('notes',text)} value={this.state.notes} rowSpan={3} bordered /></Item>;
+          var notes = <View><Text style={{color:'#6bc8b3'}}>Notes:</Text><Textarea style={{'width':'100%', color:'#a657a1', 'fontFamily':'Quicksand'}} onChangeText={(text) => this.handleChange('notes',text)} value={this.state.notes} rowSpan={3} /></View>;
 
           //next_appointment
-          var next_appointment = <Item><DateTimePicker name={'next_appointment'} answer={this.state.next_appointment} handleChange={this.handleChange} date={true} /></Item>;
+          var next_appointment = <DateTimePicker name={'next_appointment'} answer={this.state.next_appointment} handleChange={this.handleChange} date={true} />;
 
           // reminder
           var reminder_options = [true,false];
@@ -117,54 +122,54 @@ class AddDoctor extends React.Component {
           var pickerItems = [];
           for (var index in reminder_options) {
             var value = reminder_options[index];
-            pickerItems.push(<Item><ButtonSelect answer={this.state.reminder} handleChange={this.handleChange} name={'reminder'} value={value}/></Item>)
+            pickerItems.push(<ButtonSelect answer={this.state.reminder} handleChange={this.handleChange} name={'reminder'} value={value}/>)
           }
 
           var reminder = <View>
             {pickerItems}
           </View>;
 
+          var save = <Button text={'Save'} onPress={this.save} selected={true} />
+          if (this.state.id) {
+            save = <Button text={'Edit'} onPress={this.save} />
+          }
+
           return (
-              <Content>
+          <View>
+          <LinearGradient
+            colors={['#52bfa6', '#3e8797']}
+            style={{alignItems: 'center', 'height':'100%', 'width':'100%', 'height':'100%'}}>
 
+          <Text style={{'color':'white', marginTop: 20}}>m    y        h    e    a    l    t    h</Text>
 
+          <View style={{'alignItems':'center', justifyContent:'center', 'width':'100%'}}>
 
-                    {name}
+            <View style={{'backgroundColor': 'white', width:'80%', 'padding':10, borderTopLeftRadius: 25, borderTopRightRadius: 25}} >
+              <Text style={{'color':'#a657a2', 'textAlign':'center', width:'100%'}}>{this.state.name + '\n' + this.state.type}</Text>
+            </View>
 
-                    {type}
-                    <Text>
-                    {"\n"}
-                    </Text>
+            <LinearGradient colors={['#bbb','#fff','#fff']} style={{'backgroundColor': 'white', 'width':'80%', height:'70%', 'padding':20, alignItems:'center', 'justifyContent':'center', borderBottomLeftRadius: 25, borderBottomRightRadius: 25, flexDirection: 'row', flexWrap: 'wrap'}}>
+              <View style={{flexDirection: 'column', height:'75%', width:'100%'}}>
+                {name}
+                {type}
+                {phone}
+                {email}
+                {notes}
+                </View>
+                {save}
+            </LinearGradient>
 
-                    <Text>Phone</Text>
-                    {phone}
+            <TouchableWithoutFeedback onPress={() => this.props.setGlobalState('page','doctors')} style={{'alignItems':'center', justifyContent:'center', flex: 1}}>
+              <View style={{'textAlign':'center', 'position':'absolute','bottom':'7%', 'height':50, width:50, borderRadius:50, backgroundColor: 'white', zIndex:100}}>
+                <Image source={close} style={{width: 50,height:50}} resizeMode="contain" />
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
 
-                    <Text>
-                    {"\n"}
-                    </Text>
-                    <Text>Email</Text>
-                    {email}
-
-                    <Text>
-                    {"\n"}
-                    </Text>
-                      <Text>Notes</Text>
-                      {notes}
-
-                    <Text>Next Appointment</Text>
-                    {next_appointment}
-
-                      <Text>Reminder</Text>
-                      {reminder}
-
-                  <View>
-                    <Button success={true} onPress={this.save} full>
-                      <Text>Save</Text>
-                    </Button>
-                    </View>
-
-              </Content>
+          </LinearGradient>
+          </View>
           );
+
         }
         else {
           return (

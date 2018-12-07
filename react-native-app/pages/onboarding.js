@@ -18,7 +18,7 @@ class Factoid extends React.Component {
         </View>
         <TouchableWithoutFeedback onPress={this.props.close} style={{'alignItems':'center', justifyContent:'center', flex: 1}}>
           <View style={{'textAlign':'center', 'position':'absolute','bottom':-25, 'height':50, width:50, borderRadius:50, backgroundColor: 'white', zIndex:100}}>
-            <Text style={{color:'#a657a1', borderColor:'#a657a1', 'textAlign':'center',marginTop:10, marginLeft:10, fontSize:24, 'height':32, width:32, borderRadius:15, borderWidth:1, backgroundColor: 'white', zIndex:100}}>X</Text>
+            <Image source={close} style={{width: 50,height:50}} resizeMode="contain" />
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -30,7 +30,13 @@ class Onboarding extends React.Component {
   constructor(props) {
       super(props);
 
-      this.state = {'questions' : [], 'currentQuestion' : 0, loaded:false, 'answers':{}, 'info':false};
+      var onboardingIndex = 0;
+      console.log("Before", this.props.onboardingIndex)
+      if (this.props.onboardingIndex > -1) {
+        onboardingIndex = parseInt(this.props.onboardingIndex);
+      }
+      console.log("After", onboardingIndex)
+      this.state = {'questions' : [], 'currentQuestion' : onboardingIndex, loaded:false, 'answers':{}, 'info':false};
       this.objectCallback = this.objectCallback.bind(this);
       this.next = this.next.bind(this);
       this.prev = this.prev.bind(this);
@@ -125,14 +131,16 @@ class Onboarding extends React.Component {
         ajaxWrapper('POST','/api/home/answer/', {'question':question.id, 'user': this.props.userId, 'answer':this.state.answer}, this.answerCallback)
       }
 
+      if (this.props.onboardingIndex != -1) {
 
-      if (this.state.currentQuestion == this.state.questions.length - 1) {
+      }
+      else if (this.state.currentQuestion == this.state.questions.length - 1) {
         this.setGlobalState('page','customize')
       }
       else {
 
         var nextQuestion = this.state.questions[this.state.currentQuestion + 1]
-        console.log("Answer Lookup", nextQuestion, this.state.answers)
+        console.log("Answer Lookup", this.state.currentQuestion, this.state.currentQuestion + 1, nextQuestion, this.state.answers)
         var currentAnswer = this.state.answers[nextQuestion.id.toString()]
         console.log("Current Answer", currentAnswer)
         if (currentAnswer) {
@@ -148,6 +156,9 @@ class Onboarding extends React.Component {
 
     prev() {
 
+      if (this.props.onboardingIndex != -1) {
+        this.props.setGlobalState('page','riskAssessment')
+      }
       var currentAnswer = this.state.answers[this.state.questions[this.state.currentQuestion - 1].id.toString()]
 
       if (currentAnswer) {
@@ -169,6 +180,10 @@ class Onboarding extends React.Component {
     }
 
     answerCallback(result) {
+      if (this.props.onboardingIndex != -1) {
+        this.props.setGlobalState('page','riskAssessment')
+      }
+
       console.log("Answer Callback", result)
       var answer = result[0]['answer'];
       var answers = this.state.answers;
@@ -178,7 +193,6 @@ class Onboarding extends React.Component {
 
     render() {
         if (this.state.loaded) {
-
           var question = this.state.questions[this.state.currentQuestion];
           var props = {};
           if (question.component == 'TextInput') {

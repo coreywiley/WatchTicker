@@ -14,16 +14,22 @@ import FAQs from './pages/faq.js';
 import Journal from './pages/journal.js';
 import JournalEntries from './pages/journalEntries.js';
 import Resources from './pages/resources.js';
+import RiskAssessment from './pages/riskAssessment.js';
+import Settings from './pages/settings.js';
+import Edit from './pages/edit.js';
+import PrivacyPolicy from './pages/privacyPolicy.js';
 
 class App extends React.Component {
   constructor(props) {
   		super(props);
   		this.state = {
-  			page: 'doctors',
+  			page: 'settings',
         loading: true,
         doctor: undefined,
         journal: undefined,
         customize: undefined,
+        settings_edit: 'none',
+        onboardingIndex: -1,
         userId: 1,
   		};
   		this.setGlobalState = this.setGlobalState.bind(this);
@@ -99,13 +105,12 @@ class App extends React.Component {
         body = <SignUp csrfmiddlewaretoken={this.state.csrfmiddlewaretoken} setGlobalState={this.setGlobalState} />;
     }
     else if (this.state.page == 'onboarding') {
-        body = <OnBoarding setGlobalState={this.setGlobalState} userId={this.state.userId} />;
+        body = <OnBoarding setGlobalState={this.setGlobalState} userId={this.state.userId} onboardingIndex={this.state.onboardingIndex}/>;
     }
     else if (this.state.page == 'customize') {
-        body = <Customize setGlobalState={this.setGlobalState} userId={this.state.userId} />;
+        body = <Customize  setGlobalState={this.setGlobalState} userId={this.state.userId} />;
     }
     else if (this.state.page == 'doctors') {
-        header = <NavBar title={'Doctors'} back={false} logOut={this.logOut} />;
         body = <Doctors setGlobalState={this.setGlobalState} userId={this.state.userId} />;
     }
     else if (this.state.page == 'addDoctor') {
@@ -124,6 +129,21 @@ class App extends React.Component {
     }
     else if (this.state.page == 'resources') {
         body = <Resources setGlobalState={this.setGlobalState} userId={this.state.userId} />;
+    }
+    else if (this.state.page == 'riskAssessment') {
+        header = <NavBar title={'My Risk Assessment'} backPage={'doctors'} setGlobalState={this.setGlobalState} />;
+        body = <RiskAssessment setGlobalState={this.setGlobalState} userId={this.state.userId} />;
+    }
+    else if (this.state.page == 'settings') {
+        header = <NavBar title={'s e t t i n g s'} backPage={'journals'} setGlobalState={this.setGlobalState} />;
+        body = <Settings setGlobalState={this.setGlobalState} userId={this.state.userId} />;
+    }
+    else if (this.state.page == 'edit') {
+        body = <Edit name={this.state.settings_edit} setGlobalState={this.setGlobalState} userId={this.state.userId} />;
+    }
+    else if (this.state.page == 'privacyPolicy') {
+        header = <NavBar title={'s e t t i n g s'} backPage={'settings'} setGlobalState={this.setGlobalState} />;
+        body = <PrivacyPolicy setGlobalState={this.setGlobalState} userId={this.state.userId} />;
     }
 
 

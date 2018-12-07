@@ -118,7 +118,7 @@ class Journals extends React.Component {
           <View style={{marginBottom:100}} />
           </View>
           </ScrollView>
-          <Footer page={'journalEntries'} prev={this.prev} home={this.home} info={this.info}/>
+          <Footer setGlobalState={this.props.setGlobalState} page={'journalEntries'} />
 
         </LinearGradient>
 

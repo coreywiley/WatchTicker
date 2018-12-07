@@ -9,20 +9,27 @@ class NormaFooter extends React.Component {
 
   render() {
 
+    var backgroundColor = '#c8b8d4';
+    if (this.props.backgroundColor) {
+      backgroundColor = this.props.backgroundColor;
+    }
+
+    console.log("Background Color", backgroundColor)
+
     if (this.props.page == 'journalEntries') {
       return (
-        <Footer style={{'position':'absolute', 'bottom':0, 'width':'100%', 'backgroundColor': '#c8b8d4'}}>
-            <FooterTab style={{'backgroundColor': '#c8b8d4', 'width':'100%'}}>
-              <Button onPress={this.props.prev}>
+        <Footer style={{'position':'absolute', 'bottom':0, 'width':'100%', 'backgroundColor': backgroundColor}}>
+            <FooterTab style={{'backgroundColor': backgroundColor, 'width':'100%'}}>
+              <Button onPress={() => this.props.setGlobalState('page','journals')}>
                 <Image source={require('../assets/Customization/journal.png')} style= {{flex:1 , width: 60, height: 20}}/>
               </Button>
-              <Button onPress={this.props.home} style={{'borderRightWidth':1, 'borderRightColor':'#ae6dac','borderLeftWidth':1, 'borderLeftColor':'#ae6dac'}}>
+              <Button onPress={() => this.props.setGlobalState('page','resources')} style={{'borderRightWidth':1, 'borderRightColor':'#ae6dac','borderLeftWidth':1, 'borderLeftColor':'#ae6dac'}}>
                 <Image source={require('../assets/Customization/resources.png')} style= {{flex:1 , width: 60, height: 60}} />
               </Button>
-              <Button onPress={this.props.info} style={{'borderRightWidth':1, 'borderRightColor':'#ae6dac'}}>
+              <Button onPress={() => this.props.setGlobalState('page','doctors')} style={{'borderRightWidth':1, 'borderRightColor':'#ae6dac'}}>
               <Image source={require('../assets/Customization/my_health.png')}  style= {{flex:1 , width: 60, height: 60}}/>
               </Button>
-              <Button onPress={this.props.info}>
+              <Button onPress={() => this.props.setGlobalState('page','settings')}>
               <Image source={require('../assets/Customization/settings.png')}  style= {{flex:1 , width: 60, height: 70}}/>
               </Button>
             </FooterTab>
@@ -31,8 +38,8 @@ class NormaFooter extends React.Component {
     }
     else {
       return (
-        <Footer style={{'position':'absolute', 'bottom':0, 'width':'100%', 'backgroundColor': '#c8b8d4'}}>
-            <FooterTab style={{'backgroundColor': '#c8b8d4', 'width':'100%'}}>
+        <Footer style={{'position':'absolute', 'bottom':0, 'width':'100%', 'backgroundColor': backgroundColor}}>
+            <FooterTab style={{'backgroundColor': backgroundColor, 'width':'100%'}}>
               <Button onPress={this.props.prev}>
                 <Image source={require('../assets/prev.png')} style= {{flex:1 , width: 60, height: 20}}/>
               </Button>
