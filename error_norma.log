@@ -1,785 +1,197 @@
-[Tue Dec 04 03:51:10.361925 2018] [wsgi:error] [pid 7814:tid 139695987705600] Linux?
-[Tue Dec 04 03:51:10.809678 2018] [wsgi:error] [pid 7814:tid 139695987705600] [remote 127.0.0.1:45056] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 03:51:10.809748 2018] [wsgi:error] [pid 7814:tid 139695987705600] [remote 127.0.0.1:45056] []
-[Tue Dec 04 03:51:10.809762 2018] [wsgi:error] [pid 7814:tid 139695987705600] [remote 127.0.0.1:45056] Parameters {'user': '1'}
-[Tue Dec 04 03:51:10.809771 2018] [wsgi:error] [pid 7814:tid 139695987705600] [remote 127.0.0.1:45056] Only []
-[Tue Dec 04 03:51:10.809778 2018] [wsgi:error] [pid 7814:tid 139695987705600] [remote 127.0.0.1:45056] 
-[Tue Dec 04 03:51:10.809782 2018] [wsgi:error] [pid 7814:tid 139695987705600] [remote 127.0.0.1:45056] 
-[Tue Dec 04 03:51:10.809791 2018] [wsgi:error] [pid 7814:tid 139695987705600] [remote 127.0.0.1:45056]  {'user': '1'} 
-[Tue Dec 04 03:51:10.809795 2018] [wsgi:error] [pid 7814:tid 139695987705600] [remote 127.0.0.1:45056] 
-[Tue Dec 04 03:51:10.809799 2018] [wsgi:error] [pid 7814:tid 139695987705600] [remote 127.0.0.1:45056] 
-[Tue Dec 04 03:51:10.809811 2018] [wsgi:error] [pid 7814:tid 139695987705600] [remote 127.0.0.1:45056] Related : []
-[Tue Dec 04 03:51:10.811422 2018] [wsgi:error] [pid 7814:tid 139695987705600] [remote 127.0.0.1:45056] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 03:52:40.768825 2018] [wsgi:error] [pid 27673:tid 139695987705600] Linux?
-[Tue Dec 04 03:52:41.191762 2018] [wsgi:error] [pid 27673:tid 139695987705600] [remote 127.0.0.1:41698] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 03:52:41.191847 2018] [wsgi:error] [pid 27673:tid 139695987705600] [remote 127.0.0.1:41698] []
-[Tue Dec 04 03:52:41.191869 2018] [wsgi:error] [pid 27673:tid 139695987705600] [remote 127.0.0.1:41698] Parameters {'user': '1'}
-[Tue Dec 04 03:52:41.191882 2018] [wsgi:error] [pid 27673:tid 139695987705600] [remote 127.0.0.1:41698] Only []
-[Tue Dec 04 03:52:41.191892 2018] [wsgi:error] [pid 27673:tid 139695987705600] [remote 127.0.0.1:41698] 
-[Tue Dec 04 03:52:41.191898 2018] [wsgi:error] [pid 27673:tid 139695987705600] [remote 127.0.0.1:41698] 
-[Tue Dec 04 03:52:41.191918 2018] [wsgi:error] [pid 27673:tid 139695987705600] [remote 127.0.0.1:41698]  {'user': '1'} 
-[Tue Dec 04 03:52:41.191923 2018] [wsgi:error] [pid 27673:tid 139695987705600] [remote 127.0.0.1:41698] 
-[Tue Dec 04 03:52:41.191930 2018] [wsgi:error] [pid 27673:tid 139695987705600] [remote 127.0.0.1:41698] 
-[Tue Dec 04 03:52:41.191947 2018] [wsgi:error] [pid 27673:tid 139695987705600] [remote 127.0.0.1:41698] Related : []
-[Tue Dec 04 03:52:41.194147 2018] [wsgi:error] [pid 27673:tid 139695987705600] [remote 127.0.0.1:41698] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 03:54:33.031484 2018] [wsgi:error] [pid 41856:tid 139695987705600] Linux?
-[Tue Dec 04 03:54:33.472856 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:49452] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 03:54:33.472927 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:49452] []
-[Tue Dec 04 03:54:33.472948 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:49452] Parameters {'user': '1'}
-[Tue Dec 04 03:54:33.472962 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:49452] Only []
-[Tue Dec 04 03:54:33.472972 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:49452] 
-[Tue Dec 04 03:54:33.472978 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:49452] 
-[Tue Dec 04 03:54:33.472990 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:49452]  {'user': '1'} 
-[Tue Dec 04 03:54:33.472996 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:49452] 
-[Tue Dec 04 03:54:33.473002 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:49452] 
-[Tue Dec 04 03:54:33.473034 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:49452] Related : []
-[Tue Dec 04 03:54:33.474998 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:49452] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 03:54:51.624914 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:55632] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 03:54:51.624994 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:55632] []
-[Tue Dec 04 03:54:51.625015 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:55632] Parameters {'user': '1'}
-[Tue Dec 04 03:54:51.625027 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:55632] Only []
-[Tue Dec 04 03:54:51.625038 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:55632] 
-[Tue Dec 04 03:54:51.625043 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:55632] 
-[Tue Dec 04 03:54:51.625055 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:55632]  {'user': '1'} 
-[Tue Dec 04 03:54:51.625060 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:55632] 
-[Tue Dec 04 03:54:51.625074 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:55632] 
-[Tue Dec 04 03:54:51.625096 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:55632] Related : []
-[Tue Dec 04 03:54:51.627657 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:55632] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 03:55:11.167787 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:34454] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 03:55:11.167876 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:34454] []
-[Tue Dec 04 03:55:11.167897 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:34454] Parameters {'user': '1'}
-[Tue Dec 04 03:55:11.167909 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:34454] Only []
-[Tue Dec 04 03:55:11.167919 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:34454] 
-[Tue Dec 04 03:55:11.167924 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:34454] 
-[Tue Dec 04 03:55:11.167935 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:34454]  {'user': '1'} 
-[Tue Dec 04 03:55:11.167940 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:34454] 
-[Tue Dec 04 03:55:11.167946 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:34454] 
-[Tue Dec 04 03:55:11.167962 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:34454] Related : []
-[Tue Dec 04 03:55:11.168735 2018] [wsgi:error] [pid 41856:tid 139695987705600] [remote 127.0.0.1:34454] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 03:57:40.409632 2018] [wsgi:error] [pid 20844:tid 139695987705600] Linux?
-[Tue Dec 04 03:57:40.844732 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:50288] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 03:57:40.844806 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:50288] []
-[Tue Dec 04 03:57:40.844822 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:50288] Parameters {'user': '1'}
-[Tue Dec 04 03:57:40.844831 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:50288] Only []
-[Tue Dec 04 03:57:40.844839 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:50288] 
-[Tue Dec 04 03:57:40.844843 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:50288] 
-[Tue Dec 04 03:57:40.844862 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:50288]  {'user': '1'} 
-[Tue Dec 04 03:57:40.844866 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:50288] 
-[Tue Dec 04 03:57:40.844870 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:50288] 
-[Tue Dec 04 03:57:40.844883 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:50288] Related : []
-[Tue Dec 04 03:57:40.849313 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:50288] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 03:58:01.532038 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:56594] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 03:58:01.532129 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:56594] []
-[Tue Dec 04 03:58:01.532156 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:56594] Parameters {'user': '1'}
-[Tue Dec 04 03:58:01.532172 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:56594] Only []
-[Tue Dec 04 03:58:01.532185 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:56594] 
-[Tue Dec 04 03:58:01.532190 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:56594] 
-[Tue Dec 04 03:58:01.532204 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:56594]  {'user': '1'} 
-[Tue Dec 04 03:58:01.532211 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:56594] 
-[Tue Dec 04 03:58:01.532218 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:56594] 
-[Tue Dec 04 03:58:01.532244 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:56594] Related : []
-[Tue Dec 04 03:58:01.533178 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:56594] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 03:58:11.245223 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:59714] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 03:58:11.245310 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:59714] []
-[Tue Dec 04 03:58:11.245333 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:59714] Parameters {'user': '1'}
-[Tue Dec 04 03:58:11.245346 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:59714] Only []
-[Tue Dec 04 03:58:11.245356 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:59714] 
-[Tue Dec 04 03:58:11.245362 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:59714] 
-[Tue Dec 04 03:58:11.245375 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:59714]  {'user': '1'} 
-[Tue Dec 04 03:58:11.245380 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:59714] 
-[Tue Dec 04 03:58:11.245387 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:59714] 
-[Tue Dec 04 03:58:11.245403 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:59714] Related : []
-[Tue Dec 04 03:58:11.247957 2018] [wsgi:error] [pid 20844:tid 139695987705600] [remote 127.0.0.1:59714] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 03:59:16.610111 2018] [wsgi:error] [pid 2133:tid 139695987705600] Linux?
-[Tue Dec 04 03:59:17.069793 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:52594] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 03:59:17.069868 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:52594] []
-[Tue Dec 04 03:59:17.069888 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:52594] Parameters {'user': '1'}
-[Tue Dec 04 03:59:17.069915 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:52594] Only []
-[Tue Dec 04 03:59:17.069925 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:52594] 
-[Tue Dec 04 03:59:17.069930 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:52594] 
-[Tue Dec 04 03:59:17.069942 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:52594]  {'user': '1'} 
-[Tue Dec 04 03:59:17.069948 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:52594] 
-[Tue Dec 04 03:59:17.069953 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:52594] 
-[Tue Dec 04 03:59:17.069969 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:52594] Related : []
-[Tue Dec 04 03:59:17.071576 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:52594] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 03:59:35.760116 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:59120] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 03:59:35.760194 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:59120] []
-[Tue Dec 04 03:59:35.760213 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:59120] Parameters {'user': '1'}
-[Tue Dec 04 03:59:35.760224 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:59120] Only []
-[Tue Dec 04 03:59:35.760233 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:59120] 
-[Tue Dec 04 03:59:35.760238 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:59120] 
-[Tue Dec 04 03:59:35.760248 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:59120]  {'user': '1'} 
-[Tue Dec 04 03:59:35.760254 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:59120] 
-[Tue Dec 04 03:59:35.760259 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:59120] 
-[Tue Dec 04 03:59:35.760279 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:59120] Related : []
-[Tue Dec 04 03:59:35.760966 2018] [wsgi:error] [pid 2133:tid 139695987705600] [remote 127.0.0.1:59120] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:00:57.413937 2018] [wsgi:error] [pid 21921:tid 139695987705600] Linux?
-[Tue Dec 04 04:00:57.872371 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:59948] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:00:57.872449 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:59948] []
-[Tue Dec 04 04:00:57.872469 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:59948] Parameters {'user': '1'}
-[Tue Dec 04 04:00:57.872482 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:59948] Only []
-[Tue Dec 04 04:00:57.872491 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:59948] 
-[Tue Dec 04 04:00:57.872496 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:59948] 
-[Tue Dec 04 04:00:57.872508 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:59948]  {'user': '1'} 
-[Tue Dec 04 04:00:57.872513 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:59948] 
-[Tue Dec 04 04:00:57.872519 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:59948] 
-[Tue Dec 04 04:00:57.872534 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:59948] Related : []
-[Tue Dec 04 04:00:57.874312 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:59948] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:01:06.809753 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:34032] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:01:06.809855 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:34032] []
-[Tue Dec 04 04:01:06.809877 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:34032] Parameters {'user': '1'}
-[Tue Dec 04 04:01:06.809890 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:34032] Only []
-[Tue Dec 04 04:01:06.809900 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:34032] 
-[Tue Dec 04 04:01:06.809906 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:34032] 
-[Tue Dec 04 04:01:06.809918 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:34032]  {'user': '1'} 
-[Tue Dec 04 04:01:06.809923 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:34032] 
-[Tue Dec 04 04:01:06.809929 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:34032] 
-[Tue Dec 04 04:01:06.809952 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:34032] Related : []
-[Tue Dec 04 04:01:06.810712 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:34032] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:01:13.840513 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:35898] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:01:13.840600 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:35898] []
-[Tue Dec 04 04:01:13.840633 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:35898] Parameters {'user': '1'}
-[Tue Dec 04 04:01:13.840645 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:35898] Only []
-[Tue Dec 04 04:01:13.840654 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:35898] 
-[Tue Dec 04 04:01:13.840658 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:35898] 
-[Tue Dec 04 04:01:13.840669 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:35898]  {'user': '1'} 
-[Tue Dec 04 04:01:13.840674 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:35898] 
-[Tue Dec 04 04:01:13.840680 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:35898] 
-[Tue Dec 04 04:01:13.840695 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:35898] Related : []
-[Tue Dec 04 04:01:13.841341 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:35898] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:01:36.012630 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:41782] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:01:36.012921 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:41782] []
-[Tue Dec 04 04:01:36.012941 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:41782] Parameters {'user': '1'}
-[Tue Dec 04 04:01:36.012953 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:41782] Only []
-[Tue Dec 04 04:01:36.012963 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:41782] 
-[Tue Dec 04 04:01:36.012968 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:41782] 
-[Tue Dec 04 04:01:36.012980 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:41782]  {'user': '1'} 
-[Tue Dec 04 04:01:36.012984 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:41782] 
-[Tue Dec 04 04:01:36.012991 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:41782] 
-[Tue Dec 04 04:01:36.013005 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:41782] Related : []
-[Tue Dec 04 04:01:36.013707 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:41782] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:02:05.950707 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:49936] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:02:05.950784 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:49936] []
-[Tue Dec 04 04:02:05.950803 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:49936] Parameters {'user': '1'}
-[Tue Dec 04 04:02:05.950814 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:49936] Only []
-[Tue Dec 04 04:02:05.950823 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:49936] 
-[Tue Dec 04 04:02:05.950827 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:49936] 
-[Tue Dec 04 04:02:05.950838 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:49936]  {'user': '1'} 
-[Tue Dec 04 04:02:05.950843 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:49936] 
-[Tue Dec 04 04:02:05.950848 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:49936] 
-[Tue Dec 04 04:02:05.950863 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:49936] Related : []
-[Tue Dec 04 04:02:05.951509 2018] [wsgi:error] [pid 21921:tid 139695987705600] [remote 127.0.0.1:49936] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:03:23.383259 2018] [wsgi:error] [pid 44999:tid 139695987705600] Linux?
-[Tue Dec 04 04:03:23.820000 2018] [wsgi:error] [pid 44999:tid 139695987705600] [remote 127.0.0.1:44436] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:03:23.820066 2018] [wsgi:error] [pid 44999:tid 139695987705600] [remote 127.0.0.1:44436] []
-[Tue Dec 04 04:03:23.820084 2018] [wsgi:error] [pid 44999:tid 139695987705600] [remote 127.0.0.1:44436] Parameters {'user': '1'}
-[Tue Dec 04 04:03:23.820093 2018] [wsgi:error] [pid 44999:tid 139695987705600] [remote 127.0.0.1:44436] Only []
-[Tue Dec 04 04:03:23.820100 2018] [wsgi:error] [pid 44999:tid 139695987705600] [remote 127.0.0.1:44436] 
-[Tue Dec 04 04:03:23.820103 2018] [wsgi:error] [pid 44999:tid 139695987705600] [remote 127.0.0.1:44436] 
-[Tue Dec 04 04:03:23.820111 2018] [wsgi:error] [pid 44999:tid 139695987705600] [remote 127.0.0.1:44436]  {'user': '1'} 
-[Tue Dec 04 04:03:23.820115 2018] [wsgi:error] [pid 44999:tid 139695987705600] [remote 127.0.0.1:44436] 
-[Tue Dec 04 04:03:23.820119 2018] [wsgi:error] [pid 44999:tid 139695987705600] [remote 127.0.0.1:44436] 
-[Tue Dec 04 04:03:23.820130 2018] [wsgi:error] [pid 44999:tid 139695987705600] [remote 127.0.0.1:44436] Related : []
-[Tue Dec 04 04:03:23.821542 2018] [wsgi:error] [pid 44999:tid 139695987705600] [remote 127.0.0.1:44436] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:06:27.845330 2018] [wsgi:error] [pid 10558:tid 139695987705600] Linux?
-[Tue Dec 04 04:06:28.302415 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:48854] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:06:28.302491 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:48854] []
-[Tue Dec 04 04:06:28.302509 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:48854] Parameters {'user': '1'}
-[Tue Dec 04 04:06:28.302520 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:48854] Only []
-[Tue Dec 04 04:06:28.302529 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:48854] 
-[Tue Dec 04 04:06:28.302533 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:48854] 
-[Tue Dec 04 04:06:28.302543 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:48854]  {'user': '1'} 
-[Tue Dec 04 04:06:28.302560 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:48854] 
-[Tue Dec 04 04:06:28.302567 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:48854] 
-[Tue Dec 04 04:06:28.302581 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:48854] Related : []
-[Tue Dec 04 04:06:28.304438 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:48854] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:06:59.650149 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:57252] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:06:59.650212 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:57252] []
-[Tue Dec 04 04:06:59.650226 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:57252] Parameters {'user': '1'}
-[Tue Dec 04 04:06:59.650234 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:57252] Only []
-[Tue Dec 04 04:06:59.650241 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:57252] 
-[Tue Dec 04 04:06:59.650244 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:57252] 
-[Tue Dec 04 04:06:59.650252 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:57252]  {'user': '1'} 
-[Tue Dec 04 04:06:59.650255 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:57252] 
-[Tue Dec 04 04:06:59.650259 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:57252] 
-[Tue Dec 04 04:06:59.650274 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:57252] Related : []
-[Tue Dec 04 04:06:59.650813 2018] [wsgi:error] [pid 10558:tid 139695987705600] [remote 127.0.0.1:57252] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:10:26.602961 2018] [wsgi:error] [pid 46756:tid 139695987705600] Linux?
-[Tue Dec 04 04:10:27.080998 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:38872] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:10:27.081073 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:38872] []
-[Tue Dec 04 04:10:27.081093 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:38872] Parameters {'user': '1'}
-[Tue Dec 04 04:10:27.081105 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:38872] Only []
-[Tue Dec 04 04:10:27.081114 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:38872] 
-[Tue Dec 04 04:10:27.081118 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:38872] 
-[Tue Dec 04 04:10:27.081130 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:38872]  {'user': '1'} 
-[Tue Dec 04 04:10:27.081134 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:38872] 
-[Tue Dec 04 04:10:27.081140 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:38872] 
-[Tue Dec 04 04:10:27.081155 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:38872] Related : []
-[Tue Dec 04 04:10:27.083205 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:38872] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:10:48.401374 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:46814] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:10:48.401442 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:46814] []
-[Tue Dec 04 04:10:48.401459 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:46814] Parameters {'user': '1'}
-[Tue Dec 04 04:10:48.401469 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:46814] Only []
-[Tue Dec 04 04:10:48.401477 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:46814] 
-[Tue Dec 04 04:10:48.401493 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:46814] 
-[Tue Dec 04 04:10:48.401504 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:46814]  {'user': '1'} 
-[Tue Dec 04 04:10:48.401508 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:46814] 
-[Tue Dec 04 04:10:48.401513 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:46814] 
-[Tue Dec 04 04:10:48.401531 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:46814] Related : []
-[Tue Dec 04 04:10:48.402231 2018] [wsgi:error] [pid 46756:tid 139695987705600] [remote 127.0.0.1:46814] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:12:36.178657 2018] [wsgi:error] [pid 41354:tid 139695987705600] Linux?
-[Tue Dec 04 04:12:36.638389 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:48396] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:12:36.638452 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:48396] []
-[Tue Dec 04 04:12:36.638464 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:48396] Parameters {'user': '1'}
-[Tue Dec 04 04:12:36.638472 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:48396] Only []
-[Tue Dec 04 04:12:36.638479 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:48396] 
-[Tue Dec 04 04:12:36.638482 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:48396] 
-[Tue Dec 04 04:12:36.638490 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:48396]  {'user': '1'} 
-[Tue Dec 04 04:12:36.638493 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:48396] 
-[Tue Dec 04 04:12:36.638497 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:48396] 
-[Tue Dec 04 04:12:36.638507 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:48396] Related : []
-[Tue Dec 04 04:12:36.639946 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:48396] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:12:53.407854 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:53150] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:12:53.408423 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:53150] []
-[Tue Dec 04 04:12:53.408438 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:53150] Parameters {'user': '1'}
-[Tue Dec 04 04:12:53.408447 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:53150] Only []
-[Tue Dec 04 04:12:53.408453 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:53150] 
-[Tue Dec 04 04:12:53.408457 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:53150] 
-[Tue Dec 04 04:12:53.408464 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:53150]  {'user': '1'} 
-[Tue Dec 04 04:12:53.408467 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:53150] 
-[Tue Dec 04 04:12:53.408471 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:53150] 
-[Tue Dec 04 04:12:53.408487 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:53150] Related : []
-[Tue Dec 04 04:12:53.409057 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:53150] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:13:14.380842 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59214] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:13:14.380917 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59214] []
-[Tue Dec 04 04:13:14.380942 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59214] Parameters {'user': '1'}
-[Tue Dec 04 04:13:14.380950 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59214] Only []
-[Tue Dec 04 04:13:14.380957 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59214] 
-[Tue Dec 04 04:13:14.380960 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59214] 
-[Tue Dec 04 04:13:14.380967 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59214]  {'user': '1'} 
-[Tue Dec 04 04:13:14.380971 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59214] 
-[Tue Dec 04 04:13:14.380974 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59214] 
-[Tue Dec 04 04:13:14.380985 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59214] Related : []
-[Tue Dec 04 04:13:14.381533 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59214] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:13:15.620922 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59584] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:13:15.621004 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59584] []
-[Tue Dec 04 04:13:15.621023 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59584] Parameters {'user': '1'}
-[Tue Dec 04 04:13:15.621035 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59584] Only []
-[Tue Dec 04 04:13:15.621044 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59584] 
-[Tue Dec 04 04:13:15.621050 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59584] 
-[Tue Dec 04 04:13:15.621067 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59584]  {'user': '1'} 
-[Tue Dec 04 04:13:15.621074 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59584] 
-[Tue Dec 04 04:13:15.621082 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59584] 
-[Tue Dec 04 04:13:15.621104 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59584] Related : []
-[Tue Dec 04 04:13:15.621701 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:59584] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:13:46.857758 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:40620] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:13:46.857838 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:40620] []
-[Tue Dec 04 04:13:46.857855 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:40620] Parameters {'user': '1'}
-[Tue Dec 04 04:13:46.857866 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:40620] Only []
-[Tue Dec 04 04:13:46.857875 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:40620] 
-[Tue Dec 04 04:13:46.857879 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:40620] 
-[Tue Dec 04 04:13:46.857889 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:40620]  {'user': '1'} 
-[Tue Dec 04 04:13:46.857894 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:40620] 
-[Tue Dec 04 04:13:46.857904 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:40620] 
-[Tue Dec 04 04:13:46.857927 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:40620] Related : []
-[Tue Dec 04 04:13:46.858855 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:40620] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:14:05.803553 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:46492] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:14:05.803830 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:46492] []
-[Tue Dec 04 04:14:05.803858 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:46492] Parameters {'user': '1'}
-[Tue Dec 04 04:14:05.803870 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:46492] Only []
-[Tue Dec 04 04:14:05.803880 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:46492] 
-[Tue Dec 04 04:14:05.803885 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:46492] 
-[Tue Dec 04 04:14:05.803897 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:46492]  {'user': '1'} 
-[Tue Dec 04 04:14:05.803902 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:46492] 
-[Tue Dec 04 04:14:05.803908 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:46492] 
-[Tue Dec 04 04:14:05.803925 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:46492] Related : []
-[Tue Dec 04 04:14:05.804765 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:46492] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:14:22.333627 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:51842] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:14:22.333701 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:51842] []
-[Tue Dec 04 04:14:22.333719 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:51842] Parameters {'user': '1'}
-[Tue Dec 04 04:14:22.333729 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:51842] Only []
-[Tue Dec 04 04:14:22.333737 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:51842] 
-[Tue Dec 04 04:14:22.333742 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:51842] 
-[Tue Dec 04 04:14:22.333751 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:51842]  {'user': '1'} 
-[Tue Dec 04 04:14:22.333755 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:51842] 
-[Tue Dec 04 04:14:22.333760 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:51842] 
-[Tue Dec 04 04:14:22.333774 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:51842] Related : []
-[Tue Dec 04 04:14:22.334457 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:51842] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:14:24.925173 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:52654] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:14:24.925256 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:52654] []
-[Tue Dec 04 04:14:24.925275 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:52654] Parameters {'user': '1'}
-[Tue Dec 04 04:14:24.925286 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:52654] Only []
-[Tue Dec 04 04:14:24.925294 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:52654] 
-[Tue Dec 04 04:14:24.925299 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:52654] 
-[Tue Dec 04 04:14:24.925309 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:52654]  {'user': '1'} 
-[Tue Dec 04 04:14:24.925313 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:52654] 
-[Tue Dec 04 04:14:24.925328 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:52654] 
-[Tue Dec 04 04:14:24.925342 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:52654] Related : []
-[Tue Dec 04 04:14:24.926936 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:52654] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:15:00.040878 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:35340] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:15:00.040969 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:35340] []
-[Tue Dec 04 04:15:00.040990 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:35340] Parameters {'user': '1'}
-[Tue Dec 04 04:15:00.041004 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:35340] Only []
-[Tue Dec 04 04:15:00.041015 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:35340] 
-[Tue Dec 04 04:15:00.041020 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:35340] 
-[Tue Dec 04 04:15:00.041033 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:35340]  {'user': '1'} 
-[Tue Dec 04 04:15:00.041038 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:35340] 
-[Tue Dec 04 04:15:00.041045 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:35340] 
-[Tue Dec 04 04:15:00.041061 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:35340] Related : []
-[Tue Dec 04 04:15:00.041847 2018] [wsgi:error] [pid 41354:tid 139695987705600] [remote 127.0.0.1:35340] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:16:20.403532 2018] [wsgi:error] [pid 34205:tid 139695987705600] Linux?
-[Tue Dec 04 04:16:20.944634 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:33396] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:16:20.944722 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:33396] []
-[Tue Dec 04 04:16:20.944743 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:33396] Parameters {'user': '1'}
-[Tue Dec 04 04:16:20.944755 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:33396] Only []
-[Tue Dec 04 04:16:20.944765 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:33396] 
-[Tue Dec 04 04:16:20.944770 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:33396] 
-[Tue Dec 04 04:16:20.944781 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:33396]  {'user': '1'} 
-[Tue Dec 04 04:16:20.944786 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:33396] 
-[Tue Dec 04 04:16:20.944792 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:33396] 
-[Tue Dec 04 04:16:20.944808 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:33396] Related : []
-[Tue Dec 04 04:16:20.948635 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:33396] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:16:25.051632 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:34620] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:16:25.051715 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:34620] []
-[Tue Dec 04 04:16:25.051737 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:34620] Parameters {'user': '1'}
-[Tue Dec 04 04:16:25.051751 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:34620] Only []
-[Tue Dec 04 04:16:25.051761 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:34620] 
-[Tue Dec 04 04:16:25.051766 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:34620] 
-[Tue Dec 04 04:16:25.051779 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:34620]  {'user': '1'} 
-[Tue Dec 04 04:16:25.051784 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:34620] 
-[Tue Dec 04 04:16:25.051805 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:34620] 
-[Tue Dec 04 04:16:25.051829 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:34620] Related : []
-[Tue Dec 04 04:16:25.052618 2018] [wsgi:error] [pid 34205:tid 139695987705600] [remote 127.0.0.1:34620] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:20:00.001454 2018] [wsgi:error] [pid 46738:tid 139695987705600] Linux?
-[Tue Dec 04 04:20:00.553655 2018] [wsgi:error] [pid 46738:tid 139695987705600] [remote 127.0.0.1:44630] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:20:00.553729 2018] [wsgi:error] [pid 46738:tid 139695987705600] [remote 127.0.0.1:44630] []
-[Tue Dec 04 04:20:00.553749 2018] [wsgi:error] [pid 46738:tid 139695987705600] [remote 127.0.0.1:44630] Parameters {'user': '1'}
-[Tue Dec 04 04:20:00.553771 2018] [wsgi:error] [pid 46738:tid 139695987705600] [remote 127.0.0.1:44630] Only []
-[Tue Dec 04 04:20:00.553781 2018] [wsgi:error] [pid 46738:tid 139695987705600] [remote 127.0.0.1:44630] 
-[Tue Dec 04 04:20:00.553786 2018] [wsgi:error] [pid 46738:tid 139695987705600] [remote 127.0.0.1:44630] 
-[Tue Dec 04 04:20:00.553797 2018] [wsgi:error] [pid 46738:tid 139695987705600] [remote 127.0.0.1:44630]  {'user': '1'} 
-[Tue Dec 04 04:20:00.553802 2018] [wsgi:error] [pid 46738:tid 139695987705600] [remote 127.0.0.1:44630] 
-[Tue Dec 04 04:20:00.553809 2018] [wsgi:error] [pid 46738:tid 139695987705600] [remote 127.0.0.1:44630] 
-[Tue Dec 04 04:20:00.553824 2018] [wsgi:error] [pid 46738:tid 139695987705600] [remote 127.0.0.1:44630] Related : []
-[Tue Dec 04 04:20:00.559651 2018] [wsgi:error] [pid 46738:tid 139695987705600] [remote 127.0.0.1:44630] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:22:48.212235 2018] [wsgi:error] [pid 43945:tid 139695987705600] Linux?
-[Tue Dec 04 04:22:48.894432 2018] [wsgi:error] [pid 43945:tid 139695987705600] [remote 127.0.0.1:41986] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:22:48.894499 2018] [wsgi:error] [pid 43945:tid 139695987705600] [remote 127.0.0.1:41986] []
-[Tue Dec 04 04:22:48.894514 2018] [wsgi:error] [pid 43945:tid 139695987705600] [remote 127.0.0.1:41986] Parameters {'user': '1'}
-[Tue Dec 04 04:22:48.894523 2018] [wsgi:error] [pid 43945:tid 139695987705600] [remote 127.0.0.1:41986] Only []
-[Tue Dec 04 04:22:48.894531 2018] [wsgi:error] [pid 43945:tid 139695987705600] [remote 127.0.0.1:41986] 
-[Tue Dec 04 04:22:48.894534 2018] [wsgi:error] [pid 43945:tid 139695987705600] [remote 127.0.0.1:41986] 
-[Tue Dec 04 04:22:48.894543 2018] [wsgi:error] [pid 43945:tid 139695987705600] [remote 127.0.0.1:41986]  {'user': '1'} 
-[Tue Dec 04 04:22:48.894547 2018] [wsgi:error] [pid 43945:tid 139695987705600] [remote 127.0.0.1:41986] 
-[Tue Dec 04 04:22:48.894551 2018] [wsgi:error] [pid 43945:tid 139695987705600] [remote 127.0.0.1:41986] 
-[Tue Dec 04 04:22:48.894563 2018] [wsgi:error] [pid 43945:tid 139695987705600] [remote 127.0.0.1:41986] Related : []
-[Tue Dec 04 04:22:48.902031 2018] [wsgi:error] [pid 43945:tid 139695987705600] [remote 127.0.0.1:41986] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:24:06.480198 2018] [wsgi:error] [pid 26290:tid 139695987705600] Linux?
-[Tue Dec 04 04:24:07.062170 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:36990] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:24:07.062236 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:36990] []
-[Tue Dec 04 04:24:07.062252 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:36990] Parameters {'user': '1'}
-[Tue Dec 04 04:24:07.062280 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:36990] Only []
-[Tue Dec 04 04:24:07.062288 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:36990] 
-[Tue Dec 04 04:24:07.062292 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:36990] 
-[Tue Dec 04 04:24:07.062301 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:36990]  {'user': '1'} 
-[Tue Dec 04 04:24:07.062304 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:36990] 
-[Tue Dec 04 04:24:07.062309 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:36990] 
-[Tue Dec 04 04:24:07.062320 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:36990] Related : []
-[Tue Dec 04 04:24:07.063795 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:36990] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:24:42.111943 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:48524] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:24:42.112007 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:48524] []
-[Tue Dec 04 04:24:42.112021 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:48524] Parameters {'user': '1'}
-[Tue Dec 04 04:24:42.112029 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:48524] Only []
-[Tue Dec 04 04:24:42.112036 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:48524] 
-[Tue Dec 04 04:24:42.112039 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:48524] 
-[Tue Dec 04 04:24:42.112047 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:48524]  {'user': '1'} 
-[Tue Dec 04 04:24:42.112050 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:48524] 
-[Tue Dec 04 04:24:42.112054 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:48524] 
-[Tue Dec 04 04:24:42.112069 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:48524] Related : []
-[Tue Dec 04 04:24:42.112626 2018] [wsgi:error] [pid 26290:tid 139695987705600] [remote 127.0.0.1:48524] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:26:08.625309 2018] [wsgi:error] [pid 48080:tid 139695987705600] Linux?
-[Tue Dec 04 04:26:09.460171 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:49462] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:26:09.460301 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:49462] []
-[Tue Dec 04 04:26:09.460321 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:49462] Parameters {'user': '1'}
-[Tue Dec 04 04:26:09.460333 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:49462] Only []
-[Tue Dec 04 04:26:09.460342 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:49462] 
-[Tue Dec 04 04:26:09.460346 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:49462] 
-[Tue Dec 04 04:26:09.460356 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:49462]  {'user': '1'} 
-[Tue Dec 04 04:26:09.460360 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:49462] 
-[Tue Dec 04 04:26:09.460366 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:49462] 
-[Tue Dec 04 04:26:09.460382 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:49462] Related : []
-[Tue Dec 04 04:26:09.462536 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:49462] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:26:34.035045 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:57074] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:26:34.035129 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:57074] []
-[Tue Dec 04 04:26:34.035147 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:57074] Parameters {'user': '1'}
-[Tue Dec 04 04:26:34.035157 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:57074] Only []
-[Tue Dec 04 04:26:34.035166 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:57074] 
-[Tue Dec 04 04:26:34.035171 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:57074] 
-[Tue Dec 04 04:26:34.035180 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:57074]  {'user': '1'} 
-[Tue Dec 04 04:26:34.035184 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:57074] 
-[Tue Dec 04 04:26:34.035189 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:57074] 
-[Tue Dec 04 04:26:34.035209 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:57074] Related : []
-[Tue Dec 04 04:26:34.040682 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:57074] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:27:11.402325 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:38808] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:27:11.402408 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:38808] []
-[Tue Dec 04 04:27:11.402426 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:38808] Parameters {'user': '1'}
-[Tue Dec 04 04:27:11.402435 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:38808] Only []
-[Tue Dec 04 04:27:11.402443 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:38808] 
-[Tue Dec 04 04:27:11.402447 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:38808] 
-[Tue Dec 04 04:27:11.402456 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:38808]  {'user': '1'} 
-[Tue Dec 04 04:27:11.402459 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:38808] 
-[Tue Dec 04 04:27:11.402464 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:38808] 
-[Tue Dec 04 04:27:11.402477 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:38808] Related : []
-[Tue Dec 04 04:27:11.403243 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:38808] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:27:23.094942 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:42382] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:27:23.095005 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:42382] []
-[Tue Dec 04 04:27:23.095019 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:42382] Parameters {'user': '1'}
-[Tue Dec 04 04:27:23.095028 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:42382] Only []
-[Tue Dec 04 04:27:23.095035 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:42382] 
-[Tue Dec 04 04:27:23.095038 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:42382] 
-[Tue Dec 04 04:27:23.095046 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:42382]  {'user': '1'} 
-[Tue Dec 04 04:27:23.095049 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:42382] 
-[Tue Dec 04 04:27:23.095054 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:42382] 
-[Tue Dec 04 04:27:23.095064 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:42382] Related : []
-[Tue Dec 04 04:27:23.100990 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:42382] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:27:32.810648 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:45230] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:27:32.810735 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:45230] []
-[Tue Dec 04 04:27:32.810755 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:45230] Parameters {'user': '1'}
-[Tue Dec 04 04:27:32.810767 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:45230] Only []
-[Tue Dec 04 04:27:32.810777 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:45230] 
-[Tue Dec 04 04:27:32.810782 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:45230] 
-[Tue Dec 04 04:27:32.810793 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:45230]  {'user': '1'} 
-[Tue Dec 04 04:27:32.810798 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:45230] 
-[Tue Dec 04 04:27:32.810803 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:45230] 
-[Tue Dec 04 04:27:32.810819 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:45230] Related : []
-[Tue Dec 04 04:27:32.811563 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:45230] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:28:03.172913 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:54350] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:28:03.172991 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:54350] []
-[Tue Dec 04 04:28:03.173011 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:54350] Parameters {'user': '1'}
-[Tue Dec 04 04:28:03.173023 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:54350] Only []
-[Tue Dec 04 04:28:03.173033 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:54350] 
-[Tue Dec 04 04:28:03.173038 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:54350] 
-[Tue Dec 04 04:28:03.173049 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:54350]  {'user': '1'} 
-[Tue Dec 04 04:28:03.173054 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:54350] 
-[Tue Dec 04 04:28:03.173061 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:54350] 
-[Tue Dec 04 04:28:03.173077 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:54350] Related : []
-[Tue Dec 04 04:28:03.173978 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:54350] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:28:23.663995 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:60810] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:28:23.664092 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:60810] []
-[Tue Dec 04 04:28:23.664119 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:60810] Parameters {'user': '1'}
-[Tue Dec 04 04:28:23.664137 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:60810] Only []
-[Tue Dec 04 04:28:23.664150 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:60810] 
-[Tue Dec 04 04:28:23.664156 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:60810] 
-[Tue Dec 04 04:28:23.664170 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:60810]  {'user': '1'} 
-[Tue Dec 04 04:28:23.664176 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:60810] 
-[Tue Dec 04 04:28:23.664184 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:60810] 
-[Tue Dec 04 04:28:23.664220 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:60810] Related : []
-[Tue Dec 04 04:28:23.665173 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:60810] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:28:24.972815 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:32966] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:28:24.972907 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:32966] []
-[Tue Dec 04 04:28:24.972927 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:32966] Parameters {'user': '1'}
-[Tue Dec 04 04:28:24.972940 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:32966] Only []
-[Tue Dec 04 04:28:24.972950 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:32966] 
-[Tue Dec 04 04:28:24.972955 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:32966] 
-[Tue Dec 04 04:28:24.972968 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:32966]  {'user': '1'} 
-[Tue Dec 04 04:28:24.972974 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:32966] 
-[Tue Dec 04 04:28:24.972980 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:32966] 
-[Tue Dec 04 04:28:24.972997 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:32966] Related : []
-[Tue Dec 04 04:28:24.973888 2018] [wsgi:error] [pid 48080:tid 139695987705600] [remote 127.0.0.1:32966] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:30:42.662486 2018] [wsgi:error] [pid 42115:tid 139695987705600] Linux?
-[Tue Dec 04 04:30:43.225312 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:52040] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:30:43.225377 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:52040] []
-[Tue Dec 04 04:30:43.225395 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:52040] Parameters {'user': '1'}
-[Tue Dec 04 04:30:43.225405 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:52040] Only []
-[Tue Dec 04 04:30:43.225413 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:52040] 
-[Tue Dec 04 04:30:43.225417 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:52040] 
-[Tue Dec 04 04:30:43.225426 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:52040]  {'user': '1'} 
-[Tue Dec 04 04:30:43.225430 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:52040] 
-[Tue Dec 04 04:30:43.225436 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:52040] 
-[Tue Dec 04 04:30:43.225449 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:52040] Related : []
-[Tue Dec 04 04:30:43.230354 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:52040] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:30:59.060956 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57492] Internal Server Error: /api/home/customize/2
-[Tue Dec 04 04:30:59.061004 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57492] Traceback (most recent call last):
-[Tue Dec 04 04:30:59.061009 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57492]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
-[Tue Dec 04 04:30:59.061013 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57492]     response = get_response(request)
-[Tue Dec 04 04:30:59.061032 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57492]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/utils/deprecation.py", line 90, in __call__
-[Tue Dec 04 04:30:59.061036 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57492]     response = self.process_request(request)
-[Tue Dec 04 04:30:59.061040 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57492]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/middleware/common.py", line 53, in process_request
-[Tue Dec 04 04:30:59.061044 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57492]     path = self.get_full_path_with_slash(request)
-[Tue Dec 04 04:30:59.061048 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57492]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/middleware/common.py", line 93, in get_full_path_with_slash
-[Tue Dec 04 04:30:59.061052 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57492]     'url': request.get_host() + new_path,
-[Tue Dec 04 04:30:59.061057 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57492] RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to norma.jthiesen1.webfactional.com/api/home/customize/2/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
-[Tue Dec 04 04:30:59.061066 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57492] 
-[Tue Dec 04 04:30:59.311664 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57612] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:30:59.311729 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57612] []
-[Tue Dec 04 04:30:59.311747 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57612] Parameters {'user': '1'}
-[Tue Dec 04 04:30:59.311758 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57612] Only []
-[Tue Dec 04 04:30:59.311766 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57612] 
-[Tue Dec 04 04:30:59.311771 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57612] 
-[Tue Dec 04 04:30:59.311780 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57612]  {'user': '1'} 
-[Tue Dec 04 04:30:59.311784 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57612] 
-[Tue Dec 04 04:30:59.311790 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57612] 
-[Tue Dec 04 04:30:59.311802 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57612] Related : []
-[Tue Dec 04 04:30:59.312456 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:57612] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:31:29.912013 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:40628] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:31:29.912095 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:40628] []
-[Tue Dec 04 04:31:29.912118 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:40628] Parameters {'user': '1'}
-[Tue Dec 04 04:31:29.912131 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:40628] Only []
-[Tue Dec 04 04:31:29.912142 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:40628] 
-[Tue Dec 04 04:31:29.912147 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:40628] 
-[Tue Dec 04 04:31:29.912160 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:40628]  {'user': '1'} 
-[Tue Dec 04 04:31:29.912166 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:40628] 
-[Tue Dec 04 04:31:29.912182 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:40628] 
-[Tue Dec 04 04:31:29.912209 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:40628] Related : []
-[Tue Dec 04 04:31:29.912980 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:40628] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:31:36.020391 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42028] Internal Server Error: /api/home/customize/2
-[Tue Dec 04 04:31:36.020450 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42028] Traceback (most recent call last):
-[Tue Dec 04 04:31:36.020460 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42028]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
-[Tue Dec 04 04:31:36.020465 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42028]     response = get_response(request)
-[Tue Dec 04 04:31:36.020477 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42028]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/utils/deprecation.py", line 90, in __call__
-[Tue Dec 04 04:31:36.020481 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42028]     response = self.process_request(request)
-[Tue Dec 04 04:31:36.020490 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42028]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/middleware/common.py", line 53, in process_request
-[Tue Dec 04 04:31:36.020494 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42028]     path = self.get_full_path_with_slash(request)
-[Tue Dec 04 04:31:36.020507 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42028]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/middleware/common.py", line 93, in get_full_path_with_slash
-[Tue Dec 04 04:31:36.020512 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42028]     'url': request.get_host() + new_path,
-[Tue Dec 04 04:31:36.020523 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42028] RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to norma.jthiesen1.webfactional.com/api/home/customize/2/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
-[Tue Dec 04 04:31:36.020538 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42028] 
-[Tue Dec 04 04:31:36.290493 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42114] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:31:36.290641 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42114] []
-[Tue Dec 04 04:31:36.290665 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42114] Parameters {'user': '1'}
-[Tue Dec 04 04:31:36.290677 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42114] Only []
-[Tue Dec 04 04:31:36.290686 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42114] 
-[Tue Dec 04 04:31:36.290691 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42114] 
-[Tue Dec 04 04:31:36.290702 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42114]  {'user': '1'} 
-[Tue Dec 04 04:31:36.290707 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42114] 
-[Tue Dec 04 04:31:36.290712 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42114] 
-[Tue Dec 04 04:31:36.290728 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42114] Related : []
-[Tue Dec 04 04:31:36.291979 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:42114] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:31:43.850579 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:43978] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:31:43.851024 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:43978] []
-[Tue Dec 04 04:31:43.851047 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:43978] Parameters {'user': '1'}
-[Tue Dec 04 04:31:43.851090 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:43978] Only []
-[Tue Dec 04 04:31:43.851100 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:43978] 
-[Tue Dec 04 04:31:43.851104 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:43978] 
-[Tue Dec 04 04:31:43.851113 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:43978]  {'user': '1'} 
-[Tue Dec 04 04:31:43.851117 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:43978] 
-[Tue Dec 04 04:31:43.851122 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:43978] 
-[Tue Dec 04 04:31:43.851135 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:43978] Related : []
-[Tue Dec 04 04:31:43.851749 2018] [wsgi:error] [pid 42115:tid 139695987705600] [remote 127.0.0.1:43978] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:33:01.108523 2018] [wsgi:error] [pid 32530:tid 139695987705600] Linux?
-[Tue Dec 04 04:33:01.526874 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36112] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:33:01.526944 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36112] []
-[Tue Dec 04 04:33:01.526960 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36112] Parameters {'user': '1'}
-[Tue Dec 04 04:33:01.526970 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36112] Only []
-[Tue Dec 04 04:33:01.526978 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36112] 
-[Tue Dec 04 04:33:01.526981 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36112] 
-[Tue Dec 04 04:33:01.526991 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36112]  {'user': '1'} 
-[Tue Dec 04 04:33:01.526995 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36112] 
-[Tue Dec 04 04:33:01.526999 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36112] 
-[Tue Dec 04 04:33:01.527012 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36112] Related : []
-[Tue Dec 04 04:33:01.528490 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36112] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:33:04.663050 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36938] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:33:04.663143 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36938] []
-[Tue Dec 04 04:33:04.663166 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36938] Parameters {'user': '1'}
-[Tue Dec 04 04:33:04.663180 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36938] Only []
-[Tue Dec 04 04:33:04.663191 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36938] 
-[Tue Dec 04 04:33:04.663197 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36938] 
-[Tue Dec 04 04:33:04.663210 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36938]  {'user': '1'} 
-[Tue Dec 04 04:33:04.663216 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36938] 
-[Tue Dec 04 04:33:04.663234 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36938] 
-[Tue Dec 04 04:33:04.663259 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36938] Related : []
-[Tue Dec 04 04:33:04.664101 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:36938] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:33:10.789412 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38614] Internal Server Error: /api/home/customize/2
-[Tue Dec 04 04:33:10.789441 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38614] Traceback (most recent call last):
-[Tue Dec 04 04:33:10.789446 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38614]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
-[Tue Dec 04 04:33:10.789450 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38614]     response = get_response(request)
-[Tue Dec 04 04:33:10.789454 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38614]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/utils/deprecation.py", line 90, in __call__
-[Tue Dec 04 04:33:10.789458 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38614]     response = self.process_request(request)
-[Tue Dec 04 04:33:10.789461 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38614]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/middleware/common.py", line 53, in process_request
-[Tue Dec 04 04:33:10.789465 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38614]     path = self.get_full_path_with_slash(request)
-[Tue Dec 04 04:33:10.789469 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38614]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/middleware/common.py", line 93, in get_full_path_with_slash
-[Tue Dec 04 04:33:10.789472 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38614]     'url': request.get_host() + new_path,
-[Tue Dec 04 04:33:10.789478 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38614] RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to norma.jthiesen1.webfactional.com/api/home/customize/2/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
-[Tue Dec 04 04:33:10.789487 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38614] 
-[Tue Dec 04 04:33:11.032686 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38706] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:33:11.032768 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38706] []
-[Tue Dec 04 04:33:11.032789 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38706] Parameters {'user': '1'}
-[Tue Dec 04 04:33:11.032804 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38706] Only []
-[Tue Dec 04 04:33:11.032814 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38706] 
-[Tue Dec 04 04:33:11.032820 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38706] 
-[Tue Dec 04 04:33:11.032833 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38706]  {'user': '1'} 
-[Tue Dec 04 04:33:11.032838 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38706] 
-[Tue Dec 04 04:33:11.032845 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38706] 
-[Tue Dec 04 04:33:11.032862 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38706] Related : []
-[Tue Dec 04 04:33:11.033680 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:38706] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:33:30.939015 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:44446] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:33:30.939083 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:44446] []
-[Tue Dec 04 04:33:30.939114 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:44446] Parameters {'user': '1'}
-[Tue Dec 04 04:33:30.939126 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:44446] Only []
-[Tue Dec 04 04:33:30.939134 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:44446] 
-[Tue Dec 04 04:33:30.939139 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:44446] 
-[Tue Dec 04 04:33:30.939150 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:44446]  {'user': '1'} 
-[Tue Dec 04 04:33:30.939155 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:44446] 
-[Tue Dec 04 04:33:30.939161 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:44446] 
-[Tue Dec 04 04:33:30.939176 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:44446] Related : []
-[Tue Dec 04 04:33:30.939842 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:44446] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:33:47.881741 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342] Internal Server Error: /
-[Tue Dec 04 04:33:47.881772 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342] Traceback (most recent call last):
-[Tue Dec 04 04:33:47.881777 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
-[Tue Dec 04 04:33:47.881781 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]     response = get_response(request)
-[Tue Dec 04 04:33:47.881785 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 126, in _get_response
-[Tue Dec 04 04:33:47.881789 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]     response = self.process_exception_by_middleware(e, request)
-[Tue Dec 04 04:33:47.881793 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 124, in _get_response
-[Tue Dec 04 04:33:47.881797 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]     response = wrapped_callback(request, *callback_args, **callback_kwargs)
-[Tue Dec 04 04:33:47.881801 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/views/decorators/clickjacking.py", line 50, in wrapped_view
-[Tue Dec 04 04:33:47.881805 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]     resp = view_func(*args, **kwargs)
-[Tue Dec 04 04:33:47.881809 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]   File "/home/jthiesen1/webapps/norma/ComponentMadness/home/views.py", line 26, in Index
-[Tue Dec 04 04:33:47.881812 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]     return render(request, "index.html", {})
-[Tue Dec 04 04:33:47.881816 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/shortcuts.py", line 36, in render
-[Tue Dec 04 04:33:47.881826 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]     content = loader.render_to_string(template_name, context, request, using=using)
-[Tue Dec 04 04:33:47.881830 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 61, in render_to_string
-[Tue Dec 04 04:33:47.881833 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]     template = get_template(template_name, using=using)
-[Tue Dec 04 04:33:47.881837 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 19, in get_template
-[Tue Dec 04 04:33:47.881840 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342]     raise TemplateDoesNotExist(template_name, chain=chain)
-[Tue Dec 04 04:33:47.881845 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342] django.template.exceptions.TemplateDoesNotExist: index.html
-[Tue Dec 04 04:33:47.881852 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49342] 
-[Tue Dec 04 04:33:50.099509 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964] Internal Server Error: /favicon.ico/
-[Tue Dec 04 04:33:50.099543 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964] Traceback (most recent call last):
-[Tue Dec 04 04:33:50.099548 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
-[Tue Dec 04 04:33:50.099552 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]     response = get_response(request)
-[Tue Dec 04 04:33:50.099556 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 126, in _get_response
-[Tue Dec 04 04:33:50.099560 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]     response = self.process_exception_by_middleware(e, request)
-[Tue Dec 04 04:33:50.099564 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 124, in _get_response
-[Tue Dec 04 04:33:50.099568 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]     response = wrapped_callback(request, *callback_args, **callback_kwargs)
-[Tue Dec 04 04:33:50.099572 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/views/decorators/clickjacking.py", line 50, in wrapped_view
-[Tue Dec 04 04:33:50.099575 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]     resp = view_func(*args, **kwargs)
-[Tue Dec 04 04:33:50.099578 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]   File "/home/jthiesen1/webapps/norma/ComponentMadness/home/views.py", line 26, in Index
-[Tue Dec 04 04:33:50.099582 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]     return render(request, "index.html", {})
-[Tue Dec 04 04:33:50.099585 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/shortcuts.py", line 36, in render
-[Tue Dec 04 04:33:50.099596 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]     content = loader.render_to_string(template_name, context, request, using=using)
-[Tue Dec 04 04:33:50.099602 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 61, in render_to_string
-[Tue Dec 04 04:33:50.099611 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]     template = get_template(template_name, using=using)
-[Tue Dec 04 04:33:50.099615 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 19, in get_template
-[Tue Dec 04 04:33:50.099619 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964]     raise TemplateDoesNotExist(template_name, chain=chain)
-[Tue Dec 04 04:33:50.099624 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964] django.template.exceptions.TemplateDoesNotExist: index.html
-[Tue Dec 04 04:33:50.099631 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:49964] 
-[Tue Dec 04 04:34:00.359070 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:52924] Request : <QueryDict: {}>
-[Tue Dec 04 04:34:00.359136 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:52924] []
-[Tue Dec 04 04:34:00.359153 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:52924] Parameters {}
-[Tue Dec 04 04:34:00.359164 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:52924] Only []
-[Tue Dec 04 04:34:00.359172 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:52924] 
-[Tue Dec 04 04:34:00.359177 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:52924] 
-[Tue Dec 04 04:34:00.359187 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:52924]  {} 
-[Tue Dec 04 04:34:00.359191 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:52924] 
-[Tue Dec 04 04:34:00.359197 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:52924] 
-[Tue Dec 04 04:34:00.359208 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:52924] Related : []
-[Tue Dec 04 04:34:00.359891 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:52924] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:34:01.593607 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248] Internal Server Error: /favicon.ico/
-[Tue Dec 04 04:34:01.593643 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248] Traceback (most recent call last):
-[Tue Dec 04 04:34:01.593648 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
-[Tue Dec 04 04:34:01.593652 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]     response = get_response(request)
-[Tue Dec 04 04:34:01.593656 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 126, in _get_response
-[Tue Dec 04 04:34:01.593661 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]     response = self.process_exception_by_middleware(e, request)
-[Tue Dec 04 04:34:01.593664 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 124, in _get_response
-[Tue Dec 04 04:34:01.593669 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]     response = wrapped_callback(request, *callback_args, **callback_kwargs)
-[Tue Dec 04 04:34:01.593673 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/views/decorators/clickjacking.py", line 50, in wrapped_view
-[Tue Dec 04 04:34:01.593676 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]     resp = view_func(*args, **kwargs)
-[Tue Dec 04 04:34:01.593687 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]   File "/home/jthiesen1/webapps/norma/ComponentMadness/home/views.py", line 26, in Index
-[Tue Dec 04 04:34:01.593691 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]     return render(request, "index.html", {})
-[Tue Dec 04 04:34:01.593694 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/shortcuts.py", line 36, in render
-[Tue Dec 04 04:34:01.593698 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]     content = loader.render_to_string(template_name, context, request, using=using)
-[Tue Dec 04 04:34:01.593701 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 61, in render_to_string
-[Tue Dec 04 04:34:01.593705 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]     template = get_template(template_name, using=using)
-[Tue Dec 04 04:34:01.593708 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 19, in get_template
-[Tue Dec 04 04:34:01.593712 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248]     raise TemplateDoesNotExist(template_name, chain=chain)
-[Tue Dec 04 04:34:01.593717 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248] django.template.exceptions.TemplateDoesNotExist: index.html
-[Tue Dec 04 04:34:01.593724 2018] [wsgi:error] [pid 32530:tid 139695987705600] [remote 127.0.0.1:53248] 
-[Tue Dec 04 04:35:42.892960 2018] [mpm_worker:notice] [pid 29220:tid 139696174389120] AH00298: SIGHUP received.  Attempting to restart
-[Tue Dec 04 04:35:42.952350 2018] [mpm_worker:notice] [pid 29220:tid 139696174389120] AH00292: Apache/2.4.37 (Unix) mod_wsgi/4.6.5 Python/3.7 configured -- resuming normal operations
-[Tue Dec 04 04:35:42.952388 2018] [core:notice] [pid 29220:tid 139696174389120] AH00094: Command line: '/home/jthiesen1/webapps/norma/apache2/bin/httpd.worker -f /home/jthiesen1/webapps/norma/apache2/conf/httpd.conf'
-[Tue Dec 04 04:35:46.181757 2018] [wsgi:error] [pid 13597:tid 139695987705600] Linux?
-[Tue Dec 04 04:35:46.489790 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58396] Request : <QueryDict: {}>
-[Tue Dec 04 04:35:46.489837 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58396] []
-[Tue Dec 04 04:35:46.489848 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58396] Parameters {}
-[Tue Dec 04 04:35:46.489854 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58396] Only []
-[Tue Dec 04 04:35:46.489871 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58396] 
-[Tue Dec 04 04:35:46.489874 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58396] 
-[Tue Dec 04 04:35:46.489891 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58396]  {} 
-[Tue Dec 04 04:35:46.489894 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58396] 
-[Tue Dec 04 04:35:46.489897 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58396] 
-[Tue Dec 04 04:35:46.489903 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58396] Related : []
-[Tue Dec 04 04:35:46.490628 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58396] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:35:46.640263 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646] Internal Server Error: /favicon.ico/
-[Tue Dec 04 04:35:46.640303 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646] Traceback (most recent call last):
-[Tue Dec 04 04:35:46.640317 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
-[Tue Dec 04 04:35:46.640321 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]     response = get_response(request)
-[Tue Dec 04 04:35:46.640324 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 126, in _get_response
-[Tue Dec 04 04:35:46.640327 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]     response = self.process_exception_by_middleware(e, request)
-[Tue Dec 04 04:35:46.640330 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 124, in _get_response
-[Tue Dec 04 04:35:46.640333 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]     response = wrapped_callback(request, *callback_args, **callback_kwargs)
-[Tue Dec 04 04:35:46.640336 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/views/decorators/clickjacking.py", line 50, in wrapped_view
-[Tue Dec 04 04:35:46.640339 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]     resp = view_func(*args, **kwargs)
-[Tue Dec 04 04:35:46.640342 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]   File "/home/jthiesen1/webapps/norma/ComponentMadness/home/views.py", line 26, in Index
-[Tue Dec 04 04:35:46.640345 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]     return render(request, "index.html", {})
-[Tue Dec 04 04:35:46.640347 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/shortcuts.py", line 36, in render
-[Tue Dec 04 04:35:46.640350 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]     content = loader.render_to_string(template_name, context, request, using=using)
-[Tue Dec 04 04:35:46.640353 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 61, in render_to_string
-[Tue Dec 04 04:35:46.640356 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]     template = get_template(template_name, using=using)
-[Tue Dec 04 04:35:46.640359 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 19, in get_template
-[Tue Dec 04 04:35:46.640362 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646]     raise TemplateDoesNotExist(template_name, chain=chain)
-[Tue Dec 04 04:35:46.640366 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646] django.template.exceptions.TemplateDoesNotExist: index.html
-[Tue Dec 04 04:35:46.640372 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:58646] 
-[Tue Dec 04 04:35:53.480499 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60886] Internal Server Error: /api/home/customize/2
-[Tue Dec 04 04:35:53.480542 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60886] Traceback (most recent call last):
-[Tue Dec 04 04:35:53.480547 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60886]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
-[Tue Dec 04 04:35:53.480552 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60886]     response = get_response(request)
-[Tue Dec 04 04:35:53.480561 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60886]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/utils/deprecation.py", line 90, in __call__
-[Tue Dec 04 04:35:53.480565 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60886]     response = self.process_request(request)
-[Tue Dec 04 04:35:53.480569 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60886]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/middleware/common.py", line 53, in process_request
-[Tue Dec 04 04:35:53.480573 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60886]     path = self.get_full_path_with_slash(request)
-[Tue Dec 04 04:35:53.480577 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60886]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/middleware/common.py", line 93, in get_full_path_with_slash
-[Tue Dec 04 04:35:53.480580 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60886]     'url': request.get_host() + new_path,
-[Tue Dec 04 04:35:53.480586 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60886] RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to norma.jthiesen1.webfactional.com/api/home/customize/2/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
-[Tue Dec 04 04:35:53.480607 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60886] 
-[Tue Dec 04 04:35:53.744767 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60988] Request : <QueryDict: {'user': ['1']}>
-[Tue Dec 04 04:35:53.744848 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60988] []
-[Tue Dec 04 04:35:53.744870 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60988] Parameters {'user': '1'}
-[Tue Dec 04 04:35:53.744883 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60988] Only []
-[Tue Dec 04 04:35:53.744894 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60988] 
-[Tue Dec 04 04:35:53.744899 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60988] 
-[Tue Dec 04 04:35:53.744912 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60988]  {'user': '1'} 
-[Tue Dec 04 04:35:53.744917 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60988] 
-[Tue Dec 04 04:35:53.744924 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60988] 
-[Tue Dec 04 04:35:53.744941 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60988] Related : []
-[Tue Dec 04 04:35:53.747571 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:60988] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:35:57.819428 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34058] Request : <QueryDict: {}>
-[Tue Dec 04 04:35:57.819504 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34058] []
-[Tue Dec 04 04:35:57.819522 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34058] Parameters {}
-[Tue Dec 04 04:35:57.819535 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34058] Only []
-[Tue Dec 04 04:35:57.819544 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34058] 
-[Tue Dec 04 04:35:57.819549 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34058] 
-[Tue Dec 04 04:35:57.819559 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34058]  {} 
-[Tue Dec 04 04:35:57.819564 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34058] 
-[Tue Dec 04 04:35:57.819570 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34058] 
-[Tue Dec 04 04:35:57.819613 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34058] Related : []
-[Tue Dec 04 04:35:57.820148 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34058] [['id', 'AutoField', None], ['skin_color', 'IntegerField', 0], ['size', 'IntegerField', 0], ['nipple_color', 'IntegerField', 0], ['masectomy', 'IntegerField', 0], ['user', 'IntegerField', 0]]
-[Tue Dec 04 04:35:57.982715 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098] Internal Server Error: /favicon.ico/
-[Tue Dec 04 04:35:57.982743 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098] Traceback (most recent call last):
-[Tue Dec 04 04:35:57.982747 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
-[Tue Dec 04 04:35:57.982752 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]     response = get_response(request)
-[Tue Dec 04 04:35:57.982755 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 126, in _get_response
-[Tue Dec 04 04:35:57.982760 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]     response = self.process_exception_by_middleware(e, request)
-[Tue Dec 04 04:35:57.982764 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 124, in _get_response
-[Tue Dec 04 04:35:57.982768 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]     response = wrapped_callback(request, *callback_args, **callback_kwargs)
-[Tue Dec 04 04:35:57.982772 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/views/decorators/clickjacking.py", line 50, in wrapped_view
-[Tue Dec 04 04:35:57.982775 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]     resp = view_func(*args, **kwargs)
-[Tue Dec 04 04:35:57.982779 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]   File "/home/jthiesen1/webapps/norma/ComponentMadness/home/views.py", line 26, in Index
-[Tue Dec 04 04:35:57.982782 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]     return render(request, "index.html", {})
-[Tue Dec 04 04:35:57.982786 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/shortcuts.py", line 36, in render
-[Tue Dec 04 04:35:57.982789 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]     content = loader.render_to_string(template_name, context, request, using=using)
-[Tue Dec 04 04:35:57.982793 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 61, in render_to_string
-[Tue Dec 04 04:35:57.982796 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]     template = get_template(template_name, using=using)
-[Tue Dec 04 04:35:57.982800 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 19, in get_template
-[Tue Dec 04 04:35:57.982804 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098]     raise TemplateDoesNotExist(template_name, chain=chain)
-[Tue Dec 04 04:35:57.982809 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098] django.template.exceptions.TemplateDoesNotExist: index.html
-[Tue Dec 04 04:35:57.982816 2018] [wsgi:error] [pid 13597:tid 139695987705600] [remote 127.0.0.1:34098] 
+[Sun Dec 09 18:29:39.070890 2018] [wsgi:error] [pid 5348:tid 140626203256576] Linux?
+[Sun Dec 09 18:37:16.912118 2018] [wsgi:error] [pid 30807:tid 140626203256576] Linux?
+[Sun Dec 09 18:39:35.487203 2018] [wsgi:error] [pid 35533:tid 140626203256576] Linux?
+[Sun Dec 09 18:46:18.050235 2018] [wsgi:error] [pid 40046:tid 140626203256576] Linux?
+[Sun Dec 09 18:55:10.820543 2018] [wsgi:error] [pid 47299:tid 140626203256576] Linux?
+[Sun Dec 09 18:56:14.212398 2018] [wsgi:error] [pid 9904:tid 140626203256576] Linux?
+[Sun Dec 09 18:58:59.300189 2018] [wsgi:error] [pid 12085:tid 140626203256576] Linux?
+[Sun Dec 09 19:01:56.489705 2018] [wsgi:error] [pid 16817:tid 140626203256576] Linux?
+[Sun Dec 09 19:04:26.480128 2018] [wsgi:error] [pid 19076:tid 140626203256576] Linux?
+[Sun Dec 09 19:06:20.573571 2018] [wsgi:error] [pid 22003:tid 140626203256576] Linux?
+[Sun Dec 09 19:07:56.590337 2018] [wsgi:error] [pid 23798:tid 140626203256576] Linux?
+[Sun Dec 09 19:12:44.960330 2018] [wsgi:error] [pid 30767:tid 140626203256576] Linux?
+[Sun Dec 09 19:14:59.820367 2018] [wsgi:error] [pid 32499:tid 140626203256576] Linux?
+[Sun Dec 09 19:16:13.540367 2018] [wsgi:error] [pid 34282:tid 140626203256576] Linux?
+[Sun Dec 09 19:18:22.995738 2018] [wsgi:error] [pid 35648:tid 140626203256576] Linux?
+[Sun Dec 09 19:24:28.873325 2018] [wsgi:error] [pid 40836:tid 140626203256576] Linux?
+[Sun Dec 09 19:26:13.510479 2018] [wsgi:error] [pid 45972:tid 140626203256576] Linux?
+[Sun Dec 09 19:31:54.797398 2018] [wsgi:error] [pid 5377:tid 140626203256576] Linux?
+[Sun Dec 09 19:35:16.734750 2018] [wsgi:error] [pid 7085:tid 140626203256576] Linux?
+[Sun Dec 09 19:41:29.287056 2018] [wsgi:error] [pid 13016:tid 140626203256576] Linux?
+[Sun Dec 09 20:34:18.904981 2018] [wsgi:error] [pid 18722:tid 140626203256576] Linux?
+[Sun Dec 09 20:35:51.772681 2018] [wsgi:error] [pid 34091:tid 140626203256576] Linux?
+[Sun Dec 09 20:43:03.948350 2018] [wsgi:error] [pid 36200:tid 140626203256576] Linux?
+[Sun Dec 09 20:55:02.937109 2018] [wsgi:error] [pid 366:tid 140626203256576] Linux?
+[Sun Dec 09 20:58:00.960762 2018] [wsgi:error] [pid 12613:tid 140626203256576] Linux?
+[Sun Dec 09 20:59:59.790285 2018] [wsgi:error] [pid 15344:tid 140626203256576] Linux?
+[Sun Dec 09 21:02:45.126820 2018] [wsgi:error] [pid 20572:tid 140626203256576] Linux?
+[Sun Dec 09 21:05:57.395030 2018] [wsgi:error] [pid 22805:tid 140626203256576] Linux?
+[Sun Dec 09 21:11:45.248336 2018] [wsgi:error] [pid 25865:tid 140626203256576] Linux?
+[Sun Dec 09 21:12:52.132348 2018] [wsgi:error] [pid 34085:tid 140626203256576] Linux?
+[Sun Dec 09 21:19:06.473295 2018] [wsgi:error] [pid 35585:tid 140626203256576] Linux?
+[Sun Dec 09 21:22:59.192547 2018] [wsgi:error] [pid 43208:tid 140626203256576] Linux?
+[Sun Dec 09 21:25:54.725731 2018] [wsgi:error] [pid 48465:tid 140626203256576] Linux?
+[Sun Dec 09 21:33:08.440031 2018] [wsgi:error] [pid 3832:tid 140626203256576] Linux?
+[Sun Dec 09 21:35:11.276549 2018] [wsgi:error] [pid 11921:tid 140626203256576] Linux?
+[Sun Dec 09 21:36:44.161530 2018] [wsgi:error] [pid 13959:tid 140626203256576] Linux?
+[Sun Dec 09 21:40:06.717798 2018] [wsgi:error] [pid 16474:tid 140626203256576] Linux?
+[Sun Dec 09 21:45:32.721555 2018] [wsgi:error] [pid 25353:tid 140626203256576] Linux?
+[Sun Dec 09 21:47:04.135835 2018] [wsgi:error] [pid 26313:tid 140626203256576] Linux?
+[Sun Dec 09 21:51:25.962809 2018] [wsgi:error] [pid 33154:tid 140626203256576] Linux?
+[Sun Dec 09 21:55:32.458459 2018] [wsgi:error] [pid 35020:tid 140626203256576] Linux?
+[Sun Dec 09 21:58:03.170471 2018] [wsgi:error] [pid 38754:tid 140626203256576] Linux?
+[Sun Dec 09 22:01:59.321891 2018] [wsgi:error] [pid 40619:tid 140626203256576] Linux?
+[Sun Dec 09 22:17:10.146854 2018] [wsgi:error] [pid 47169:tid 140626203256576] Linux?
+[Sun Dec 09 22:18:12.554079 2018] [wsgi:error] [pid 14471:tid 140626203256576] Linux?
+[Sun Dec 09 22:19:45.509297 2018] [wsgi:error] [pid 15282:tid 140626203256576] Linux?
+[Sun Dec 09 22:21:51.579940 2018] [wsgi:error] [pid 19385:tid 140626203256576] Linux?
+[Sun Dec 09 22:27:19.099246 2018] [wsgi:error] [pid 22230:tid 140626203256576] Linux?
+[Sun Dec 09 22:27:38.966304 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48240] Request : <QueryDict: {'order_by': ['preview_order'], 'preview_archived': ['false']}>
+[Sun Dec 09 22:27:38.966381 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48240] []
+[Sun Dec 09 22:27:38.966401 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48240] Parameters {'preview_archived': 'false'}
+[Sun Dec 09 22:27:38.966412 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48240] Only []
+[Sun Dec 09 22:27:38.966421 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48240] 
+[Sun Dec 09 22:27:38.966426 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48240] 
+[Sun Dec 09 22:27:38.966437 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48240]  {'preview_archived': 'false'} 
+[Sun Dec 09 22:27:38.966442 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48240] 
+[Sun Dec 09 22:27:38.966448 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48240] 
+[Sun Dec 09 22:27:38.966462 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48240] Related : []
+[Sun Dec 09 22:27:38.968051 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48240] [['answers', 'ForeignKey', 'home', 'answer', True], ['id', 'AutoField', None], ['name', 'CharField', ''], ['factoid', 'TextField', ''], ['order', 'IntegerField', 0], ['component', 'CharField', ''], ['props', 'TextField', ''], ['archived', 'BooleanField', True], ['preview_order', 'IntegerField', 0], ['preview_archived', 'BooleanField', True]]
+[Sun Dec 09 22:27:39.125285 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] Request : <QueryDict: {'user': ['5c0d94abdae9f63aceef246b']}>
+[Sun Dec 09 22:27:39.125365 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] []
+[Sun Dec 09 22:27:39.125387 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] Parameters {'user': '5c0d94abdae9f63aceef246b'}
+[Sun Dec 09 22:27:39.125402 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] Only []
+[Sun Dec 09 22:27:39.125412 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] 
+[Sun Dec 09 22:27:39.125418 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] 
+[Sun Dec 09 22:27:39.125432 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]  {'user': '5c0d94abdae9f63aceef246b'} 
+[Sun Dec 09 22:27:39.125438 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] 
+[Sun Dec 09 22:27:39.125445 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] 
+[Sun Dec 09 22:27:39.125462 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] Related : []
+[Sun Dec 09 22:27:39.226330 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] Internal Server Error: /api/home/answer/
+[Sun Dec 09 22:27:39.226359 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] Traceback (most recent call last):
+[Sun Dec 09 22:27:39.226364 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
+[Sun Dec 09 22:27:39.226368 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     response = get_response(request)
+[Sun Dec 09 22:27:39.226372 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 126, in _get_response
+[Sun Dec 09 22:27:39.226376 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     response = self.process_exception_by_middleware(e, request)
+[Sun Dec 09 22:27:39.226384 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 124, in _get_response
+[Sun Dec 09 22:27:39.226399 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     response = wrapped_callback(request, *callback_args, **callback_kwargs)
+[Sun Dec 09 22:27:39.226403 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/ComponentMadness/modelWebsite/views.py", line 140, in getModelInstanceJson
+[Sun Dec 09 22:27:39.226407 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     instanceQuery = model.objects.filter(**parameters)
+[Sun Dec 09 22:27:39.226410 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/db/models/manager.py", line 82, in manager_method
+[Sun Dec 09 22:27:39.226414 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     return getattr(self.get_queryset(), name)(*args, **kwargs)
+[Sun Dec 09 22:27:39.226418 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/db/models/query.py", line 844, in filter
+[Sun Dec 09 22:27:39.226422 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     return self._filter_or_exclude(False, *args, **kwargs)
+[Sun Dec 09 22:27:39.226425 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/db/models/query.py", line 862, in _filter_or_exclude
+[Sun Dec 09 22:27:39.226429 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     clone.query.add_q(Q(*args, **kwargs))
+[Sun Dec 09 22:27:39.226433 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/db/models/sql/query.py", line 1263, in add_q
+[Sun Dec 09 22:27:39.226436 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     clause, _ = self._add_q(q_object, self.used_aliases)
+[Sun Dec 09 22:27:39.226440 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/db/models/sql/query.py", line 1287, in _add_q
+[Sun Dec 09 22:27:39.226444 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     split_subq=split_subq,
+[Sun Dec 09 22:27:39.226448 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/db/models/sql/query.py", line 1225, in build_filter
+[Sun Dec 09 22:27:39.226452 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     condition = self.build_lookup(lookups, col, value)
+[Sun Dec 09 22:27:39.226456 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/db/models/sql/query.py", line 1096, in build_lookup
+[Sun Dec 09 22:27:39.226460 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     lookup = lookup_class(lhs, rhs)
+[Sun Dec 09 22:27:39.226463 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/db/models/lookups.py", line 20, in __init__
+[Sun Dec 09 22:27:39.226467 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     self.rhs = self.get_prep_lookup()
+[Sun Dec 09 22:27:39.226471 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/db/models/fields/related_lookups.py", line 115, in get_prep_lookup
+[Sun Dec 09 22:27:39.226475 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     self.rhs = target_field.get_prep_value(self.rhs)
+[Sun Dec 09 22:27:39.226484 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/db/models/fields/__init__.py", line 965, in get_prep_value
+[Sun Dec 09 22:27:39.226488 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250]     return int(value)
+[Sun Dec 09 22:27:39.226494 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] ValueError: invalid literal for int() with base 10: '5c0d94abdae9f63aceef246b'
+[Sun Dec 09 22:27:39.226502 2018] [wsgi:error] [pid 22230:tid 140626203256576] [remote 127.0.0.1:48250] 
+[Sun Dec 09 22:29:26.375606 2018] [wsgi:error] [pid 27622:tid 140626203256576] Linux?
+[Sun Dec 09 22:38:18.063122 2018] [wsgi:error] [pid 31802:tid 140626203256576] Linux?
+[Sun Dec 09 22:42:32.096817 2018] [mpm_worker:notice] [pid 33766:tid 140626389944192] AH00298: SIGHUP received.  Attempting to restart
+[Sun Dec 09 22:42:32.155127 2018] [mpm_worker:notice] [pid 33766:tid 140626389944192] AH00292: Apache/2.4.37 (Unix) mod_wsgi/4.6.5 Python/3.7 configured -- resuming normal operations
+[Sun Dec 09 22:42:32.155167 2018] [core:notice] [pid 33766:tid 140626389944192] AH00094: Command line: '/home/jthiesen1/webapps/norma/apache2/bin/httpd.worker -f /home/jthiesen1/webapps/norma/apache2/conf/httpd.conf'
+[Sun Dec 09 22:47:37.909451 2018] [wsgi:error] [pid 44473:tid 140626203256576] Linux?
+[Sun Dec 09 22:47:38.154186 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40582] Request : <QueryDict: {}>
+[Sun Dec 09 22:47:38.154231 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40582] []
+[Sun Dec 09 22:47:38.154241 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40582] Parameters {}
+[Sun Dec 09 22:47:38.154248 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40582] Only []
+[Sun Dec 09 22:47:38.154253 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40582] 
+[Sun Dec 09 22:47:38.154256 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40582] 
+[Sun Dec 09 22:47:38.154261 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40582]  {} 
+[Sun Dec 09 22:47:38.154264 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40582] 
+[Sun Dec 09 22:47:38.154268 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40582] 
+[Sun Dec 09 22:47:38.154274 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40582] Related : []
+[Sun Dec 09 22:47:38.155029 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40582] [['id', 'AutoField', None], ['question', 'CharField', ''], ['answer', 'TextField', ''], ['order', 'IntegerField', 0], ['archived', 'BooleanField', True], ['preview_order', 'IntegerField', 0], ['preview_archived', 'BooleanField', True]]
+[Sun Dec 09 22:47:38.434309 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636] Internal Server Error: /favicon.ico/
+[Sun Dec 09 22:47:38.434335 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636] Traceback (most recent call last):
+[Sun Dec 09 22:47:38.434339 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
+[Sun Dec 09 22:47:38.434344 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]     response = get_response(request)
+[Sun Dec 09 22:47:38.434348 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 126, in _get_response
+[Sun Dec 09 22:47:38.434352 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]     response = self.process_exception_by_middleware(e, request)
+[Sun Dec 09 22:47:38.434357 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 124, in _get_response
+[Sun Dec 09 22:47:38.434370 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]     response = wrapped_callback(request, *callback_args, **callback_kwargs)
+[Sun Dec 09 22:47:38.434375 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/views/decorators/clickjacking.py", line 50, in wrapped_view
+[Sun Dec 09 22:47:38.434378 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]     resp = view_func(*args, **kwargs)
+[Sun Dec 09 22:47:38.434382 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]   File "/home/jthiesen1/webapps/norma/ComponentMadness/home/views.py", line 27, in Index
+[Sun Dec 09 22:47:38.434386 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]     return render(request, "index.html", {})
+[Sun Dec 09 22:47:38.434390 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/shortcuts.py", line 36, in render
+[Sun Dec 09 22:47:38.434393 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]     content = loader.render_to_string(template_name, context, request, using=using)
+[Sun Dec 09 22:47:38.434397 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 61, in render_to_string
+[Sun Dec 09 22:47:38.434401 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]     template = get_template(template_name, using=using)
+[Sun Dec 09 22:47:38.434405 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 19, in get_template
+[Sun Dec 09 22:47:38.434409 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636]     raise TemplateDoesNotExist(template_name, chain=chain)
+[Sun Dec 09 22:47:38.434414 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636] django.template.exceptions.TemplateDoesNotExist: index.html
+[Sun Dec 09 22:47:38.434423 2018] [wsgi:error] [pid 44473:tid 140626203256576] [remote 127.0.0.1:40636] 
+[Sun Dec 09 22:49:34.856437 2018] [wsgi:error] [pid 970:tid 140626203256576] Linux?
+[Sun Dec 09 22:54:38.900322 2018] [wsgi:error] [pid 6121:tid 140626203256576] Linux?
+[Sun Dec 09 22:57:24.769132 2018] [wsgi:error] [pid 10446:tid 140626203256576] Linux?
+[Sun Dec 09 22:58:27.662976 2018] [wsgi:error] [pid 12669:tid 140626203256576] Linux?
+[Sun Dec 09 22:58:27.895312 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388] Request : <QueryDict: {}>
+[Sun Dec 09 22:58:27.932836 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388] Internal Server Error: /api/home/userDetails/
+[Sun Dec 09 22:58:27.932849 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388] Traceback (most recent call last):
+[Sun Dec 09 22:58:27.932852 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/apps/config.py", line 165, in get_model
+[Sun Dec 09 22:58:27.932856 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]     return self.models[model_name.lower()]
+[Sun Dec 09 22:58:27.932858 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388] KeyError: 'userdetails'
+[Sun Dec 09 22:58:27.932861 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388] 
+[Sun Dec 09 22:58:27.932864 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388] During handling of the above exception, another exception occurred:
+[Sun Dec 09 22:58:27.932867 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388] 
+[Sun Dec 09 22:58:27.932877 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388] Traceback (most recent call last):
+[Sun Dec 09 22:58:27.932880 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
+[Sun Dec 09 22:58:27.932883 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]     response = get_response(request)
+[Sun Dec 09 22:58:27.932886 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 126, in _get_response
+[Sun Dec 09 22:58:27.932889 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]     response = self.process_exception_by_middleware(e, request)
+[Sun Dec 09 22:58:27.932892 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 124, in _get_response
+[Sun Dec 09 22:58:27.932896 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]     response = wrapped_callback(request, *callback_args, **callback_kwargs)
+[Sun Dec 09 22:58:27.932899 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]   File "/home/jthiesen1/webapps/norma/ComponentMadness/modelWebsite/views.py", line 61, in getModelInstanceJson
+[Sun Dec 09 22:58:27.932902 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
+[Sun Dec 09 22:58:27.932905 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/apps/registry.py", line 207, in get_model
+[Sun Dec 09 22:58:27.932908 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]     return app_config.get_model(model_name, require_ready=require_ready)
+[Sun Dec 09 22:58:27.932911 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/apps/config.py", line 168, in get_model
+[Sun Dec 09 22:58:27.932914 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388]     "App '%s' doesn't have a '%s' model." % (self.label, model_name))
+[Sun Dec 09 22:58:27.932918 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388] LookupError: App 'home' doesn't have a 'userDetails' model.
+[Sun Dec 09 22:58:27.932923 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:39388] 
+[Sun Dec 09 22:59:04.946857 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40910] Request : <QueryDict: {}>
+[Sun Dec 09 22:59:04.946945 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40910] []
+[Sun Dec 09 22:59:04.946965 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40910] Parameters {}
+[Sun Dec 09 22:59:04.946977 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40910] Only []
+[Sun Dec 09 22:59:04.946988 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40910] 
+[Sun Dec 09 22:59:04.946993 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40910] 
+[Sun Dec 09 22:59:04.947004 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40910]  {} 
+[Sun Dec 09 22:59:04.947009 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40910] 
+[Sun Dec 09 22:59:04.947016 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40910] 
+[Sun Dec 09 22:59:04.947028 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40910] Related : []
+[Sun Dec 09 22:59:04.948354 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40910] [['id', 'AutoField', None], ['user', 'CharField', ''], ['name', 'CharField', '']]
+[Sun Dec 09 22:59:05.121687 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914] Internal Server Error: /favicon.ico/
+[Sun Dec 09 22:59:05.121704 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914] Traceback (most recent call last):
+[Sun Dec 09 22:59:05.121709 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/exception.py", line 34, in inner
+[Sun Dec 09 22:59:05.121713 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]     response = get_response(request)
+[Sun Dec 09 22:59:05.121716 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 126, in _get_response
+[Sun Dec 09 22:59:05.121720 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]     response = self.process_exception_by_middleware(e, request)
+[Sun Dec 09 22:59:05.121724 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/core/handlers/base.py", line 124, in _get_response
+[Sun Dec 09 22:59:05.121728 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]     response = wrapped_callback(request, *callback_args, **callback_kwargs)
+[Sun Dec 09 22:59:05.121732 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/views/decorators/clickjacking.py", line 50, in wrapped_view
+[Sun Dec 09 22:59:05.121736 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]     resp = view_func(*args, **kwargs)
+[Sun Dec 09 22:59:05.121739 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]   File "/home/jthiesen1/webapps/norma/ComponentMadness/home/views.py", line 27, in Index
+[Sun Dec 09 22:59:05.121743 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]     return render(request, "index.html", {})
+[Sun Dec 09 22:59:05.121746 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/shortcuts.py", line 36, in render
+[Sun Dec 09 22:59:05.121750 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]     content = loader.render_to_string(template_name, context, request, using=using)
+[Sun Dec 09 22:59:05.121753 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 61, in render_to_string
+[Sun Dec 09 22:59:05.121757 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]     template = get_template(template_name, using=using)
+[Sun Dec 09 22:59:05.121760 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]   File "/home/jthiesen1/webapps/norma/lib/python3.7/Django-2.1.3-py3.7.egg/django/template/loader.py", line 19, in get_template
+[Sun Dec 09 22:59:05.121764 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914]     raise TemplateDoesNotExist(template_name, chain=chain)
+[Sun Dec 09 22:59:05.121769 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914] django.template.exceptions.TemplateDoesNotExist: index.html
+[Sun Dec 09 22:59:05.121776 2018] [wsgi:error] [pid 12669:tid 140626203256576] [remote 127.0.0.1:40914] 

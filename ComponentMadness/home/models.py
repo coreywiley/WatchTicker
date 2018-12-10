@@ -5,6 +5,11 @@ from jsonfield import JSONField
 from user.models import User
 # Create your models here.
 
+class UserSettings(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.CharField(max_length=120, blank=True, default="")
+    name = models.CharField(max_length=1200, blank=True, default="")
+
 class Question(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=1200, blank=True, default="")
@@ -23,7 +28,7 @@ class Answer(models.Model):
     id = models.AutoField(primary_key=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     answer = models.TextField(blank=True, default="")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answers')
+    user = models.CharField(max_length=120, blank=True, default="")
 
 class Customize(models.Model):
     id = models.AutoField(primary_key=True)
@@ -31,13 +36,13 @@ class Customize(models.Model):
     size = models.IntegerField(default=0)
     nipple_color = models.IntegerField(default=0)
     masectomy = models.IntegerField(default=0)
-    user = models.IntegerField(default=0)
+    user = models.CharField(max_length=120, blank=True, default="")
 
 class Journal(models.Model):
     id = models.AutoField(primary_key=True)
     date = models.DateField(default=datetime.datetime.now)
     notes = models.TextField(default='')
-    user = models.IntegerField(default=0)
+    uuser = models.CharField(max_length=120, blank=True, default="")
 
 class Symptom(models.Model):
     id = models.AutoField(primary_key=True)
@@ -55,7 +60,7 @@ class Doctor(models.Model):
     notes = models.TextField(blank=True, default="")
     next_appointment = models.DateField(null=True)
     reminder = models.BooleanField(default=False)
-    user = models.IntegerField(default=0)
+    user = models.CharField(max_length=120, blank=True, default="")
 
 class FAQ(models.Model):
     id = models.AutoField(primary_key=True)

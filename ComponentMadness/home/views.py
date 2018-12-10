@@ -13,6 +13,7 @@ import csv
 import json
 import os
 from django.views.decorators.clickjacking import xframe_options_exempt
+import requests
 #from user.views import my_login_required
 
 @xframe_options_exempt
@@ -24,6 +25,20 @@ def Index(request, param = "", param2 = "", param3 = "", param4 = "", param5 = "
         return HttpResponse(html)
 
     return render(request, "index.html", {})
+
+def SendNotification(request):
+    headers = {'accept': 'application/json', 'accept-encoding': 'gzip, deflate', 'content-type': 'application/json'}
+    data = {
+      "to": "ExponentPushToken[86XFiIOsoiDnzOWWOpfG5n]",
+      "sound": "default",
+      "body": "Hello world!",
+      "priority":"high",
+
+    }
+    r = requests.post('https://exp.host/--/api/v2/push/send', data=data)
+    print (r.status_code)
+    print (r.text)
+    return JsonResponse({'success':'True'})
 
 def ErrorPage(request):
     return JsonResponse({'error':'There was an error on the server. Our team has received an email detailing the error and will get it fixed as soon as possible.'})

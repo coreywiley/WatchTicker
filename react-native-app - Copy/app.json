@@ -1,0 +1,10 @@
+{
+  "name": "Know Your Norma",
+  "displayName": "Know Your Norma",
+	"expo":{
+	  "sdkVersion":"27.0.0",
+	  "name":"Know Your Norma",
+	  "slug":"know-your-norma",
+	  "orientation":"portrait",
+	  }
+}

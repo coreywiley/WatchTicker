@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 
-from home.views import Index
+from home.views import Index, SendNotification
 admin.autodiscover()
 
 urlpatterns = [
@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^users/', include('user.urls', namespace="user")),
     #Catch statements for React
     url(r'^$', Index, name='index'),
+    url(r'^sendNotification/', SendNotification),
     url(r'^(?P<param>\S+)/$', Index, name='index'),
     url(r'^(?P<param>\S+)/$', Index, name='index'),
     url(r'^(?P<param>\S+)/(?P<param2>\S+)/$', Index, name='index'),
