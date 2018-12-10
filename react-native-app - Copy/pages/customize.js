@@ -9,6 +9,7 @@ import Footer from '../localLibrary/footer.js';
 import Text from '../library/text.js';
 import CustomPhoto from '../localLibrary/customPhoto.js';
 import SelectionBox from '../localLibrary/selectionBox.js';
+import Loading from '../library/loading.js';
 
 var skin_color_1_selected = require('../assets/Customization/skin_color_1_selected.png')
 var skin_color_2_selected = require('../assets/Customization/skin_color_2_selected.png')
@@ -165,7 +166,9 @@ class Customize extends React.Component {
                     <Text style={{fontFamily: 'Quicksand', color:'white', position:'absolute', paddingRight:20, paddingLeft:20, backgroundColor:'#8e67a3', 'textAlign':'center', zIndex:1000}}>Optional</Text>
                   </View>
 
-                  <SelectionBox title={'Massectomy'} optional={true} answer={this.state.masectomy} handleChange={this.handleChange} name={'masectomy'} options={masectomy_options} />
+                  <View style={{width:'100%', alignItems:'center', justifyContent:'center'}}>
+                    <SelectionBox title={'Massectomy'} optional={true} answer={this.state.masectomy} handleChange={this.handleChange} name={'masectomy'} options={masectomy_options} />
+                  </View>
 
                   <Button onPress={() => this.save()} text={'Save'} selected={true}></Button>
 
@@ -181,9 +184,8 @@ class Customize extends React.Component {
         }
         else {
           return (
-            <View>
-                  <Text>Welcome To Customization</Text>
-              </View>
+            <Loading />
+
           );
         }
 

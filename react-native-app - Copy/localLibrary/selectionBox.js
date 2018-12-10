@@ -68,7 +68,7 @@ class SelectionBox extends React.Component {
 
     if (this.state.display == false) {
       return (
-        <Button onPress={() => this.show()} text={this.props.title} width={'80%'}></Button>
+        <Button onPress={() => this.show()} text={this.props.title} width={'100%'}></Button>
       )
     }
     else {

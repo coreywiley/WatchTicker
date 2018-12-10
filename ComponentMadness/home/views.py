@@ -31,6 +31,7 @@ def SendNotification(request):
     data = {
       "to": "ExponentPushToken[86XFiIOsoiDnzOWWOpfG5n]",
       "sound": "default",
+      "title":"Hi There",
       "body": "Hello world!",
       "priority":"high",
 

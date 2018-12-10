@@ -17,8 +17,7 @@ import {LinearGradient} from 'expo';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import ajaxWrapper from '../../../base/ajax.js';
 const Keyboard = require('Keyboard');
-
-
+import { Permissions, Notifications } from 'expo';
 
 var credentials = require('../auth0-credentials');
 const auth0 = new Auth0(credentials);
@@ -63,7 +62,7 @@ export default class Login extends Component {
             .then(profile => {
                 this.props.onAuth(credentials, profile);
             })
-            .catch(error => console.log("Error",error));
+            .catch(error => console.log("Error", error));
     }
 
     alert(title, message) {
@@ -101,7 +100,8 @@ export default class Login extends Component {
                 console.log(success)
                 this.props.setGlobalState('userId', success["Id"])
                 this.props.setGlobalState('email', success["email"])
-                ajaxWrapper("POST","/api/home/usersettings/", {"user": success["Id"], "name":name}, this.redirect)
+
+                this.registerForPushNotifications(success["Id"], name)
                 this.realmLogin(username,password);
 
 
@@ -111,8 +111,30 @@ export default class Login extends Component {
             });
     }
 
+    async registerForPushNotifications(user, name) {
+      const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+
+      console.log("Status", status)
+
+      if (status !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        if (status !== 'granted') {
+          return;
+        }
+      }
+      console.log("Here");
+      const token = await Notifications.getExpoPushTokenAsync();
+      console.log("Token", token)
+
+      this.subscription = Notifications.addListener(this.handleNotification);
+      ajaxWrapper("POST","/api/home/usersettings/", {"user": user, "notifications_token":token, name:name}, this.redirect)
+
+    }
+
     redirect(result) {
-      this.props.setGlobalState("settings_id", result[0]['usersettings']['id'])
+      console.log("Result", result)
+      var settings_id = result[0]['usersettings']['id']
+      this.props.setGlobalState("settings_id", settings_id)
     }
 
     webAuth(connection) {

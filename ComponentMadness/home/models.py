@@ -9,6 +9,7 @@ class UserSettings(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.CharField(max_length=120, blank=True, default="")
     name = models.CharField(max_length=1200, blank=True, default="")
+    notifications_token = models.CharField(max_length=1200, blank=True, default="")
 
 class Question(models.Model):
     id = models.AutoField(primary_key=True)
