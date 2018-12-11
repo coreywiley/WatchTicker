@@ -20,7 +20,7 @@ class NormaFooter extends React.Component {
       return (
         <Footer style={{'position':'absolute', 'bottom':0, 'width':'100%', 'backgroundColor': backgroundColor}}>
             <FooterTab style={{'backgroundColor': backgroundColor, 'width':'100%'}}>
-              <Button onPress={() => this.props.setGlobalState('page','journals')}>
+              <Button onPress={() => this.props.setGlobalState('page','journalEntries')}>
                 <Image source={require('../assets/Customization/journal.png')} style= {{flex:1 , width: 60, height: 20}}/>
               </Button>
               <Button onPress={() => this.props.setGlobalState('page','resources')} style={{'borderRightWidth':1, 'borderRightColor':'#ae6dac','borderLeftWidth':1, 'borderLeftColor':'#ae6dac'}}>

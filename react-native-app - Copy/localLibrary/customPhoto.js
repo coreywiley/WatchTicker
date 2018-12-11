@@ -210,7 +210,7 @@ class CustomPhoto extends React.Component {
         7: [skin_7_scar_left,skin_7_scar_right],
       }
 
-      var nipples = []
+      var nipples = [];
 
       if (this.props.masectomy != 1 && this.props.masectomy != 3) {
         nipples.push(<Image source={photoDict['nipple'][this.props.nipple_color]} style={{margin:0, width: '5%','height':'5%', 'position':'absolute', top:'70%', left:'30%'}} />)
@@ -219,13 +219,13 @@ class CustomPhoto extends React.Component {
         nipples.push(<Image source={photoDict['nipple'][this.props.nipple_color]} style={{margin:0, width: '5%','height':'5%', 'position':'absolute', top:'70%', right:'30%'}} />)
       }
 
-      var size = []
+      var size = [];
       if (this.props.size > 1) {
         var right_source = photoDict['size'][this.props.skin_color][this.props.size][1]
         var left_source = photoDict['size'][this.props.skin_color][this.props.size][0]
         var height = photoDict['size'][this.props.skin_color][this.props.size][2]
         var width = photoDict['size'][this.props.skin_color][this.props.size][3]
-        console.log("Height/Wdith", height, width)
+        console.log("Height/Width", height, width)
 
         if (this.props.masectomy != 1 && this.props.masectomy != 3) {
           size.push(<Image source={left_source} style={{margin:0, height: 95, width:90, 'position':'absolute', top:'53%', left:'21%'}} />)
@@ -254,8 +254,13 @@ class CustomPhoto extends React.Component {
       }
       */
 
+      var skin = photoDict['skin'][0]
+      if (this.props.skin_color) {
+          skin = photoDict['skin'][this.props.skin_color]
+      }
+
       return (<View style={{'width':'80%', backgroundColor:'white', borderRadius:25, height: 300, alignItems:'center',justifyContent:'center', marginTop:20, zIndex:10}} resizeMode={"contain"}>
-        <Image source={photoDict['skin'][this.props.skin_color]} style={{margin:0, width: '100%','height':'100%', 'position':'absolute', top:10}} />
+        <Image source={skin} style={{margin:0, width: '100%','height':'100%', 'position':'absolute', top:10}} />
         {nipples}
         {size}
         </View>)

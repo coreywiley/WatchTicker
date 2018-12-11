@@ -139,7 +139,7 @@ class App extends React.Component {
         body = <RiskAssessment setGlobalState={this.setGlobalState} userId={this.state.userId} />;
     }
     else if (this.state.page == 'settings') {
-        header = <NavBar title={'s e t t i n g s'} backPage={'journals'} setGlobalState={this.setGlobalState} />;
+        header = <NavBar title={'s e t t i n g s'} backPage={'journalEntries'} setGlobalState={this.setGlobalState} />;
         body = <Settings setGlobalState={this.setGlobalState} userId={this.state.userId} />;
     }
     else if (this.state.page == 'edit') {

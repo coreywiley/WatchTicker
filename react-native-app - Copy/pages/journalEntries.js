@@ -12,6 +12,7 @@ import Footer from '../localLibrary/footer.js';
 
 import JournalCard from '../localLibrary/journalCard.js';
 
+
 class Journals extends React.Component {
   constructor(props) {
         super(props);

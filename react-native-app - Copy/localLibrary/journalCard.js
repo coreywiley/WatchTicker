@@ -9,7 +9,7 @@ import Text from '../library/text.js';
 import CustomPhoto from './customPhoto.js';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 var add_entry = require('../assets/Customization/add.png')
-
+var edit_entry = require('../assets/Customization/edit.png')
 
 
 class JournalCard extends React.Component {

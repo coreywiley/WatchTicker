@@ -13,6 +13,9 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 var instructions_1 = require('../assets/resources_1.png')
 var instructions_2 = require('../assets/resources_2.png')
+var instructions_3 = require('../assets/resources_03.png')
+var instructions_4 = require('../assets/resources_04.png')
+var instructions_5 = require('../assets/resources_05.png')
 
 class Journals extends React.Component {
   constructor(props) {
@@ -21,9 +24,9 @@ class Journals extends React.Component {
         var instructions = [
           ["The best time to do a breast self-exam is a 4-5 days after the last day of your menstrual period, when your hormonal cycle has the least impact on your breast tissue. For women who are postmenopausal, pick a day of the month that is easy for your to remember to do your exam.",instructions_1],
           ["Observe your breasts in the mirror with your hands on your hips. Look for any dimpling, redness, nipple disharge, or lumps and bumps. Turn left and right, then raise your arms and repeat your observations.",instructions_2],
-          ["Standing up in front of a mirror, in the showing, or laying down, feel your left breast using your right hand. With the pads of your first three fingers, move in small, quarter-size cirlces all the way around the breast, starting from outside (under the armpit) nad moving into the center (sternum).",instructions_1],
-          ["Make sure to cover the entire breast, up towards the collarbone and under the armpit. Your lymphatic system is located under your armpit and is a very common place for abnormalities to develop. Repeast this same motion on your right breast with your left hand.",instructions_1],
-          ["While feeling for any lumps or bumps are important, also make sure to feel for an irregular orange peel-like texture around the breast and up towards the collar bone. This texture can often be caused by irriation of the lymphatic system and is a sign that something isn't normal.",instructions_1],
+          ["Standing up in front of a mirror, in the showing, or laying down, feel your left breast using your right hand. With the pads of your first three fingers, move in small, quarter-size cirlces all the way around the breast, starting from outside (under the armpit) nad moving into the center (sternum).",instructions_3],
+          ["Make sure to cover the entire breast, up towards the collarbone and under the armpit. Your lymphatic system is located under your armpit and is a very common place for abnormalities to develop. Repeast this same motion on your right breast with your left hand.",instructions_4],
+          ["While feeling for any lumps or bumps are important, also make sure to feel for an irregular orange peel-like texture around the breast and up towards the collar bone. This texture can often be caused by irriation of the lymphatic system and is a sign that something isn't normal.",instructions_5],
         ];
 
 
