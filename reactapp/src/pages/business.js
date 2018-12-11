@@ -17,7 +17,7 @@ import {
 class Business extends Component {
     constructor(props) {
       super(props);
-      this.state = {'follow':{}, 'deals': [], 'review':[], 'published':false, 'name':'','description':'', 'email':'', 'phone': '', 'website':'','owner': this.props.user_id, 'address':'', 'street':'', 'street2':'', 'city':'','state':'','zipcode':'', 'loaded':false};
+      this.state = {'follow':{}, 'followAttempt':false, 'deals': [], 'review':[], 'published':false, 'name':'','description':'', 'email':'', 'phone': '', 'website':'','owner': this.props.user_id, 'address':'', 'street':'', 'street2':'', 'city':'','state':'','zipcode':'', 'loaded':false};
 
       this.businessCallback = this.businessCallback.bind(this);
       this.followCallback = this.followCallback.bind(this);
@@ -46,6 +46,8 @@ class Business extends Component {
 
     followCallback(result) {
       if (result.length > 0) {
+        var follow = result[0];
+        follow['followAttempt'] = false;
         this.setState(result[0])
       }
     }
@@ -57,8 +59,10 @@ class Business extends Component {
         ajaxWrapper('POST','/api/home/follow/' + this.state.follow.id + '/delete/',{},this.deleteFollow)
       }
       else {
-        console.log("Create")
-        ajaxWrapper('POST','/api/home/follow/',{'user':this.props.user_id, 'business':this.props.business_id},this.changeFollowCallback)
+        if (this.state.followAttempt == false) {
+          console.log("Create")
+          this.setState({'followAttempt':true}, ajaxWrapper('POST','/api/home/follow/',{'user':this.props.user_id, 'business':this.props.business_id},this.changeFollowCallback))
+        }
       }
 
     }
@@ -222,6 +226,15 @@ class Business extends Component {
         }
 
         var container = 'container';
+
+        var about = null;
+        if (this.state.description != "") {
+          var about = <div>
+          <h4>About {this.state.name}</h4>
+          <MultiLineText text={this.state.description} />
+          </div>
+        }
+
         var businessDetails = <div className='col-md-8' style={{'borderRight':'1px solid #ccc', 'paddingRight':'10px'}}>
                         {publish}
                         <h2 style={{'paddingTop':'10px', 'marginBottom': '0px'}}>{this.state.name}</h2>
@@ -230,8 +243,7 @@ class Business extends Component {
                         {following}
                         {notifications}
                         {specialsDisplay}
-                        <h4>About {this.state.name}</h4>
-                        <MultiLineText text={this.state.description} />
+                        {about}
                         <br/>
                         <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Customer Reviews</h3>
                         <PageBreak />

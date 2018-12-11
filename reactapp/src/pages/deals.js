@@ -24,31 +24,40 @@ class Deals extends Component {
     var search = '';
     var business_type = ['All'];
     var business_allowed = 'All'
+    var deal_type = 'All'
     if (this.props.search) {
       search = this.props.search;
       if (search.startsWith("type:")) {
         if (search == 'type:FoodAndDrink') {
+          deal_type = 'Food And Drink'
           business_allowed = ['Food Truck','Restaurant','Bar','Coffee House'];
         }
         else if (search == 'type:PersonalServices') {
+          deal_type = 'Personal Services'
           business_allowed = ['Taxes'];
         }
         else if (search == 'type:Automotive') {
+          deal_type = 'Automotive'
           business_allowed = ['Auto Cleaning','Auto Repair'];
         }
         else if (search == 'type:Retail') {
+          deal_type = 'Retail'
           business_allowed = ['Arts and Crafts','Clothing and Accessories','Flowers','Sweets and Baskets'];
         }
         else if (search == 'type:HealthAndFitness') {
+          deal_type = 'Health And Fitness'
           business_allowed = ['Dental','Gyms and Weightloss'];
         }
         else if (search == 'type:HomeServices') {
+          deal_type = 'Home Services'
           business_allowed = ['Lawn and Garden','HVAC and Electrical','Plumbing','Cleaning Services'];
         }
         else if (search == 'type:BeautyAndSpas') {
+          deal_type = 'Beauty And Spas'
           business_allowed = ['Barbers','Nail Salons','Hair Salons','Massage'];
         }
         else if (search == 'type:Pets') {
+          deal_type = 'Pets'
           business_allowed = ['Pet Boarding','Pet Health','Pet Grooming'];
         }
 
@@ -56,7 +65,7 @@ class Deals extends Component {
       }
     }
 
-    this.state = {deals:[], businesses_allowed: business_allowed, show_filters:true, filters:{'deal_type':'All', 'business_type':business_type, 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
+    this.state = {deals:[], businesses_allowed: 'All', show_filters:true, filters:{'deal_type':deal_type, 'business_type':business_type, 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
 
     this.dealCallback = this.dealCallback.bind(this);
     this.setGlobalState = this.setGlobalState.bind(this);

@@ -160,7 +160,7 @@ class Nav extends React.Component {
         console.log("Nav User Id", this.props.user_id)
         if (this.props.user_id) {
           var businessLink = ["/manageYourBusinesses/",'Manage Your Businesses'];
-          var signUpLinks = [['/how-it-works/','How It Works'], businessLink, ['/editUser/','Account Details'], ['/logOut/','Log Out']]
+          var signUpLinks = [['/how-it-works/','How It Works'], businessLink, ['/editUser/','Account Details'], ['/favorites/','Favorites'], ['/logOut/','Log Out']]
           var links = [['/deals/type:FoodAndDrink/','Food And Drink'],['/deals/type:PersonalServices/','Personal Services'],['/deals/type:Automotive/','Automotive'],['/deals/type:Retail/','Retail'],['/deals/type:HealthAndFitness/','Health And Fitness'],['/deals/type:HomeServices/','Home Services'],['/deals/type:BeautyAndSpas/','Beauty And Spas'],['/deals/type:Pets/','Pets']];
         }
         else {

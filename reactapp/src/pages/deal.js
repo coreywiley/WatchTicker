@@ -202,7 +202,10 @@ class Deal extends Component {
 
       var valid_until = <div></div>
       if (this.state.valid_until != null) {
-        valid_until = <p style={{'margin':'0px'}}>Valid Until: {this.state.valid_until}</p>
+        var valid_split= this.state.valid_until.split("-");
+
+
+        valid_until = <p style={{'margin':'0px'}}>Valid Until: {valid_split[1] + '-' + valid_split[2] + '-' + valid_split[0]}</p>
       }
 
       var reviews = [];
@@ -249,21 +252,61 @@ class Deal extends Component {
         </div>
       </div>
 
+      var highlights = null;
+      if (this.state.description != "") {
+
+        var highlights = <div>
+          <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Highlights</h3>
+          <PageBreak />
+          <br/>
+          <MultiLineText text={this.state.description} />
+          <br/>
+          </div>
+      }
+
+      var about = null;
+      if (this.state.business.description != "") {
+
+        var about = <div>
+          <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>About <a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></h3>
+          <PageBreak />
+          <br/>
+          <MultiLineText text={this.state.business.description} />
+          <br/>
+          </div>
+      }
+
+      var fine_print = null;
+      if (this.state.fine_print != "") {
+
+        var fine_print = <div>
+          <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>The Fine Print</h3>
+          <PageBreak />
+          <br/>
+          <MultiLineText text={this.state.fine_print} />
+          <br/>
+          </div>
+      }
+
+      var what_you_get = null;
+      if (this.state.what_you_get != "") {
+
+        var what_you_get = <div>
+          <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>What You'll Get</h3>
+          <PageBreak />
+          <br/>
+          <MultiLineText text={this.state.what_you_get} />
+          </div>
+      }
+
       var dealInfo = <div>
 
         <img src={this.state.main_image} style={{'width':'100%'}} />
         <br/>
         <div style={{'padding':'15px'}}>
-        <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Highlights</h3>
-        <PageBreak />
-        <br/>
-        <MultiLineText text={this.state.description} />
-        <br/>
-        <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>About <a style={{'color':'#234f9c'}} href={"/business/" + this.state.business.id + "/"}>{this.state.business.name}</a></h3>
-        <PageBreak />
-        <br/>
-        <MultiLineText text={this.state.business.description} />
-        <br/>
+        {highlights}
+
+        {about}
 
         <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>Customer Reviews</h3>
         <PageBreak />
@@ -272,19 +315,12 @@ class Deal extends Component {
         {reviews}
 
         <br/>
-        <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>The Fine Print</h3>
-        <PageBreak />
-        <br/>
-        <MultiLineText text={this.state.fine_print} />
-        <br/>
+        {fine_print}
 
         <iframe src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyDnsYmrV7t2Bx5DH0NFcb5eSFR-Ii4kMb4&q=" + this.state.business.address} width="800" height="600" frameborder="0" style={{'border':'0'}} allowfullscreen></iframe>
 
         <br/>
-        <h3 style={{'marginTop':'20px', 'marginBottom':'2px'}}>What You'll Get</h3>
-        <PageBreak />
-        <br/>
-        <MultiLineText text={this.state.what_you_get} />
+        {what_you_get}
         </div>
         </div>;
 

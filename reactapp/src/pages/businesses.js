@@ -19,28 +19,28 @@ class Businesses extends Component {
     if (this.props.search) {
       if (search.startsWith("type:")) {
         if (search == 'type:FoodAndDrink') {
-          businesses_allowed = ['Food Truck','Restaurant','Bar','Coffee House'];
+          business_type = ['Food Truck','Restaurant','Bar','Coffee House'];
         }
         else if (search == 'type:PersonalServices') {
-          businesses_allowed = ['Taxes'];
+          business_type = ['Taxes'];
         }
         else if (search == 'type:Automotive') {
-          businesses_allowed = ['Auto Cleaning','Auto Repair'];
+          business_type = ['Auto Cleaning','Auto Repair'];
         }
         else if (search == 'type:Retail') {
-          businesses_allowed = ['Arts and Crafts','Clothing and Accessories','Flowers','Sweets and Baskets'];
+          business_type = ['Arts and Crafts','Clothing and Accessories','Flowers','Sweets and Baskets'];
         }
         else if (search == 'type:HealthAndFitness') {
-          businesses_allowed = ['Dental','Gyms and Weightloss'];
+          business_type = ['Dental','Gyms and Weightloss'];
         }
         else if (search == 'type:HomeServices') {
-          businesses_allowed = ['Lawn and Garden','HVAC and Electrical','Plumbing','Cleaning Services'];
+          business_type = ['Lawn and Garden','HVAC and Electrical','Plumbing','Cleaning Services'];
         }
         else if (search == 'type:BeautyAndSpas') {
-          businesses_allowed = ['Barbers','Nail Salons','Hair Salons','Massage'];
+          business_type = ['Barbers','Nail Salons','Hair Salons','Massage'];
         }
         else if (search == 'type:Pets') {
-          businesses_allowed = ['Pet Boarding','Pet Health','Pet Grooming'];
+          business_type = ['Pet Boarding','Pet Health','Pet Grooming'];
         }
 
 
@@ -50,23 +50,40 @@ class Businesses extends Component {
     }
 
 
-    this.state = {'businesses':[], 'businesses_allowed':businesses_allowed, show_filters:true, filters:{'type':business_type, 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
+    this.state = {'businesses':[], 'businesses_allowed':'All', show_filters:true, filters:{'type':business_type, 'city':'All', 'state':'All', 'search':search}, 'loaded':false};
 
 
 
     this.businessCallback = this.businessCallback.bind(this);
     this.setGlobalState = this.setGlobalState.bind(this);
     this.toggleFilters = this.toggleFilters.bind(this);
+    this.favoritesCallback = this.favoritesCallback.bind(this);
   }
 
     componentDidMount() {
-        ajaxWrapper('GET','/api/home/business/?order_by=-id&related=review&published=True', {}, this.businessCallback)
+        if (this.props.limit) {
+          ajaxWrapper('GET','/api/home/business/?order_by=-id&related=review&published=True&limit=' + this.props.limit, {}, this.businessCallback)
+        }
+        else if (this.props.favorites) {
+          ajaxWrapper('GET','/api/home/follow/?order_by=-id&related=business,business__review&business__published=True&user_id=' + this.props.user_id, {}, this.favoritesCallback)
+        }
+        else {
+          ajaxWrapper('GET','/api/home/business/?order_by=-id&related=review&published=True', {}, this.businessCallback)
+        }
     }
 
     businessCallback(result) {
       var businesses = [];
       for (var index in result) {
         businesses.push(result[index]['business'])
+      }
+      this.setState({businesses:businesses, loaded:true})
+    }
+
+    favoritesCallback(result) {
+      var businesses = [];
+      for (var index in result) {
+        businesses.push(result[index]['follow']['business'])
       }
       this.setState({businesses:businesses, loaded:true})
     }
@@ -240,6 +257,17 @@ class Businesses extends Component {
         }
 
 
+        var title = <div>
+          <h1>Find Your Local Businesses</h1>
+          <h4 style={{'marginTop':'0px'}}>Discover whats right around the corner.</h4>
+        </div>
+
+        if (this.props.favorites) {
+          title = <div>
+            <h1>Search Your Favorite Local Businesses</h1>
+            <h4 style={{'marginTop':'0px'}}>This list is curated from your favorited businesses.</h4>
+          </div>
+        }
 
         var content = <div className="container">
         <MetaTags>
@@ -247,8 +275,7 @@ class Businesses extends Component {
           <meta name="description" content="Find Local Business Deals" />
           <meta property="og:title" content="Find Local Business Deals | PatronGate" />
         </MetaTags>
-                <h1>Find Your Local Businesses</h1>
-                <h4 style={{'marginTop':'0px'}}>Discover whats right around the corner.</h4>
+                {title}
                 <PageBreak />
                 <br/>
                 {toggleFilters}

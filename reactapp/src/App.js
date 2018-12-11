@@ -258,6 +258,9 @@ class App extends Component {
           else if (params[0].toLowerCase() == "couponmetrics") {
               content = <CouponMetrics user={this.state.user} user_id={this.state.user.id} business_id={params[1]} />
           }
+          else if (params[0].toLowerCase() == "favorites") {
+              content = <Businesses user_id={this.state.user.id} favorites={true} search={this.state.search} setGlobalSearch={this.setGlobalSearch} address={this.state.address} latLng={this.state.latLng} />
+          }
         }
 
         if (this.state.loaded == false) {

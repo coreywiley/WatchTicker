@@ -28,9 +28,21 @@ class DealForm extends Component {
     }
 
     render() {
+
+        var deal_type_options = [
+          {'value':'Food And Drink','text':'Food And Drink'},
+          {'value':'Personal Services','text':'Personal Services'},
+          {'value':'Automotive','text':'Automotive'},
+          {'value':'Retail','text':'Retail'},
+          {'value':'Health And Fitness','text':'Health And Fitness'},
+          {'value':'Home Services','text':'Home Services'},
+          {'value':'Beauty And Spas','text':'Beauty And Spas'},
+          {'value':'Pets','text':'Pets'},
+        ]
+
         var Components = [TextInput, Select, Select, TextArea, TextArea, TextArea, DateTimePicker, NumberInput, NumberInput, PhotoInput];
         var name = {'value':'','name':'name','label':'Name','placeholder': 'Patron Gate', 'required':true}
-        var type = {'value':'', 'name':'type', 'label':'Type Of Deal', 'options':[{'value':'Drink Deal','text':'Drink Deal'},{'value':'Food Deal','text':'Food Deal'}]}
+        var type = {'value':'', 'name':'type', 'label':'Type Of Deal', 'options':deal_type_options}
         var ad = {'value':'', 'name':'ad', 'label':'Is this an ad (no need for a customer to redeem anything) or a coupon (customer must show proof of redemption)?', 'options':[{'value':false,'text':'Coupon'},{'value':true,'text':'Ad'}]}
         var description = {'value':'','name':'description','label':'Description','placeholder': ''}
         var fine_print = {'value':'','name':'fine_print','label':'Any Fine Print?','placeholder': ''}
