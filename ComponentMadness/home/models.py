@@ -43,7 +43,7 @@ class Journal(models.Model):
     id = models.AutoField(primary_key=True)
     date = models.DateField(default=datetime.datetime.now)
     notes = models.TextField(default='')
-    uuser = models.CharField(max_length=120, blank=True, default="")
+    user = models.CharField(max_length=120, blank=True, default="")
 
 class Symptom(models.Model):
     id = models.AutoField(primary_key=True)
