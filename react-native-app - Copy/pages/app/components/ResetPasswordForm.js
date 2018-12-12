@@ -14,9 +14,6 @@ import Text from '../../../library/text.js';
 var email = require('../../../assets/Onboarding/email.png')
 var email_closed = require('../../../assets/Onboarding/email_closed.png')
 
-var password_locked = require('../../../assets/Onboarding/password_locked.png')
-var password_unlocked = require('../../../assets/Onboarding/password_unlocked.png')
-
 export default class LoginForm extends Component {
     constructor(props) {
         super(props);
@@ -26,17 +23,13 @@ export default class LoginForm extends Component {
     validateLogin = () => {
 
         usernameError = false
-        passwordError = false
 
         if (!this.state.username.length) {
             usernameError = true
         }
-        if (!this.state.password.length) {
-            passwordError = true
-        }
-        this.setState({usernameError: usernameError, passwordError: passwordError})
-        if (usernameError === false && passwordError === false) {
-            this.props.realmLogin(this.state.username, this.state.password)
+
+        if (usernameError === false) {
+            this.props.resetPassword(this.state.username)
         }
     }
 
@@ -44,11 +37,6 @@ export default class LoginForm extends Component {
       var emailPic = email_closed
       if (this.state.username == "") {
         emailPic = email;
-      }
-
-      var password = password_locked
-      if (this.state.password == "") {
-        password = password_unlocked;
       }
 
 
@@ -70,45 +58,14 @@ export default class LoginForm extends Component {
                       />
                     </View>
 
-                    <View style={{borderBottomWidth:2, borderColor:'#fff', flexDirection:'row', width:'80%', paddingBottom:5, marginTop:10}} resizeMode="contain">
-                      <Image source = {password} style={{marginRight:'1%', height:'100%', width:'15%'}} resizeMode="contain"/>
-                        <TextInput
-                        placeholder="password"
-                        placeholderTextColor="#fff"
-                        secureTextEntry
-                        underlineColorAndroid='transparent'
-                        returnKeyType="go"
-                        autoCapitalize="none"
-                        style={{width:'60%', height:'100%', color:'#fff', fontFamily:'Quicksand'}}
-                        autoCorrect={false}
-                        ref={(input) => this.passwordInput = input}
-                        onChangeText={(text) => this.setState({ password: text.trim() })}
-                        />
-                      </View>
-
-                </View>
-
-                <View style={{width:'100%', justifyContent:'center', alignItems:'center', flexDirection:'row', marginTop:20}} resizeMode="contain">
-                    <TouchableHighlight onPress={() => this.props.webAuth('facebook')}>
-                        <Image style={{margin:10, width:113, height:50}}
-                          resizeMode="contain"
-                          source={require('../../../assets/Onboarding/facebook.png')}
-                        />
-                    </TouchableHighlight>
-                    <TouchableHighlight onPress={() => this.props.webAuth('google-oauth2')}>
-                        <Image style={{margin:10, width:113, height:50}}
-                            resizeMode="contain"
-                            source={require('../../../assets/Onboarding/google.png')}
-                        />
-                    </TouchableHighlight>
                 </View>
 
                 <TouchableOpacity onPress={this.props.reset} >
-                <Text style={{padding:10, borderColor:'#fff', borderBottomWidth:2, color:'#fff'}}>Forgot Password?</Text>
+                <Text style={{padding:10, marginTop:30, borderColor:'#fff', borderBottomWidth:2, color:'#fff'}}>I remembered my password</Text>
                 </TouchableOpacity>
 
                 <View style={{width: '100%', alignItems:'center',justifyContent:'center', marginTop:'5%'}}>
-                  <Button text={'Log In'} onPress={() => this.validateLogin()} />
+                  <Button text={'Reset Password'} onPress={() => this.validateLogin()} />
                 </View>
 
 

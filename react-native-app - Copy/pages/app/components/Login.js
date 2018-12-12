@@ -18,6 +18,7 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import ajaxWrapper from '../../../base/ajax.js';
 const Keyboard = require('Keyboard');
 import { Permissions, Notifications } from 'expo';
+import ResetPasswordForm from './ResetPasswordForm.js';
 
 var credentials = require('../auth0-credentials');
 const auth0 = new Auth0(credentials);
@@ -27,10 +28,12 @@ var logo = require('../../../assets/Norma_2.png')
 export default class Login extends Component {
     constructor(props) {
         super(props);
-        this.state = { viewLogin: true, keyboard: false };
+        this.state = { viewLogin: true, keyboard: false, resetPassword: false };
         this.realmLogin = this.realmLogin.bind(this);
         this.createUser = this.createUser.bind(this);
         this.redirect = this.redirect.bind(this);
+        this.resetPassword = this.resetPassword.bind(this);
+        this.reset = this.reset.bind(this);
     }
 
     componentDidMount() {
@@ -72,6 +75,22 @@ export default class Login extends Component {
             [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
             { cancelable: false }
         );
+    }
+
+    resetPassword(username) {
+      auth0.auth
+          .resetPassword({
+              email: username,
+              connection: 'Username-Password-Authentication',
+          })
+          .then(
+              this.alert("Password Reset Email Sent", "An Email Has Been Sent To You In Order To Reset Your Password.")
+          )
+          .catch(error => this.alert('Error', error.json.error_description));
+    }
+
+    reset() {
+      this.setState({'resetPassword':!this.state.resetPassword})
     }
 
     realmLogin(username, password) {
@@ -152,8 +171,11 @@ export default class Login extends Component {
 
     render() {
         let form = null;
-        if (this.props.login) {
-            form = <LoginForm webAuth={this.webAuth} realmLogin={this.realmLogin} />;
+        if (this.state.resetPassword) {
+          form = <ResetPasswordForm resetPassword={this.resetPassword} reset={this.reset}/>;
+        }
+        else if (this.props.login) {
+            form = <LoginForm webAuth={this.webAuth} realmLogin={this.realmLogin} reset={this.reset} />;
         } else {
             form = <SignupForm webAuth={this.webAuth} alert={this.alert} createUser={this.createUser} />;
         }
