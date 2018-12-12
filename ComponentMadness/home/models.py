@@ -4,11 +4,20 @@ from jsonfield import JSONField
 
 from user.models import User
 # Create your models here.
+class Notifications(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=1200, blank=True, default="")
+    title = models.CharField(max_length=1200, blank=True, default="")
+    body = models.CharField(max_length=1200, blank=True, default="")
+    date = models.CharField(max_length=1200, blank=True, default="")
+    days_after = models.IntegerField(default=0)
+    repeat = models.IntegerField(default=0)
 
 class UserSettings(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.CharField(max_length=120, blank=True, default="")
     name = models.CharField(max_length=1200, blank=True, default="")
+    timezone_offset = models.IntegerField(default=0)
     notifications_token = models.CharField(max_length=1200, blank=True, default="")
 
 class Question(models.Model):

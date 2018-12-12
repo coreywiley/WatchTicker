@@ -248,8 +248,6 @@ def addOrFilter(orFilters, key, value):
 
     return orFilters
 
-@api_view(['POST'])
-@permission_classes((IsAuthenticated, ))
 def deleteModelInstance(request,appLabel,modelName,id):
     print ('DELETING', appLabel, modelName, id)
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_',''))

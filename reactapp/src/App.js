@@ -34,6 +34,7 @@ import OnBoarding from './pages/onboarding.js';
 import EditFAQ from './pages/editFAQ.js';
 import FAQList from './pages/faqList.js';
 import Notifications from './pages/notifications.js';
+import Notification from './pages/notification.js';
 
 class App extends Component {
     constructor(props) {
@@ -183,6 +184,9 @@ class App extends Component {
           }
           else if (route == "notifications") {
               content = <Notifications user={this.state.user} />;
+          }
+          else if (route == "notification") {
+              content = <Notification user={this.state.user} notification_id={params[1]}/>;
           }
         }
 
