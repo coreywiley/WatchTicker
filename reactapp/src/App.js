@@ -33,6 +33,7 @@ import QuestionList from './pages/questionList.js';
 import OnBoarding from './pages/onboarding.js';
 import EditFAQ from './pages/editFAQ.js';
 import FAQList from './pages/faqList.js';
+import Notifications from './pages/notifications.js';
 
 class App extends Component {
     constructor(props) {
@@ -179,6 +180,9 @@ class App extends Component {
           }
           else if (route == "editfaq") {
               content = <EditFAQ user={this.state.user} faq_id={params[1]} />;
+          }
+          else if (route == "notifications") {
+              content = <Notifications user={this.state.user} />;
           }
         }
 

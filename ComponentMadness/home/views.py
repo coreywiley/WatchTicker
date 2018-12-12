@@ -14,6 +14,7 @@ import json
 import os
 from django.views.decorators.clickjacking import xframe_options_exempt
 import requests
+from home.models import UserSettings
 #from user.views import my_login_required
 
 @xframe_options_exempt
@@ -28,17 +29,21 @@ def Index(request, param = "", param2 = "", param3 = "", param4 = "", param5 = "
 
 def SendNotification(request):
     headers = {'accept': 'application/json', 'accept-encoding': 'gzip, deflate', 'content-type': 'application/json'}
-    data = {
-      "to": "ExponentPushToken[86XFiIOsoiDnzOWWOpfG5n]",
-      "sound": "default",
-      "title":"Hi There",
-      "body": "Hello world!",
-      "priority":"high",
 
-    }
-    r = requests.post('https://exp.host/--/api/v2/push/send', data=data)
-    print (r.status_code)
-    print (r.text)
+    for settings in UserSettings.objects.all():
+        notifications_token = settings.notifications_token
+
+        data = {
+          "to": notifications_token,
+          "sound": "default",
+          "title":request.POST['title'],
+          "body": request.POST['body'],
+          "priority":"high",
+
+        }
+        r = requests.post('https://exp.host/--/api/v2/push/send', data=data)
+        print (r.status_code)
+        print (r.text)
     return JsonResponse({'success':'True'})
 
 def ErrorPage(request):
