@@ -177,23 +177,28 @@ class Business extends Component {
           website = <p style={{fontSize:'15px', 'color':'#234f9c', 'marginBottom':'5px'}}><i class="fa fa-globe" aria-hidden="true"></i> <a href={this.state.website} target="_blank">Visit Website</a></p>
         }
 
+        var social = false;
         var facebook = <div></div>
         if (this.state.facebook != '') {
+          social = true;
           facebook = <a href={this.state.facebook} target='_blank'><i class="fa fa-facebook fa-2x" aria-hidden="true" style={{'padding':'5px'}}></i></a>
         }
 
         var twitter = <div></div>
         if (this.state.twitter != '') {
+          social = true;
           twitter = <a href={this.state.twitter} target='_blank'><i class="fa fa-twitter fa-2x" aria-hidden="true" style={{'padding':'5px'}}></i></a>
         }
 
         var instagram = <div></div>
         if (this.state.instagram != '') {
+          social = true;
           instagram = <a href={this.state.instagram} target='_blank'><i class="fa fa-instagram fa-2x" aria-hidden="true" style={{'padding':'5px'}}></i></a>
         }
 
         var yelp = <div></div>
         if (this.state.yelp != '') {
+          social = true;
           yelp = <a href={this.state.yelp} target='_blank'><i class="fa fa-yelp fa-2x" aria-hidden="true" style={{'padding':'5px'}}></i></a>
         }
 
@@ -278,6 +283,31 @@ class Business extends Component {
 
         }
 
+        var social_profiles = null;
+        if (social) {
+          var social_profiles = <div id="socialMedia">
+            <h3>Social Profiles</h3>
+            {facebook}
+            {twitter}
+            {instagram}
+            {yelp}
+          </div>
+        }
+
+        var active_deals = <div>
+        {allDeals}
+        {newDeal}
+        </div>;
+
+        if (dealCards.length > 0) {
+          active_deals = <div>
+          <h3 style={{'paddingTop':'35px'}}>Active Deals</h3>
+          {newDeal}
+          {dealCards}
+          {allDeals}
+          </div>
+        }
+
         var content = <div className={container} style={{'padding':'0px'}}>
               <MetaTags>
                 <title>{this.state.name} | PatronGate</title>
@@ -292,20 +322,12 @@ class Business extends Component {
                     {phone}
                     {website}
                     <p style={{fontSize:'15px', 'color':'#234f9c', 'marginBottom':'5px'}}><i class="fa fa-car" aria-hidden="true"></i> <a href={"https://www.google.com/maps/place/" + this.state.address} target="_blank">Get Directions</a></p>
-                    <div id="socialMedia">
-                      <h3>Social Profiles</h3>
-                      {facebook}
-                      {twitter}
-                      {instagram}
-                      {yelp}
-                    </div>
+                    {social}
                   </div>
                 </div>
 
-                <h3 style={{'paddingTop':'35px'}}>Active Deals</h3>
-                {newDeal}
-                {dealCards}
-                {allDeals}
+                {active_deals}
+
 
         </div>;
 
