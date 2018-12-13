@@ -19,6 +19,8 @@ class UserSettings(models.Model):
     name = models.CharField(max_length=1200, blank=True, default="")
     timezone_offset = models.IntegerField(default=0)
     notifications_token = models.CharField(max_length=1200, blank=True, default="")
+    breast_exam_reminders = models.BooleanField(default=True)
+    email_newsletters = models.BooleanField(default=True)
 
 class Question(models.Model):
     id = models.AutoField(primary_key=True)

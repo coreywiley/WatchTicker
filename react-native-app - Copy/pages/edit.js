@@ -7,14 +7,19 @@ import ButtonSelect from '../library/buttonSelect.js';
 import Text from '../library/text.js';
 import Button from '../localLibrary/button.js';
 import {LinearGradient} from 'expo';
+import Auth0 from 'react-native-auth0';
+import Loading from '../library/loading.js';
+var credentials = require('./app/auth0-credentials');
+const auth0 = new Auth0(credentials);
 
 var close = require('../assets/settings/close.png');
 
-class AddDoctor extends React.Component {
+class Edit extends React.Component {
   constructor(props) {
       super(props);
 
-      this.state = {'name':this.props.name, 'value':'Jeremy', value2:'', value3:'', loaded:true}
+      this.state = {'name':this.props.name, value:this.props.settings_value, value2:'', value3:'', loaded:true}
+      this.save = this.save.bind(this)
   }
 
 
@@ -27,6 +32,18 @@ class AddDoctor extends React.Component {
 
 
     save() {
+      if (this.props.name == 'name') {
+        ajaxWrapper('POST','/api/home/usersettings/' + this.props.user_settings_id + '/', {name:this.state.value}, () => this.props.setGlobalState('page','settings'))
+      }
+      if (this.props.name == 'email') {
+        auth0.users
+            .patchUser({ id: this.props.userId, email: this.state.value, username:this.state.value })
+            .then(profile => {
+                this.props.setGlobalState('email', this.state.value);
+                this.props.setGlobalState('page','settings')
+            })
+            .catch(error => console.log("Error", error));
+      }
       var submitUrl = '/api/home/doctor/';
       //ajaxWrapper('POST',submitUrl, data, () => this.props.setGlobalState('page','doctors'))
     }
@@ -89,13 +106,11 @@ class AddDoctor extends React.Component {
         }
         else {
           return (
-            <View>
-                  <Text>Welcome To Doctors</Text>
-              </View>
+            <Loading />
           );
         }
 
     }
 }
 
-export default AddDoctor;
+export default Edit;

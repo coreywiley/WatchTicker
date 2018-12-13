@@ -25,16 +25,17 @@ class App extends React.Component {
   constructor(props) {
   		super(props);
   		this.state = {
-  			page: 'welcome',
+  			page: 'settings',
         loading: true,
         doctor: undefined,
         journal: undefined,
         customize: undefined,
         settings_edit: 'none',
         onboardingIndex: -1,
-        userId: "5c0da0be69ef7222303d3c93",
+        userId: "5c0dfb82d079623e3b028a33",
         email: "",
         settings_id:3,
+        email: 'jeremy.thiesen1@gmail.com',
   		};
   		this.setGlobalState = this.setGlobalState.bind(this);
       this.saveCreds = this.saveCreds.bind(this);
@@ -140,10 +141,10 @@ class App extends React.Component {
     }
     else if (this.state.page == 'settings') {
         header = <NavBar title={'s e t t i n g s'} backPage={'journalEntries'} setGlobalState={this.setGlobalState} />;
-        body = <Settings setGlobalState={this.setGlobalState} userId={this.state.userId} />;
+        body = <Settings setGlobalState={this.setGlobalState} userId={this.state.userId} email={this.state.email}/>;
     }
     else if (this.state.page == 'edit') {
-        body = <Edit name={this.state.settings_edit} setGlobalState={this.setGlobalState} userId={this.state.userId} />;
+        body = <Edit name={this.state.settings_edit} setGlobalState={this.setGlobalState} userId={this.state.userId} user_settings_id={this.state.user_settings_id} settings_value={this.state.settings_value}/>;
     }
     else if (this.state.page == 'privacyPolicy') {
         header = <NavBar title={'s e t t i n g s'} backPage={'settings'} setGlobalState={this.setGlobalState} />;

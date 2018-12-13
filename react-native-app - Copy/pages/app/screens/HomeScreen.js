@@ -31,6 +31,7 @@ export default class HomeScreen extends React.Component {
       var clean_id = dirtyId.substring(dirtyId.indexOf("|") + 1);
       this.props.setGlobalState('userId', clean_id)
       this.props.setGlobalState('email', profile["email"])
+      this.props.setGlobalState('accessToken', credentials['accessToken'])
       ajaxWrapper('GET','/api/home/usersettings/?user=' + clean_id, {}, this.redirect)
     };
 
