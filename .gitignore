@@ -7,3 +7,4 @@ ComponentMadness/--upgrade/
 *.pyc
 reactapp/package-lock.json
 pythonEnv/
+node_modules/
