@@ -98,11 +98,11 @@ class Customize extends React.Component {
     save() {
       var submitUrl = '/api/home/customize/';
       if (this.state.id != null) {
-        submitUrl += this.state.id
+        submitUrl += this.state.id +'/'
       }
       var data = this.state;
       data['user'] = this.props.userId;
-      console.log("Data",data)
+      console.log("Submit Url", submitUrl, "Data",data)
       ajaxWrapper('POST',submitUrl, data, () => this.props.setGlobalState('page','journalEntries'))
     }
 

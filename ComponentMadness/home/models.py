@@ -67,6 +67,8 @@ class Symptom(models.Model):
     x_coord = models.IntegerField(default=0)
     y_coord = models.IntegerField(default=0)
     symptom = models.CharField(max_length=120, blank=False, default="")
+    screen_width = models.IntegerField(default=0)
+    screen_height = models.IntegerField(default=0)
 
 class Doctor(models.Model):
     id = models.AutoField(primary_key=True)

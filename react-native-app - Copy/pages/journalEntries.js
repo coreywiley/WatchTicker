@@ -9,6 +9,7 @@ import {LinearGradient} from 'expo';
 import Text from '../library/text.js';
 import Button from '../localLibrary/button.js';
 import Footer from '../localLibrary/footer.js';
+import Loading from '../library/loading.js';
 
 import JournalCard from '../localLibrary/journalCard.js';
 
@@ -33,7 +34,7 @@ class Journals extends React.Component {
 
     componentDidMount() {
       console.log("Running Ajax")
-      ajaxWrapper('GET','/api/home/journal/?related=symptoms&user=' + this.props.userId, {}, this.journalCallback)
+      ajaxWrapper('GET','/api/home/journal/?order_by=-id&related=symptoms&user=' + this.props.userId, {}, this.journalCallback)
       ajaxWrapper('GET','/api/home/customize/?user=' + this.props.userId, {}, this.customizeCallback)
     }
 
@@ -73,9 +74,7 @@ class Journals extends React.Component {
 
       if (this.state.loaded == false) {
         return (
-          <View style={styles.container}>
-            <Text>Loading...</Text>
-          </View>
+          <Loading />
         );
       }
 

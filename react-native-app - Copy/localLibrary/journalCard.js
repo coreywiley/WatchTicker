@@ -27,8 +27,13 @@ class JournalCard extends React.Component {
   }
 
   render() {
-
-    var date = '11 16 2018';
+    if (this.props.journal) {
+      var date = this.props.journal.date;
+    }
+    else {
+      var today = new Date();
+      var date = (today.getMonth() + 1) + ' ' + today.getDate() + ' ' + (today.getYear() + 1900)
+    }
     var notes = 'Click on the plus sign to add your first entry';
     if (this.props.journal) {
       var date = this.props.journal.date;
@@ -60,7 +65,7 @@ class JournalCard extends React.Component {
               end={[1,0]}>
                 <Text style={{'color':'white','textAlign':'right'}} >{date}</Text>
                 <TouchableWithoutFeedback onPress={() => this.props.chooseJournal(undefined)} style={{'alignSelf':'flex-end', 'justifySelf':'right', 'zIndex':10000}}>
-                    <Image source={add_entry} style={{marginLeft:'20%', width: 50,height:50, right:0, 'alignSelf':'flex-end', 'justifySelf':'flex-end','zIndex':10000}} resizeMode="contain" />
+                    <Image source={add_entry} style={{marginLeft:'20%', width: 50,height:50, right:0, 'alignSelf':'flex-end', 'zIndex':10000}} resizeMode="contain" />
                 </TouchableWithoutFeedback>
             </LinearGradient>
         </View>
@@ -70,7 +75,7 @@ class JournalCard extends React.Component {
           <Text style={{'color':'#a657a1'}}>{notes}</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => this.props.chooseJournal(this.props.journal)}>
-          <Image source={add_entry} style={{margin:0, width: '30%','height':'30%', position:'absolute', bottom:'-10%', right:'-10%'}} resizeMode="contain" />
+          <Image source={edit_entry} style={{margin:0, width: '30%','height':'30%', position:'absolute', bottom:'-10%', right:'-10%'}} resizeMode="contain" />
         </TouchableWithoutFeedback>
       </View>
     }

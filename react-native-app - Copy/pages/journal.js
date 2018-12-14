@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, AsyncStorage, Image, ScrollView, PanResponder, Animated} from 'react-native';
+import { StyleSheet, View, AsyncStorage, Image, ScrollView, PanResponder, Animated, Dimensions, PixelRatio, TouchableWithoutFeedback } from 'react-native';
 import ajaxWrapper from '../base/ajax.js';
 import { Form, Container, Header, Title, Content, Footer, FooterTab, Left, Right, Body, Card, CheckBox, CardItem, List, ListItem, InputGroup, Input, Spinner, Item, Label, Textarea} from 'native-base';
 import ButtonSelect from '../library/buttonSelect.js';
@@ -8,6 +8,9 @@ import {LinearGradient} from 'expo';
 import Button from '../localLibrary/button.js';
 import SelectionBox from '../localLibrary/selectionBox.js';
 import Text from '../library/text.js';
+import Loading from '../library/loading.js';
+
+const Keyboard = require('Keyboard');
 
 var symptom_1_selected = require('../assets/Customization/Symptoms/1_selected.png')
 var symptom_2_selected = require('../assets/Customization/Symptoms/2_selected.png')
@@ -66,7 +69,7 @@ var symptomDict = {
 class Draggable extends React.Component {
     constructor(props){
       super(props);
-      console.log("Draggable", this.props)
+
       this.state = {
           pan     : new Animated.ValueXY(),
           x: this.props.x_coord,
@@ -82,7 +85,7 @@ class Draggable extends React.Component {
           }]),
           onPanResponderRelease        : (e, gesture) => {
               this.state.pan.setOffset({x: this.state.x + gesture['dx'], y: this.state.y + gesture['dy']})
-              console.log("Submitting Pan Resonponder", this.state.symptom)
+
               this.setState({'x':this.state.x + gesture['dx'], y: this.state.y + gesture['dy']}, this.props.setSymptomCoords(this.props.name,this.state.x + gesture['dx'],this.state.y + gesture['dy'], this.props.symptom))
               this.state.pan.setValue({x:0,y:0})
           } //Step 4
@@ -109,7 +112,7 @@ class Journal extends React.Component {
   constructor(props) {
       super(props);
       if (this.props.journal) {
-        console.log("Journal", this.props.journal)
+
         var symptoms = [];
         var symptom_details = {};
 
@@ -118,11 +121,15 @@ class Journal extends React.Component {
           symptoms.push(symptom.symptom);
           symptom_details[symptom.symptom] = symptom
         }
-        console.log("Symptoms", symptoms, symptom_details)
-        this.state = {'symptoms' : symptoms, 'symptom_details': symptom_details, 'notes': this.props.journal.notes, 'date':this.props.journal.date, 'id': this.props.journal.id, 'user': this.props.userId, loaded:false, 'cusomize':{}};
+
+        this.state = {keyboard:false, 'symptoms' : symptoms, 'symptom_details': symptom_details, 'notes': this.props.journal.notes, 'date':this.props.journal.date, 'id': this.props.journal.id, 'user': this.props.userId, loaded:false, 'cusomize':{}};
       }
       else {
-        this.state = {'symptoms' : '', 'date':'11 16 2018', 'symptom_details': {}, 'notes': '', 'user': this.props.userId, loaded:false, 'cusomize':{}};
+
+        var today = new Date();
+        var date = (today.getYear() + 1900) + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+        var display_date = (today.getMonth() + 1) + ' ' + today.getDate() + ' ' + (today.getYear() + 1900)
+        this.state = {'symptoms' : '', 'date':date, 'display_date': display_date, 'symptom_details': {}, 'notes': '', 'user': this.props.userId, loaded:false, 'cusomize':{}, keyboard:false};
       }
 
       this.objectCallback = this.objectCallback.bind(this);
@@ -130,6 +137,9 @@ class Journal extends React.Component {
       this.save = this.save.bind(this);
       this.addSymptoms = this.addSymptoms.bind(this);
       this.setSymptomCoords = this.setSymptomCoords.bind(this);
+      this.resetSymptoms = this.resetSymptoms.bind(this);
+      //this.keyboardDidHide = this.keyboardDidHide.bind(this);
+      //this.keyboardDidShow = this.keyboardDidShow.bind(this);
   }
 
     componentDidMount(value) {
@@ -139,10 +149,10 @@ class Journal extends React.Component {
 
     handleChange(name,value, multi=false) {
         var newState = {};
-        console.log("Handle Change",name,value,multi)
+
         if (multi) {
           newState['symptom_details'] = this.state.symptom_details;
-          console.log("Multi", value)
+
           if (this.state[name] == '') {
             var newValue = [];
           }
@@ -154,11 +164,15 @@ class Journal extends React.Component {
               var newValue = this.state[name];
             }
           }
-          console.log("New Value", newValue)
+
           var index = newValue.indexOf(value)
           if (index == -1) {
             newValue.push(value);
-            newState['symptom_details'][value] = {'x_coord':50, 'y_coord':50, 'symptom':value}
+
+            var width = Dimensions.get('window').width;
+
+            var height = Dimensions.get('window').height;
+            newState['symptom_details'][value] = {'x_coord':parseInt(width*.1), 'y_coord':parseInt(height*.2), 'symptom':value}
           }
           else {
             newValue.splice(index,1)
@@ -174,7 +188,7 @@ class Journal extends React.Component {
           newState[name] = value;
         }
 
-        console.log("New State", newState)
+
         this.setState(newState);
     }
 
@@ -186,48 +200,64 @@ class Journal extends React.Component {
 
 
       newState['loaded'] = true;
-      console.log("Object Callback", newState)
+
       this.setState(newState)
     }
 
     save() {
-      console.log("Saving Journal")
+
       var submitUrl = '/api/home/journal/';
       if (this.state.id) {
         submitUrl += this.state.id + '/';
       }
       var data = this.state;
       data['user'] = this.props.userId;
-      console.log("Saving Journal", submitUrl, data)
+      console.log("Save", submitUrl, data)
       ajaxWrapper('POST',submitUrl, data, this.addSymptoms)
     }
 
     addSymptoms(result) {
-      console.log("Adding Symptoms", result)
-      console.log("Current Symptoms", this.state.symptom_details)
-      var journal_id = result[0]['journal']['id'];
+      console.log("Journal", result[0])
+      if (result[0]) {
+        console.log("Made it", result[0], this.state.symptom_details)
+        var journal_id = result[0]['journal']['id'];
+        var width = parseInt(Dimensions.get('window').width);
+        var height = parseInt(Dimensions.get('window').height);
 
-      for (index in this.state.symptom_details) {
+        for (index in this.state.symptom_details) {
+          console.log("Index", index)
 
-        var submitUrl = '/api/home/symptom/';
-        var symptom = this.state.symptom_details[index];
-        console.log("Symptom", symptom)
-        if (symptom['id']) {
-          submitUrl += symptom['id'] + '/';
+          var submitUrl = '/api/home/symptom/';
+          var symptom = this.state.symptom_details[index];
+          console.log("Symptom", symptom)
+          symptom['screen_width'] = width;
+          symptom['screen_height'] = height;
+          console.log("Symptom", symptom)
+          symptom['x_coord'] = parseInt(symptom['x_coord'])
+          symptom['y_coord'] = parseInt(symptom['y_coord'])
+          console.log("Here")
+          if (symptom['id']) {
+            submitUrl += symptom['id'] + '/';
+          }
+
+          symptom['journal'] = journal_id
+          console.log("Symptom POSTING", submitUrl, symptom)
+          ajaxWrapper('POST',submitUrl, symptom, console.log)
         }
 
-        symptom['journal'] = journal_id
-        ajaxWrapper('POST',submitUrl, symptom, console.log)
+        this.props.setGlobalState('page','journalEntries');
       }
-
-      this.props.setGlobalState('page','journalEntries');
     }
 
     setSymptomCoords(name, x, y, symptom) {
       var symptom_details = this.state.symptom_details;
       symptom_details[name] = {'x_coord': parseInt(x), 'y_coord': parseInt(y), 'symptom':symptom}
-      console.log("symptom_details", symptom_details)
+
       this.setState({'symptom_details':symptom_details})
+    }
+
+    resetSymptoms() {
+      this.setState({'symptoms' : '', symptom_details: {}})
     }
 
     render() {
@@ -249,66 +279,103 @@ class Journal extends React.Component {
                   {'source':symptom_12,'selected_source':symptom_12_selected,'value':'Hard Lump'}]
 
 
+                var text = this.state.notes;
+                if (text == '') {
+                  text = 'Please record details in this note such as size (pea, quarter, etc.) color, texture, or temperature.'
+                }
                 var notes = <View style={{'width':'100%', alignItems:'center', justifyContent:'center', marginTop:20}}>
+                <TouchableWithoutFeedback onPress={() => this.setState({keyboard:true})}>
+                <View style={{'width':'100%', alignItems:'center', justifyContent:'center'}}>
                   <View style={{'backgroundColor': 'white', 'width':'80%', 'padding':10, borderTopLeftRadius: 25, borderTopRightRadius: 25}} >
                   <Text style={{'color':'#a657a2', 'textAlign':'center'}}>Subject</Text>
                   </View>
                   <LinearGradient colors={['#bbb','#fff','#fff']} style={{'backgroundColor': 'white', 'width':'80%', 'padding':20,  alignItems:'center', justifyContent:'center', borderBottomLeftRadius: 25, borderBottomRightRadius: 25, flexDirection: 'row', flexWrap: 'wrap'}}>
-                    <Textarea style={{'width':'100%', 'color': '#56c0a6', 'fontFamily':'Quicksand'}} placeholder={'Please record details in this note such as size (pea, quarter, etc.) color, texture, or temperature.'} onChangeText={(text) => this.handleChange('notes',text)} value={this.state.notes} rowSpan={3} />
+                    <Text style={{'width':'100%', 'color': '#56c0a6', 'fontFamily':'Quicksand'}}>{text}</Text>
                   </LinearGradient>
-
+                  </View>
+                  </TouchableWithoutFeedback>
                 </View>
+
+                if (this.state.keyboard) {
+                  var notes = <View style={{'width':'100%', alignItems:'center', justifyContent:'center', marginTop:20}}>
+                    <View style={{'backgroundColor': 'white', 'width':'80%', 'padding':10, borderTopLeftRadius: 25, borderTopRightRadius: 25}} >
+                    <Text style={{'color':'#a657a2', 'textAlign':'center'}}>Subject</Text>
+                    </View>
+                    <LinearGradient colors={['#bbb','#fff','#fff']} style={{'backgroundColor': 'white', 'width':'80%', 'padding':20,  alignItems:'center', justifyContent:'center', borderBottomLeftRadius: 25, borderBottomRightRadius: 25, flexDirection: 'row', flexWrap: 'wrap'}}>
+                      <Textarea style={{'width':'100%', 'color': '#56c0a6', 'fontFamily':'Quicksand'}} placeholderTextColor={'#56c0a6'} placeholder={'Please record details in this note such as size (pea, quarter, etc.) color, texture, or temperature.'} onChangeText={(text) => this.handleChange('notes',text)} value={this.state.notes} rowSpan={8} />
+                      <Button selected={true} text={'Save'} onPress={() => this.setState({'keyboard':false})} />
+
+                    </LinearGradient>
+
+                  </View>
+                }
 
                 var title_text = 'n  e  w    e  n  t  r  y';
                 if (this.props.journal) {
                   title_text = 'e  d  i  t    e  n  t  r  y';
                 }
 
-                console.log("Symptom Details Journal", this.state.symptom_details)
+
 
                 var draggable_symptoms = [];
-                console.log("Symptom Details", this.state.symptom_details)
+
                 if (this.state.symptom_details) {
                   for (index in this.state.symptom_details) {
                     var symptom = this.state.symptom_details[index];
-                    console.log("Draggable Symptom In For Loop", symptom, symptom['symptom'])
+
                     draggable_symptoms.push(<Draggable x_coord={symptom['x_coord']} y_coord={symptom['y_coord']} name={index} setSymptomCoords={this.setSymptomCoords} symptom={symptom['symptom']} />)
                   }
                 }
 
-                return (
-                    <ScrollView>
-                    <LinearGradient
-                      colors={['#52bfa6', '#3e8797']}
-                      style={{alignItems: 'center', 'height':'100%', 'width':'100%'}}>
+                if (this.state.keyboard) {
+                  return (
+                      <View>
+                      <LinearGradient
+                        colors={['#52bfa6', '#3e8797']}
+                        style={{alignItems: 'center', 'height':'100%', 'width':'100%'}}>
+                            {notes}
+                        </LinearGradient>
+                      </View>
+                  );
+                }
+                else {
+                  console.log("Symptoms", this.state.symptoms)
+                  return (
+                      <ScrollView keyboardDismissMode='none'>
+                      <LinearGradient
+                        colors={['#52bfa6', '#3e8797']}
+                        style={{alignItems: 'center', 'height':'100%', 'width':'100%'}}>
+                        {draggable_symptoms}
+                        <Text style={{'color':'white', marginTop: '2%'}}>{title_text}</Text>
 
-                      <Text style={{'color':'white', marginTop: 20}}>{title_text}</Text>
+                        <JournalCard customize={this.props.customize} journal={this.state} symptom_details={this.state.symptom_details} summarize={false} setSymptomCoords={this.setSymptomCoords} />
+                        <TouchableWithoutFeedback onPress={this.resetSymptoms}>
+                          <Text style={{'color':'white', borderColor:'white', borderBottomWidth:2, paddingBottom:2, textAlign:'center'}}>Reset Symptoms</Text>
+                        </TouchableWithoutFeedback>
 
-                      <JournalCard customize={this.props.customize} journal={this.state} symptom_details={this.state.symptom_details} summarize={false} setSymptomCoords={this.setSymptomCoords} />
-                      {draggable_symptoms}
+                        <SelectionBox multi={true} title={'Symptoms'} answer={this.state.symptoms} size={['30%',100]} selected_size={['30%',100]} handleChange={this.handleChange} name={'symptoms'} options={symptom_options} />
 
-                      <SelectionBox title={'Symptoms'} answer={this.state.symptoms} size={['30%',100]} selected_size={['30%',100]} handleChange={this.handleChange} name={'symptoms'} options={symptom_options} />
+                        <View style={{'width':'80%', marginTop:20, height:20, alignItems:'center', 'justifyContent':'center'}}>
+                          <View style={{'borderTopWidth':2, borderColor:'white', 'width':'100%'}}>
+                          </View>
 
-                      <View style={{'width':'80%', marginTop:20, height:20, alignItems:'center', 'justifyContent':'center'}}>
-                        <View style={{'borderTopWidth':2, borderColor:'white', 'width':'100%'}}>
+                          <Text style={{fontFamily: 'Quicksand', color:'white', position:'absolute', paddingRight:20, paddingLeft:20, backgroundColor:'#418f99', 'textAlign':'center', zIndex:1000}}>Add Notes</Text>
                         </View>
 
-                        <Text style={{fontFamily: 'Quicksand', color:'white', position:'absolute', paddingRight:20, paddingLeft:20, backgroundColor:'#418f99', 'textAlign':'center', zIndex:1000}}>Add Notes</Text>
-                      </View>
+                            {notes}
 
-                          {notes}
+                            <Button success={true} onPress={this.save} text={'Save'} />
 
-                          <Button success={true} onPress={this.save} text={'Save'} />
+                        </LinearGradient>
+                      </ScrollView>
+                  );
+                }
 
-                      </LinearGradient>
-                    </ScrollView>
-                );
+
               }
               else {
                 return (
-                  <View>
-                        <Text>Welcome To Journaling</Text>
-                    </View>
+                  <Loading />
                 );
               }
 

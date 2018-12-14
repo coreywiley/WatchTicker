@@ -68,14 +68,16 @@ class SelectionBox extends React.Component {
 
     if (this.state.display == false) {
       return (
-        <Button onPress={() => this.show()} text={this.props.title} width={'100%'}></Button>
+        <View style={{'width':'80%'}} >
+        <Button onPress={() => this.show()} text={this.props.title} width={'95%'} />
+        </View>
       )
     }
     else {
       var options = [];
       for (var index in this.props.options) {
         var option = this.props.options[index];
-        if (this.props.answer == option['value']) {
+        if (this.props.answer == option['value'] || (this.props.multi && this.props.answer.indexOf(option['value']) > -1)) {
           if (this.props.name == 'size' || this.props.name == 'masectomy') {
             if (this.props.name == 'masectomy' && this.props.answer == 3) {
               options.push(<Image source={option['selected_source']} style={{margin:0, width: '100%', height: 100}}/>)
@@ -114,9 +116,9 @@ class SelectionBox extends React.Component {
         colors = [ '#ddd', '#ad92b9']
       }
 
-      var title = <Text style={{'color':'#a657a1', textAlign:'center'}}>{this.props.title}</Text>
+      var title = <Text style={{'color':'#a657a1', textAlign:'center', 'width':'100%'}}>{this.props.title}</Text>
       if (this.props.optional) {
-        var title = <TouchableWithoutFeedback onPress={this.show}><Text style={{'color':'#a657a1', textAlign:'center'}}>{this.props.title}</Text></TouchableWithoutFeedback>
+        var title = <TouchableWithoutFeedback onPress={this.show} style={{'width':'100%'}}><Text style={{'color':'#a657a1', textAlign:'center', 'width':'100%'}}>{this.props.title}</Text></TouchableWithoutFeedback>
       }
 
       return (

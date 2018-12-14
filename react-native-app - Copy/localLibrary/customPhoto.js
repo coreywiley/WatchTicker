@@ -228,16 +228,17 @@ class CustomPhoto extends React.Component {
         console.log("Height/Width", height, width)
 
         if (this.props.masectomy != 1 && this.props.masectomy != 3) {
-          size.push(<Image source={left_source} style={{margin:0, height: 95, width:90, 'position':'absolute', top:'53%', left:'21%'}} />)
+          size.push(<Image source={left_source} style={{margin:0, height: '31%', width:'28%', 'position':'absolute', top:'53%', left:'21%'}} />)
         }
         else {
-          size.push(<Image source={photoDict['masectomy'][this.props.skin_color][0]} style={{margin:0, height: 50, width:75, 'position':'absolute', top:'65%', left:'25%'}} />)
+          size.push(<Image source={photoDict['masectomy'][this.props.skin_color][0]} style={{margin:0, height: '18%', width:'22%', 'position':'absolute', top:'65%', left:'25%'}} />)
         }
+
         if (this.props.masectomy != 2 && this.props.masectomy != 3) {
-          size.push(<Image source={right_source} style={{margin:0, height: 95, width:90,'position':'absolute', top:'53%', right:'21%'}} />)
+          size.push(<Image source={right_source} style={{margin:0, height: '31%', width:'28%','position':'absolute', top:'53%', right:'21%'}} />)
         }
         else {
-          size.push(<Image source={photoDict['masectomy'][this.props.skin_color][1]} style={{margin:0, height:50 , width:75, 'position':'absolute', top:'65%', right:'25%'}} />)
+          size.push(<Image source={photoDict['masectomy'][this.props.skin_color][1]} style={{margin:0, height: '18%', width:'22%', 'position':'absolute', top:'65%', right:'25%'}} />)
         }
 
       }
