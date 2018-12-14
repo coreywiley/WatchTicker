@@ -25,7 +25,7 @@ class App extends React.Component {
   constructor(props) {
   		super(props);
   		this.state = {
-  			page: 'settings',
+  			page: 'onboarding',
         loading: true,
         doctor: undefined,
         journal: undefined,

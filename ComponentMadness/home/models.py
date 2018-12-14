@@ -21,6 +21,11 @@ class UserSettings(models.Model):
     notifications_token = models.CharField(max_length=1200, blank=True, default="")
     breast_exam_reminders = models.BooleanField(default=True)
     email_newsletters = models.BooleanField(default=True)
+    country_of_origin = models.CharField(max_length=120, blank=True, default="")
+    zip_code = models.CharField(max_length=120, blank=True, default="")
+    last_menstruation_day = models.DateTimeField(null=True)
+    reminder_day = models.DateTimeField(null=True)
+    last_login = models.DateTimeField(default=datetime.datetime.now)
 
 class Question(models.Model):
     id = models.AutoField(primary_key=True)

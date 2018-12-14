@@ -3,97 +3,55 @@ import { View, StyleSheet, Picker } from 'react-native';
 import { Constants } from 'expo';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import Text from './text.js';
+import SwipePicker from './swipeInput.js';
 
-class SwipePicker extends Component {
-  constructor(props) {
-    super(props);
-
-    this.onSwipeUp = this.onSwipeUp.bind(this);
-    this.onSwipeDown = this.onSwipeDown.bind(this);
-  }
-
-  onSwipeUp(gestureState) {
-    console.log("Swipe Up")
-    var options = this.props.options;
-    var index = options.indexOf(this.props.value)
-    if (index == 0) {
-      var before = options.length - 1;
-    }
-    else {
-      var before = index - 1;
-    }
-
-    this.props.handleChange(this.props.name, options[before])
-  }
-
-  onSwipeDown(gestureState) {
-    console.log("Swipe Down")
-    var options = this.props.options;
-    var index = options.indexOf(this.props.value)
-    if (index == options.length - 1) {
-      var next = 0;
-    }
-    else {
-      var next = index + 1;
-    }
-
-    this.props.handleChange(this.props.name, options[next])
-  }
-
-  render() {
-    var options = this.props.options;
-    var index = options.indexOf(this.props.value)
-
-    if (index == -1) {
-      index = 0;
-    }
-
-    if (index == 0) {
-      var before = options.length - 1;
-    }
-    else {
-      var before = index - 1;
-    }
-
-    if (index == options.length - 1) {
-      var next = 0;
-    }
-    else {
-      var next = index + 1;
-    }
-
-    const config = {
-      velocityThreshold: 1,
-      directionalOffsetThreshold: 80
-    };
-
-    return (
-      <GestureRecognizer onSwipeUp={this.onSwipeUp} onSwipeDown={this.onSwipeDown} style={{'width':this.props.width}} config={config}>
-        <Text style={{padding:10, color:'#cfa6cd'}}>{options[next]}</Text>
-        <Text style={{padding:10, borderTopWidth: 2, borderBottomWidth:2, color:'#a657a2', borderColor: '#a657a2'}}>{options[index]}</Text>
-        <Text style={{padding:10, color:'#cfa6cd'}}>{options[before]}</Text>
-      </GestureRecognizer>
-    )
-  }
-}
 
 export default class DateTimePicker extends Component {
   constructor(props) {
     super(props);
 
-    if (this.props.answer == '') {
+    if (this.props.answer == '' || this.props.answer == undefined || this.props.answer.split('T').length == 1) {
       this.state = {
         month: 'January',
         day: '1',
         year:'2000',
+        hour: '08',
+        minute:'00',
+        ampm:'am'
       }
     }
     else {
-      var values = this.props.answer.split(' ')
+      var dateTime = this.props.answer.split('T')
+      var values = dateTime[0].split('-')
+
+      console.log("Values",values)
+      var ampm = 'am'
+      var hour = parseInt(dateTime[1].split(':')[0])
+      if (hour > 12) {
+        hour = hour - 12
+        ampm = 'pm'
+      }
+
+      if (hour < 10) {
+        hour = '0' + hour
+      }
+      else {
+        hour = hour.toString()
+      }
+
+      var minute = dateTime[1].split(':')[1]
+
+
+      var months = ['January','February','March','April','May','June','July','August','September','October','November','December']
+      var month = months[values[1] - 1]
+
       this.state = {
-        month: values[0],
-        day: values[1],
-        year:values[2],
+        month: month,
+        day: values[2],
+        year:values[0],
+        hour: hour,
+        minute: minute,
+        ampm: ampm
       }
     }
 
@@ -103,11 +61,28 @@ export default class DateTimePicker extends Component {
   handleChange(name, value) {
     var newState = this.state;
     newState[name] = value;
+    if (this.props.date) {
+      var months = ['January','February','March','April','May','June','July','August','September','October','November','December']
+      var month = months.indexOf(newState.month) + 1
+      var date = newState.year + '-' + month + '-' + newState.day
+      console.log("Date Change",date)
+      this.setState(newState, () => this.props.handleChange(this.props.name, date))
+    }
+    else if (this.props.time) {
+      var hour = parseInt(newState.hour)
+      if (newState.ampm == 'pm') {
+        hour += 12;
+      }
+      this.setState(newState, () => this.props.handleChange(this.props.name, hour + ':' + newState.minute + ':00'))
+    }
+    else {
+      this.setState(newState, () => this.props.handleChange(this.props.name, newState.month + ' ' + newState.day + ' ' + newState.year))
+    }
 
-    this.setState(newState, () => this.props.handleChange(this.props.name, newState.month + ' ' + newState.day + ' ' + newState.year + ' '))
   }
 
   render() {
+    pickers = []
 
     if (this.props.date) {
       var days = [];
@@ -117,26 +92,42 @@ export default class DateTimePicker extends Component {
         days.push(day)
       }
 
+
       var years = [];
-      for (var i = 0; i < 150; i++) {
+      for (var i = 0; i < 153; i++) {
         var year = (2018-150+i).toString();
         years.push(year)
       }
+
 
       var months = [];
       for (var month in monthdays) {
         months.push(month);
       }
 
+      pickers.push(<SwipePicker options={months} value={this.state.month} name={'month'} handleChange={this.handleChange} width={'45%'}/>)
+      pickers.push(<SwipePicker options={days} value={this.state.day} name={'day'} handleChange={this.handleChange} width={'20%'}/>)
+      pickers.push(<SwipePicker options={years} value={this.state.year} name={'year'} handleChange={this.handleChange} width={'35%'}/>)
+      var display = <Text style={{textAlign:'center', color: '#a657a2', marginTop:10, marginBottom: 10}}>{this.state.month + ' ' + this.state.day + ', ' + this.state.year}</Text>
+    }
+
+    if (this.props.time) {
+      var display = <Text style={{textAlign:'center', color: '#a657a2', marginTop:10, marginBottom: 10}}>{this.state.hour + ':' + this.state.minute + ' ' + this.state.ampm}</Text>
+      var hours = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+      var minutes = ['00','05','10','15','20','25','30','35','40','45','50','55'];
+      var ampm = ['am','pm'];
+
+
+      pickers.push(<SwipePicker options={hours} value={this.state.hour} name={'hour'} handleChange={this.handleChange} width={'33%'}/>)
+      pickers.push(<SwipePicker options={minutes} value={this.state.minute} name={'minute'} handleChange={this.handleChange} width={'33%'}/>)
+      pickers.push(<SwipePicker options={ampm} value={this.state.ampm} name={'ampm'} handleChange={this.handleChange} width={'33%'}/>)
     }
 
     return (
       <View style={{'backgroundColor':'#fff', width:'80%',alignItems:'center', justifyContent:'center', borderRadius:25}}>
-        <Text style={{textAlign:'center', color: '#a657a2', marginTop:10, marginBottom: 10}}>{this.state.month + ' ' + this.state.day + ', ' + this.state.year}</Text>
+        {display}
         <View style={{'flexDirection':'row',  alignItems:'center', justifyContent:'center', width:'90%', padding:20, borderTopWidth: 2, borderColor: '#a657a2'}}>
-          <SwipePicker options={months} value={this.state.month} name={'month'} handleChange={this.handleChange} width={'45%'}/>
-          <SwipePicker options={days} value={this.state.day} name={'day'} handleChange={this.handleChange} width={'20%'}/>
-          <SwipePicker options={years} value={this.state.year} name={'year'} handleChange={this.handleChange} width={'35%'}/>
+          {pickers}
         </View>
       </View>
     );

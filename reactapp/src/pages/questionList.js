@@ -177,7 +177,6 @@ class OrderableList extends Component {
         return (
           <div className="container">
             <Button type={'info'} href={'/editQuestion/'} text={'Add New Question'} />
-            <Button type={'primary'} href={'/onboarding/'} target={"_blank"} text={'Preview Onboarding'} />
             <Button type={'success'} clickHandler={this.updateData} text={'Save Order'} />
             <Header size={3} text={'On Boarding Questions'} />
             <DragDropContext onDragEnd={this.onDragEnd}>
