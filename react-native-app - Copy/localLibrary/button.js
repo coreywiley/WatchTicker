@@ -42,7 +42,6 @@ class NormaButton extends React.Component {
 }
 
 const shadows = StyleSheet.create({
-  shadowOffset: { width: 10, height: 10 },
   shadowOpacity: 1,
   elevation: 3,
   zIndex:999,

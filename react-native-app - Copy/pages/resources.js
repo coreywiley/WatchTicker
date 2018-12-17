@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { StyleSheet, View, Image, TouchableWithoutFeedback, ScrollView, Linking } from 'react-native';
 import ajaxWrapper from '../base/ajax.js';
 import { Toast, Container, Header, Title, Content, FooterTab, Left, Right, Body, Card, CheckBox, CardItem, List, ListItem, InputGroup, Input, Spinner } from 'native-base';
 import LeagueCard from '../localLibrary/leagueCard.js';
@@ -112,9 +112,11 @@ class Journals extends React.Component {
               {circles}
             </View>
 
-            <Button text={'FAQs'} width={'70%'} onPress={() => this.props.setGlobalState('page','faqs')} />
-            <Button text={'Breast Cancer Signs'} width={'70%'} onPress={() => this.props.setGlobalState('page','faqs')} />
-            <Button text={'Local Resouces'} width={'70%'} onPress={() => this.props.setGlobalState('page','faqs')} />
+            <View style={{width:'60%'}}>
+              <Button text={'FAQs'} width={'95%'} onPress={() => this.props.setGlobalState('page','faqs')} />
+              <Button text={'Breast Cancer Signs'} width={'95%'} onPress={() => Linking.openURL("https://www.knowyournorma.com/breastcancersigns")} />
+              <Button text={'Local Resouces'} width={'95%'} onPress={() => Linking.openURL("https://www.knowyournorma.com/localresources")} />
+            </View>
 
 
           <View style={{marginBottom:100}} />

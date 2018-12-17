@@ -20,12 +20,13 @@ import PrivacyPolicy from './pages/privacyPolicy.js';
 import HomeScreen from './pages/app/screens/HomeScreen.js';
 import Notifications from './pages/notificationsTest.js';
 import Loading from './library/loading.js';
+import SetNotification from './pages/setNotification.js';
 
 class App extends React.Component {
   constructor(props) {
   		super(props);
   		this.state = {
-  			page: 'journalEntries',
+  			page: 'resources',
         loading: true,
         doctor: undefined,
         journal: undefined,
@@ -155,6 +156,9 @@ class App extends React.Component {
     }
     else if (this.state.page == 'notifications') {
         body = <Notifications />;
+    }
+    else if (this.state.page == 'setNotification') {
+        body = <SetNotification appointment={this.state.appointment} userId={this.state.userId} setGlobalState={this.setGlobalState} />;
     }
 
 

@@ -205,7 +205,10 @@ export default class Login extends Component {
                     {form}
                 </View>
 
-                <Text style={{padding:10, borderColor:'#fff', borderBottomWidth:2, color:'#fff', fontFamily:'Quicksand'}}>Data Agreement</Text>
+                <TouchableWithoutFeedback onPress={() => Linking.openURL("https://www.knowyournorma.com/terms-of-service")}>
+                  <Text style={{padding:10, borderColor:'#fff', borderBottomWidth:2, color:'#fff', fontFamily:'Quicksand'}}>Data Agreement</Text>
+                </TouchableWithoutFeedback>
+                
 
 
                 </LinearGradient>

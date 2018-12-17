@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Quicksand" />
+    <meta charset="utf-8">
+    <title>Sales Report</title>
+    <style type="text/css">
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 5px;
+            background-color: #fff;
+        }
+        .table th,
+        .table td {
+            padding: 5px;
+            vertical-align: top;
+            border-top: 1px solid #000;
+            text-align: center;
+        }
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #000;
+        }
+        .table tbody + tbody {
+            border-top: 2px solid #000;
+        }
+        .table .table {
+            background-color: #fff;
+        }
+        .list-group {
+            display: block;
+            width: 100%;
+            list-style: none;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .list-group p {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            list-style: none;
+            font-size: 1.1em;
+        }
+        .customImage {
+            margin-right:auto;
+            margin-left:auto;
+            display:block;
+            width:100%;
+        }
+
+        .customPhoto {
+            background-color: #ffffff;
+            border-radius:25px;
+        }
+
+        .phoneDisplay {
+            height: 470px;
+            width: 250px;
+            display: inline-block;
+            border-radius:25px;
+            background-color: #7d5d9b;
+
+            border: 1px solid black;
+        }
+
+        .journalCard {
+            background-color: #c2b3d2;
+            border-radius: 25px;
+            min-height:60%;
+            margin-top:66px;
+            width: 80%;
+            margin-right:auto;
+            margin-left:auto;
+            display:block;
+        }
+
+        .journalText {
+            color: #a657a1;
+            font-family: Quicksand;
+            font-weight: bold;
+            line-height: 20px;
+            padding:10px;
+        }
+        .date {
+            text-align:center;
+            font-family: Quicksand;
+            font-weight: bold;
+            background-color: #3e8797;
+            border-radius: 25px;
+            width: 60%;
+            position:relative;
+            right:0;
+            top:-10px;
+            height:20px;
+            line-height: 20px;
+            color: #fff;
+            margin-left:auto;
+        }
+        .nipple {
+            position:absolute;
+            display:inline;
+        }
+        .symptom {
+            height:30px;
+            width:30px;
+            position:absolute;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h1>Self Breast Exam Journals</h1>
+        </div>
+
+        <div class="card-header">
+            <h3>Basic Info</h3>
+        </div>
+
+        <table class="table">
+            {% autoescape off %}{{ questions }}{% endautoescape %}
+        </table>
+
+        <div class="card-header">
+            <h3>Symptom Table</h3>
+        </div>
+
+        <table class="table">
+            <tr>
+                <th>Nipple Crust</th>
+                <th>Discharge</th>
+                <th>Texture</th>
+                <th>Redness or Heat</th>
+                <th>Pulled in Nipple</th>
+                <th>Growing Vein</th>
+                <th>New Shape or Size</th>
+                <th>Indentation</th>
+                <th>Thick Mass</th>
+                <th>Skin Sores</th>
+                <th>Bump</th>
+                <th>Hard Lump</th>
+            </tr>
+            <tr>
+                <td><img class="" src='../../static/images/Customization/Symptoms/1_drag.png' style="height:30px;width:30px;"></td>
+                <td><img class="" src='../../static/images/Customization/Symptoms/2_drag.png' style="height:30px;width:30px;"></td>
+                <td><img class="" src='../../static/images/Customization/Symptoms/3_drag.png' style="height:30px;width:30px;"></td>
+                <td><img class="" src='../../static/images/Customization/Symptoms/4_drag.png' style="height:30px;width:30px;"></td>
+                <td><img class="" src='../../static/images/Customization/Symptoms/5_drag.png' style="height:30px;width:30px;"></td>
+                <td><img class="" src='../../static/images/Customization/Symptoms/6_drag.png' style="height:30px;width:30px;"></td>
+                <td><img class="" src='../../static/images/Customization/Symptoms/7_drag.png' style="height:30px;width:30px;"></td>
+                <td><img class="" src='../../static/images/Customization/Symptoms/8_drag.png' style="height:30px;width:30px;"></td>
+                <td><img class="" src='../../static/images/Customization/Symptoms/9_drag.png' style="height:30px;width:30px;"></td>
+                <td><img class="" src='../../static/images/Customization/Symptoms/10_drag.png' style="height:30px;width:30px;"></td>
+                <td><img class="" src='../../static/images/Customization/Symptoms/11_drag.png' style="height:30px;width:30px;"></td>
+                <td><img class="" src='../../static/images/Customization/Symptoms/12_drag.png' style="height:30px;width:30px;"></td>
+            </tr>
+        </table>
+
+        <div class="row">
+        {% for journal in journal_details %}
+            <div class="phoneDisplay" style={{ journal.phone_style }} >
+                    {% if custom_options.masectomy != 1 and custom.options.masectomy != 3 %}
+                        <img class="nipple" src={{ custom_options.nipple_color }} style={{ journal.left_nipple_style }} />
+                        <img class="size" src={{custom_options.size.0}} style={{ journal.left_size_style }} >
+                    {% endif %}
+
+                    {% if custom_options.masectomy != 2 and custom.options.masectomy != 3 %}
+                        <img class="nipple" src={{ custom_options.nipple_color }} style={{ journal.right_nipple_style }} />
+                        <img class="size" src={{custom_options.size.1}} style={{ journal.right_size_style }} >
+                    {% endif %}
+
+                    {% if custom_options.masectomy == 1 or custom.options.masectomy == 3 %}
+                        <img class="masectomy" src={{ custom_options.masectomy_color.0 }} style={{ journal.left_masectomy_style }}  />
+                    {% endif %}
+
+                    {% if custom_options.masectomy == 2 or custom.options.masectomy == 3 %}
+                        <img class="masectomy" src={{ custom_options.masectomy_color.1 }} style={{ journal.right_masectomy_style }}  />
+                    {% endif %}
+
+                    {% for symptom in journal.symptoms %}
+                        <img class="symptom" src={{ symptom.symptom_image}} style={{ symptom.style }}>
+                    {% endfor %}
+
+
+                <div class="journalCard">
+
+                    <div class="customPhoto">
+                        <div class="date">
+                        <p>{{journal.date}}</p>
+                    </div>
+                        <img class="customImage" src={{ custom_options.skin_color }} >
+
+                    </div>
+                    <p class="journalText">{{ journal.notes }}</p>
+                </div>
+
+            </div>
+        {% endfor %}
+
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

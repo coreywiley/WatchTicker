@@ -17,24 +17,60 @@ class NormaFooter extends React.Component {
     console.log("Background Color", backgroundColor)
 
     if (this.props.page == 'journalEntries') {
-      return (
-        <Footer style={{'position':'absolute', 'bottom':0, 'width':'100%', 'backgroundColor': backgroundColor}}>
-            <FooterTab style={{'backgroundColor': backgroundColor, 'width':'100%'}}>
-              <Button onPress={() => this.props.setGlobalState('page','journalEntries')}>
-                <Image source={require('../assets/Customization/journal.png')} style= {{flex:1 , width: 60, height: 20}}/>
-              </Button>
-              <Button onPress={() => this.props.setGlobalState('page','resources')} style={{'borderRightWidth':1, 'borderRightColor':'#ae6dac','borderLeftWidth':1, 'borderLeftColor':'#ae6dac'}}>
-                <Image source={require('../assets/Customization/resources.png')} style= {{flex:1 , width: 60, height: 60}} />
-              </Button>
-              <Button onPress={() => this.props.setGlobalState('page','doctors')} style={{'borderRightWidth':1, 'borderRightColor':'#ae6dac'}}>
-              <Image source={require('../assets/Customization/my_health.png')}  style= {{flex:1 , width: 60, height: 60}}/>
-              </Button>
-              <Button onPress={() => this.props.setGlobalState('page','settings')}>
-              <Image source={require('../assets/Customization/settings.png')}  style= {{flex:1 , width: 60, height: 70}}/>
-              </Button>
-            </FooterTab>
-          </Footer>
-      )
+      if (this.props.hide) {
+        var journal_opacity = 0.5;
+        var resources_opacity = 0.5;
+        var health_opacity = 0.5;
+        var settings_opacity = 0.5;
+
+        if (this.props.highlight == 'health') {
+          console.log("Here")
+          health_opacity = 1.0
+        }
+        if (this.props.highlight == 'resources') {
+          resources_opacity = 1.0
+        }
+        console.log("health_opacity", health_opacity, this.props.highlight)
+
+        return (
+          <Footer style={{'position':'absolute', 'bottom':0, 'width':'100%', 'backgroundColor': backgroundColor, zIndex:100000}}>
+              <FooterTab style={{'backgroundColor': backgroundColor, 'width':'100%'}}>
+                <Button onPress={() => this.props.setGlobalState('page','journalEntries')}>
+                  <Image source={require('../assets/Customization/journal.png')} style= {{flex:1 , width: 60, height: 20, opacity:journal_opacity}}/>
+                </Button>
+                <Button onPress={() => this.props.setGlobalState('page','resources')} style={{'borderRightWidth':1, 'borderRightColor':'#ae6dac','borderLeftWidth':1, 'borderLeftColor':'#ae6dac'}}>
+                  <Image source={require('../assets/Customization/resources.png')} style= {{flex:1 , width: 60, height: 60, opacity:resources_opacity}} />
+                </Button>
+                <Button onPress={() => this.props.setGlobalState('page','doctors')} style={{'borderRightWidth':1, 'borderRightColor':'#ae6dac'}}>
+                <Image source={require('../assets/Customization/my_health.png')}  style= {{flex:1 , width: 60, height: 60, opacity:health_opacity}}/>
+                </Button>
+                <Button onPress={() => this.props.setGlobalState('page','settings')}>
+                <Image source={require('../assets/Customization/settings.png')}  style= {{flex:1 , width: 60, height: 70, opacity:settings_opacity}}/>
+                </Button>
+              </FooterTab>
+            </Footer>
+        )
+      }
+      else {
+        return (
+          <Footer style={{'position':'absolute', 'bottom':0, 'width':'100%', 'backgroundColor': backgroundColor, zIndex:100000}}>
+              <FooterTab style={{'backgroundColor': backgroundColor, 'width':'100%'}}>
+                <Button onPress={() => this.props.setGlobalState('page','journalEntries')}>
+                  <Image source={require('../assets/Customization/journal.png')} style= {{flex:1 , width: 60, height: 20}}/>
+                </Button>
+                <Button onPress={() => this.props.setGlobalState('page','resources')} style={{'borderRightWidth':1, 'borderRightColor':'#ae6dac','borderLeftWidth':1, 'borderLeftColor':'#ae6dac'}}>
+                  <Image source={require('../assets/Customization/resources.png')} style= {{flex:1 , width: 60, height: 60}} />
+                </Button>
+                <Button onPress={() => this.props.setGlobalState('page','doctors')} style={{'borderRightWidth':1, 'borderRightColor':'#ae6dac'}}>
+                <Image source={require('../assets/Customization/my_health.png')}  style= {{flex:1 , width: 60, height: 60}}/>
+                </Button>
+                <Button onPress={() => this.props.setGlobalState('page','settings')}>
+                <Image source={require('../assets/Customization/settings.png')}  style= {{flex:1 , width: 60, height: 70}}/>
+                </Button>
+              </FooterTab>
+            </Footer>
+        )
+      }
     }
     else {
       return (

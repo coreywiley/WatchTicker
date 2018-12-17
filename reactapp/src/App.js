@@ -35,6 +35,7 @@ import EditFAQ from './pages/editFAQ.js';
 import FAQList from './pages/faqList.js';
 import Notifications from './pages/notifications.js';
 import Notification from './pages/notification.js';
+import Navigate from './pages/navigate.js';
 
 class App extends Component {
     constructor(props) {
@@ -152,9 +153,6 @@ class App extends Component {
           else if (route == "login") {
               content = <LogIn />;
           }
-          else if (route == "signup") {
-              content = <SignUp />;
-          }
           else if (route == "loggedin") {
               content = <LoggedIn  />;
           }
@@ -187,6 +185,9 @@ class App extends Component {
           }
           else if (route == "notification") {
               content = <Notification user={this.state.user} notification_id={params[1]}/>;
+          }
+          else if (route == "navigate") {
+              content = <Navigate user={this.state.user} />;
           }
         }
 

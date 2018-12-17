@@ -3,6 +3,7 @@ import { StyleSheet, View, AsyncStorage, Image, ScrollView, PanResponder, Animat
 import ajaxWrapper from '../base/ajax.js';
 import { Form, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Text, Card, CheckBox, CardItem, List, ListItem, InputGroup, Input, Spinner, Item, Label, Textarea} from 'native-base';
 import ButtonSelect from '../library/buttonSelect.js';
+import Loading from '../library/loading.js';
 
 class Draggable extends React.Component {
     constructor(props){
@@ -62,10 +63,10 @@ class Journal extends React.Component {
           symptom_details[symptom.symptom] = symptom
         }
         console.log("Symptoms", symptoms, symptom_details)
-        this.state = {'symptoms' : symptoms, 'symptom_details': symptom_details, 'notes': this.props.journal.notes, 'id': this.props.journal.id, 'user': this.props.userId, loaded:false, 'cusomize':{}};
+        this.state = {'symptoms' : symptoms, 'symptom_details': symptom_details, 'notes': this.props.journal.notes, 'id': this.props.journal.id, 'user': this.props.userId, loaded:false, 'customize':{}};
       }
       else {
-        this.state = {'symptoms' : '', 'symptom_details': {}, 'notes': '', 'user': this.props.userId, loaded:false, 'cusomize':{}};
+        this.state = {'symptoms' : '', 'symptom_details': {}, 'notes': '', 'user': this.props.userId, loaded:false, 'customize':{}};
       }
 
       this.objectCallback = this.objectCallback.bind(this);
@@ -212,17 +213,16 @@ class Journal extends React.Component {
                         {notes}
                         <View>
                           <Button success={true} onPress={this.save} full>
-                            <Text>Save</Text>
+                            <Text>Save Edits</Text>
                           </Button>
-                          </View>
+                        </View>
+                        
                     </ScrollView>
                 );
               }
               else {
                 return (
-                  <View>
-                        <Text>Welcome To Journaling</Text>
-                    </View>
+                  <Loading />
                 );
               }
 

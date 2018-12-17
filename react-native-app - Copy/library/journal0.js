@@ -62,10 +62,10 @@ class Journal extends React.Component {
           symptom_details[symptom.symptom] = symptom
         }
         console.log("Symptoms", symptoms, symptom_details)
-        this.state = {'symptoms' : symptoms, 'symptom_details': symptom_details, 'notes': this.props.journal.notes, 'id': this.props.journal.id, 'user': this.props.userId, loaded:false, 'cusomize':{}};
+        this.state = {'symptoms' : symptoms, 'symptom_details': symptom_details, 'notes': this.props.journal.notes, 'id': this.props.journal.id, 'user': this.props.userId, loaded:false, 'customize':{}};
       }
       else {
-        this.state = {'symptoms' : '', 'symptom_details': {}, 'notes': '', 'user': this.props.userId, loaded:false, 'cusomize':{}};
+        this.state = {'symptoms' : '', 'symptom_details': {}, 'notes': '', 'user': this.props.userId, loaded:false, 'customize':{}};
       }
 
       this.objectCallback = this.objectCallback.bind(this);

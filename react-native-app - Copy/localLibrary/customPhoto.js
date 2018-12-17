@@ -156,7 +156,7 @@ class Draggable extends React.Component {
         return (
             <View style={{'position':'absolute','left':0,'top':0}}>
                 <Animated.View {...this.panResponder.panHandlers} style={this.state.pan.getLayout()}>
-                    <Image source={symptomDict[this.state.symptom]} style={{marginLeft:'20%', width: 50,height:50, right:0, 'alignSelf':'flex-end', 'justifySelf':'flex-end','zIndex':10000}} resizeMode="contain" />
+                    <Image source={symptomDict[this.state.symptom]} style={{marginLeft:'20%', width: 50,height:50, right:0, 'alignSelf':'flex-end', 'zIndex':10000}} resizeMode="contain" />
                 </Animated.View>
             </View>
         );
@@ -213,10 +213,10 @@ class CustomPhoto extends React.Component {
       var nipples = [];
 
       if (this.props.masectomy != 1 && this.props.masectomy != 3) {
-        nipples.push(<Image source={photoDict['nipple'][this.props.nipple_color]} style={{margin:0, width: '5%','height':'5%', 'position':'absolute', top:'70%', left:'30%'}} />)
+        nipples.push(<Image key={'nipple1'} source={photoDict['nipple'][this.props.nipple_color]} style={{margin:0, width: '5%','height':'5%', 'position':'absolute', top:'70%', left:'30%'}} />)
       }
       if (this.props.masectomy != 2 && this.props.masectomy != 3) {
-        nipples.push(<Image source={photoDict['nipple'][this.props.nipple_color]} style={{margin:0, width: '5%','height':'5%', 'position':'absolute', top:'70%', right:'30%'}} />)
+        nipples.push(<Image key={'nipple2'} source={photoDict['nipple'][this.props.nipple_color]} style={{margin:0, width: '5%','height':'5%', 'position':'absolute', top:'70%', right:'30%'}} />)
       }
 
       var size = [];
@@ -228,17 +228,17 @@ class CustomPhoto extends React.Component {
         console.log("Height/Width", height, width)
 
         if (this.props.masectomy != 1 && this.props.masectomy != 3) {
-          size.push(<Image source={left_source} style={{margin:0, height: '31%', width:'28%', 'position':'absolute', top:'53%', left:'21%'}} />)
+          size.push(<Image key={'breast1'} source={left_source} style={{margin:0, height: '31%', width:'28%', 'position':'absolute', top:'53%', left:'21%'}} />)
         }
         else {
-          size.push(<Image source={photoDict['masectomy'][this.props.skin_color][0]} style={{margin:0, height: '18%', width:'22%', 'position':'absolute', top:'65%', left:'25%'}} />)
+          size.push(<Image key={'breast1'} source={photoDict['masectomy'][this.props.skin_color][0]} style={{margin:0, height: '18%', width:'22%', 'position':'absolute', top:'65%', left:'25%'}} />)
         }
 
         if (this.props.masectomy != 2 && this.props.masectomy != 3) {
-          size.push(<Image source={right_source} style={{margin:0, height: '31%', width:'28%','position':'absolute', top:'53%', right:'21%'}} />)
+          size.push(<Image key={'breast2'} source={right_source} style={{margin:0, height: '31%', width:'28%','position':'absolute', top:'53%', right:'21%'}} />)
         }
         else {
-          size.push(<Image source={photoDict['masectomy'][this.props.skin_color][1]} style={{margin:0, height: '18%', width:'22%', 'position':'absolute', top:'65%', right:'25%'}} />)
+          size.push(<Image key={'breast2'} source={photoDict['masectomy'][this.props.skin_color][1]} style={{margin:0, height: '18%', width:'22%', 'position':'absolute', top:'65%', right:'25%'}} />)
         }
 
       }
@@ -264,6 +264,8 @@ class CustomPhoto extends React.Component {
         <Image source={skin} style={{margin:0, width: '100%','height':'100%', 'position':'absolute', top:10}} />
         {nipples}
         {size}
+        <Text style={{'position':'absolute', fontSize:20, left:-10, top:'80%', backgroundColor:'#a657a1', height:30, width:30, borderRadius:15, color:'white', textAlign:'center', borderColor:'white', borderWidth:1}}>L</Text>
+        <Text style={{'position':'absolute', fontSize:20, right:-10, top:'80%', backgroundColor:'#a657a1', height:30, width:30, borderRadius:15, color:'white', textAlign:'center', borderColor:'white', borderWidth:1}}>R</Text>
         </View>)
     }
 }

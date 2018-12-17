@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 
-from home.views import Index, SendNotification
+from home.views import Index, SendNotification, PDF, sendPDF
 admin.autodiscover()
 
 urlpatterns = [
@@ -13,7 +13,8 @@ urlpatterns = [
     #Get avaliable models
     #modelWesbite app to create rest api
     url(r'^api/', include('modelWebsite.urls', namespace="api")),
-
+    url(r'^pdf/(?P<userId>\S+)/$', PDF, name='pdf'),
+    url(r'^pdfEmail/(?P<userId>\S+)/$', sendPDF, name='send_pdf'),
     #user imports
     url(r'^users/', include('user.urls', namespace="user")),
     #Catch statements for React

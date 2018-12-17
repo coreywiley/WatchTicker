@@ -101,7 +101,7 @@ class Draggable extends React.Component {
         return (
             <View style={{'position':'absolute','left':0,'top':0}}>
                 <Animated.View {...this.panResponder.panHandlers} style={this.state.pan.getLayout()}>
-                    <Image source={symptomDict[this.state.symptom]} style={{marginLeft:'20%', width: 50,height:50, right:0, 'alignSelf':'flex-end', 'justifySelf':'flex-end','zIndex':10000}} resizeMode="contain" />
+                    <Image source={symptomDict[this.state.symptom]} style={{width: 50,height:50, right:0, 'alignSelf':'flex-end', 'justifySelf':'flex-end','zIndex':10000}} resizeMode="contain" />
                 </Animated.View>
             </View>
         );
@@ -122,14 +122,14 @@ class Journal extends React.Component {
           symptom_details[symptom.symptom] = symptom
         }
 
-        this.state = {keyboard:false, 'symptoms' : symptoms, 'symptom_details': symptom_details, 'notes': this.props.journal.notes, 'date':this.props.journal.date, 'id': this.props.journal.id, 'user': this.props.userId, loaded:false, 'cusomize':{}};
+        this.state = {keyboard:false, 'symptoms' : symptoms, 'symptom_details': symptom_details, 'notes': this.props.journal.notes, 'date':this.props.journal.date, 'id': this.props.journal.id, 'user': this.props.userId, loaded:false, 'customize':{}};
       }
       else {
 
         var today = new Date();
         var date = (today.getYear() + 1900) + '-' + (today.getMonth() + 1) + '-' + today.getDate()
         var display_date = (today.getMonth() + 1) + ' ' + today.getDate() + ' ' + (today.getYear() + 1900)
-        this.state = {'symptoms' : '', 'date':date, 'display_date': display_date, 'symptom_details': {}, 'notes': '', 'user': this.props.userId, loaded:false, 'cusomize':{}, keyboard:false};
+        this.state = {'symptoms' : '', 'date':date, 'display_date': display_date, 'symptom_details': {}, 'notes': '', 'user': this.props.userId, loaded:false, 'customize':{}, keyboard:false};
       }
 
       this.objectCallback = this.objectCallback.bind(this);
@@ -138,6 +138,7 @@ class Journal extends React.Component {
       this.addSymptoms = this.addSymptoms.bind(this);
       this.setSymptomCoords = this.setSymptomCoords.bind(this);
       this.resetSymptoms = this.resetSymptoms.bind(this);
+      this.deleteEntry = this.deleteEntry.bind(this);
       //this.keyboardDidHide = this.keyboardDidHide.bind(this);
       //this.keyboardDidShow = this.keyboardDidShow.bind(this);
   }
@@ -257,7 +258,17 @@ class Journal extends React.Component {
     }
 
     resetSymptoms() {
+      for (var index in this.state.symptom_details) {
+        var symptom = this.state.symptom_details[index];
+        if (symptom.id) {
+          ajaxWrapper('POST','/api/home/symptom/' + symptom.id + '/delete/', {}, console.log);
+        }
+      }
       this.setState({'symptoms' : '', symptom_details: {}})
+    }
+
+    deleteEntry() {
+      ajaxWrapper('POST','/api/home/journal/' + this.props.journal.id + '/delete/',{}, () => this.props.setGlobalState('page','journalEntries'))
     }
 
     render() {
@@ -311,8 +322,12 @@ class Journal extends React.Component {
                 }
 
                 var title_text = 'n  e  w    e  n  t  r  y';
+                var delete_option = null;
                 if (this.props.journal) {
                   title_text = 'e  d  i  t    e  n  t  r  y';
+                  delete_option =<TouchableWithoutFeedback onPress={() => this.setState({'delete':true})}>
+                    <Text style={{'color':'white', paddingBottom:5, borderColor:'white',borderBottomWidth:1, margin:10}}>Delete Entry</Text>
+                  </TouchableWithoutFeedback>;
                 }
 
 
@@ -338,6 +353,24 @@ class Journal extends React.Component {
                       </View>
                   );
                 }
+                else if (this.state.delete) {
+                  return (
+                  <LinearGradient
+                    colors={['#bd83b9', '#7d5d9b']}
+                    style={{alignItems: 'center', 'height':'100%', 'width':'100%'}}>
+                      <Text style={{'color':'white', marginTop: '20%', width:'60%', textAlign:'center', lineHeight:30}}>Are you sure you want to delete this entry?</Text>
+
+
+                      <View style={{'width':'80%', marginTop:60}} >
+                        <Button width={'95%'} onPress={this.save} text={"No, Let's Keep It"} onPress={() => this.setState({'delete':false})}/>
+                      </View>
+
+                      <View style={{'width':'80%'}} >
+                        <Button width={'95%'} onPress={this.save} text={"Yes, Delete It"} onPress={this.deleteEntry}/>
+                      </View>
+                    </LinearGradient>
+                  )
+                }
                 else {
                   console.log("Symptoms", this.state.symptoms)
                   return (
@@ -346,9 +379,10 @@ class Journal extends React.Component {
                         colors={['#52bfa6', '#3e8797']}
                         style={{alignItems: 'center', 'height':'100%', 'width':'100%'}}>
                         {draggable_symptoms}
-                        <Text style={{'color':'white', marginTop: '2%'}}>{title_text}</Text>
+                        <Text style={{'color':'white', marginTop: '4%'}}>{title_text}</Text>
 
                         <JournalCard customize={this.props.customize} journal={this.state} symptom_details={this.state.symptom_details} summarize={false} setSymptomCoords={this.setSymptomCoords} />
+
                         <TouchableWithoutFeedback onPress={this.resetSymptoms}>
                           <Text style={{'color':'white', borderColor:'white', borderBottomWidth:2, paddingBottom:2, textAlign:'center'}}>Reset Symptoms</Text>
                         </TouchableWithoutFeedback>
@@ -364,8 +398,13 @@ class Journal extends React.Component {
 
                             {notes}
 
-                            <Button success={true} onPress={this.save} text={'Save'} />
+                            <Button success={true} onPress={this.save} text={'Save Edits'} />
 
+                            <TouchableWithoutFeedback onPress={() => this.props.setGlobalState('page','journalEntries')}>
+                              <Text style={{'color':'white', paddingBottom:5, borderColor:'white',borderBottomWidth:1, margin:10}}>Go Back</Text>
+                            </TouchableWithoutFeedback>
+
+                            {delete_option}
                         </LinearGradient>
                       </ScrollView>
                   );

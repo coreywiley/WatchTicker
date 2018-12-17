@@ -26,6 +26,9 @@ class UserSettings(models.Model):
     last_menstruation_day = models.DateTimeField(null=True)
     reminder_day = models.DateTimeField(null=True)
     last_login = models.DateTimeField(default=datetime.datetime.now)
+    mammogram_reminder = models.DateTimeField(null=True)
+    gynocologist_reminder = models.DateTimeField(null=True)
+    physical_reminder = models.DateTimeField(null=True)
 
 class Question(models.Model):
     id = models.AutoField(primary_key=True)

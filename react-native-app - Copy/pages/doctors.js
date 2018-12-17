@@ -7,6 +7,7 @@ import Button from '../localLibrary/button.js';
 import {LinearGradient} from 'expo';
 import Text from '../library/text.js';
 import Footer from '../localLibrary/footer.js';
+import Loading from '../library/loading.js';
 
 var off = require('../assets/health/switch_off.png')
 var on = require('../assets/health/switch_on.png')
@@ -19,16 +20,31 @@ class Doctors extends React.Component {
           doctors: [],
           loaded:false,
           notes: false,
+          settings:{},
         };
 
         this.doctorCallback = this.doctorCallback.bind(this);
         this.chooseDoctor = this.chooseDoctor.bind(this);
-
+        this.settingsCallback = this.settingsCallback.bind(this);
+        this.refreshSettings = this.refreshSettings.bind(this);
+        this.setAppointment = this.setAppointment.bind(this);
       }
 
     componentDidMount() {
       console.log("Running Ajax")
       ajaxWrapper('GET','/api/home/doctor/?user=' + this.props.userId, {}, this.doctorCallback)
+      ajaxWrapper('GET','/api/home/usersettings/?user=' + this.props.userId, {}, this.settingsCallback)
+    }
+
+    refreshSettings(result) {
+      console.log(result)
+      ajaxWrapper('GET','/api/home/usersettings/?user=' + this.props.userId, {}, this.settingsCallback)
+    }
+
+    settingsCallback(result) {
+      var usersettings = result[0]['usersettings'];
+      console.log(usersettings)
+      this.setState({'settings':usersettings, loaded:true})
     }
 
     doctorCallback(result) {
@@ -46,13 +62,24 @@ class Doctors extends React.Component {
       this.props.setGlobalState('page','addDoctor');
     }
 
+    setAppointment(appointment) {
+
+      if (this.state.settings[appointment + '_reminder']) {
+        var newState = {};
+        newState[appointment + '_reminder'] = '';
+        ajaxWrapper('POST','/api/home/usersettings/' + this.state.settings.id + '/', newState, this.refreshSettings)
+      }
+      else {
+        this.props.setGlobalState('appointment', appointment)
+        this.props.setGlobalState('page','setNotification')
+      }
+    }
+
     render() {
 
       if (this.state.loaded == false) {
         return (
-          <View style={styles.container}>
-            <Text>Loading...</Text>
-          </View>
+          <Loading />
         );
       }
       else {
@@ -108,6 +135,21 @@ class Doctors extends React.Component {
 
 
       if (this.state.notes == false) {
+        var mammogram = off;
+        if (this.state.settings.mammogram_reminder) {
+          mammogram = on;
+        }
+
+        var gynocology = off;
+        if (this.state.settings.gynocology_reminder) {
+          gynocology = on;
+        }
+
+        var physical = off;
+        if (this.state.settings.physical_reminder) {
+          physical = on;
+        }
+
         return (
           <View>
           <LinearGradient
@@ -119,7 +161,9 @@ class Doctors extends React.Component {
 
           {doctorCards}
 
-          <Button width={'80%'} onPress={this.chooseDoctor.bind(this,undefined)} text={'Add New Doctor'} />
+          <View style = {{'width':'80%'}}>
+            <Button width={'95%'} onPress={this.chooseDoctor.bind(this,undefined)} text={'Add New Doctor'} />
+          </View>
 
           <View style={{'width':'80%', marginTop:20, height:20, alignItems:'center', 'justifyContent':'center'}}>
             <View style={{'borderTopWidth':2, borderColor:'white', 'width':'100%'}}>
@@ -132,19 +176,25 @@ class Doctors extends React.Component {
           <View style={{'flexDirection':'row', marginTop:20, marginLeft:20}}>
             <Text style={{color:'#a657a1',textAlign:'center'}}>Mammogram </Text>
             <View style={{position:'absolute', right:10}}>
-            <Image source={off} style={{width: 60,height:30}} resizeMode="contain" />
+            <TouchableWithoutFeedback onPress={() => this.setAppointment('mammogram')} >
+              <Image source={mammogram} style={{width: 60,height:30}} resizeMode="contain" />
+            </TouchableWithoutFeedback>
             </View>
           </View>
           <View style={{'flexDirection':'row', marginTop:10, marginLeft:20}}>
             <Text style={{color:'#a657a1',textAlign:'center'}}>Gynocologist </Text>
             <View style={{position:'absolute', right:10}}>
-            <Image source={on} style={{width: 60,height:30}} resizeMode="contain" />
+            <TouchableWithoutFeedback onPress={() => this.setAppointment('gynocology')} >
+              <Image source={gynocology} style={{width: 60,height:30}} resizeMode="contain" />
+            </TouchableWithoutFeedback>
             </View>
           </View>
           <View style={{'flexDirection':'row', marginTop:10, marginBottom:20, marginLeft:20}}>
             <Text style={{color:'#a657a1',textAlign:'center'}}>Physical </Text>
             <View style={{position:'absolute', right:10}}>
-            <Image source={off} style={{width: 60,height:30}} resizeMode="contain" />
+            <TouchableWithoutFeedback onPress={() => this.setAppointment('physical')} >
+              <Image source={physical} style={{width: 60,height:30}} resizeMode="contain" />
+            </TouchableWithoutFeedback>
             </View>
           </View>
           </View>
@@ -168,9 +218,14 @@ class Doctors extends React.Component {
           </View>
           </TouchableWithoutFeedback>
 
-          <Button width={'80%'} onPress={this.chooseDoctor.bind(this,undefined)} text={'Export My Journal as PDF'} />
+          <View style = {{'width':'80%'}}>
+            <Button width={'95%'} onPress={this.chooseDoctor.bind(this,undefined)} text={'Export My Journal as PDF'} />
+          </View>
 
-          <Button width={'80%'} onPress={() => this.props.setGlobalState('page','riskAssessment')} text={'My Risk Assessment'} />
+          <View style = {{'width':'80%'}}>
+            <Button width={'95%'} onPress={() => this.props.setGlobalState('page','riskAssessment')} text={'My Risk Assessment'} />
+          </View>
+
           <View style={{'marginBottom':50}} />
           </View>
           </ScrollView>
