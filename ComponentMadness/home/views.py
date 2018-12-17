@@ -55,7 +55,7 @@ def BadRequest(request):
     return JsonResponse({'error':'Bad Request'})
 
 def sendPDF(request,userId):
-    config = pdfkit.configuration(wkhtmltopdf='C:\Program Files\wkhtmltopdf\\bin\wkhtmltopdf.exe')
+    #config = pdfkit.configuration(wkhtmltopdf='C:\Program Files\wkhtmltopdf\\bin\wkhtmltopdf.exe')
     directory = settings.STATIC_ROOT + 'pdfs//'
     num_files = len([name for name in os.listdir(directory) if os.path.isfile(name)])
     file_path = directory + 'out_' + str(num_files) + '.pdf'

@@ -124,7 +124,6 @@ DATABASE_URL = '127.0.0.1:5432'
 
 '''
 
-
 DATABASES = {
     'default': {
         'CONN_MAX_AGE': 0,
