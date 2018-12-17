@@ -106,6 +106,8 @@ DATABASES = {
 '''
 
 # Postgres
+
+'''
 DATABASES = {
     'default': {
         'CONN_MAX_AGE': 0,
@@ -119,6 +121,23 @@ DATABASES = {
 }
 
 DATABASE_URL = '127.0.0.1:5432'
+
+'''
+
+
+DATABASES = {
+    'default': {
+        'CONN_MAX_AGE': 0,
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'norma',
+        'PASSWORD': '9S5-Dpf+4cwX*YQX',
+        'HOST': 'norma.cj0okdcxqgd9.us-east-2.rds.amazonaws.com',
+        'PORT': '5432'
+    }
+}
+
+DATABASE_URL = 'norma.cj0okdcxqgd9.us-east-2.rds.amazonaws.com:5432'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

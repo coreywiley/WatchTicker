@@ -145,8 +145,11 @@ export default class Login extends Component {
       const token = await Notifications.getExpoPushTokenAsync();
       console.log("Token", token)
 
+      var date = new Date();
+      var timezone_offset = -1*date.getTimezoneOffset()/60;
+
       this.subscription = Notifications.addListener(this.handleNotification);
-      ajaxWrapper("POST","/api/home/usersettings/", {"user": user, "notifications_token":token, name:name}, this.redirect)
+      ajaxWrapper("POST","/api/home/usersettings/", {"user": user, "notifications_token":token, name:name, 'timezone_offset': timezone_offset}, this.redirect)
 
     }
 
@@ -208,7 +211,7 @@ export default class Login extends Component {
                 <TouchableWithoutFeedback onPress={() => Linking.openURL("https://www.knowyournorma.com/terms-of-service")}>
                   <Text style={{padding:10, borderColor:'#fff', borderBottomWidth:2, color:'#fff', fontFamily:'Quicksand'}}>Data Agreement</Text>
                 </TouchableWithoutFeedback>
-                
+
 
 
                 </LinearGradient>

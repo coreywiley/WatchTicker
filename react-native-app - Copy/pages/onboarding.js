@@ -121,6 +121,12 @@ class Onboarding extends React.Component {
           answers[answer.question_id.toString()] = answer;
         }
 
+        if (answers.length > 0) {
+          if (this.props.onboardingIndex == -1) {
+            this.props.setGlobalState('page','journalEntries')
+          }
+        }
+
         var currentAnswer = answers[this.state.questions[this.state.currentQuestion].id].answer
 
         if (currentAnswer) {

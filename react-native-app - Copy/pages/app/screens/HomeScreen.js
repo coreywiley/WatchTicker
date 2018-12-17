@@ -36,6 +36,10 @@ export default class HomeScreen extends React.Component {
     };
 
     redirect(result) {
+      var date = new Date()
+      var dateString = (date.getYear() + 1900) + '-' + (date.getMonth() + 1) + '-' + date.getDate() + 'T' + date.getHours() + ':' + date.getMinutes() + ':00';
+
+      ajaxWrapper('POST', '/api/home/usersettings/' + result[0]['usersettings']['id'] + '/', {'last_login':dateString}, console.log)
       this.props.setGlobalState("settings_id", result[0]['usersettings']['id'])
       this.props.setGlobalState('page','onboarding')
     }
