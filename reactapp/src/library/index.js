@@ -11,6 +11,7 @@ import Alert_ from './displayComponents/alert.js';
 import EmojiSlider_ from './displayComponents/emojiSlider.js';
 import MultiLineText_ from './displayComponents/multilinetext.js';
 import PageBreak_ from './displayComponents/pageBreak.js';
+import Small_ from './displayComponents/small.js';
 import Stars_ from './displayComponents/stars.js';
 
 import BooleanInput_ from './formComponents/booleaninput.js';
@@ -98,5 +99,6 @@ export const PhotoInput = PhotoInput_;
 export const MultiLineText = MultiLineText_;
 export const MapEmbed = MapEmbed_;
 export const PageBreak = PageBreak_;
+export const Small = Small_;
 export const Stars = Stars_;
 export const StarInput = StarInput_;

@@ -60,6 +60,9 @@ class App extends Component {
         } else if (loginNoRedirects.indexOf(path) == -1 && window.location.pathname != "/") {
             window.location.href = '/login/';
         }
+        else {
+          this.setState({'loaded':true})
+        }
     }
 
     loadUser(result){

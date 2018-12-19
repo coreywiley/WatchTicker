@@ -37,13 +37,10 @@ class Select extends Component {
             var valueValue = value[index];
 
             if (this.props.optionsUrlMap) {
-
-                for (var j in this.props.optionsUrlMap['text']) {
-                    textValue = textValue[this.props.optionsUrlMap['text'][j]]
-                }
-                for (var k in this.props.optionsUrlMap['value']) {
-                    valueValue = valueValue[this.props.optionsUrlMap['value'][k]]
-                }
+                var resolvedValue = resolveVariables(this.props.optionsUrlMap, textValue);
+                console.log("Resolved Variables", resolvedValue);
+                textValue = resolvedValue['text']
+                valueValue = resolvedValue['value']
             }
             options.push({'text':textValue,'value':valueValue});
 

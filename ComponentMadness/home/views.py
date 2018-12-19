@@ -25,6 +25,9 @@ def Index(request, param = "", param2 = "", param3 = "", param4 = "", param5 = "
 
     return render(request, "index.html", {})
 
+def ReactHotload(request):
+    return JsonResponse({'success':200})
+
 def ErrorPage(request):
     return JsonResponse({'error':'There was an error on the server. Our team has received an email detailing the error and will get it fixed as soon as possible.'})
 
