@@ -124,6 +124,9 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             del newParameters[parameter]
 
     parameters = newParameters
+    relatedClean = []
+    for relate in related:
+        relatedClean.append(relate.replace('__count',''))
     print ("Related : %s" % (related))
 
     # single instance
@@ -133,7 +136,7 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             if isinstance(id, str) and id.startswith("{{"):
                 instance = model.objects.filter().first()
             else:
-                instance = model.objects.filter(id=int(id)).prefetch_related(*related).first()
+                instance = model.objects.filter(id=int(id)).prefetch_related(*relatedClean).first()
 
             instances = getInstanceJson(appLabel, modelName, instance, related=related)
 
@@ -143,7 +146,7 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             if orFilters:
                 instanceQuery = instanceQuery.filter(orFilters)
 
-            instanceQuery = instanceQuery.exclude(**excluded).prefetch_related(*related).order_by(*order_by).only(*only)
+            instanceQuery = instanceQuery.exclude(**excluded).prefetch_related(*relatedClean).order_by(*order_by).only(*only)
 
             if len(values_list) > 1:
                 instanceQuery = instanceQuery.values_list(*values_list)

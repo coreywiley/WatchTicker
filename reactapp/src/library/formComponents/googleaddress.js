@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PlacesAutocomplete from 'react-places-autocomplete';
+import PlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-places-autocomplete';
 import TextInput from './textinput.js';
 import Select from './select.js';
 import ajaxWrapper from "base/ajax.js";
@@ -32,10 +32,26 @@ class GoogleAddress extends Component {
 
   handleSelect = (address, placeId) => {
     var addressSplit = address.split(',');
-    var street = addressSplit[0].trim();
-    var city = addressSplit[1].trim();
-    var state = addressSplit[2].trim();
-    var country = addressSplit[3].trim();
+
+    var element = this;
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => element.props.setFormState({'lat':latLng['lat'],'lng':latLng['lng']}))
+      .catch(error => console.error('Error', error));
+
+    if (addressSplit.length == 3) {
+      var street = '';
+      var city = addressSplit[0].trim();
+      var state = addressSplit[1].trim();
+      var country = addressSplit[2].trim();
+    }
+    else {
+      var street = addressSplit[0].trim();
+      var city = addressSplit[1].trim();
+      var state = addressSplit[2].trim();
+      var country = addressSplit[3].trim();
+    }
+
     var currentState = this.state;
     currentState['address'] = address;
     currentState['street'] = street;
@@ -111,10 +127,30 @@ class GoogleAddress extends Component {
       {'value':'PR','text':'PR'},
     ]
 
+    var extras = null;
+    if (this.props.extras != false) {
+      extras = <div>
+      <TextInput name={'street2'} handlechange={this.props.handlechange} placeholder={'Apt/Bldg/Suite Number'} label={'Apt/Bldg/Suite Number'} value={this.props.street2} />
+      <TextInput name={'city'} handlechange={this.props.handlechange} placeholder={'City'} label={'City'} value={this.props.city} />
+      <div className="row container">
+      <div className="col-sm-6">
+        <Select value={this.props.state} handlechange={this.props.handlechange} defaultoption={'State'} label={'State'} layout={'row'} options={stateOptions} name={'state'} />
+      </div>
+      <div className="col-sm-6">
+        <TextInput name={'zipcode'} label={'Zip Code'} handlechange={this.props.handlechange} placeholder={'Zip Code'} value={this.props.zipcode} layout={'row'} />
+      </div>
+      </div>
+      </div>
+    }
+
+    var label = null;
+    if (this.props.extras != false) {
+      label = <label>Street Address</label>
+    }
 
     return (
     <div>
-        <label>Street Address</label>
+        {label}
       <PlacesAutocomplete
         value={this.props.street}
         onChange={this.handleAddressChange}
@@ -149,16 +185,8 @@ class GoogleAddress extends Component {
         )}
       </PlacesAutocomplete>
 
-      <TextInput name={'street2'} handlechange={this.props.handlechange} placeholder={'Apt/Bldg/Suite Number'} label={'Apt/Bldg/Suite Number'} value={this.props.street2} />
-      <TextInput name={'city'} handlechange={this.props.handlechange} placeholder={'City'} label={'City'} value={this.props.city} />
-      <div className="row container">
-          <div className="col-sm-6">
-            <Select value={this.props.state} handlechange={this.props.handlechange} defaultoption={'State'} label={'State'} layout={'row'} options={[{'value':'CO','text':'CO'},{'value':'DE','text':'DE'},{'value':'NY','text':'NY'}]} name={'state'} />
-          </div>
-          <div className="col-sm-6">
-            <TextInput name={'zip'} label={'Zip Code'} handlechange={this.props.handlechange} placeholder={'Zip Code'} value={this.props.zip} layout={'row'} />
-          </div>
-      </div>
+      {extras}
+
           <br/>
       </div>
     );

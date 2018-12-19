@@ -10,6 +10,8 @@ import Wrapper_ from './displayComponents/wrapper.js';
 import Alert_ from './displayComponents/alert.js';
 import EmojiSlider_ from './displayComponents/emojiSlider.js';
 import MultiLineText_ from './displayComponents/multilinetext.js';
+import PageBreak_ from './displayComponents/pageBreak.js';
+import Stars_ from './displayComponents/stars.js';
 
 import BooleanInput_ from './formComponents/booleaninput.js';
 import Button_ from './formComponents/button.js';
@@ -37,6 +39,7 @@ import DateTimePicker_ from './formComponents/datetimepicker.js';
 import EmojiList_ from './formComponents/emojiSelect.js';
 import ColorPicker_ from './formComponents/colorpicker.js';
 import PhotoInput_ from './formComponents/photoInput.js';
+import StarInput_ from './formComponents/starinput.js';
 
 import Accordion_ from './functionalComponents/accordion.js';
 import Container_ from './functionalComponents/container.js';
@@ -94,3 +97,6 @@ export const EmojiSlider = EmojiSlider_;
 export const PhotoInput = PhotoInput_;
 export const MultiLineText = MultiLineText_;
 export const MapEmbed = MapEmbed_;
+export const PageBreak = PageBreak_;
+export const Stars = Stars_;
+export const StarInput = StarInput_;

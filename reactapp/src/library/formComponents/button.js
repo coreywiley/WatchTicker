@@ -63,6 +63,13 @@ class Button extends React.Component {
                 hover = <div className="hoverClose" style={hoverCSS}>x</div>;
             }
         }
+        
+        if (this.props.disabled) {
+        var content = <button className={"btn " + type} onClick={this.click} style={css} disabled>{this.props.text}</button>
+      }
+      else {
+        var content = <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>
+      }
 
         if (this.props.deleteType == true && this.state.modal == false) {
             console.log("I am here");
