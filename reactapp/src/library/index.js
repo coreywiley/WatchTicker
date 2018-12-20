@@ -13,6 +13,7 @@ import MultiLineText_ from './displayComponents/multilinetext.js';
 import PageBreak_ from './displayComponents/pageBreak.js';
 import Small_ from './displayComponents/small.js';
 import Stars_ from './displayComponents/stars.js';
+import HTMLInputDisplay_ from './displayComponents/htmlInputDisplay.js';
 
 import BooleanInput_ from './formComponents/booleaninput.js';
 import Button_ from './formComponents/button.js';
@@ -41,6 +42,7 @@ import EmojiList_ from './formComponents/emojiSelect.js';
 import ColorPicker_ from './formComponents/colorpicker.js';
 import PhotoInput_ from './formComponents/photoInput.js';
 import StarInput_ from './formComponents/starinput.js';
+import HTMLInput_ from './formComponents/htmlInput.js';
 
 import Accordion_ from './functionalComponents/accordion.js';
 import Container_ from './functionalComponents/container.js';
@@ -102,3 +104,5 @@ export const PageBreak = PageBreak_;
 export const Small = Small_;
 export const Stars = Stars_;
 export const StarInput = StarInput_;
+export const HTMLInputDisplay = HTMLInputDisplay_;
+export const HTMLInput = HTMLInput_;
