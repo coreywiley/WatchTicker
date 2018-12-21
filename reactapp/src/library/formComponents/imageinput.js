@@ -137,7 +137,7 @@ class ImageInput extends Component {
               for (var index in uploaded_files) {
                     var file = uploaded_files[index];
                     if (file.order != index) {
-                        file.order == index;
+                        file.order = index;
                     }
                     order_files.push({'url':file['url'],'order':index,'filename':file['filename']})
               }

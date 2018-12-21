@@ -18,7 +18,7 @@ import InstanceTable from './pages/admin/modelInstancesTable.js';
 //Scaffolding
 import Header from './base/header.js';
 import Wrapper from './base/wrapper.js';
-import Home from './pages/scaffold/home.js';
+import Home from './projectLibrary/landingPage/home.js';
 import LogIn from './pages/scaffold/logIn.js';
 import SignUp from './pages/scaffold/signUp.js';
 import LoggedIn from './pages/scaffold/loggedIn.js';
@@ -112,8 +112,10 @@ class App extends Component {
 
         var loading = <h1>Loading . . . </h1>;
         var content = null;
+        var navbar = null;
 
         if (this.state.loaded) {
+          var navbar = <Nav user_id={this.state.user.id} is_staff={this.state.user.is_staff} logOut={this.logOut} />
           if (adminPages.indexOf(route) > -1 && this.state.loaded && !(this.state.user.is_staff)){
               //window.location = '/';
               console.log("Not an admin", this.state.loaded, this.state.user)
@@ -175,7 +177,7 @@ class App extends Component {
         else {
           return (
               <div className="App">
-                  <Nav user_id={this.state.user.id} is_staff={this.state.user.is_staff} logOut={this.logOut} />
+                  {navbar}
                   <Wrapper content={content} loaded={this.state.loaded} />
                   <br />
                   <br />

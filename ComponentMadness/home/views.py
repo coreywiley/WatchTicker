@@ -21,6 +21,10 @@ def Index(request, param = "", param2 = "", param3 = "", param4 = "", param5 = "
         #In development mode this connects to the live React Node server
         html = requests.get("http://localhost:3000").content
         html = html.decode().replace('src="/static/js/bundle.js"', 'src="http://localhost:3000/static/js/bundle.js"')
+        html = html.replace('src="/static/js/0.chunk.js"', 'src="http://localhost:3000/static/js/0.chunk.js"')
+        html = html.replace('src="/static/js/1.chunk.js"', 'src="http://localhost:3000/static/js/1.chunk.js"')
+        html = html.replace('src="/static/js/main.chunk.js"', 'src="http://localhost:3000/static/js/main.chunk.js"')
+        html = html.replace('/manifest.json"', 'http://localhost:3000/manifest.json"')
         return HttpResponse(html)
 
     return render(request, "index.html", {})

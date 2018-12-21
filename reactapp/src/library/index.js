@@ -45,7 +45,6 @@ import StarInput_ from './formComponents/starinput.js';
 import HTMLInput_ from './formComponents/htmlInput.js';
 
 import Accordion_ from './functionalComponents/accordion.js';
-import Container_ from './functionalComponents/container.js';
 import Link_ from './functionalComponents/link.js';
 import List_ from './functionalComponents/list.js';
 import Modal_ from './functionalComponents/modal.js';
@@ -53,6 +52,11 @@ import Navbar_ from './functionalComponents/navbar.js';
 import ReactRender_ from './functionalComponents/reactrender.js';
 import Sidebar_ from './functionalComponents/sidebar.js';
 import MapEmbed_ from './functionalComponents/mapembed.js';
+
+import Container_ from './layoutComponents/container.js';
+import ContainerFluid_ from './layoutComponents/containerFluid.js';
+import EmptyModal_ from './layoutComponents/emptyModal.js';
+import Section_ from './layoutComponents/section.js';
 
 export const Button = Button_;
 export const ButtonGroup = ButtonGroup_;
@@ -81,7 +85,6 @@ export const TextArea = TextArea_;
 export const TextInput = TextInput_;
 export const TextAutocomplete = TextAutocomplete_;
 export const Accordion = Accordion_;
-export const Container = Container_;
 export const Link = Link_;
 export const List = List_;
 export const Modal = Modal_;
@@ -106,3 +109,7 @@ export const Stars = Stars_;
 export const StarInput = StarInput_;
 export const HTMLInputDisplay = HTMLInputDisplay_;
 export const HTMLInput = HTMLInput_;
+export const Container = Container_;
+export const ContainerFluid = ContainerFluid_;
+export const EmptyModal = EmptyModal_;
+export const Section = Section_;
