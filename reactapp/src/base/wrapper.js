@@ -16,6 +16,10 @@ class Wrapper extends Component {
             css = this.props.css;
         }
 
+        if (!this.props.loaded) {
+          css['marginTop'] = '50px'
+        }
+
         return (
                 <div className="container-fluid" style={css}>
                         {(this.props.loaded) ? this.props.content : loading}

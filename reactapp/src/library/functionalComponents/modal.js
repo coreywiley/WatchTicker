@@ -31,7 +31,7 @@ class Modal extends Component {
                     <div className="modal-header">
                         <h5 className="modal-title">{this.props.title}</h5>
                         <button type="button" className="close" aria-label="Close"
-                            onClick={() => this.props.setGlobalState(this.props.globalStateName,false)}>
+                            onClick={this.props.onHide}>
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

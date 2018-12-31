@@ -31,9 +31,9 @@ class HeaderSection extends Component {
           <div class="container">
             <div class="description ">
               <h1>
-                Hello ,Welcome To My official Website
-                <p>Ipsum cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                <button class="btn btn-outline-secondary btn-lg">See more</button>
+                {this.props.title}
+                <p>{this.props.description}</p>
+                <button class="btn btn-outline-secondary btn-lg">{this.props.buttonText}</button>
               </h1>
             </div>
           </div>

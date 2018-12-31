@@ -49,7 +49,7 @@ class App extends Component {
 
         var token = localStorage.getItem('token');
 
-        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset']
+        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset', 'admin']
 
         if (token) {
             ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));
@@ -127,7 +127,12 @@ class App extends Component {
               //Home page
               content = <Home />;
 
-          } else if (route === "components") {
+          }
+          else if (route === "admin") {
+              //List components
+              content = <Home admin={'admin'} />;
+          }
+           else if (route === "components") {
               //List components
               content = <ComponentList />;
           }

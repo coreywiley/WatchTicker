@@ -98,6 +98,9 @@ class Form extends Component {
                   data[item] = JSON.stringify(data[item]);
                   console.log(item,data[item])
               }
+              else if (item == 'data') {
+                data[item] = JSON.stringify(data[item])
+              }
           }
 
           if (this.props.submit) {

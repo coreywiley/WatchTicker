@@ -56,8 +56,6 @@ def getModelFieldsJson(request,appLabel,modelName):
     return JsonResponse(modelFields, safe=False)
 
 
-@api_view(['GET', 'POST', 'PUT'])
-@permission_classes((IsAuthenticated, ))
 def getModelInstanceJson(request, appLabel, modelName, id=None):
     print ("Request : %s" % (request.GET))
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
@@ -253,8 +251,7 @@ def addOrFilter(orFilters, key, value):
 
     return orFilters
 
-@api_view(['POST'])
-@permission_classes((IsAuthenticated, ))
+
 def deleteModelInstance(request,appLabel,modelName,id):
     print ('DELETING', appLabel, modelName, id)
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_',''))
