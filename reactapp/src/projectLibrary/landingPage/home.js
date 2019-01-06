@@ -112,15 +112,17 @@ class Home extends Component {
       }
       for (var index in result) {
         var pagecomponent = result[index]['pagecomponent']
-        var Component = types[pagecomponent.type]
-        var data = JSON.parse(pagecomponent.data)
-        console.log("Data", data)
-        components.push(<Component {...data} />)
+        if (pagecomponent) {
+          var Component = types[pagecomponent.type]
+          var data = JSON.parse(pagecomponent.data)
+          console.log("Data", data)
+          components.push(<Component {...data} />)
 
-        if (this.props.admin == 'admin') {
-          var data = JSON.stringify(pagecomponent.data)
-          components.push(<AddSection pagecomponent_id={pagecomponent.id} type={pagecomponent.type} order={pagecomponent.order} data={data} />)
-          components.push(<AddSection />)
+          if (this.props.admin == 'admin') {
+            var data = JSON.stringify(pagecomponent.data)
+            components.push(<AddSection pagecomponent_id={pagecomponent.id} type={pagecomponent.type} order={pagecomponent.order} data={data} />)
+            components.push(<AddSection />)
+          }
         }
       }
 

@@ -27,6 +27,9 @@ import PasswordReset from './pages/scaffold/passwordReset.js';
 import Nav from 'projectLibrary/nav.js';
 import Footer from 'projectLibrary/footer.js';
 
+//API Querying
+import APIDocs from './pages/admin/apiDocs.js';
+
 import Test from './pages/modelEditAndView/WYSIWYG.js';
 
 class App extends Component {
@@ -105,8 +108,9 @@ class App extends Component {
 
         var adminPages = [
             'applist','models','modelinstances',
-            'modelinstancestable','instance'
+            'modelinstancestable','instance',
         ];
+
         var loggedInPages = [];
         var route = params[0].toLowerCase();
 
@@ -168,6 +172,9 @@ class App extends Component {
           }
           else if (route == "test") {
               content = <Test id={params[1]} />;
+          }
+          else if (route == 'apidocs') {
+            content = <APIDocs />
           }
         }
 

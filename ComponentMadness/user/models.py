@@ -34,7 +34,11 @@ class UserManager(BaseUserManager):
         return u
 
 class User(AbstractBaseUser):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    GET_STAFF = True
+    POST_STAFF = False
+    DELETE_STAFF = True
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     first_name = models.CharField(max_length=120, blank=True, default="")
     last_name = models.CharField(max_length=120, blank=True, default="")
     #company_name = models.CharField(max_length=250, blank=True, default="")
