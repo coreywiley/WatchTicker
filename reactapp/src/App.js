@@ -27,6 +27,8 @@ import PasswordReset from './pages/scaffold/passwordReset.js';
 import Nav from 'projectLibrary/nav.js';
 import Footer from 'projectLibrary/footer.js';
 
+import Display from 'projectLibrary/landingPage/headerSectionExample.js';
+
 //API Querying
 import APIDocs from './pages/admin/apiDocs.js';
 
@@ -36,7 +38,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loaded: false,
+            loaded: true,
             csrfmiddlewaretoken: undefined,
             user:{}
         };
@@ -52,7 +54,7 @@ class App extends Component {
 
         var token = localStorage.getItem('token');
 
-        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset', 'admin']
+        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset', 'admin', 'display']
 
         if (token) {
             ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));
@@ -172,6 +174,9 @@ class App extends Component {
           }
           else if (route == "test") {
               content = <Test id={params[1]} />;
+          }
+          else if (route == "display") {
+              content = <Display />;
           }
           else if (route == 'apidocs') {
             content = <APIDocs />
