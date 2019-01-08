@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.core.mail import EmailMessage
+import uuid
 
 class UserManager(BaseUserManager):
     
@@ -33,7 +34,11 @@ class UserManager(BaseUserManager):
         return u
 
 class User(AbstractBaseUser):
-    id = models.AutoField(primary_key=True)
+    GET_STAFF = True
+    POST_STAFF = False
+    DELETE_STAFF = True
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     first_name = models.CharField(max_length=120, blank=True, default="")
     last_name = models.CharField(max_length=120, blank=True, default="")
     #company_name = models.CharField(max_length=250, blank=True, default="")

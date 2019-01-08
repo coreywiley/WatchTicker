@@ -28,19 +28,7 @@ class Modal extends Component {
                 <div onClick={this.props.onHide} style={backgroundStyle}></div>
                 <div className="modal-dialog" role="document" style={{zIndex: '10'}}>
                 <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title">{this.props.title}</h5>
-                        <button type="button" className="close" aria-label="Close"
-                            onClick={this.props.onHide}>
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div className="modal-body">
-                        {content}
-                    </div>
-                    <div className="modal-footer">
-                        {this.props.buttons}
-                    </div>
+                    {this.props.children}
                 </div>
                 </div>
             </div>

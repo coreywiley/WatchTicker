@@ -18,7 +18,7 @@ import InstanceTable from './pages/admin/modelInstancesTable.js';
 //Scaffolding
 import Header from './base/header.js';
 import Wrapper from './base/wrapper.js';
-import Home from './pages/scaffold/home.js';
+import Home from './projectLibrary/landingPage/home.js';
 import LogIn from './pages/scaffold/logIn.js';
 import SignUp from './pages/scaffold/signUp.js';
 import LoggedIn from './pages/scaffold/loggedIn.js';
@@ -26,6 +26,11 @@ import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
 import PasswordReset from './pages/scaffold/passwordReset.js';
 import Nav from 'projectLibrary/nav.js';
 import Footer from 'projectLibrary/footer.js';
+
+import Display from 'projectLibrary/landingPage/headerSectionExample.js';
+
+//API Querying
+import APIDocs from './pages/admin/apiDocs.js';
 
 import Test from './pages/modelEditAndView/WYSIWYG.js';
 
@@ -49,7 +54,7 @@ class App extends Component {
 
         var token = localStorage.getItem('token');
 
-        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset']
+        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset', 'admin', 'display']
 
         if (token) {
             ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));
@@ -105,15 +110,18 @@ class App extends Component {
 
         var adminPages = [
             'applist','models','modelinstances',
-            'modelinstancestable','instance'
+            'modelinstancestable','instance',
         ];
+
         var loggedInPages = [];
         var route = params[0].toLowerCase();
 
         var loading = <h1>Loading . . . </h1>;
         var content = null;
+        var navbar = null;
 
         if (this.state.loaded) {
+          var navbar = <Nav user_id={this.state.user.id} is_staff={this.state.user.is_staff} logOut={this.logOut} />
           if (adminPages.indexOf(route) > -1 && this.state.loaded && !(this.state.user.is_staff)){
               //window.location = '/';
               console.log("Not an admin", this.state.loaded, this.state.user)
@@ -125,7 +133,12 @@ class App extends Component {
               //Home page
               content = <Home />;
 
-          } else if (route === "components") {
+          }
+          else if (route === "admin") {
+              //List components
+              content = <Home admin={'admin'} />;
+          }
+           else if (route === "components") {
               //List components
               content = <ComponentList />;
           }
@@ -162,6 +175,12 @@ class App extends Component {
           else if (route == "test") {
               content = <Test id={params[1]} />;
           }
+          else if (route == "display") {
+              content = <Display />;
+          }
+          else if (route == 'apidocs') {
+            content = <APIDocs />
+          }
         }
 
 
@@ -175,7 +194,7 @@ class App extends Component {
         else {
           return (
               <div className="App">
-                  <Nav user_id={this.state.user.id} is_staff={this.state.user.is_staff} logOut={this.logOut} />
+                  {navbar}
                   <Wrapper content={content} loaded={this.state.loaded} />
                   <br />
                   <br />

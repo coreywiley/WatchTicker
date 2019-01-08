@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseForbidden, HttpResponseRedirect
 import django
 from django.conf import settings
+import uuid
 
 from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, getModelFields
 from user.permissions import staff_required
@@ -55,14 +56,50 @@ def getModelFieldsJson(request,appLabel,modelName):
     modelFields = getModelFields(model)
     return JsonResponse(modelFields, safe=False)
 
-
-@api_view(['GET', 'POST', 'PUT'])
+@api_view(['GET', "POST"])
 @permission_classes((IsAuthenticated, ))
 def getModelInstanceJson(request, appLabel, modelName, id=None):
     print ("Request : %s" % (request.GET))
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
 
+
     parameters = request.GET.dict()
+
+    #model security
+    if request.method == "GET" and appLabel == 'user' and modelName == 'user' and model.GET_STAFF:
+        parameters['id'] = request.user.id
+    elif request.method == "POST" and model.POST_STAFF and appLabel == 'user' and modelName == 'user':
+        parameters['id'] = request.user.id
+    elif request.method == "GET" and model.GET_STAFF and not request.user.is_staff:
+        user_field = None
+        for field in model._meta.get_fields():
+            if field.get_internal_type() == 'ForeignKey':
+                if field.related_model._meta.app_label == 'user' and field.related_model._meta.object_name.lower() == 'user':
+                    user_field = field.name
+                    break
+
+        if user_field:
+            parameters[user_field] = request.user.id
+        else:
+            return JsonResponse({'error':'You are not authorized to view this.'})
+
+    elif request.method == "POST" and model.POST_STAFF and not request.user.is_staff:
+        user_field = None
+        for field in model._meta.get_fields():
+            if field.get_internal_type() == 'ForeignKey':
+                if field.related_model._meta.app_label == 'user' and field.related_model._meta.object_name.lower() == 'user':
+                    user_field = field.name
+                    break
+
+        if user_field:
+            parameters[user_field] = request.user.id
+        else:
+            return JsonResponse({'error':'You are not authorized to view this.'})
+
+
+
+
+
     related = []
     if 'related' in parameters:
         related = [x for x in parameters['related'].split(',') if x != ""]
@@ -102,6 +139,8 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
     newParameters = parameters.copy()
     print ('\n\n',parameters,'\n\n')
     for parameter in parameters:
+        if isinstance(parameters[parameter], uuid.UUID):
+            continue
 
         if ',' in parameters[parameter]:
             newParameters[parameter] = [x for x in parameters[parameter].split(',') if x != ""]
@@ -257,8 +296,30 @@ def addOrFilter(orFilters, key, value):
 @permission_classes((IsAuthenticated, ))
 def deleteModelInstance(request,appLabel,modelName,id):
     print ('DELETING', appLabel, modelName, id)
-    model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_',''))
-    model.objects.filter(id=id).delete()
+
+    model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
+
+    if appLabel == 'user' and modelName == 'user' and model.DELETE_STAFF:
+        if id == request.user.id:
+            model.objects.filter(id=id).delete()
+        else:
+            return JsonResponse({'error':'You are not authorized to delete this.'})
+    elif model.DELETE_STAFF and not request.user.is_staff:
+        user_field = None
+        for field in model._meta.get_fields():
+            if field.get_internal_type() == 'ForeignKey':
+                if field.related_model._meta.app_label == 'user' and field.related_model._meta.object_name.lower() == 'user':
+                    user_field = field.name
+                    break
+
+        if user_field:
+            instance = model.objects.filter(id=id).first()
+            if instance.__dict__[user_field] == request.user.id:
+                model.objects.filter(id=id).delete()
+        else:
+            return JsonResponse({'error':'You are not authorized to delete this.'})
+    else:
+        model.objects.filter(id=id).delete()
 
     return JsonResponse({'success':True})
 
