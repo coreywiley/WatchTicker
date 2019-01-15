@@ -5,11 +5,13 @@ import ajaxWrapperFile from 'base/ajaxFile.js';
 import ajaxWrapper from "base/ajax.js";
 
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
-import Card from '../displayComponents/card.js';
+import {Card, Button} from 'library';
+
+
 
 
 const SortableItem = SortableElement(({value, removeImage}) =>
-  <Card css={{'display':'inline-block','width':'20%'}} imageUrl={value['url']} id={value['id']} button={'Remove Picture'} button_type={'danger'} onClick={removeImage} />
+  <Card css={{'display':'inline-block','width':'20%'}} imageUrl={value['url']} id={value['id']} buttons={[<Button text={'Remove Picture'} button_type={'danger'} clickHandler={() => removeImage({'id':value['id'], 'url':value['url']})} />]} />
 );
 
 const SortableList = SortableContainer(({items, removeImage}) => {
@@ -42,7 +44,7 @@ class ImageInput extends Component {
       }
 
       fileUpload(files) {
-        var url = '/file_upload/';
+        var url = '/api/photoUpload/';
         const formData = new FormData();
         for (var index in files) {
             if (index != 'length' && index != 'item') {
@@ -60,7 +62,8 @@ class ImageInput extends Component {
         console.log("Remove Image")
 
         if (this.props.multiple == true) {
-         var url = imageProps['imageUrl'];
+         var url = imageProps['url'];
+         console.log("Url",url)
          var uploaded_files = this.props.value;
           var order_files = []
           for (var index in uploaded_files) {
@@ -77,6 +80,7 @@ class ImageInput extends Component {
             console.log("Delete Posted")
           }
          var formState = {}
+         console.log("Order Files", order_files)
          formState[this.props.name] = order_files
 
 
@@ -96,7 +100,7 @@ class ImageInput extends Component {
 
 
       fileUploadCallback(value) {
-
+          console.log("FileUploadCallback", value)
           var uploaded_files = this.props.value;
 
           if (this.props.multiple == true) {
