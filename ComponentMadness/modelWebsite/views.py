@@ -1,31 +1,35 @@
+import uuid
+import os
+import csv
+import io
+import json
+import datetime
+import sendgrid
+from sendgrid.helpers.mail import *
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+
 from django.shortcuts import render
 from django.apps import apps
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseForbidden, HttpResponseRedirect
 import django
 from django.conf import settings
-import uuid
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 
 from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, getModelFields
 from user.permissions import staff_required
-from django.views.decorators.csrf import csrf_exempt
 from modelWebsite.helpers.databaseOps import insert
-import datetime
+from modelWebsite.models import ModelConfig
 
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-
-import os
-import csv
-import io
-import json
-import sendgrid
-from sendgrid.helpers.mail import *
 
 def CSRFMiddlewareToken(request):
     # Gather context and send it to React
     csrfmiddlewaretoken = django.middleware.csrf.get_token(request)
     return JsonResponse({'csrfmiddlewaretoken':csrfmiddlewaretoken}, status=200)
+
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
@@ -37,6 +41,7 @@ def getApps(request):
 
     return JsonResponse(djangoApps, safe=False)
 
+
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def getModels(request,appLabel):
@@ -44,9 +49,119 @@ def getModels(request,appLabel):
 
     for model in apps.get_models():
         if model._meta.app_label == appLabel:
-            models.append({'model':{'name':model.__name__}})
+            models.append({'model': {'name': model.__name__}})
 
     return JsonResponse(models, safe=False)
+
+
+@api_view(['GET', 'POST'])
+def modelConfig(request):
+    data = []
+    if request.method == "GET":
+        configs = ModelConfig.objects.all()
+        for config in configs:
+            data.append({
+                'id': config.id,
+                'name': config.name,
+                'data': config.data,
+            })
+
+    elif request.method == "POST":
+        print (request.POST)
+        postData = request.POST
+
+        existingModels = ModelConfig.objects.all()
+        nameMap = {}
+        for model in existingModels:
+            nameMap[model.name] = model
+        print ("EXISTING NAMES %s" % (nameMap.keys()))
+
+        modelMap = {
+            'Binary': 'models.BinaryField(',
+            'Boolean': 'models.BooleanField(',
+            'Date': 'models.DateField(',
+            'Time': 'models.TimeField(',
+            'Datetime': 'models.DateTimeField(',
+            'Elapsed': 'models.DurationField(',
+            'Big Number': 'models.BigIntegerField(',
+            'Decimal': 'models.DecimalField(',
+            'Float': 'models.FloatField(',
+            'Integer': 'models.IntegerField(',
+            'Char': 'models.CharField(',
+            'Text': 'models.TextField(',
+        }
+
+        if 'id' in postData:
+            model = get_object_or_404(ModelConfig, pk = postData['id'])
+            model.name = postData['name']
+            print ('Found MODEL!!!!')
+
+        else:
+            model = ModelConfig(name = postData['name'])
+
+        data = {'fields': [], 'related': []}
+        for key in postData.keys():
+            if 'field_name' in key:
+                num = key.split('_')[-1]
+                blank = False
+                if 'field_blank_' + num in postData:
+                    blank = postData['field_blank_' + num]
+
+                field = {
+                    'name': postData['field_name_' + num],
+                    'type': postData['field_type_' + num],
+                    'default': postData['field_default_' + num],
+                    'blank': blank,
+                }
+                data['fields'].append(field)
+
+            elif 'related_model' in key:
+                num = key.split('_')[-1]
+                relatedModel = nameMap[postData[key]]
+                related = {
+                    'name': postData['related_name_' + num],
+                    'model': postData['related_model_' + num],
+                    'alias': postData['related_alias_' + num],
+                }
+                data['related'].append(related)
+
+        model.data = data
+        model.save()
+
+    else:
+        pass
+
+    return JsonResponse(data, safe=False)
+
+
+@api_view(['GET'])
+def modelPrint(request):
+    content = ''
+
+    configs = ModelConfig.objects.all()
+    for config in configs:
+        content += "\nclass %s(models.Model):\n" % (config.name)
+
+        for field in config.data['fields']:
+            blank = False
+            if field['blank'] == 'True':
+                blank = True
+
+            params = "blank=%s, default='%s'" % (blank, field['default'])
+            content += "    %s = models.%s(%s)\n" % (field['name'], field['type'], params)
+
+        for related in config.data['related']:
+            params = ''
+            content += "    %s = models.ForeignKey(%s, on_delete=models.CASCADE, related_name='%s')\n" % (
+                related['name'], related['model'], params
+            )
+
+    content += '\n\n'
+
+    print (content)
+
+    return HttpResponse("")
+
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))

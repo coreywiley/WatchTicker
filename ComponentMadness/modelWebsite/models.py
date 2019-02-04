@@ -1,11 +1,19 @@
 from django.db import models
 from jsonfield import JSONField
 from django.utils.html import format_html
+import uuid
 
 from django_extensions.db.fields import CreationDateTimeField
 
 from user.models import User
 # Create your models here.
+
+
+class ModelConfig(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=120, blank=True, default="")
+    data = JSONField(default = {})
+
 
 
 class Component(models.Model):

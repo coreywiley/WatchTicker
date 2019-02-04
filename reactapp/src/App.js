@@ -18,16 +18,16 @@ import InstanceTable from './pages/admin/modelInstancesTable.js';
 //Scaffolding
 import Header from './base/header.js';
 import Wrapper from './base/wrapper.js';
-import Home from './projectLibrary/landingPage/home.js';
 import LogIn from './pages/scaffold/logIn.js';
 import SignUp from './pages/scaffold/signUp.js';
 import LoggedIn from './pages/scaffold/loggedIn.js';
 import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
 import PasswordReset from './pages/scaffold/passwordReset.js';
+
+import Home from './pages/scaffold/home.js';
 import Nav from 'projectLibrary/nav.js';
 import Footer from 'projectLibrary/footer.js';
-
-import Display from 'projectLibrary/landingPage/headerSectionExample.js';
+import ModelMaker from 'djangoModelMaker.js';
 
 //API Querying
 import APIDocs from './pages/admin/apiDocs.js';
@@ -54,7 +54,7 @@ class App extends Component {
 
         var token = localStorage.getItem('token');
 
-        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset', 'admin', 'display']
+        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset', 'admin'];
 
         if (token) {
             ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));
@@ -154,6 +154,11 @@ class App extends Component {
           else if (route == "modelinstancestable") {
               content = <InstanceTable app={params[1]} model={params[2]}/>;
           }
+
+          else if (route == "modelmaker") {
+              content = <ModelMaker user_id={this.state.token}/>;
+          }
+
           else if (route == "instance") {
               content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token}/>;
           }
@@ -175,9 +180,6 @@ class App extends Component {
           else if (route == "test") {
               content = <Test id={params[1]} />;
           }
-          else if (route == "display") {
-              content = <Display />;
-          }
           else if (route == 'apidocs') {
             content = <APIDocs />
           }
@@ -195,7 +197,7 @@ class App extends Component {
           return (
               <div className="App">
                   {navbar}
-                  <Wrapper content={content} loaded={this.state.loaded} />
+                  <Wrapper style={{paddingTop: '60px'}} content={content} loaded={this.state.loaded} />
                   <br />
                   <br />
                   <Footer />

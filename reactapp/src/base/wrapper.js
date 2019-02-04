@@ -11,17 +11,19 @@ class Wrapper extends Component {
 
     render() {
         var loading = <div style={{'textAlign':'center'}}> <Image css={{'width':'100px'}} src={'/static/images/loading.gif'} /></div>;
-        var css = {'paddingLeft':'0px','paddingRight':'0px'};
+        var style = {'paddingLeft':'0px','paddingRight':'0px'};
         if (this.props.css) {
-            css = this.props.css;
+            style = this.props.css;
+        } else if (this.props.style) {
+            style = this.props.style;
         }
 
         if (!this.props.loaded) {
-          css['marginTop'] = '50px'
+          style['marginTop'] = '50px'
         }
 
         return (
-                <div className="container-fluid" style={css}>
+                <div className="container-fluid" style={style}>
                         {(this.props.loaded) ? this.props.content : loading}
                 </div>
         );

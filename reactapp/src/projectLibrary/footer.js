@@ -13,25 +13,25 @@ class Footer extends React.Component {
 
     render() {
         return (
-          <footer class="footer_three_area" style={{backgroundColor:'#F97300', paddingTop:'100px'}}>
-            	<div class="container">
-            		<div class="footer_widget_inner">
-            			<div class="row">
-            				<div class="col-md-4 col-xs-6">
-            					<aside class="f_three_widget ab_ft_widget">
+          <footer className="footer_three_area" style={{backgroundColor:'#F97300', paddingTop:'100px'}}>
+            	<div className="container">
+            		<div className="footer_widget_inner">
+            			<div className="row">
+            				<div className="col-md-4 col-xs-6">
+            					<aside className="f_three_widget ab_ft_widget">
             						<h3 style={{color:'white'}}>{settings.WEBSITE_NAME}</h3>
             						<p style={{color:'white'}}>If you are going to use a passage of Lorem Ipsum, you need to be sure</p>
             						<ul style={{listStyle:'none'}}>
-            							<li style={{marginRight:'20px', display:'inline-block'}}><i class="fa fa-facebook"></i></li>
-            							<li style={{marginRight:'20px', display:'inline-block'}}><i class="fa fa-twitter"></i></li>
-            							<li style={{marginRight:'20px', display:'inline-block'}}><i class="fa fa-google-plus"></i></li>
-            							<li style={{marginRight:'20px', display:'inline-block'}}><i class="fa fa-linkedin"></i></li>
+            							<li style={{marginRight:'20px', display:'inline-block'}}><i className="fa fa-facebook"></i></li>
+            							<li style={{marginRight:'20px', display:'inline-block'}}><i className="fa fa-twitter"></i></li>
+            							<li style={{marginRight:'20px', display:'inline-block'}}><i className="fa fa-google-plus"></i></li>
+            							<li style={{marginRight:'20px', display:'inline-block'}}><i className="fa fa-linkedin"></i></li>
             						</ul>
             					</aside>
             				</div>
-            				<div class="col-md-2 col-xs-3">
-            					<aside class="f_three_widget link_ft_widget">
-            						<div class="ft_title">
+            				<div className="col-md-2 col-xs-3">
+            					<aside className="f_three_widget link_ft_widget">
+            						<div className="ft_title">
             							<h3 style={{color:'white'}}>News</h3>
             						</div>
             						<ul style={{listStyle:'none', padding:'0px'}}>
@@ -41,9 +41,9 @@ class Footer extends React.Component {
             						</ul>
             					</aside>
             				</div>
-            				<div class="col-md-2 col-xs-3">
-            					<aside class="f_three_widget link_ft_widget">
-            						<div class="ft_title">
+            				<div className="col-md-2 col-xs-3">
+            					<aside className="f_three_widget link_ft_widget">
+            						<div className="ft_title">
             							<h3 style={{color:'white'}}>Company</h3>
             						</div>
             						<ul style={{listStyle:'none', padding:'0px'}}>
@@ -53,9 +53,9 @@ class Footer extends React.Component {
             						</ul>
             					</aside>
             				</div>
-            				<div class="col-md-2 col-xs-3">
-            					<aside class="f_three_widget link_ft_widget">
-            						<div class="ft_title">
+            				<div className="col-md-2 col-xs-3">
+            					<aside className="f_three_widget link_ft_widget">
+            						<div className="ft_title">
             							<h3 style={{color:'white', padding:'0px'}}>Resources</h3>
             						</div>
             						<ul style={{listStyle:'none', padding:'0px'}}>
@@ -65,9 +65,9 @@ class Footer extends React.Component {
             						</ul>
             					</aside>
             				</div>
-            				<div class="col-md-2 col-xs-3">
-            					<aside class="f_three_widget link_ft_widget">
-            						<div class="ft_title">
+            				<div className="col-md-2 col-xs-3">
+            					<aside className="f_three_widget link_ft_widget">
+            						<div className="ft_title">
             							<h3 style={{color:'white'}}>Solutions</h3>
             						</div>
             						<ul style={{listStyle:'none', padding:'0px'}}>
@@ -79,9 +79,9 @@ class Footer extends React.Component {
             				</div>
             			</div>
             		</div>
-            		<div class="ft_copyright">
-            			<div class="container">
-            				<p class="copyright" style={{color:'white', borderTop:'1px solid #c15a00', paddingTop:'40px', paddingBottom:'40px', textAlign:'center'}}>
+            		<div className="ft_copyright">
+            			<div className="container">
+            				<p className="copyright" style={{color:'white', borderTop:'1px solid #c15a00', paddingTop:'40px', paddingBottom:'40px', textAlign:'center'}}>
                       Copyright ©{this.state.year} All Rights Reserved
                     </p>
             			</div>
