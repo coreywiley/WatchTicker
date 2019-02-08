@@ -31,8 +31,8 @@ class Button extends React.Component {
         if (this.props.href) {
             window.location.href = this.props.href;
         }
-        else if (this.props.clickHandler) {
-            this.props.clickHandler(e);
+        else if (this.props.onClick) {
+            this.props.onClick(e);
         }
     }
 
@@ -63,7 +63,7 @@ class Button extends React.Component {
                 hover = <div className="hoverClose" style={hoverCSS}>x</div>;
             }
         }
-        
+
         if (this.props.disabled) {
         var content = <button className={"btn " + type} onClick={this.click} style={css} disabled>{this.props.text}</button>
       }

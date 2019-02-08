@@ -33,6 +33,7 @@ import ModelMaker from 'djangoModelMaker.js';
 import APIDocs from './pages/admin/apiDocs.js';
 
 import Test from './pages/modelEditAndView/WYSIWYG.js';
+import PageBuilder from './pages/admin/pageBuilder.js';
 
 class App extends Component {
     constructor(props) {
@@ -182,6 +183,9 @@ class App extends Component {
           }
           else if (route == 'apidocs') {
             content = <APIDocs />
+          }
+          else if (route == 'pagebuilder') {
+            content = <PageBuilder />
           }
         }
 

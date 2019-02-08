@@ -4,7 +4,7 @@ import resolveVariables from 'base/resolver.js';
 class Paragraph extends React.Component {
     render() {
         return (
-            <p>{this.props.text}</p>
+            <p style={this.props.style || {}}>{this.props.text}</p>
         );
     }
 }

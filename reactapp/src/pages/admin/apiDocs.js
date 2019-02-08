@@ -50,7 +50,7 @@ class APIDocs extends Component {
         for (var index in this.state.models) {
             var model_name = this.state.models[index]
             modelDocs.push(<div id={model_name}><Header text={model_name} size={2} /><APIQuery app={"home"} model={model_name}/></div>)
-            links.push(<a href={'#' + model_name}>Page Component</a>)
+            links.push(<a href={'#' + model_name}>{model_name}</a>)
             links.push(<br/>)
         }
 
