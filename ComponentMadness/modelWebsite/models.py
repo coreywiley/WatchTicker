@@ -1,9 +1,9 @@
 from django.db import models
-from jsonfield import JSONField
 from django.utils.html import format_html
 import uuid
 
 from django_extensions.db.fields import CreationDateTimeField
+from django.contrib.postgres.fields import JSONField
 
 from user.models import User
 # Create your models here.
@@ -52,9 +52,15 @@ class ComponentRequirement(models.Model):
 
 
 class Page(models.Model):
+    GET_STAFF = False
+    POST_STAFF = False
+    DELETE_STAFF = False
+
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=120, blank=True, default="")
     url = models.CharField(max_length=120, blank=True, default="")
+    components = models.TextField(default = "[]")
+    componentProps = models.TextField(default = "[]")
 
     def __str__(self):
         return u"{}".format(self.name)

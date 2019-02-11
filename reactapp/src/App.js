@@ -185,7 +185,7 @@ class App extends Component {
             content = <APIDocs />
           }
           else if (route == 'pagebuilder') {
-            content = <PageBuilder />
+            content = <PageBuilder page_id={params[1]} />
           }
         }
 

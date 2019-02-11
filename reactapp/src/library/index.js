@@ -43,6 +43,7 @@ import ColorPicker_ from './formComponents/colorpicker.js';
 import PhotoInput_ from './formComponents/photoInput.js';
 import StarInput_ from './formComponents/starinput.js';
 import HTMLInput_ from './formComponents/htmlInput.js';
+import CSSInput_ from './formComponents/cssInput.js';
 
 import Accordion_ from './functionalComponents/accordion.js';
 import Link_ from './functionalComponents/link.js';
@@ -113,3 +114,4 @@ export const Container = Container_;
 export const ContainerFluid = ContainerFluid_;
 export const EmptyModal = EmptyModal_;
 export const Section = Section_;
+export const CSSInput = CSSInput_;

@@ -22,7 +22,7 @@ from django.shortcuts import get_object_or_404
 from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, getModelFields
 from user.permissions import staff_required
 from modelWebsite.helpers.databaseOps import insert
-from modelWebsite.models import ModelConfig
+from modelWebsite.models import ModelConfig, Page
 
 
 def CSRFMiddlewareToken(request):
@@ -171,7 +171,7 @@ def getModelFieldsJson(request,appLabel,modelName):
     modelFields = getModelFields(model)
     return JsonResponse(modelFields, safe=False)
 
-@api_view(['GET', "POST"])
+@api_view(['GET', 'POST'])
 @permission_classes((IsAuthenticated, ))
 def getModelInstanceJson(request, appLabel, modelName, id=None):
     print ("Request : %s" % (request.GET))
@@ -693,6 +693,40 @@ def writeModelPageTemplates(request):
 
     return JsonResponse({'success':True})
 
+
+def writePage(request, page_id):
+    filepath = os.path.join(os.getcwd(), "..", "reactapp", "src", "pages", "modelEditAndView")
+    viewTemplatePath = os.path.join(filepath, "viewTemplate.js")
+
+    page = Page.objects.filter(id=page_id).first()
+    componentPropsString = "\t\t\tvar ComponentProps=" + page.componentProps + ";"
+    componentListString = ""
+
+    page_components = json.loads(page.components)
+    i = 0
+    print (page_components)
+    for component in page_components:
+        componentListString += "\t\t\t\t\t<%s {...ComponentProps[%s] />\n" % (component, i)
+        i += 1
+
+    viewTemplate = open(viewTemplatePath, "r").read()
+
+    viewTemplate = viewTemplate.replace("*App*", "modelWebsite")
+    viewTemplate = viewTemplate.replace("*Object*", "page")
+    viewTemplate = viewTemplate.replace("*CapitalObject*", "Page")
+    viewTemplate = viewTemplate.replace("*Defaults*", "{}")
+    viewTemplate = viewTemplate.replace("*ComponentProps*", componentPropsString)
+    viewTemplate = viewTemplate.replace("*ComponentList*", componentListString)
+
+    newViewTemplate = os.path.join(filepath, "page" + ".js")
+
+
+
+    with open(newViewTemplate, "w") as file:
+        file.write(viewTemplate)
+
+
+    return JsonResponse({'success':True})
 
 def SendEmail(request):
     # using SendGrid's Python Library

@@ -9,14 +9,16 @@ class TextInput extends Component {
             layout = this.props.layout;
         }
 
+        var style = this.props.style || {};
+
         var input = <input type="text" className="form-control" name={this.props.name}
             onChange={this.props.handlechange} value={this.props.value} placeholder={this.props.placeholder}
-            onKeyPress={this.props.handleKeyPress}
+            onKeyPress={this.props.handleKeyPress} style={style}
             onBlur={this.props.onBlur} />;
         if (this.props.autoFocus) {
           input = <input autoFocus type="text" className="form-control" name={this.props.name}
               onChange={this.props.handlechange} value={this.props.value} placeholder={this.props.placeholder}
-              onKeyPress={this.props.handleKeyPress}
+              onKeyPress={this.props.handleKeyPress} style={style}
               onBlur={this.props.onBlur} />
         }
 
