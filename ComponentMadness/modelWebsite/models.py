@@ -1,9 +1,9 @@
-from django.db import models
-from django.utils.html import format_html
 import uuid
 
+from django.db import models
 from django_extensions.db.fields import CreationDateTimeField
 from django.contrib.postgres.fields import JSONField
+from django.utils import timezone
 
 from user.models import User
 # Create your models here.

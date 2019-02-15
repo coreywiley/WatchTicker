@@ -138,6 +138,13 @@ def modelConfig(request):
 def modelPrint(request):
     content = ''
 
+    content += "import uuid\n\n"
+    content += "from django.db import models\n"
+    content += "from django_extensions.db.fields import CreationDateTimeField\n"
+    content += "from django.contrib.postgres.fields import JSONField\n"
+    content += "from django.utils import timezone\n\n"
+    content += "from user.models import User\n\n"
+
     configs = ModelConfig.objects.all()
     for config in configs:
         content += "\nclass %s(models.Model):\n" % (config.name)
@@ -147,8 +154,14 @@ def modelPrint(request):
             if field['blank'] == 'True':
                 blank = True
 
-            params = "blank=%s, default='%s'" % (blank, field['default'])
-            content += "    %s = models.%s(%s)\n" % (field['name'], field['type'], params)
+            if field['type'] == 'Datetime':
+                field['default'] = 'timezone.now'
+            else:
+                field['default'] = "'%s'" % (field['default'])
+
+
+            params = "blank=%s, default=%s" % (blank, field['default'])
+            content += "    %s = models.%sField(%s)\n" % (field['name'], field['type'], params)
 
         for related in config.data['related']:
             params = ''

@@ -10,12 +10,7 @@ import {Button} from 'library';
 class Select extends Component {
     constructor(props) {
         super(props);
-        if (this.props.options) {
-            this.state = {options: this.props.options}
-        }
-        else {
-            this.state = {options:[]}
-        }
+        this.state = {options:[]}
 
         this.optionsCallback = this.optionsCallback.bind(this);
         this.handlechange = this.handlechange.bind(this);
@@ -100,23 +95,28 @@ class Select extends Component {
           }
         }
 
-        if (this.props.defaultoption in this.state.options) {
+        var optionDict = this.props.options;
+        if (!(this.props.options)){
+            optionDict = this.state.options;
+        }
+
+        if (this.props.defaultoption in optionDict) {
             var options = [];
         }
         else {
             var options = [<option key={-1}>{this.props.defaultoption}</option>];
         }
 
-        for (var index in this.state.options) {
-            options.push(<option key={index} value={this.state.options[index]['value']}>{this.state.options[index]['text']}</option>)
+        for (var index in optionDict) {
+            options.push(<option key={index} value={optionDict[index]['value']}>{optionDict[index]['text']}</option>)
         }
 
         var multipleSelections = []
 
         if (this.props.multiple == true) {
           var optionsDict = {}
-          for (var index in this.state.options) {
-            optionsDict[this.state.options[index]['value']] = this.state.options[index]['text']
+          for (var index in optionDict) {
+            optionsDict[optionDict[index]['value']] = optionDict[index]['text']
           }
           for (var index in value) {
             multipleSelections.push(<Button key={this.props.name + '-' + index} clickHandler={() => this.removeSelection(value[index])} type={'danger'} text={optionsDict[value[index]]} />)

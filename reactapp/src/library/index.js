@@ -46,6 +46,7 @@ import HTMLInput_ from './formComponents/htmlInput.js';
 import CSSInput_ from './formComponents/cssInput.js';
 
 import Accordion_ from './functionalComponents/accordion.js';
+import LineBreak_ from './functionalComponents/lineBreak.js';
 import Link_ from './functionalComponents/link.js';
 import List_ from './functionalComponents/list.js';
 import Modal_ from './functionalComponents/modal.js';
@@ -86,6 +87,7 @@ export const TextArea = TextArea_;
 export const TextInput = TextInput_;
 export const TextAutocomplete = TextAutocomplete_;
 export const Accordion = Accordion_;
+export const LineBreak = LineBreak_;
 export const Link = Link_;
 export const List = List_;
 export const Modal = Modal_;
