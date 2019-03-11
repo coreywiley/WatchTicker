@@ -14,7 +14,7 @@ class Home extends Component {
     }
 
     setGlobalState() {
-        
+
     }
 
     render() {
@@ -22,10 +22,11 @@ class Home extends Component {
         <div className='container'>
             <br/><br/>
             <div style={{textAlign:"center"}}>
-                <h1>Welcome to your new project</h1>
+                <h1>Welcome to your task tracker</h1>
                 <br/>
 
                 <Button href={'/signUp/'} text={"Sign Up"} type={'success'} />
+                <Button href={'/logIn/'} text={"Log In"} type={'outline-success'} />
             </div>
         </div>;
 

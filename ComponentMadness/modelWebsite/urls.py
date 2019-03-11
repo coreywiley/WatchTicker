@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^getApps/', getApps, name='getApps'),
 
     url(r'^(?P<appLabel>[a-zA-Z]+)/(?P<modelName>[a-zA-Z_]+)/fields/', getModelFieldsJson, name='getModelFields'),
-    url(r'^(?P<appLabel>[a-zA-Z]+)/(?P<modelName>[a-zA-Z_]+)/(?P<id>[0-9]+)/$', getModelInstanceJson, name='getModelInstance'),
+    url(r'^(?P<appLabel>[a-zA-Z]+)/(?P<modelName>[a-zA-Z_]+)/(?P<id>[a-z0-9-]+)/$', getModelInstanceJson, name='getModelInstance'),
     url(r'^(?P<appLabel>[a-zA-Z]+)/(?P<modelName>[a-zA-Z_]+)/$', getModelInstanceJson, name='getModelInstance'),
 
     url(r'^modelConfig/$', modelConfig, name = "ModelConfig"),

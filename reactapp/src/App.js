@@ -34,6 +34,9 @@ import APIDocs from './pages/admin/apiDocs.js';
 
 import Test from './pages/modelEditAndView/WYSIWYG.js';
 import PageBuilder from './pages/admin/pageBuilder.js';
+import TaskList from './pages/listTask.js';
+import EditTask from './pages/editTask.js';
+
 
 class App extends Component {
     constructor(props) {
@@ -186,6 +189,12 @@ class App extends Component {
           }
           else if (route == 'pagebuilder') {
             content = <PageBuilder page_id={params[1]} />
+          }
+          else if (route == 'viewer') {
+            content = <TaskList user={this.state.user} />
+          }
+          else if (route == 'edittask') {
+            content = <EditTask user={this.state.user} />
           }
         }
 
