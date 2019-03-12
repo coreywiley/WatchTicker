@@ -17,7 +17,7 @@ class Complete extends Component {
   }
 
   startPomodoro() {
-    ajaxWrapper('POST','/api/home/pomodoro/', {'task':props.task.id}, console.log)
+    ajaxWrapper('POST','/api/home/pomodoro/', {'task':this.props.task.id}, console.log)
     ajaxWrapper('POST','/api/home/task/' + this.props.task.id + '/', {'pomodoros':this.props.task.pomodoros + 1}, this.props.start)
   }
 
