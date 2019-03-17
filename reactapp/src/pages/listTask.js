@@ -13,7 +13,7 @@ class Complete extends Component {
   }
 
   complete() {
-    ajaxWrapper('POST','/api/home/task/' + this.props.task.id + '/', {'complete':true}, this.props.refresh)
+    ajaxWrapper('POST','/api/home/task/' + this.props.task.id + '/', {'completed':true}, this.props.refresh)
   }
 
   startPomodoro() {
@@ -34,7 +34,7 @@ class Complete extends Component {
 class TaskList extends Component {
     constructor(props) {
         super(props);
-        this.state = {'tasks':[], pomodoro:false}
+        this.state = {'tasks':[], pomodoro:false, completed: false}
 
         this.objectCallback = this.objectCallback.bind(this);
         this.startPomodoro = this.startPomodoro.bind(this);
@@ -87,12 +87,14 @@ class TaskList extends Component {
       var tasks = [];
       for (var index in this.state.tasks) {
         var task = this.state.tasks[index];
-        var buttons = [<Complete task={task} refresh={this.refresh} start={this.startPomodoro} />]
-        var description = [];
-        for (var i = 0; i < task['pomodoros']; i++) {
-          description.push(<img src='https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png' style={{width:'40px'}} />)
+        if (task['completed'] == this.state.completed) {
+          var buttons = [<Complete task={task} refresh={this.refresh} start={this.startPomodoro} />]
+          var description = [];
+          for (var i = 0; i < task['pomodoros']; i++) {
+            description.push(<img src='https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png' style={{width:'40px'}} />)
+          }
+          tasks.push(<Card name={task.name} description={description} button_type={'primary'} buttons={buttons} />)
         }
-        tasks.push(<Card name={task.name} description={description} button_type={'primary'} buttons={buttons} />)
       }
 
       if (this.state.pomodoro) {
@@ -109,11 +111,20 @@ class TaskList extends Component {
         </div>
       }
       else {
+
+        if (this.state.completed) {
+          var text ='See In-Complete Tasks';
+        }
+        else {
+          var text = 'See Complete Tasks';
+        }
+
       var content =
         <div className="container">
           <Header size={2} text={'Tasks'} />
           <br />
           <Button type={'success'} text={'Add New Task'} href={'/editTask/'} />
+          <Button type={'info'} text={text} onClick={() => this.setState({completed: !this.state.completed})} />
           <br />
           {tasks}
         </div>;

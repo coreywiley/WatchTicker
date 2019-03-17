@@ -29,24 +29,13 @@ class Nav extends React.Component {
             <div className="collapse navbar-collapse " id="navbarSupportedContent">
               <ul className="navbar-nav mr-4">
                 <li className="nav-item">
-                   <a className="nav-link" data-value="about" href="#">About</a>
+                   <a className="nav-link" data-value="about" href="/viewer/">Tasks</a>
                 </li>
 
                 <li className="nav-item">
-                  <a className="nav-link " data-value="portfolio"href="#">Portfolio</a>
+                  <a className="nav-link " data-value="portfolio"href="/analytics/">Analytics</a>
                 </li>
 
-                <li className="nav-item">
-                  <a className="nav-link " data-value="blog" href="#">Blog</a>
-                </li>
-
-                <li className="nav-item">
-                 <a className="nav-link " data-value="team" href="#">Team</a>
-                </li>
-
-                <li className="nav-item">
-                  <a className="nav-link " data-value="contact" href="#">Contact</a>
-                </li>
               </ul>
             </div>
           </nav>

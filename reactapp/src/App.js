@@ -36,6 +36,7 @@ import Test from './pages/modelEditAndView/WYSIWYG.js';
 import PageBuilder from './pages/admin/pageBuilder.js';
 import TaskList from './pages/listTask.js';
 import EditTask from './pages/editTask.js';
+import Analytics from './pages/pomodorosByDay.js';
 
 
 class App extends Component {
@@ -196,6 +197,9 @@ class App extends Component {
           else if (route == 'edittask') {
             content = <EditTask user={this.state.user} />
           }
+          else if (route == 'analytics') {
+            content = <Analytics user={this.state.user} />
+          }
         }
 
 
@@ -212,8 +216,6 @@ class App extends Component {
                   {navbar}
                   <Wrapper style={{paddingTop: '60px'}} content={content} loaded={this.state.loaded} />
                   <br />
-                  <br />
-                  <Footer />
             </div>
           );
         }
