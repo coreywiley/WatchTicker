@@ -14,6 +14,7 @@ class ModelConfig(models.Model):
     name = models.CharField(max_length=120, blank=True, default="")
     data = JSONField(default = {})
 
+    order = models.IntegerField(default = 0)
 
 
 class Component(models.Model):

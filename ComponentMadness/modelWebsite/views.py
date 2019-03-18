@@ -64,6 +64,7 @@ def modelConfig(request):
                 'id': config.id,
                 'name': config.name,
                 'data': config.data,
+                'order': config.order,
             })
 
     elif request.method == "POST":
@@ -93,11 +94,14 @@ def modelConfig(request):
 
         if 'id' in postData:
             model = get_object_or_404(ModelConfig, pk = postData['id'])
-            model.name = postData['name']
+
             print ('Found MODEL!!!!')
 
         else:
-            model = ModelConfig(name = postData['name'])
+            model = ModelConfig()
+
+        model.name = postData['name']
+        model.order = int(postData['order'])
 
         data = {'fields': [], 'related': []}
         for key in postData.keys():

@@ -14,6 +14,7 @@ class Accordion extends React.Component {
     render() {
         var accordionSections = []
         for (var index in this.props.names) {
+
             var Component = this.props.ComponentList[index];
             var ComponentProps = this.props.ComponentProps[index];
             var dataParent = '#accordion';
@@ -25,16 +26,17 @@ class Accordion extends React.Component {
                 collapsed += ' show';
             }
 
+            var name = this.props.names[index];
 
-            var card = <div><div className="card-header" id={"heading" + index}>
+            var card = <div><div className="card-header" id={"heading" + name}>
                 <h4 className="mb-0" style={{textAlign:'left'}}>
-                    <button className={'btn btn-link collapsed'} type="button" data-toggle="collapse" data-target={"#collapse" + index} aria-expanded="true" aria-controls={"collapse" + index}>
+                    <button className={'btn btn-link collapsed'} type="button" data-toggle="collapse" data-target={"#collapse" + name} aria-expanded="true" aria-controls={"collapse" + name}>
                           {this.props.names[index]}
                     </button>
                 </h4>
                 </div>
                 <div className="card">
-                <div id={"collapse" + index} className={collapsed} aria-labelledby={"heading" + index} data-parent={dataParent}>
+                <div id={"collapse" + name} className={collapsed} aria-labelledby={"heading" + name} data-parent={dataParent}>
                   <div className="card-body">
                         <Component {...ComponentProps} />
                   </div>
