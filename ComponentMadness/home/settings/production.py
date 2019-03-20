@@ -39,4 +39,4 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/static/images/'
 
 STATIC_ROOT = "/home/jthiesen1/webapps/pomodoro/ComponentMadness/home/static/"
-MEDIA_ROOT = "/home/jthiesen1/webapps/pomodoro/ComponentMadness/home/static/"
+MEDIA_ROOT = "/home/jthiesen1/webapps/pomodoro/ComponentMadness/home/static/images/"

@@ -1,76 +1,66 @@
 
 import React, { Component } from 'react';
-
+import consolidate from 'base/consolidate.js';
 import Wrapper from 'base/wrapper.js';
 import ajaxWrapper from 'base/ajax.js';
 import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Card, MultiLineText} from 'library';
 
+class TableRows extends Component {
+  render() {
+    var rows = [];
+    for (var index in this.props.data) {
+      var data_row = this.props.data[index];
+      var row_data = [];
+      for (var j in data_row) {
+        row_data.push(<td>{data_row[j]}</td>)
+      }
+
+      rows.push(<tr>{row_data}</tr>)
+    }
+
+    return(rows)
+
+  }
+}
+
+class ListOf extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {'items':[]}
+    this.objectCallback = this.objectCallback.bind(this);
+  }
+
+  componentDidMount() {
+    ajaxWrapper('GET','/api/' + this.props.app + '/' + this.props.model + '/' + this.props.filters, {}, this.objectCallback)
+  }
+
+  objectCallback(result) {
+    var items = [];
+    for (var index in result) {
+      items.push(result[index][this.props.model])
+    }
+    console.log("Before Consolidation")
+    var newData = consolidate(items, this.props.consolidate_data)
+    console.log("After Consolidation")
+    this.setState({items:newData})
+  }
+
+  render() {
+    var Component = this.props.component
+    return (
+        <Component data={this.state.items} />
+    )
+  }
+}
+
 class TaskList extends Component {
     constructor(props) {
         super(props);
-        this.state = {'pomodoros':[]}
-
-        this.objectCallback = this.objectCallback.bind(this);
-        this.startPomodoro = this.startPomodoro.bind(this);
-        this.refresh = this.refresh.bind(this);
+        this.state = {'pomodoros':[], loaded:true}
     }
 
-    componentDidMount() {
-      this.refresh();
-    }
-
-    refresh() {
-      console.log("Refreshing");
-      ajaxWrapper('GET','/api/home/pomodoro/?order_by=-created_at&task__user=' + this.props.user.id, {}, this.objectCallback);
-    }
-
-    startPomodoro() {
-      this.setState({pomodoro:true, seconds:25*60})
-      this.interval = setInterval(() => this.tick(), 1000);
-    }
-
-
-    objectCallback(result) {
-      console.log("Callback")
-      var tasks = []
-      for (var index in result) {
-        var task = result[index]['pomodoro'];
-        tasks.push(task)
-      }
-      this.setState({'pomodoros':tasks, 'loaded':true})
-    }
 
     render() {
-      console.log("Here");
-
-      var pomodoros_by_day = {};
-      var days = [];
-      for (var index in this.state.pomodoros) {
-        var pomodoro = this.state.pomodoros[index];
-        var created = pomodoro['created_at']
-        console.log("Date", created, Date.parse(created))
-        var date = new Date(Date.parse(created));
-        var date_string = (parseInt(date.getMonth()) + 1) + '/' + date.getDate() + '/' + date.getFullYear()
-        if (days.indexOf(date_string) == -1) {
-          days.push(date_string);
-          pomodoros_by_day[date_string] = 0
-        }
-        pomodoros_by_day[date_string] += 1;
-
-      }
-
-      var rows = [];
-      var weekly_total = 0;
-      for (var index in days) {
-        weekly_total += pomodoros_by_day[days[index]]
-
-        rows.push(<tr>
-          <td>{days[index]}</td>
-          <td>{pomodoros_by_day[days[index]]}</td>
-          <td>{pomodoros_by_day[days[index]] * 25}</td>
-        </tr>)
-
-      }
 
       var content =
         <div className="container">
@@ -80,14 +70,12 @@ class TaskList extends Component {
             <tr>
               <td>Date</td>
               <td>Number of Pomodoros</td>
-              <td>Minutes</td>
             </tr>
             <tr>
               <th>Weekly Goal</th>
               <th>96</th>
-              <th>2400</th>
             </tr>
-            {rows}
+            <ListOf component={TableRows} app={'home'} model={'pomodoro'} filters={'?task__user=' + this.props.user.id} consolidate_data={{'group_by':'{created_at}', 'add':1}} />
           </table>
         </div>;
 

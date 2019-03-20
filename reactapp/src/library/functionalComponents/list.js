@@ -36,24 +36,6 @@ class List extends Component {
 
     refreshData() {
         var dataUrl = this.props.dataUrl;
-
-        if (this.props.filters) {
-            if (dataUrl.indexOf('?') == -1) {
-                dataUrl += '?';
-            }
-            for (var key in this.props.filters) {
-                if (typeof this.props.filters[key] == 'object') {
-                    if (this.props.filters[key].length > 0) {
-                        var tempFilter = this.props.filters[key].join();
-                        dataUrl += '&' + key + '=' + tempFilter
-                    }
-                }
-                else if (this.props.filters[key] != '') {
-                    dataUrl += '&' + key + '=' + this.props.filters[key]
-                }
-            }
-        }
-        console.log("Get", dataUrl);
         ajaxWrapper("GET", dataUrl, {}, this.ajaxCallback);
     }
 
@@ -66,9 +48,6 @@ class List extends Component {
     render() {
         let Component = this.props.component;
         var content = [];
-        if (this.props.title) {
-            content.push(this.props.title);
-        }
 
         if (this.state.componentData.length > 0) {
             for (var i = 0; i < this.state.componentData.length; i++) {
@@ -78,14 +57,11 @@ class List extends Component {
                 if (this.props.dataMapping) {
                     var dataMapping = {...this.props.dataMapping};
                     dataMapping = resolveVariables(dataMapping, data);
-
                     componentInstance = <Component key={data.id} {...dataMapping} refreshData={this.refreshData} setGlobalState={this.props.setGlobalState} />;
                 }
                 else {
                     componentInstance = <Component key={data.id} {...data} refreshData={this.refreshData} setGlobalState={this.props.setGlobalState} />;
                 }
-                //console.log("Key " + data.id, dataMapping);
-
 
                 content.push(componentInstance);
             }
@@ -99,8 +75,7 @@ class List extends Component {
         }
 
         if (this.props.lastInstanceData) {
-            var componentInstance = <Component {...this.props.lastInstanceData}
-                refreshData={this.refreshData} setGlobalState={this.props.setGlobalState} />;
+            var componentInstance = <Component {...this.props.lastInstanceData} refreshData={this.refreshData} setGlobalState={this.props.setGlobalState} />;
             content.push(componentInstance);
         }
 

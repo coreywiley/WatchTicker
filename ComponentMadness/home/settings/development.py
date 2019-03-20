@@ -34,5 +34,5 @@ LOGGING = {
 STATIC_URL = '/static/'
 MEDIA_URL = '/static/images/'
 
-STATIC_ROOT = ""
-MEDIA_ROOT = ""
+STATIC_ROOT = "D:\Rogue\ComponentMadness\ComponentMadness\home\static\\"
+MEDIA_ROOT = "D:\Rogue\ComponentMadness\ComponentMadness\home\static\\images\\"

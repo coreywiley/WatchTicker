@@ -1,4 +1,4 @@
-
+import React, {Component, Element} from 'react';
 
 //using datamapping in list or form you can pass a dictionary like so dataMapping={'name':'Bob', 'id':'{id}', 'children':'{children.length}'}
 // in this case, name will always be bob, id will resolve to the id of the data and children will resolve to the length of data.children
@@ -15,9 +15,15 @@ function fillDict(dict, data) {
     if (Array.isArray(dict)) {info = Object.assign([], dict);}
 
     for (var k in info) {
-        if (typeof info[k] == 'object') {
+        console.log("K", k, info, info[k], typeof info[k])
+        //Broad Detection of React.Element type and probably other things.
+        if (typeof info[k].type == "function") {
+          console.log("React.Component")
+        }
+        else if (typeof info[k] == 'object') {
             info[k] = fillDict(info[k], data);
-        } else {
+        }
+        else {
             var tempStr = info[k];
             info[k] = fillData(tempStr, data);
         }
@@ -28,10 +34,11 @@ function fillDict(dict, data) {
 
 
 function fillData(tempStr, data) {
-    //console.log("TempStr", tempStr, typeof tempStr);
+    console.log("TempStr", tempStr, typeof tempStr);
     if (typeof tempStr != 'string') {
         return tempStr;
     }
+    console.log("Data", data)
 
     var dataSplit = tempStr.split('{');
     //Add initial text to output
