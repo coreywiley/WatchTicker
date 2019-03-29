@@ -191,6 +191,9 @@ class App extends Component {
           else if (route == 'pagebuilder') {
             content = <PageBuilder page_id={params[1]} />
           }
+          else if (route == 'pagelist') {
+            content = <PageList />
+          }
           else if (route == 'viewer') {
             content = <TaskList user={this.state.user} />
           }
