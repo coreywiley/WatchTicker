@@ -77,7 +77,7 @@ class APIQuery extends Component {
           </table>
 
           {normForm}
-          <Button text={'Query'} type={'success'} clickHandler={this.query} />
+          <Button text={'Query'} type={'success'} onClick={this.query} />
           <p>Result:</p>
           <p>{this.state.result}</p>
         </div>

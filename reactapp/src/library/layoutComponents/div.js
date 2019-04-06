@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
-import {Div} from 'library';
 
-class ContainerFluid extends React.Component {
+class Div extends React.Component {
           render() {
 
                 return (
-                    <Div className="container-fluid" style={this.props.style}>
+                    <div className={this.props.className || ''} style={this.props.style || {}}>
                       {this.props.children}
-                    </Div>
+                    </div>
                 );
             }
 }
 
 
-export default ContainerFluid;
+export default Div;

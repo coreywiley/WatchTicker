@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import resolveVariables from 'base/resolver.js';
 import ajaxWrapper from "base/ajax.js";
-import {Alert, Button} from 'library';
+import {Alert, Button, ChildComponent, TextInput} from 'library';
 //Example
 //var answerProps = {'name':'response', 'value':''}
 //var defaults = {'response':'', 'question':this.props.question_id, 'sid':this.props.user_id}
@@ -9,11 +9,34 @@ import {Alert, Button} from 'library';
 //var redirectUrl = '/referenceGuide/' + this.props.question_id + '/';
 //<Form components={[TextArea]} first={true} componentProps={[answerProps]} submitUrl={submitUrl} defaults={defaults} redirectUrl={redirectUrl}/>
 
-class Form extends Component {
+class FormWithChildren extends Component {
     constructor(props) {
         super(props);
-        this.state = this.props.defaults;
+        var defaults = {};
+        var children = [];
+        console.log("Children Props", this.props.children)
+        if (this.props.children != undefined) {
+          //weirdly enough this means more than one child
+          if (this.props.children.length > 0) {
+            for (var index in this.props.children) {
+                var child = this.props.children[index];
+                children.push(child)
+                defaults[child.props.name] = child.props.default;
+            }
+          }
+          else {
+            var child = this.props.children
+            console.log("Child", child)
+            if (child.length != 0) {
+              defaults[child.props.name] = child.props.default;
+              children.push(child);
+            }
+          }
+        }
+
+        this.state = defaults;
         this.state.required = "";
+        this.state.children = children;
 
         this.handleChange = this.handleChange.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
@@ -35,8 +58,32 @@ class Form extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log("Will Receive Props");
-        this.setState(nextProps.defaults)
+        var defaults = nextProps.defaults || {};
+        var children = [];
+        console.log("Children Props", this.props.children)
+        if (this.props.children != undefined) {
+          //weirdly enough this means more than one child
+          if (this.props.children.length > 0) {
+            for (var index in this.props.children) {
+                var child = this.props.children[index];
+                children.push(child)
+                defaults[child.props.name] = child.props.default;
+            }
+          }
+          else {
+            var child = this.props.children
+            console.log("Child", child)
+            if (child.length != 0) {
+              defaults[child.props.name] = child.props.default;
+              children.push(child);
+            }
+          }
+        }
+        defaults['children'] = children
+
+        this.setState(defaults)
     }
+
 
     setGlobalState(state) {
         console.log("New Global State", state)
@@ -78,20 +125,24 @@ class Form extends Component {
 
         var failed = false;
         var required = '';
-        for (var index in this.props.componentProps) {
-          var prop = this.props.componentProps[index];
-          if (prop.required == true) {
-            if (this.state[prop.name] == '') {
-              required += "The field " + prop.label + " must be filled out to submit the form. ";
-              failed = true
+
+        var defaults = {}
+        for (var index in this.state.children) {
+            var child = this.state.children[index];
+            var prop = child.props;
+            if (prop.required == true) {
+              if (this.state[prop.name] == '') {
+                required += "The field " + prop.label + " must be filled out to submit the form. ";
+                failed = true
+              }
             }
-          }
         }
+
+
         if (failed == true) {
           this.setState({required: required})
         }
         else {
-
           for (var item in data) {
               if (item.endsWith('[]')) {
                   console.log("STRINGIFY")
@@ -218,25 +269,18 @@ class Form extends Component {
 
         let components = [];
 
-        for (var index in this.props.components) {
-            var Component = this.props.components[index];
-            var props = this.props.componentProps[index];
+
+        for (var index in this.state.children) {
+            var child = this.state.children[index];
+
+            var newProps = {value: this.state[child.props.name], setFormState:this.setFormState, handleChange:this.handleChange, handleKeyPress: this.handleKeyPress}
             if (index == 0) {
-              props['autoFocus'] = true;
+              newProps['autoFocus'] = true;
             }
 
-            if (props && props['names']) {
-                var values = {}
-                for (var nameIndex in props['names']) {
-                    var name = props['names'][nameIndex];
-                    values[name] = this.state[name]
-                }
-                components.push(<Component {...props} handleChange={this.handleChange} setFormState={this.setFormState} {...values} />)
-            }
-            else if (props){
-                components.push(<Component {...props} handleChange={this.handleChange} setFormState={this.setFormState} value={this.state[props['name']]} />)
-            }
+            components.push(<ChildComponent component={child} newProps={newProps} />)
         }
+
 
         var buttons = [];
         if (this.props.submitUrl || this.props.submit) {
@@ -271,4 +315,4 @@ class Form extends Component {
     }
 }
 
-export default Form;
+export default FormWithChildren;

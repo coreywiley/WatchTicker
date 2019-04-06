@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ajaxWrapper from "base/ajax.js";
 import Wrapper from 'base/wrapper.js';
-import {Form, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput, Container, EmptyModal} from 'library';
+import {Form, FormWithChildren, Div, Break, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput, Container, EmptyModal, PasswordInput} from 'library';
 import APIQuery from './apiQuery.js';
 
 class AddChildComponent extends Component {
@@ -22,13 +22,16 @@ class AddChildComponent extends Component {
   }
 
   render() {
+    var addable_components = [];
+    for (var index in ComponentDict) {
+      addable_components.push(<AddComponent name={index} addComponent={this.addComponent} />)
+    }
+
     return (
       <div>
       <Button type={'primary'} text={this.props.label} onClick={this.addingComponent} />
       <EmptyModal show={this.state.adding} onHide={this.addingComponent}>
-        <AddComponent name={'Paragraph'} addComponent={this.addComponent} />
-        <AddComponent name={'Header'} addComponent={this.addComponent} />
-        <AddComponent name={'Container'} addComponent={this.addComponent} />
+        {addable_components}
       </EmptyModal>
       </div>
     )
@@ -36,6 +39,31 @@ class AddChildComponent extends Component {
 }
 
 
+
+var buttonTypes = [
+  {'text': 'primary', value: 'primary'},
+  {'text': 'secondary', value: 'secondary'},
+  {'text': 'success', value: 'success'},
+  {'text': 'danger', value: 'danger'},
+  {'text': 'warning', value: 'warning'},
+  {'text': 'info', value: 'info'},
+  {'text': 'light', value: 'light'},
+  {'text': 'dark', value: 'dark'},
+  {'text': 'link', value: 'link'},
+  {'text': 'outline-primary', value: 'outline-primary'},
+  {'text': 'outline-secondary', value: 'outline-secondary'},
+  {'text': 'outline-success', value: 'outline-success'},
+  {'text': 'outline-danger', value: 'outline-danger'},
+  {'text': 'outline-warning', value: 'outline-warning'},
+  {'text': 'outline-info', value: 'outline-info'},
+  {'text': 'outline-light', value: 'outline-light'},
+  {'text': 'outline-dark', value: 'outline-dark'},
+]
+
+var booleans = [
+  {'text':'True', value:true},
+  {'text':'False', value:false},
+]
 
 
 let ComponentDict = {
@@ -56,6 +84,52 @@ let ComponentDict = {
       defaults: {children:[], style:{}},
       form_components: [NumberInput, CSSInput, AddChildComponent],
       form_props: [{'label':'order', name:'order'}, {'label':'css', name:'style'}, {'label':'Add Child Component', name:'children'}]
+    },
+    'Div':{
+      component: Div,
+      defaults: {children:[], style:{}, className: ''},
+      form_components: [NumberInput, TextInput, CSSInput, AddChildComponent],
+      form_props: [{'label':'order', name:'order'}, {'label':'class', name:'className'}, {'label':'css', name:'style'}, {'label':'Add Child Component', name:'children'}]
+    },
+    'Break':{
+      component: Break,
+      defaults: {children:[], style:{}},
+      form_components: [NumberInput, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'css', name:'style'}]
+    },
+    'Button':{
+      component: Button,
+      defaults: {children:[], style:{}},
+      form_components: [NumberInput, TextInput, Select, TextInput, TextInput, CSSInput, Select, Select, Select],
+      form_props: [{'label':'order', name:'order'}, {'label':'text', name:'text'},
+      {'label':'type', name:'type', options:buttonTypes}, {'label':'href', name:'href'}, {'label':'class', name:'className'},
+      {'label':'css', name:'style'},{'label':'hover', name:'hover', options:booleans},
+      {'label':'disabled', name:'disabled', options:booleans},{'label':'deleteType', name:'deleteType', options:booleans}]
+    },
+    'FormWithChildren':{
+      component: FormWithChildren,
+      defaults: {children:[], style:{}},
+      form_components: [NumberInput, TextInput, TextInput, TextInput, CSSInput, AddChildComponent],
+      form_props: [{'label':'order', name:'order'}, {'label':'submitUrl', name:'submitUrl'},
+        {'label':'redirectUrl', name:'redirectUrl'}, {'label':'deleteUrl', name:'deleteUrl'},
+         {'label':'css', name:'style'}, {'label':'Add Child Component', name:'children'}]
+    },
+    'TextInput':{
+      component: TextInput,
+      defaults: {children:[], style:{}},
+      form_components: [NumberInput, TextInput, TextInput, TextInput, TextInput, Select, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'name', name:'name'},
+        {'label':'default', name:'default'}, {'label':'placeholder', name:'placeholder'},
+        {'label':'label', name:'label'}, {'label':'required', name:'required', options: booleans},
+        {'label':'class', name:'className'}, {'label':'css', name:'style'}]
+    },
+    'PasswordInput':{
+      component: PasswordInput,
+      defaults: {children:[], style:{}},
+      form_components: [NumberInput, TextInput, TextInput, Select, Select, TextInput, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'name', name:'name'},
+      {'label':'placeholder', name:'placeholder'}, {'label':'Confirm Password?', name:'confirm_password', options: booleans},
+      {'label':'required', name:'required', options: booleans}, {'label':'class', name:'className'}, {'label':'css', name:'style'}]
     }
 };
 
@@ -281,20 +355,23 @@ class PageBuilder extends Component {
 
       var componentList = this.componentListCreator(topLevelComponents, component_parent_dict)
 
+      var addable_components = [];
+      for (var index in ComponentDict) {
+        addable_components.push(<AddComponent name={index} addComponent={this.addComponent} />)
+      }
+
       var componentColumn = <div>
         <h1>Component List</h1>
         <Button text={'Add Component'} type={'success'} onClick={this.addingComponent} />
         {componentList}
         <EmptyModal show={this.state.adding} onHide={this.addingComponent}>
-          <AddComponent name={'Paragraph'} addComponent={this.addComponent} />
-          <AddComponent name={'Header'} addComponent={this.addComponent} />
-          <AddComponent name={'Container'} addComponent={this.addComponent} />
+          {addable_components}
         </EmptyModal>
       </div>;
 
         var content =
         <div>
-        <a href='/pageList/'>Page List</a>  
+        <a href='/pageList/'>Page List</a>
           <div className="row">
 
             <div className="col-2">

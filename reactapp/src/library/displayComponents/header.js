@@ -24,7 +24,7 @@ class Header extends React.Component {
             }
         }
         return (
-            <div className={this.props.layout}>{header}</div>
+            <div className={this.props.className}>{header}</div>
         );
     }
 }

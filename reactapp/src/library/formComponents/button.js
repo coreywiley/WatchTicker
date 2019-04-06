@@ -37,13 +37,14 @@ class Button extends React.Component {
     }
 
     render() {
-        var type = "btn-" + this.props.type;
-      var css = {}
-      if (this.props.css) {
-        css = this.props.css;
+      var type = "btn-" + this.props.type;
+      var style = {}
+      if (this.props.style) {
+        style = this.props.style;
       }
+
         var hover = null;
-        if (this.props.hover){
+        if (this.props.hover) {
             var hoverCSS = {
                 position: 'absolute',
                 top:'0px',
@@ -65,22 +66,22 @@ class Button extends React.Component {
         }
 
         if (this.props.disabled) {
-        var content = <button className={"btn " + type} onClick={this.click} style={css} disabled>{this.props.text}</button>
+        var content = <button className={"btn " + type} onClick={this.click} style={style} disabled>{this.props.text}</button>
       }
       else {
-        var content = <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>
+        var content = <button className={"btn " + type} onClick={this.click} style={style}>{this.props.text}</button>
       }
 
         if (this.props.deleteType == true && this.state.modal == false) {
             console.log("I am here");
             return (
                 <button className={"btn " + type} onClick={this.showModal}
-                num={this.props.num} style={css}>{this.props.text}</button>
+                num={this.props.num} style={style}>{this.props.text}</button>
             );
 
         } else if (this.props.deleteType == true && this.state.modal == true) {
             var alt = <button className={"btn btn-success"} onClick={this.hideModal} style={{'margin':'15px'}}>Dont Delete</button>;
-            var button = <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>;
+            var button = <button className={"btn " + type} onClick={this.click} style={style}>{this.props.text}</button>;
             return (
                 <Modal content={[alt,button]} show={true} title={'Are you sure?'} onHide={this.hideModal} />
             );
@@ -88,7 +89,7 @@ class Button extends React.Component {
         } else {
             return (
                 <button className={"btn " + type} onClick={this.click}
-                num={this.props.num} style={css}>{this.props.text}</button>
+                num={this.props.num} style={style}>{this.props.text}</button>
             );
         }
 
