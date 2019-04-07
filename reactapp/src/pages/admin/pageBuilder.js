@@ -130,7 +130,31 @@ let ComponentDict = {
       form_props: [{'label':'order', name:'order'}, {'label':'name', name:'name'},
       {'label':'placeholder', name:'placeholder'}, {'label':'Confirm Password?', name:'confirm_password', options: booleans},
       {'label':'required', name:'required', options: booleans}, {'label':'class', name:'className'}, {'label':'css', name:'style'}]
-    }
+    },
+    'ListWithChildren':{
+      component: ListWithChildren,
+      defaults: {children:[], style:{}},
+      form_components: [NumberInput, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'css', name:'style'}]
+    },
+    'If':{
+      component: If,
+      defaults: {children:[], style:{}},
+      form_components: [NumberInput, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'css', name:'style'}]
+    },
+    'PomodoroCard':{
+      component: PomodoroCard,
+      defaults: {children:[], style:{}},
+      form_components: [NumberInput, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'css', name:'style'}]
+    },
+    'Alarm':{
+      component: Alarm,
+      defaults: {children:[], style:{}},
+      form_components: [NumberInput, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'css', name:'style'}]
+    },
 };
 
 
