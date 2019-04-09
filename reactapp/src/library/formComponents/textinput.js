@@ -1,7 +1,26 @@
 import React, { Component } from 'react';
 import {resolveVariables} from 'functions';
+import {NumberInput, Select, CSSInput} from 'library';
+
+var BOOLEANS = [
+  {'text':'True', value:true},
+  {'text':'False', value:false},
+];
 
 class TextInput extends Component {
+    static config = {
+        form_components: [
+            <NumberInput label={'order'} name={'order'} />,
+            <TextInput label={'name'} name={'name'} default={'Default Text'} />,
+            <TextInput label={'default'} name={'default'} />,
+            <TextInput label={'placeholder'} name={'placeholder'} />,
+            <TextInput label={'label'} name={'label'} />,
+            <Select label={'required'} name={'required'} options={BOOLEANS} />,
+            <TextInput label={'class'} name={'className'} />,
+            <CSSInput label={'css'} name={'style'} default={{}} />,
+        ],
+    }
+
     render() {
 
         var layout = '';

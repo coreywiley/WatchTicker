@@ -19,7 +19,12 @@ class Home extends Component {
 
     render() {
 
-
+        var config = Paragraph.config;
+        console.log(config);
+        console.log(Paragraph.name);
+        for (var i in config['form_components']){
+            console.log(config['form_components'][i].name);
+        }
 
       var content =
         <div className='container'>
@@ -28,10 +33,6 @@ class Home extends Component {
                 <h1>Welcome to your task tracker</h1>
                 <br/>
 
-                <ListWithChildren dataUrl={'/api/home/task/'} objectName="task" dataMapping={{'text':'{name}'}}>
-                  <Paragraph text={'Hi!'} />
-                  <Header text={'Hi!'} />
-                </ListWithChildren>
 
                 <Button href={'/signUp/'} text={"Sign Up"} type={'success'} />
                 <Button href={'/logIn/'} text={"Log In"} type={'outline-success'} />
