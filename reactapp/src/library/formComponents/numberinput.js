@@ -13,7 +13,7 @@ class NumberInput extends Component {
               <div className={"form-group " + this.props.layout}>
                 <label>{this.props.label}</label>
                 <input type="number" className="form-control" name={this.props.name}
-                    onChange={this.props.handlechange} value={this.props.value}
+                    onChange={this.props.handleChange} value={this.props.value}
                     placeholder={this.props.placeholder}
                     onKeyPress={this.props.handleKeyPress}
                     onBlur={this.props.onBlur}

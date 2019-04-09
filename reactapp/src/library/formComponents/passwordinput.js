@@ -15,7 +15,7 @@ class PasswordInput extends Component {
        var name = e.target.getAttribute("name");
        var newState = {};
        newState[name] = e.target.value;
-       console.log("handlechange", name, newState)
+       console.log("handleChange", name, newState)
 
         this.setState(newState);
     }
@@ -66,7 +66,7 @@ class PasswordInput extends Component {
             <div>
               <div className={"form-group " + this.props.layout}>
                 <label>Password</label>
-                <input type="password" className="form-control" name="password" placeholder={this.props.placeholder} onChange={(e) => {this.verifyPassword(e); this.props.handlechange(e)}} value={this.state.password} />
+                <input type="password" className="form-control" name="password" placeholder={this.props.placeholder} onChange={(e) => {this.verifyPassword(e); this.props.handleChange(e)}} value={this.state.password} />
               </div>
               {passwordConfirm}
             </div>
