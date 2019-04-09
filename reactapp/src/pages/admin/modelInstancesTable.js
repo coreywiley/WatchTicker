@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {List, Link, Button, Table} from 'library';
-import ajaxWrapper from 'base/ajax.js';
+import {ajaxWrapper} from 'functions';
 
 class InstanceTable extends Component {
     constructor(props) {

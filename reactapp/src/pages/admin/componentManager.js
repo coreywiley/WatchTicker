@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import ajaxWrapper from "base/ajax.js";
-import Wrapper from 'base/wrapper.js';
+import {ajaxWrapper} from 'functions';
+import {Wrapper} from 'library';
 import $ from 'jquery';
 
 import ReactDOM from "react-dom";

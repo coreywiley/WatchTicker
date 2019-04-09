@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
+import {resolveVariables} from 'functions';
 
 class Section extends React.Component {
           render() {

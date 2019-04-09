@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import ajaxWrapper from "./base/ajax.js";
+import {ajaxWrapper, setGlobalState} from "functions";
+import {Wrapper} from 'library';
 
 //Component Madness
 import ComponentList from './pages/admin/componentList.js';
@@ -16,8 +17,6 @@ import Instance from './pages/admin/instance.js';
 import InstanceTable from './pages/admin/modelInstancesTable.js';
 
 //Scaffolding
-import Header from './base/header.js';
-import Wrapper from './base/wrapper.js';
 import LogIn from './pages/scaffold/logIn.js';
 import SignUp from './pages/scaffold/signUp.js';
 import LoggedIn from './pages/scaffold/loggedIn.js';

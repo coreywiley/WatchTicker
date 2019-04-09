@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
-import ajaxWrapper from 'base/ajax.js';
-import Wrapper from 'base/wrapper.js';
+import {resolveVariables} from 'functions';
+import {ajaxWrapper} from 'functions';
+import {Wrapper} from 'library';
 import {ChildComponent} from 'library';
 
 //Example
@@ -80,12 +80,12 @@ class ListWithChildren extends Component {
                       dataMapping = resolveVariables(dataMapping, data);
                       dataMapping['refreshData'] = this.refreshData;
                       dataMapping['setGlobalState'] = this.props.setGlobalState;
-                      componentInstance = <ChildComponent key={data.id} component={child} newProps={dataMapping} />;
+                      componentInstance = <ChildComponent component={child} newProps={dataMapping} />;
                   }
                   else {
                       data['refreshData'] = this.refreshData;
                       data['setGlobalState'] = this.props.setGlobalState;
-                      componentInstance = <ChildComponent key={data.id} component={child} newProps={data} />;
+                      componentInstance = <ChildComponent component={child} newProps={data} />;
                   }
 
                   content.push(componentInstance);
@@ -99,7 +99,7 @@ class ListWithChildren extends Component {
 
         if (this.props.lastInstanceData) {
             for (var index in children) {
-              var child = chidren[index];
+              var child = children[index];
               var data = this.props.lastInstanceData;
               data['refreshData'] = this.refreshData;
               data['setGlobalState'] = this.props.setGlobalState;

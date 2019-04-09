@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
-import ajaxWrapper from 'base/ajax.js';
-import Wrapper from 'base/wrapper.js';
+import {resolveVariables} from 'functions';
+import {ajaxWrapper} from 'functions';
+import {Wrapper} from 'library';
 //Example
 //var lastInstanceData = {'name':"Something New?", 'description':"Add A New Component", 'link':"/component/", 'button':"Create New", 'button_type':"success"};
 //var dataMapping = {'button_type':'primary', 'button':'Edit', 'link':'/component/{id}/'};

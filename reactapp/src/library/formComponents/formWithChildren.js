@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
-import ajaxWrapper from "base/ajax.js";
+import {resolveVariables} from 'functions';
+import {ajaxWrapper} from 'functions';
 import {Alert, Button, ChildComponent, TextInput} from 'library';
 //Example
 //var answerProps = {'name':'response', 'value':''}

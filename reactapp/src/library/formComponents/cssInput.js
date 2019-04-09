@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
+import {resolveVariables} from 'functions';
 import {Form, TextInput, Button} from 'library';
 
 class CSSInput extends Component {

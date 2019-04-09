@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ajaxWrapper from "./base/ajax.js";
+import {ajaxWrapper} from 'functions';
 import Compiler from "./compiler.js";
 import Wrapper from "./base/wrapper.js";
 

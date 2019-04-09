@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Wrapper from 'base/wrapper.js';
-import ajaxWrapper from 'base/ajax.js';
+import {Wrapper} from 'library';
+import {ajaxWrapper} from 'functions';
 import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Card, MultiLineText, Modal} from 'library';
 
 class DisplayEdit extends Component {

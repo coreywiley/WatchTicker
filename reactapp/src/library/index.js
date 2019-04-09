@@ -57,6 +57,7 @@ import ReactRender_ from './functionalComponents/reactrender.js';
 import Sidebar_ from './functionalComponents/sidebar.js';
 import MapEmbed_ from './functionalComponents/mapembed.js';
 import ChildComponent_ from './functionalComponents/childComponent.js';
+import If_ from './functionalComponents/if.js';
 
 import Container_ from './layoutComponents/container.js';
 import ContainerFluid_ from './layoutComponents/containerFluid.js';
@@ -127,3 +128,4 @@ export const Break = Break_;
 export const ChildComponent = ChildComponent_;
 export const FormWithChildren = FormWithChildren_;
 export const ListWithChildren = ListWithChildren_;
+export const If = If_;

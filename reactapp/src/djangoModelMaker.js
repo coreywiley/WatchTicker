@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
-import ajaxWrapper from "base/ajax.js";
-import Wrapper from 'base/wrapper.js';
+import {ajaxWrapper} from 'functions';
 
 import {
   Form, TextInput, Select, PasswordInput,
   Header, TextArea, NumberInput, DateTimePicker,
-  ButtonGroup, Button, Accordion, LineBreak
+  ButtonGroup, Button, Accordion, LineBreak, Alert, Wrapper
 } from 'library';
 
 
 var MODEL_TYPES = [
-    {'text':'Binary', 'value':'Binary'},
     {'text':'Boolean', 'value':'Boolean'},
-    {'text':'Date', 'value':'Date'},
-    {'text':'Time', 'value':'Time'},
     {'text':'Datetime', 'value':'Datetime'},
-    {'text':'Elapsed', 'value':'Elapsed'},
-    {'text':'Big Number', 'value':'Big Number'},
     {'text':'Decimal', 'value':'Decimal'},
-    {'text':'Float', 'value':'Float'},
     {'text':'Integer', 'value':'Integer'},
     {'text':'Char', 'value':'Char'},
     {'text':'Text', 'value':'Text'},
@@ -33,11 +26,13 @@ class ModelMaker extends Component {
             loaded: false,
             configs: [],
             relatedNames: [],
+            alerts: [],
         };
 
         this.objectCallback = this.objectCallback.bind(this);
         this.addModel = this.addModel.bind(this);
         this.refreshData = this.refreshData.bind(this);
+        this.saveModel = this.saveModel.bind(this);
     }
 
     componentDidMount() {
@@ -46,6 +41,13 @@ class ModelMaker extends Component {
 
     refreshData(){
         ajaxWrapper('GET','/api/modelConfig/', {}, this.objectCallback);
+
+        var alerts = this.state.alerts;
+        alerts.push({'text': "Saved Successfully"});
+
+        this.setState({
+            alerts: alerts
+        });
     }
 
     objectCallback(result) {
@@ -54,6 +56,8 @@ class ModelMaker extends Component {
             names.push({'text':result[i]['name'], 'value':result[i]['name']});
         }
 
+        result.sort(this.compareOrder);
+
         this.setState({
             'configs': result,
             'loaded': true,
@@ -61,10 +65,18 @@ class ModelMaker extends Component {
         });
     }
 
+    compareOrder(a, b){
+        if (a.order > b.order) return 1;
+        if (b.order > a.order) return -1;
+
+        return 0;
+    }
+
     addModel(event){
         var configs = this.state.configs;
         configs.push({
             'name':'',
+            'order': this.state.configs.length,
             'data': {
                 'fields':[],
                 'related':[],
@@ -74,6 +86,29 @@ class ModelMaker extends Component {
         this.setState({
             configs: configs,
         });
+    }
+
+    saveModel(data){
+        var submitUrl = "/api/modelConfig/";
+
+        if ('id' in data){
+            for (var i in this.state.configs){
+                var config = this.state.configs[i];
+                if (config['name'] == data['name'] && config['id'] != data['id']){
+                    alert('No duplicate names');
+                    return false;
+                }
+            }
+        } else {
+            for (var i in this.state.configs){
+                var config = this.state.configs[i];
+                if (config['name'] == data['name']){
+                    alert('No duplicate names');
+                    return false;
+                }
+            }
+        }
+        ajaxWrapper("POST", submitUrl, data, this.refreshData);
     }
 
     render() {
@@ -87,7 +122,8 @@ class ModelMaker extends Component {
                 config: config,
                 submitUrl: submitUrl,
                 relatedNames: this.state.relatedNames,
-                refreshData: this.refreshData
+                refreshData: this.refreshData,
+                saveModel: this.saveModel,
             };
 
             var name = "Model";
@@ -100,6 +136,11 @@ class ModelMaker extends Component {
             forms.push(container);
         }
 
+        var alerts = [];
+        for (var i in this.state.alerts){
+            alerts.push(<Alert {...this.state.alerts[i]} />);
+        }
+
         var title = <Header text={'Django Model Configuration'} size={2} />;
         var content =
             <div className="container">
@@ -107,6 +148,7 @@ class ModelMaker extends Component {
                     <div className="col-12"><br/><br/></div>
                     <div className="col-12">
                         {title}
+                        {alerts}
                         <br/>
                         {forms}
                         <br/>
@@ -135,6 +177,7 @@ class ConfigForm extends Component {
         };
 
         this.addField = this.addField.bind(this);
+        this.removeField = this.removeField.bind(this);
         this.addRelated = this.addRelated.bind(this);
 
         this.updateState = this.updateState.bind(this);
@@ -146,10 +189,13 @@ class ConfigForm extends Component {
 
     createDefaults(){
         var config = this.props.config;
-        var defaults = {name: config['name']};
+        var defaults = {
+            name: config['name'],
+            order: config['order'],
+        };
 
-        if (config['id']){
-            defaults['id'] = config['id'];
+        if ('id' in this.props.config){
+            defaults['id'] = this.props.config['id'];
         }
 
         if (config['data']){
@@ -205,6 +251,16 @@ class ConfigForm extends Component {
         });
     }
 
+    removeField(event){
+        var num = event.currentTarget;
+        var data = this.state.data;
+        data['fields'].splice(num, 1);
+
+        this.setState({
+            data: data,
+        });
+    }
+
     addRelated(event){
         var data = this.state.data;
         if (!(data.related)){
@@ -221,12 +277,22 @@ class ConfigForm extends Component {
         var config = this.state;
         var defaults = this.state.modelForm;
 
-        var name = {'name': 'name', 'label': 'Name', 'placeholder': 'Name', 'value': ''};
+        var name = {
+            'name': 'name', 'label': 'Name',
+            'placeholder': 'Name', 'value': '',
+            'layout': 'col-6 inlineField'
+        };
 
         var Components = [TextInput];
         var ComponentProps = [name];
 
-        if (config['id']){
+        Components.push(NumberInput);
+        ComponentProps.push({
+            'name': 'order', 'label': 'Order',
+            'placeholder': 'Order', 'value': '', 'layout': 'col-6 inlineField'
+        });
+
+        if ('id' in this.props.config){
             var id = {'name': 'id', 'layout': 'hidden'};
             Components.push(TextInput);
             ComponentProps.push(id);
@@ -261,9 +327,28 @@ class ConfigForm extends Component {
                     ComponentProps.push({'name': 'field_limit' + "_" + j, 'label': 'Max Length', 'layout': 'fieldStyle inlineField'});
                 }
 
+                Components.push(Button);
+                ComponentProps.push({
+                    type:'danger',
+                    text:'X',
+                    num:j,
+                    onClick:this.removeField
+                });
+
                 Components.push(LineBreak);
                 ComponentProps.push({});
             }
+
+            Components.push(Button);
+            ComponentProps.push({
+                type:'success',
+                text:'Add New Field',
+                onClick:this.addField
+            });
+            Components.push(LineBreak);
+            ComponentProps.push({});
+            Components.push(LineBreak);
+            ComponentProps.push({});
 
             var related = [];
             if (config['data']['related']){
@@ -291,17 +376,31 @@ class ConfigForm extends Component {
                 Components.push(LineBreak);
                 ComponentProps.push({});
             }
+            Components.push(Button);
+            ComponentProps.push({
+                type:'success',
+                text:'Add New Relation',
+                onClick:this.addRelated
+            });
+            Components.push(LineBreak);
+            ComponentProps.push({});
+            Components.push(LineBreak);
+            ComponentProps.push({});
+
+        }
+
+        var deleteUrl = undefined;
+        if ('id' in this.props.config) {
+          deleteUrl = "/api/modelConfig/" + this.props.config.id + "/delete/";
         }
 
         return (
             <div style={{padding:'5px'}}>
                 <Form components={Components}  componentProps={ComponentProps}
                     defaults={defaults} submitUrl={this.props.submitUrl} redirect={this.props.refreshData}
-                    autoSetGlobalState={true} globalStateName={'modelForm'} setGlobalState={this.updateState} />
+                    autoSetGlobalState={true} globalStateName={'modelForm'} setGlobalState={this.updateState}
+                    submit={this.props.saveModel} deleteUrl={deleteUrl} />
                 <br/>
-                <Button type={'success'} text={'Add New Field'} onClick={this.addField} />
-
-                <Button type={'success'} text={'Add New Relation'} onClick={this.addRelated} />
             </div>
         );
     }

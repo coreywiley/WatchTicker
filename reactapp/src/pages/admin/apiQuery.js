@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ajaxWrapper from "base/ajax.js";
-import Wrapper from 'base/wrapper.js';
+import {ajaxWrapper} from 'functions';
+import {Wrapper} from 'library';
 import {Form, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button} from 'library';
 
 

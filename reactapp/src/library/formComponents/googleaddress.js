@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-places-autocomplete';
 import TextInput from './textinput.js';
 import Select from './select.js';
-import ajaxWrapper from "base/ajax.js";
+import {ajaxWrapper} from 'functions';
 
 
 class GoogleAddress extends Component {

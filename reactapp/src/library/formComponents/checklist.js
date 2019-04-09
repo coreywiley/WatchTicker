@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
+import {resolveVariables} from 'functions';
 import Checkbox from './checkbox.js';
 import List from '../functionalComponents/list.js';
 

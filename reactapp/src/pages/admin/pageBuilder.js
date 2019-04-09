@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import ajaxWrapper from "base/ajax.js";
-import Wrapper from 'base/wrapper.js';
-import {Form, FormWithChildren, Div, Break, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput, Container, EmptyModal, PasswordInput} from 'library';
+import {ajaxWrapper} from 'functions';
+import {Wrapper} from 'library';
+import {Form, FormWithChildren, ListWithChildren, Div, If, Break, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput, Container, EmptyModal, PasswordInput} from 'library';
 import APIQuery from './apiQuery.js';
+import Alarm from 'projectLibrary/alarm.js';
+import PomodoroCard from 'projectLibrary/pomodoroCard.js';
+
 
 class AddChildComponent extends Component {
   constructor(props) {
@@ -134,26 +137,29 @@ let ComponentDict = {
     'ListWithChildren':{
       component: ListWithChildren,
       defaults: {children:[], style:{}},
-      form_components: [NumberInput, CSSInput],
-      form_props: [{'label':'order', name:'order'}, {'label':'css', name:'style'}]
+      form_components: [NumberInput, TextInput, TextArea, TextInput, TextArea, TextInput, TextArea, CSSInput, AddChildComponent],
+      form_props: [{'label':'order', name:'order'}, {'label':'class', name:'class'}, {'label':'dataList', name:'dataList'},
+        {'label':'dataUrl', name:'dataUrl'}, {'label':'dataMapping', name:'dataMapping'}, {'label':'noDataMessage', name:'noDataMessage'},
+        {'label':'lastInstanceData', name:'lastInstanceData'}, {'label':'css', name:'style'}, {'label':'Add Child Component', name:'children'}]
     },
     'If':{
       component: If,
       defaults: {children:[], style:{}},
-      form_components: [NumberInput, CSSInput],
-      form_props: [{'label':'order', name:'order'}, {'label':'css', name:'style'}]
+      form_components: [NumberInput, TextInput, AddChildComponent],
+      form_props: [{'label':'order', name:'order'}, {'label':'logic', name:'logic'}, {'label':'Add Child Component', name:'children'}]
     },
     'PomodoroCard':{
       component: PomodoroCard,
       defaults: {children:[], style:{}},
-      form_components: [NumberInput, CSSInput],
-      form_props: [{'label':'order', name:'order'}, {'label':'css', name:'style'}]
+      form_components: [NumberInput, TextInput, TextInput, NumberInput, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'id', name:'id'}, {'label':'name', name:'name'},
+        {'label':'icons', name:'icons'}, {'label':'css', name:'style'}]
     },
     'Alarm':{
       component: Alarm,
       defaults: {children:[], style:{}},
-      form_components: [NumberInput, CSSInput],
-      form_props: [{'label':'order', name:'order'}, {'label':'css', name:'style'}]
+      form_components: [NumberInput, FileInput, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'audioUrl', name:'audioUrl'}, {'label':'css', name:'style'}]
     },
 };
 
@@ -325,10 +331,10 @@ class PageBuilder extends Component {
           props['children'] = this.displayCreator(lookup[component['key']], lookup)
         }
         if (this.state.selectedComponent == component['key']) {
-          display.push(<DisplayInstance content={<TempComponent {...props} />} index={index} setComponent={this.setComponent} style={{'border':'2px solid #0f0'}} />)
+          display.push(<DisplayInstance content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} style={{'border':'2px solid #0f0'}} />)
         }
         else {
-          display.push(<DisplayInstance content={<TempComponent {...props} />} index={index} setComponent={this.setComponent} />)
+          display.push(<DisplayInstance content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} />)
         }
       }
       return display
