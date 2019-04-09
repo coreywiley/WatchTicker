@@ -68,7 +68,7 @@ class LogInForm extends Component {
         for (var index in this.props.components) {
             var Component = this.props.components[index];
             var props = this.props.componentProps[index];
-            components.push(<Component {...props} handlechange={this.handleChange} value={this.state[props['name']]} />)
+            components.push(<Component {...props} handleChange={this.handleChange} value={this.state[props['name']]} />)
         }
 
         var buttons = [];
