@@ -37,8 +37,10 @@ class ListWithChildren extends Component {
     }
 
     refreshData() {
+      if (this.props.dataUrl) {
         var dataUrl = this.props.dataUrl;
         ajaxWrapper("GET", dataUrl, {}, this.ajaxCallback);
+      }
     }
 
     ajaxCallback(value) {

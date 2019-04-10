@@ -30,20 +30,20 @@ class Complete extends Component {
   }
 
   complete() {
-    //ajaxWrapper('POST','/api/home/task/' + this.props.task_id + '/', {'completed':true}, console.log)
+    ajaxWrapper('POST','/api/home/task/' + this.props.task_id + '/', {'completed':true}, console.log)
     this.props.refresh()
   }
 
   startPomodoro() {
-    this.props.setGlobalState('start', {pomodoro:true})
-    //ajaxWrapper('POST','/api/home/pomodoro/', {'task':this.props.task.id}, console.log)
-    //ajaxWrapper('POST','/api/home/task/' + this.props.task.id + '/', {'pomodoros':this.props.task.pomodoros + 1}, this.props.start)
+    //this.props.setGlobalState('start', {pomodoro:true})
+    ajaxWrapper('POST','/api/home/pomodoro/', {'task':this.props.task_id}, console.log)
+    ajaxWrapper('POST','/api/home/task/' + this.props.task_id + '/', {'pomodoros':this.props.task_pomodoros + 1}, () => window.location = '/alarm/')
   }
 
   render() {
     return (
       <div>
-      <ExperimentalButton type={'primary'} text={'Start Pomodoro'} onClick={[() => console.log("Success"), () => this.props.setGlobalState('start', {pomodoro:true})]} />
+      <ExperimentalButton type={'primary'} text={'Start Pomodoro'} onClick={[this.startPomodoro]} />
       <ExperimentalButton type={'success'} text={'Complete'} onClick={[this.props.refresh]} />
       </div>
     )
@@ -69,12 +69,12 @@ class Icons extends Component {
 
 class PomodoroCard extends Component {
   render () {
-      var buttons = [<Complete task_id={this.props.id} refresh={this.props.refresh} setGlobalState={this.props.setGlobalState} />]
+      var buttons = [<Complete task_id={this.props.id} task_pomodoros={this.props.pomodoros} />]
 
       return (
         <Card name={this.props.name}
         description={
-            <Icons num_icons={this.props.icons}
+            <Icons num_icons={this.props.pomodoros}
             icon={<img src='https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png' style={{width:'40px'}} />} />
           }
           buttons={buttons}

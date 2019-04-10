@@ -27,7 +27,9 @@ class Alarm extends React.Component {
         var newState = {}
         newState[this.props.name] = false;
 
-        this.props.setGlobalState(this.props.name, newState)
+        setTimeout(() => window.location = '/viewer/', 5000)
+        //window.location = '/viewer/';
+        //this.props.setGlobalState(this.props.name, newState)
 
       }
       else {

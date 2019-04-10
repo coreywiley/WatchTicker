@@ -7,7 +7,7 @@ class Nav extends React.Component {
     render() {
         var name = <div><img style={{'marginRight':'10px'}} src='/static/images/logo.png' height="125" /></div>;
         if (this.props.user_id) {
-          var links = [];
+          var links = [['/viewer/', 'Pomodoros'],['/logOut/', 'Log Out']];
         }
 
         else {
@@ -18,8 +18,15 @@ class Nav extends React.Component {
           links.push(['/appList/','Admin']);
         }
 
+        var linkHTML = [];
+        for (var index in links) {
+          linkHTML.push(<li className="nav-item">
+             <a className="nav-link" data-value="about" href={links[index][0]}>{links[index][1]}</a>
+          </li>)
+        }
+
         return (
-          <nav className="navbar navbar-expand-lg fixed-top" style={{padding:'10px'}}>
+          <nav className="navbar navbar-expand-lg" style={{padding:'10px'}}>
             <a className="navbar-brand" href="#" style={{paddingLeft:'10px',paddingRight:'10px'}}>{settings.WEBSITE_NAME}</a>
 
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,14 +35,7 @@ class Nav extends React.Component {
 
             <div className="collapse navbar-collapse " id="navbarSupportedContent">
               <ul className="navbar-nav mr-4">
-                <li className="nav-item">
-                   <a className="nav-link" data-value="about" href="/viewer/">Tasks</a>
-                </li>
-
-                <li className="nav-item">
-                  <a className="nav-link " data-value="portfolio"href="/analytics/">Analytics</a>
-                </li>
-
+                {linkHTML}
               </ul>
             </div>
           </nav>

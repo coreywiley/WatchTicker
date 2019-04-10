@@ -44,7 +44,7 @@ class PasswordResetRequest extends Component {
     }
 
     render() {
-        var email_props = {'value':this.state.email,'name':'email','label':'Email:','placeholder': 'component@madness.com', 'handlechange':this.handleChange}
+        var email_props = {'value':this.state.email,'name':'email','label':'Email:','placeholder': 'component@madness.com', 'handleChange':this.handleChange}
 
         var alert = <div></div>;
         if (this.state.error == true) {

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import {ajaxWrapper} from 'functions';
+import {ajaxWrapper, sort_objects} from 'functions';
 import {Wrapper} from 'library';
-import {Form, FormWithChildren, ListWithChildren, Div, If, Break, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput, Container, EmptyModal, PasswordInput} from 'library';
+import {Form, FormWithChildren, LogInForm, SignUpForm, ListWithChildren, Div, If, Break, NumberInput,
+        BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput,
+        Container, EmptyModal, PasswordInput, ChildComponent} from 'library';
 import APIQuery from './apiQuery.js';
 import Alarm from 'projectLibrary/alarm.js';
 import PomodoroCard from 'projectLibrary/pomodoroCard.js';
-
+import Nav from 'projectLibrary/nav.js';
 
 class AddChildComponent extends Component {
   constructor(props) {
@@ -85,8 +87,8 @@ let ComponentDict = {
     'Container': {
       component: Container,
       defaults: {children:[], style:{}},
-      form_components: [NumberInput, CSSInput, AddChildComponent],
-      form_props: [{'label':'order', name:'order'}, {'label':'css', name:'style'}, {'label':'Add Child Component', name:'children'}]
+      form_components: [NumberInput, TextInput, CSSInput, AddChildComponent],
+      form_props: [{'label':'order', name:'order'}, {'label':'class', name:'className'}, {'label':'css', name:'style'}, {'label':'Add Child Component', name:'children'}]
     },
     'Div':{
       component: Div,
@@ -126,6 +128,15 @@ let ComponentDict = {
         {'label':'label', name:'label'}, {'label':'required', name:'required', options: booleans},
         {'label':'class', name:'className'}, {'label':'css', name:'style'}]
     },
+    'NumberInput':{
+      component: NumberInput,
+      defaults: {children:[], style:{}},
+      form_components: [NumberInput, TextInput, NumberInput, TextInput, TextInput, Select, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'name', name:'name'},
+        {'label':'default', name:'default'}, {'label':'placeholder', name:'placeholder'},
+        {'label':'label', name:'label'}, {'label':'required', name:'required', options: booleans},
+        {'label':'class', name:'className'}, {'label':'css', name:'style'}]
+    },
     'PasswordInput':{
       component: PasswordInput,
       defaults: {children:[], style:{}},
@@ -137,9 +148,9 @@ let ComponentDict = {
     'ListWithChildren':{
       component: ListWithChildren,
       defaults: {children:[], style:{}},
-      form_components: [NumberInput, TextInput, TextArea, TextInput, TextArea, TextInput, TextArea, CSSInput, AddChildComponent],
+      form_components: [NumberInput, TextInput, TextArea, TextInput, TextInput, TextArea, TextInput, TextArea, CSSInput, AddChildComponent],
       form_props: [{'label':'order', name:'order'}, {'label':'class', name:'class'}, {'label':'dataList', name:'dataList'},
-        {'label':'dataUrl', name:'dataUrl'}, {'label':'dataMapping', name:'dataMapping'}, {'label':'noDataMessage', name:'noDataMessage'},
+        {'label':'dataUrl', name:'dataUrl'}, {'label':'Object name', name:'objectName'}, {'label':'dataMapping', name:'dataMapping'}, {'label':'noDataMessage', name:'noDataMessage'},
         {'label':'lastInstanceData', name:'lastInstanceData'}, {'label':'css', name:'style'}, {'label':'Add Child Component', name:'children'}]
     },
     'If':{
@@ -158,9 +169,27 @@ let ComponentDict = {
     'Alarm':{
       component: Alarm,
       defaults: {children:[], style:{}},
-      form_components: [NumberInput, FileInput, CSSInput],
-      form_props: [{'label':'order', name:'order'}, {'label':'audioUrl', name:'audioUrl'}, {'label':'css', name:'style'}]
+      form_components: [NumberInput, NumberInput, TextInput, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'seconds', name:'seconds'}, {'label':'audioUrl', name:'audioUrl'}, {'label':'css', name:'style'}]
     },
+    'LogInForm': {
+      component: LogInForm,
+      defaults: {redirectUrl:'', style:{}},
+      form_components: [NumberInput, TextInput, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'redirectUrl', name:'redirectUrl'}, {'label':'css', name:'style'}]
+    },
+    'SignUpForm': {
+      component: SignUpForm,
+      defaults: {redirectUrl:'', style:{}},
+      form_components: [NumberInput, TextInput, CSSInput],
+      form_props: [{'label':'order', name:'order'}, {'label':'redirectUrl', name:'redirectUrl'}, {'label':'css', name:'style'}]
+    },
+    'Nav': {
+      component: Nav,
+      defaults: {redirectUrl:'', style:{}},
+      form_components: [NumberInput],
+      form_props: [{'label':'order', name:'order'}]
+    }
 };
 
 
@@ -228,12 +257,17 @@ class DisplayInstance extends Component {
   }
 
   setComponent() {
-    this.props.setComponent(this.props.index)
+    if (!this.props.show) {
+      this.props.setComponent(this.props.index)
+    }
   }
 
   render() {
+    console.log("Content", this.props.content)
     return (
-      <div onClick={this.setComponent} style={this.props.style}>{this.props.content}</div>
+      <div onClick={this.setComponent} style={this.props.style}>
+        <ChildComponent component={this.props.content} newProps={this.props} />
+      </div>
     )
   }
 }
@@ -242,21 +276,31 @@ class PageBuilder extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {components: [], selectedComponent: -1, loaded: true, adding:false};
+        this.state = {components: [], selectedComponent: -1, loaded: false, adding:false};
 
         this.addingComponent = this.addingComponent.bind(this);
         this.addComponent = this.addComponent.bind(this);
         this.setComponent = this.setComponent.bind(this);
         this.setGlobalState = this.setGlobalState.bind(this);
         this.save = this.save.bind(this);
+        this.delete = this.delete.bind(this);
         this.reload = this.reload.bind(this);
         this.load = this.load.bind(this);
         this.componentListCreator = this.componentListCreator.bind(this);
+        this.setGlobalStateName = this.setGlobalStateName.bind(this);
+        this.removeComponent = this.removeComponent.bind(this);
+        this.componentsToRemove = this.componentsToRemove.bind(this);
     }
 
     componentDidMount() {
       if (this.props.page_id) {
         ajaxWrapper('GET','/api/modelWebsite/page/' + this.props.page_id + '/', {}, this.load)
+      }
+      else if (this.props.show) {
+        ajaxWrapper('GET','/api/modelWebsite/page/?url=' + this.props.route, {}, this.load)
+      }
+      else {
+        this.setState({loaded:true})
       }
     }
 
@@ -264,7 +308,11 @@ class PageBuilder extends Component {
       var page = result[0]['page'];
       var components = JSON.parse(page['components'])
       var componentProps = JSON.parse(page['componentProps'])
-      this.setState({components: components, componentProps:componentProps})
+      this.setState({components: components, componentProps:componentProps, name:page.name, url: page.url, loaded:true})
+    }
+
+    setGlobalStateName(name,state) {
+      this.setState(state)
     }
 
     setGlobalState(name, state) {
@@ -295,15 +343,23 @@ class PageBuilder extends Component {
       if (this.props.page_id) {
         submitUrl += this.props.page_id + '/'
       }
-      var data = {'components':JSON.stringify(this.state.components), componentProps: JSON.stringify(this.state.componentProps)}
+      var data = {'components':JSON.stringify(this.state.components), componentProps: JSON.stringify(this.state.componentProps), name: this.state.name, url: this.state.url}
       console.log("Data", data)
       ajaxWrapper('POST',submitUrl, data, this.reload)
 
     }
 
+    delete() {
+      if (this.props.page_id) {
+        ajaxWrapper('POST','/api/modelWebsite/page/' + this.props.page_id + '/delete/', {}, () => window.location = '/pageList/')
+      }
+    }
+
     reload(result) {
       console.log("Result", result)
-      //window.location.href = '/pagebuilder/' + result[0]['page']['id'] + '/'
+      if (!this.props.page_id) {
+        window.location.href = '/pagebuilder/' + result[0]['page']['id'] + '/'
+      }
     }
 
     componentListCreator(top_level, lookup) {
@@ -323,25 +379,59 @@ class PageBuilder extends Component {
 
     displayCreator(top_level, lookup) {
       var display = [];
+      top_level = sort_objects(top_level, ['props','order'])
+      console.log("Top Level", top_level)
       for (var index in top_level) {
         var component = top_level[index]
         var TempComponent = ComponentDict[component['type']]['component'];
         var props = {...component['props']}
         if (props['children']) {
-          props['children'] = this.displayCreator(lookup[component['key']], lookup)
+          props['children'] = sort_objects(this.displayCreator(lookup[component['key']], lookup), ['props','content','props','order'])
         }
+        console.log("Props", props)
         if (this.state.selectedComponent == component['key']) {
-          display.push(<DisplayInstance content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} style={{'border':'2px solid #0f0'}} />)
+          display.push(<DisplayInstance show={this.props.show} content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} style={{'border':'2px solid #0f0'}} />)
         }
         else {
-          display.push(<DisplayInstance content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} />)
+          display.push(<DisplayInstance show={this.props.show} content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} />)
         }
       }
       return display
     }
 
+    componentsToRemove(parent_id) {
+      var components = this.state.components;
+      var remove_components = [];
+      for (var index in components) {
+        var component = components[index];
+        if (parseInt(component['parent']) == parseInt(parent_id)) {
+          remove_components.push(index);
+          remove_components.push(...this.componentsToRemove(index))
+        }
+      }
 
+      return remove_components;
+    }
 
+    removeComponent() {
+      console.log("Remove Component", this.state.selectedComponent);
+      var components = this.state.components;
+      var componentProps = this.state.componentProps;
+      var componentsToRemove = this.componentsToRemove(this.state.selectedComponent);
+      componentsToRemove.push(this.state.selectedComponent);
+      console.log("Components To Remove", componentsToRemove)
+
+      var new_components = [];
+      var new_component_props = [];
+      for (var index in components) {
+        if (componentsToRemove.indexOf(index) == -1) {
+          new_components.push(components[index]);
+          new_component_props.push(componentProps[index]);
+        }
+      }
+
+      this.setState({components: new_components, componentProps:new_component_props, selectedComponent: -1});
+    }
 
     render() {
 
@@ -358,10 +448,6 @@ class PageBuilder extends Component {
           component_parent_dict[parseInt(component['parent'])].push(component)
         }
       }
-
-      console.log("Components", this.state.components)
-      console.log("Top Level Components", topLevelComponents)
-      console.log("component_parent_dict", component_parent_dict)
 
       var display = this.displayCreator(topLevelComponents, component_parent_dict);
 
@@ -399,14 +485,30 @@ class PageBuilder extends Component {
         </EmptyModal>
       </div>;
 
+      var nameComponents = [TextInput, TextInput]
+      var nameComponentProps = [{'name':'name', label:'name', placeholder:'Page Name'}, {'name':'url', label:'url', 'placeholder':'/'}]
+
+      if (this.props.show) {
+        var content = <div>
+        {display}
+        </div>
+      }
+      else {
         var content =
         <div>
         <a href='/pageList/'>Page List</a>
+        <div className="container">
+           <a href='/pageList/'>See All Pages</a>
+           <Form components={nameComponents} componentProps={nameComponentProps} defaults={this.state} autoSetGlobalState={true} setGlobalState={this.setGlobalStateName} globalStateName={'form'} />
+         </div>
           <div className="row">
 
             <div className="col-2">
               {componentColumn}
               <Button text={'save'} type={'success'} onClick={this.save} />
+              <If logic={this.props.page_id}>
+                <Button text={'delete'} type={'danger'} onClick={this.delete} deleteType={true} />
+              </If>
             </div>
             <div className="col-8">
               {display}
@@ -419,6 +521,7 @@ class PageBuilder extends Component {
           </div>
 
         </div>;
+      }
 
         return (
             <div className="container-fluid">

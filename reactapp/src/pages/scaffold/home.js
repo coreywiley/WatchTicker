@@ -28,11 +28,6 @@ class Home extends Component {
                 <h1>Welcome to your task tracker</h1>
                 <br/>
 
-                <ListWithChildren dataUrl={'/api/home/task/'} objectName="task" dataMapping={{'text':'{name}'}}>
-                  <Paragraph text={'Hi!'} />
-                  <Header text={'Hi!'} />
-                </ListWithChildren>
-
                 <Button href={'/signUp/'} text={"Sign Up"} type={'success'} />
                 <Button href={'/logIn/'} text={"Log In"} type={'outline-success'} />
             </div>

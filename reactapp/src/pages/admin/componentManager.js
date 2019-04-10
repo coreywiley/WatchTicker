@@ -78,7 +78,7 @@ class ComponentManager extends Component {
           return (\n\
             <div className={'form-group ' + this.props.layout}>\n\
             <label>{this.props.label}</label>\n\
-            <input type='text' className='form-control' name={this.props.name} onChange={this.props.handlechange} value={this.props.value} />\n\
+            <input type='text' className='form-control' name={this.props.name} onChange={this.props.handleChange} value={this.props.value} />\n\
           </div>\n\
       )\n\
   }\n\

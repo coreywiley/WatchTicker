@@ -23,9 +23,7 @@ class Header extends React.Component {
                 header = <h6 style={style}>{this.props.text}</h6>;
             }
         }
-        return (
-            <div className={this.props.className}>{header}</div>
-        );
+        return (header);
     }
 }
 

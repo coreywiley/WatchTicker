@@ -5,8 +5,13 @@ import {Div} from 'library';
 class Container extends React.Component {
           render() {
 
+                var className = "container ";
+                if (this.props.className) {
+                  className += this.props.className;
+                }
+
                 return (
-                    <Div className="container" style={this.props.style}>
+                    <Div className={className} style={this.props.style}>
                       {this.props.children}
                     </Div>
                 );

@@ -26,7 +26,7 @@ class SignUp extends Component {
               window.location.href = redirect;
           }
           else {
-              window.location.href = '/';
+              window.location.href = this.props.redirectUrl;
           }
         }
     }
@@ -34,23 +34,16 @@ class SignUp extends Component {
     render() {
 
         var content =
-        <div className="container">
-            <div className="row">
-                <div className="col-md-4"></div>
-                <div className="col-md-4">
-                    <h2>Sign Up</h2>
-                    <FormWithChildren submitUrl="/users/signup" defaults={this.state} redirect={this.logIn}>
-                      <TextInput name="first_name" label="First Name" />
-                      <TextInput name="last_name" label="Last Name" />
-                      <TextInput name="email" label="Email" />
-                      <PasswordInput name="password" label="Password" confirm_password={true} />
-                    </FormWithChildren>
-                    <If logic={this.state.error}>
-                      <Alert type={'danger'} text={this.state.error} />
-                    </If>
-                </div>
-                <div className="col-md-4"></div>
-            </div>
+        <div>
+            <FormWithChildren submitUrl="/users/signup/" defaults={this.state} redirect={this.logIn}>
+              <TextInput name="first_name" label="First Name" />
+              <TextInput name="last_name" label="Last Name" />
+              <TextInput name="email" label="Email" />
+              <PasswordInput name="password" label="Password" confirm_password={true} />
+            </FormWithChildren>
+            <If logic={this.state.error}>
+              <Alert type={'danger'} text={this.state.error} />
+            </If>
         </div>;
 
 
