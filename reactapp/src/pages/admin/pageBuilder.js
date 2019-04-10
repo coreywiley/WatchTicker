@@ -3,7 +3,7 @@ import {ajaxWrapper, sort_objects} from 'functions';
 import {Wrapper} from 'library';
 import {Form, FormWithChildren, LogInForm, SignUpForm, ListWithChildren, Div, If, Break, NumberInput,
         BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput,
-        Container, EmptyModal, PasswordInput, ChildComponent} from 'library';
+        Container, EmptyModal, PasswordInput, ChildComponent, Json_Input} from 'library';
 import APIQuery from './apiQuery.js';
 import Alarm from 'projectLibrary/alarm.js';
 import PomodoroCard from 'projectLibrary/pomodoroCard.js';
@@ -148,7 +148,7 @@ let ComponentDict = {
     'ListWithChildren':{
       component: ListWithChildren,
       defaults: {children:[], style:{}},
-      form_components: [NumberInput, TextInput, TextArea, TextInput, TextInput, TextArea, TextInput, TextArea, CSSInput, AddChildComponent],
+      form_components: [NumberInput, TextInput, Json_Input, TextInput, TextInput, Json_Input, TextInput, TextArea, CSSInput, AddChildComponent],
       form_props: [{'label':'order', name:'order'}, {'label':'class', name:'class'}, {'label':'dataList', name:'dataList'},
         {'label':'dataUrl', name:'dataUrl'}, {'label':'Object name', name:'objectName'}, {'label':'dataMapping', name:'dataMapping'}, {'label':'noDataMessage', name:'noDataMessage'},
         {'label':'lastInstanceData', name:'lastInstanceData'}, {'label':'css', name:'style'}, {'label':'Add Child Component', name:'children'}]
