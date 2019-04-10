@@ -133,10 +133,8 @@ class App extends Component {
               //window.location = '/login/';
               console.log("Need to be logged in");
           }
-          else if (params[0] === ""){
-              //Home page
-              content = <Home />;
-
+          else if (route == 'logout') {
+            this.logOut();
           }
           else if (route === "admin") {
               //List components
