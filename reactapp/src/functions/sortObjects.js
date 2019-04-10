@@ -18,12 +18,31 @@ function sort_by_key_reverse(array, key) {
     });
 }
 
-function sort_objects(array, key, order=false) {
-  if (order) {
-    return sort_by_key(array, key)
+function sort_by_keys(array, keys) {
+  return array.sort(function(a, b) {
+        var x = a;
+        var y = b;
+        for (var index in keys) {
+          x = x[keys[index]]
+          y = y[keys[index]]
+        }
+        if (x < y) return -1;
+        if (y > x) return 1;
+        return 0;
+    });
+}
+
+function sort_objects(array, keys, order=false) {
+  if (typeof(keys) != 'string') {
+    return sort_by_keys(array, keys);
   }
   else {
-    return sort_by_key_reverse(array, key)
+    if (order) {
+      return sort_by_key(array, keys)
+    }
+    else {
+      return sort_by_key_reverse(array, keys)
+    }
   }
 }
 
