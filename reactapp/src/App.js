@@ -164,15 +164,7 @@ class App extends Component {
           else if (route == "instance") {
               content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token}/>;
           }
-          else if (route == "login") {
-              content = <LogIn />;
-          }
-          else if (route == "signup") {
-              content = <SignUp />;
-          }
-          else if (route == "loggedin") {
-              content = <LoggedIn  />;
-          }
+
           else if (route == "passwordresetrequest") {
               content = <PasswordResetRequest />;
           }
@@ -191,14 +183,18 @@ class App extends Component {
           else if (route == 'pagelist') {
             content = <PageList />
           }
-          else if (route == 'viewer') {
-            content = <TaskList user={this.state.user} />
-          }
           else if (route == 'edittask') {
             content = <EditTask user={this.state.user} />
           }
           else if (route == 'analytics') {
             content = <Analytics user={this.state.user} />
+          }
+          else {
+            var formatRoute = "/" + route + "/"
+            if (route == "") {
+              formatRoute = "/"
+            }
+            content = <PageBuilder show={true} route={formatRoute} />
           }
         }
 
