@@ -3,7 +3,7 @@ import {ajaxWrapper, sort_objects} from 'functions';
 import {Wrapper} from 'library';
 import {Form, FormWithChildren, LogInForm, SignUpForm, ListWithChildren, Div, If, Break, NumberInput,
         BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput,
-        Container, EmptyModal, PasswordInput, ChildComponent, Json_Input} from 'library';
+        Container, EmptyModal, PasswordInput, ChildComponent, Json_Input, Function_Input} from 'library';
 import APIQuery from './apiQuery.js';
 import Alarm from 'projectLibrary/alarm.js';
 import PomodoroCard from 'projectLibrary/pomodoroCard.js';
@@ -105,11 +105,11 @@ let ComponentDict = {
     'Button':{
       component: Button,
       defaults: {children:[], style:{}},
-      form_components: [NumberInput, TextInput, Select, TextInput, TextInput, CSSInput, Select, Select, Select],
+      form_components: [NumberInput, TextInput, Select, TextInput, TextInput, CSSInput, Select, Select, Select, Function_Input],
       form_props: [{'label':'order', name:'order'}, {'label':'text', name:'text'},
       {'label':'type', name:'type', options:buttonTypes}, {'label':'href', name:'href'}, {'label':'class', name:'className'},
       {'label':'css', name:'style'},{'label':'hover', name:'hover', options:booleans},
-      {'label':'disabled', name:'disabled', options:booleans},{'label':'deleteType', name:'deleteType', options:booleans}]
+      {'label':'disabled', name:'disabled', options:booleans},{'label':'deleteType', name:'deleteType', options:booleans}, {'label':'Functions On Click', name:'functions'}]
     },
     'FormWithChildren':{
       component: FormWithChildren,

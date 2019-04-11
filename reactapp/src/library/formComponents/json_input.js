@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import {resolveVariables} from 'functions';
 import {If, Alert} from 'library';
 
-class TextArea extends Component {
+class Json_Input extends Component {
     constructor(props) {
       super(props);
-      this.state = {'error': null}
+      this.state = {'error': null, current_val:''}
 
       this.handle_change = this.handle_change.bind(this);
     }
@@ -13,13 +13,17 @@ class TextArea extends Component {
     handle_change = (e) => {
        var name = e.target.getAttribute("name");
        var newState = {};
+       var value = e.target.value;
+       console.log("Value", value)
 
        try {
-         newState[name] = JSON.parse(e.target.value);
+         console.log("Here", value)
+         newState[name] = JSON.parse(value);
          this.setState({error: null}, this.props.setFormState(newState))
        }
-       catch {
-         this.setState({error: 'Invalid Json'})
+       catch(err) {
+         console.log("Here", value)
+         this.setState({error: err.toString(), current_val: value})
        }
 
     }
@@ -59,4 +63,4 @@ class TextArea extends Component {
     }
 }
 
-export default TextArea;
+export default Json_Input;

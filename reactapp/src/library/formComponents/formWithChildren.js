@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {resolveVariables, ajaxWrapper} from 'functions';
+import {resolveVariables, ajaxWrapper, run_functions} from 'functions';
 import {Alert, Button, ChildComponent, TextInput} from 'library';
 
 /*
@@ -257,6 +257,9 @@ class FormWithChildren extends Component {
         }
         else if (this.props.refreshData) {
             this.props.refreshData();
+        }
+        else if (this.props.functions) {
+          run_functions(this.props.functions, this.setState, this.props.setGlobalState)
         }
     }
 

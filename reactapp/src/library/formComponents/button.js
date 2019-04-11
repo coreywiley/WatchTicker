@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {resolveVariables} from 'functions';
+import {ajaxWrapper, resolveVariables, run_functions} from 'functions';
 import {Modal} from 'library'
 //<Button type={'success'} text={'Add New Event'} href={'/newEvent/'} />
 
@@ -33,6 +33,9 @@ class Button extends React.Component {
         }
         else if (this.props.onClick) {
             this.props.onClick(e);
+        }
+        else if (this.props.functions) {
+          run_functions(this.props.functions, this.setState, this.props.setGlobalState)
         }
     }
 
