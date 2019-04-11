@@ -109,9 +109,12 @@ class App extends Component {
     }
 
     render() {
-        console.log(this.props);
         var params = this.getURL();
-        console.log("Params", params);
+        var param_dict = {};
+        for (var index in params) {
+          param_dict[index.toString()] = params[index]
+        }
+        window.cmState.setGlobalState('params',param_dict)
 
         var adminPages = [
             'applist','models','modelinstances',
@@ -157,20 +160,14 @@ class App extends Component {
           else if (route == "modelinstancestable") {
               content = <InstanceTable app={params[1]} model={params[2]}/>;
           }
-
           else if (route == "modelmaker") {
               content = <ModelMaker user_id={this.state.token}/>;
           }
-
           else if (route == "instance") {
               content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token}/>;
           }
-
           else if (route == "passwordresetrequest") {
               content = <PasswordResetRequest />;
-          }
-          else if (route == "passwordreset") {
-              content = <PasswordReset  user_id={params[1]} />;
           }
           else if (route == "test") {
               content = <Test id={params[1]} />;
@@ -183,9 +180,6 @@ class App extends Component {
           }
           else if (route == 'pagelist') {
             content = <PageList />
-          }
-          else if (route == 'edittask') {
-            content = <EditTask user={this.state.user} />
           }
           else if (route == 'analytics') {
             content = <Analytics user={this.state.user} />

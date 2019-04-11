@@ -15,7 +15,25 @@ class If extends Component {
     }
 
     render() {
-        if (this.props.logic) {
+    var logic = false;
+    var logic_list = resolveVariables(this.props.logic, window.cmState.getGlobalState(this))
+
+    for (var index in logic_list) {
+      var logic_check = logic_list[index][0]
+      var logic_value = logic_list[index][1];
+      if (logic_check == 'exists') {
+        if (logicValue && logic_value != '') {
+          logic = true;
+        }
+      }
+      else {
+        if (logic_check == logic_value) {
+          logic = true;
+        }
+      }
+    }
+
+    if (logic) {
             return (this.props.children)
         }
         else {

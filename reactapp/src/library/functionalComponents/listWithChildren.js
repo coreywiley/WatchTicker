@@ -45,7 +45,7 @@ class ListWithChildren extends Component {
 
     refreshData() {
       if (this.props.dataUrl) {
-        var dataUrl = resolveVariables({'dataUrl':this.props.dataUrl}, window.cmState.getGlobalState())['dataUrl'];
+        var dataUrl = resolveVariables({'dataUrl':this.props.dataUrl}, window.cmState.getGlobalState(this))['dataUrl'];
         ajaxWrapper("GET", dataUrl, {}, this.ajaxCallback);
       }
     }

@@ -1,39 +1,38 @@
+window.cmState = {'completed':'False'}
 
 function setGlobalState(name, state) {
   window.cmState[name] = state;
   if (window.cmState.subscribers) {
     for (var index in window.cmState.subscribers) {
       var component = window.cmState.subscribers[index];
-      console.log(component.constructor.name)
-      component.forceUpdate();
+      if (component.constructor.name == 'ListWithChildren') {
+        component.refreshData();
+      }
+      else {
+        component.forceUpdate();
+      }
     }
   }
-
   return true
-}
-
-function getGlobalState(name) {
-  if (name) {
-    return window.cmState[name]
-  }
-  else {
-    return window.cmState
-  }
 }
 
 function subscribe(component) {
   if (!window.cmState['subscribers']) {
     window.cmState['subscribers'] = [];
   }
-  window.cmState['subscribers'].push(component)
+  
+  if (window.cmState.subscribers.indexOf(component) == -1) {
+    window.cmState['subscribers'].push(component)
+  }
 }
 
-/*
-Put the following in your react component constructor or really anywhere that runs
-window.cmState.subscribe(this);
-*/
-window.cmState = {};
-window.cmState['subscribe'] = subscribe;
+function getGlobalState(component) {
+    if (component) {
+      subscribe(component);
+    }
+
+    return window.cmState;
+}
 
 window.cmState['setGlobalState'] = setGlobalState;
 window.cmState['getGlobalState'] = getGlobalState;

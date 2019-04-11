@@ -48,6 +48,7 @@ import HTMLInput_ from './formComponents/htmlInput.js';
 import CSSInput_ from './formComponents/cssInput.js';
 import Json_Input_ from './formComponents/json_input.js';
 import Function_Input_ from './formComponents/function_input.js';
+import PasswordResetRequest_ from './formComponents/formExtensions/passwordResetRequest.js';
 
 import Accordion_ from './functionalComponents/accordion.js';
 import LineBreak_ from './functionalComponents/lineBreak.js';
@@ -135,3 +136,4 @@ export const If = If_;
 export const SignUpForm = SignUpForm_;
 export const Json_Input = Json_Input_;
 export const Function_Input = Function_Input_;
+export const PasswordResetRequest = PasswordResetRequest_;

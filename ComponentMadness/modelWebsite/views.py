@@ -267,13 +267,13 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
     for parameter in parameters:
         if isinstance(parameters[parameter], uuid.UUID):
             continue
-
-        if ',' in parameters[parameter]:
-            newParameters[parameter] = [x for x in parameters[parameter].split(',') if x != ""]
-        if parameters[parameter] == 'true':
-            newParameters[parameter] = True
-        elif parameters[parameter] == 'false':
-            newParameters[parameter] = False
+        if parameters[parameter]:
+            if ',' in parameters[parameter]:
+                newParameters[parameter] = [x for x in parameters[parameter].split(',') if x != ""]
+            if parameters[parameter] == 'true':
+                newParameters[parameter] = True
+            elif parameters[parameter] == 'false':
+                newParameters[parameter] = False
 
         if parameter.startswith("exclude__"):
             excluded[parameter.replace("exclude__", "")] = parameters[parameter]

@@ -19,13 +19,11 @@ class Home extends Component {
 
     render() {
 
-        var config = Paragraph.config;
         console.log(config);
         console.log(Paragraph.name);
         for (var i in config['form_components']){
             console.log(config['form_components'][i].name);
         }
-
       var content =
         <div className='container'>
             <br/><br/>

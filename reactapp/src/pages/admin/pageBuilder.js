@@ -3,7 +3,7 @@ import {ajaxWrapper, sort_objects} from 'functions';
 import {Wrapper} from 'library';
 import {Form, FormWithChildren, LogInForm, SignUpForm, ListWithChildren, Div, If, Break, NumberInput,
         BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput,
-        Container, EmptyModal, PasswordInput, ChildComponent, Json_Input, Function_Input} from 'library';
+        Container, EmptyModal, PasswordInput, ChildComponent, Json_Input, Function_Input, PasswordResetRequest} from 'library';
 import APIQuery from './apiQuery.js';
 import Alarm from 'projectLibrary/alarm.js';
 import PomodoroCard from 'projectLibrary/pomodoroCard.js';
@@ -205,7 +205,9 @@ class PageBuilder extends Component {
     setGlobalState(name, state) {
       console.log("Set Global State", state)
       var components = this.state.components;
-      components[this.state.selectedComponent]['props'] = state;
+      if (components[this.state.selectedComponent]) {
+        components[this.state.selectedComponent]['props'] = state;
+      }
 
       this.setState({components:components})
     }
@@ -403,7 +405,7 @@ class PageBuilder extends Component {
             <div className="col-2">
               {componentColumn}
               <Button text={'save'} type={'success'} onClick={this.save} />
-              <If logic={this.props.page_id}>
+              <If logic={[['exists', this.props.page_id]]} >
                 <Button text={'delete'} type={'danger'} onClick={this.delete} deleteType={true} />
               </If>
             </div>
