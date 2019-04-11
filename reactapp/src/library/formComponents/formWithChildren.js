@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {resolveVariables, ajaxWrapper, run_functions} from 'functions';
-import {Alert, Button, ChildComponent, TextInput} from 'library';
+import {Alert, Button, ChildComponent, TextInput, NumberInput, CSSInput, AddChildComponent} from 'library';
 
 /*
 Example
@@ -9,6 +9,17 @@ Example
 */
 
 class FormWithChildren extends Component {
+    static config = {
+        form_components: [
+            <NumberInput label={'order'} name={'order'} />,
+            <TextInput label={'submitUrl'} name={'submitUrl'} />,
+            <TextInput label={'redirectUrl'} name={'redirectUrl'} />,
+            <TextInput label={'deleteUrl'} name={'deleteUrl'} />,
+            <CSSInput label={'css'} name={'style'} default={{}} />,
+        ],
+        can_have_children: true,
+    }
+
     constructor(props) {
         super(props);
         var defaults = {};

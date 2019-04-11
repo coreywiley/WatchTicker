@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {ajaxWrapper} from 'functions';
-import {Header, Button, Card} from 'library';
+import {Header, Button, Card, NumberInput, TextInput, CSSInput} from 'library';
 import settings from 'base/settings.js';
 
 class ExperimentalButton extends Component {
@@ -68,19 +68,29 @@ class Icons extends Component {
 }
 
 class PomodoroCard extends Component {
-  render () {
-      var buttons = [<Complete task_id={this.props.id} task_pomodoros={this.props.pomodoros} />]
+    static config = {
+        form_components: [
+            <NumberInput label={'order'} name={'order'} />,
+            <TextInput label={'id'} name={'id'} />,
+            <TextInput label={'name'} name={'name'} />,
+            <NumberInput label={'icons'} name={'icons'} />,
+            <CSSInput label={'css'} name={'style'} default={{}} />,
+        ],
+    }
 
-      return (
-        <Card name={this.props.name}
-        description={
-            <Icons num_icons={this.props.pomodoros}
-            icon={<img src='https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png' style={{width:'40px'}} />} />
-          }
-          buttons={buttons}
-        />
-      )
-  }
+    render () {
+        var buttons = [<Complete task_id={this.props.id} task_pomodoros={this.props.pomodoros} />];
+        
+        return (
+            <Card name={this.props.name}
+                description={
+                    <Icons num_icons={this.props.icons}
+                    icon={<img src='https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png' style={{width:'40px'}} />} />
+                    }
+                buttons={buttons}
+            />
+        )
+    }
 
 }
 

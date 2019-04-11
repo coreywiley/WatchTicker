@@ -1,7 +1,25 @@
 import React, { Component } from 'react';
 import {resolveVariables} from 'functions';
+import {NumberInput, TextInput, Select, CSSInput} from 'library'
+
+var BOOLEANS = [
+  {'text':'True', value:true},
+  {'text':'False', value:false},
+];
 
 class PasswordInput extends Component {
+    static config = {
+        form_components: [
+            <NumberInput label={'order'} name={'order'} />,
+            <TextInput label={'name'} name={'name'} />,
+            <TextInput label={'placeholder'} name={'placeholder'} />,
+            <Select label={'Confirm Password?'} name={'confirm_password'} options={BOOLEANS} />,
+            <Select label={'required'} name={'required'} options={BOOLEANS} />,
+            <TextInput label={'class'} name={'className'} />,
+            <CSSInput label={'css'} name={'style'} default={{}} />,
+        ],
+    }
+
     constructor(props) {
         super(props);
         this.state = {password:'',password_confirm:''};

@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import {ajaxWrapper} from 'functions';
-import {Header} from 'library';
+import {Header, NumberInput, FileInput, CSSInput} from 'library';
 import settings from 'base/settings.js';
 
 
 class Alarm extends React.Component {
+    static config = {
+        form_components: [
+            <NumberInput label={'order'} name={'order'} />,
+            <FileInput label={'audioUrl'} name={'audioUrl'} />,
+            <CSSInput label={'css'} name={'style'} default={{}} />,
+        ],
+    }
+
     constructor(props) {
       super(props);
       this.state = {seconds: props.seconds}

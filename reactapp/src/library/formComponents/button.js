@@ -1,9 +1,49 @@
 import React, { Component } from 'react';
 import {ajaxWrapper, resolveVariables, run_functions} from 'functions';
-import {Modal} from 'library'
+import {Modal, NumberInput, TextInput, Select, CSSInput} from 'library'
 //<Button type={'success'} text={'Add New Event'} href={'/newEvent/'} />
 
+var BOOLEANS = [
+  {'text':'True', value:true},
+  {'text':'False', value:false},
+];
+
+var BUTTON_TYPES = [
+  {'text': 'primary', value: 'primary'},
+  {'text': 'secondary', value: 'secondary'},
+  {'text': 'success', value: 'success'},
+  {'text': 'danger', value: 'danger'},
+  {'text': 'warning', value: 'warning'},
+  {'text': 'info', value: 'info'},
+  {'text': 'light', value: 'light'},
+  {'text': 'dark', value: 'dark'},
+  {'text': 'link', value: 'link'},
+  {'text': 'outline-primary', value: 'outline-primary'},
+  {'text': 'outline-secondary', value: 'outline-secondary'},
+  {'text': 'outline-success', value: 'outline-success'},
+  {'text': 'outline-danger', value: 'outline-danger'},
+  {'text': 'outline-warning', value: 'outline-warning'},
+  {'text': 'outline-info', value: 'outline-info'},
+  {'text': 'outline-light', value: 'outline-light'},
+  {'text': 'outline-dark', value: 'outline-dark'},
+];
+
+
 class Button extends React.Component {
+    static config = {
+        form_components: [
+            <NumberInput label={'order'} name={'order'} />,
+            <TextInput label={'text'} name={'text'} default={'Default Text'} />,
+            <Select label={'type'} name={'type'} options={BUTTON_TYPES} />,
+            <TextInput label={'href'} name={'href'} />,
+            <TextInput label={'class'} name={'className'} />,
+            <CSSInput label={'css'} name={'style'} default={{}} />,
+            <Select label={'hover'} name={'hover'} options={BOOLEANS} />,
+            <Select label={'disabled'} name={'disabled'} options={BOOLEANS} />,
+            <Select label={'deleteType'} name={'deleteType'} options={BOOLEANS} />,
+        ],
+    }
+
     constructor(props) {
       super(props);
 
