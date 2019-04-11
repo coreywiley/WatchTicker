@@ -17,3 +17,6 @@ function run_functions(functions, setState, setGlobalState) {
     }
   }
 }
+
+
+export default run_functions;
