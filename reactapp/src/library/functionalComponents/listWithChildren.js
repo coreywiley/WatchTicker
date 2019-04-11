@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
-import {resolveVariables} from 'functions';
-import {ajaxWrapper} from 'functions';
-import {Wrapper} from 'library';
-import {ChildComponent} from 'library';
-
-//Example
-//var lastInstanceData = {'name':"Something New?", 'description':"Add A New Component", 'link':"/component/", 'button':"Create New", 'button_type':"success"};
-//var dataMapping = {'button_type':'primary', 'button':'Edit', 'link':'/component/{id}/'};
-//<List dataUrl={"/api/home/component/"} component={Card} objectName={'component'} dataMapping={dataMapping} lastInstanceData={lastInstanceData} />
+import {resolveVariables, ajaxWrapper} from 'functions';
+import {Wrapper, ChildComponent} from 'library';
 
 class ListWithChildren extends Component {
     constructor(props) {
@@ -19,7 +12,6 @@ class ListWithChildren extends Component {
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
         this.refreshData = this.refreshData.bind(this);
-        console.log("Original", this.props.dataUrl)
     }
 
     componentDidMount() {
@@ -28,6 +20,7 @@ class ListWithChildren extends Component {
         } else {
             this.refreshData();
         }
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -38,7 +31,7 @@ class ListWithChildren extends Component {
 
     refreshData() {
       if (this.props.dataUrl) {
-        var dataUrl = this.props.dataUrl;
+        var dataUrl = resolveVariables({'dataUrl':this.props.dataUrl}, window.cmState.getGlobalState())['dataUrl'];
         ajaxWrapper("GET", dataUrl, {}, this.ajaxCallback);
       }
     }

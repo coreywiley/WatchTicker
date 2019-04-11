@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import {resolveVariables} from 'functions';
-import {ajaxWrapper} from 'functions';
+import {resolveVariables, ajaxWrapper} from 'functions';
 import {Alert, Button, ChildComponent, TextInput} from 'library';
 
 /*
@@ -12,7 +11,11 @@ Example
 class FormWithChildren extends Component {
     constructor(props) {
         super(props);
-        var defaults = this.props.defaults || {};
+        var defaults = {};
+        if (this.props.defaults) {
+          defaults = resolveVariables(this.props.defaults, window.cmState.getGlobalState())
+        }
+
         var children = [];
         if (this.props.children != undefined) {
           //weirdly enough this means more than one child
@@ -65,6 +68,10 @@ class FormWithChildren extends Component {
 
     componentWillReceiveProps(nextProps) {
         var defaults = nextProps.defaults || {};
+        if (nextProps.defaults) {
+          defaults = resolveVariables(nextProps.defaults, window.cmState.getGlobalState())
+        }
+
         var children = [];
 
         if (this.props.children != undefined) {
@@ -166,7 +173,10 @@ class FormWithChildren extends Component {
             this.props.submit(data)
           }
           else {
-            ajaxWrapper("POST",this.props.submitUrl, data, this.formSubmitCallback);
+            if (this.props.submitUrl) {
+              var submitUrl = resolveVariables({'submitUrl':this.props.submitUrl}, window.cmState.getGlobalState())['submitUrl'];
+              ajaxWrapper("POST", submitUrl, data, this.formSubmitCallback);
+            }
           }
         }
     }

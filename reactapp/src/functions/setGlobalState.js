@@ -6,7 +6,12 @@ function setGlobalState(name, state) {
 }
 
 function getGlobalState(name) {
-  return window.cmState[name]
+  if (name) {
+    return window.cmState[name]
+  }
+  else {
+    return window.cmState
+  }
 }
 
 window.cmState['setGlobalState'] = setGlobalState;

@@ -117,7 +117,7 @@ let ComponentDict = {
       form_components: [NumberInput, TextInput, TextInput, TextInput, CSSInput, AddChildComponent],
       form_props: [{'label':'order', name:'order'}, {'label':'submitUrl', name:'submitUrl'},
         {'label':'redirectUrl', name:'redirectUrl'}, {'label':'deleteUrl', name:'deleteUrl'},
-         {'label':'css', name:'style'}, {'label':'Add Child Component', name:'children'}]
+        {'label':'defaults', name:'defaults'}, {'label':'css', name:'style'}, {'label':'Add Child Component', name:'children'}]
     },
     'TextInput':{
       component: TextInput,

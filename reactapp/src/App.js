@@ -76,6 +76,7 @@ class App extends Component {
 
     loadUser(result){
       console.log("Load User Result", result)
+      window.cmState.setGlobalState('user',result)
         this.setState({
             user: result, loaded: true,
         });
