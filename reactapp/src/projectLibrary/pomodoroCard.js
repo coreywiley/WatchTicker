@@ -68,19 +68,22 @@ class Icons extends Component {
 }
 
 class PomodoroCard extends Component {
-    static config = {
-        form_components: [
-            <NumberInput label={'order'} name={'order'} />,
-            <TextInput label={'id'} name={'id'} />,
-            <TextInput label={'name'} name={'name'} />,
-            <NumberInput label={'icons'} name={'icons'} />,
-            <CSSInput label={'css'} name={'style'} default={{}} />,
-        ],
+    constructor(props) {
+        super(props);
+        this.config = {
+            form_components: [
+                <NumberInput label={'order'} name={'order'} />,
+                <TextInput label={'id'} name={'id'} />,
+                <TextInput label={'name'} name={'name'} />,
+                <NumberInput label={'icons'} name={'icons'} />,
+                <CSSInput label={'css'} name={'style'} default={{}} />,
+            ],
+        }
     }
 
     render () {
         var buttons = [<Complete task_id={this.props.id} task_pomodoros={this.props.pomodoros} />];
-        
+
         return (
             <Card name={this.props.name}
                 description={

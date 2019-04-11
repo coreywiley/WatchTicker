@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import {ajaxWrapper, resolveVariables} from 'functions';
-import {FormWithChildren, TextInput, Button, PasswordInput, Alert, If} from 'library';
+import {FormWithChildren, TextInput, Button, PasswordInput, Alert, If, NumberInput, CSSInput} from 'library';
 
 class LogInForm extends Component {
     constructor(props) {
         super(props);
+        this.config = {
+            form_components: [
+                <NumberInput label={'order'} name={'order'} />,
+                <TextInput label={'redirectUrl'} name={'redirectUrl'} default={''} />,
+                <CSSInput label={'css'} name={'style'} default={{}} />,
+            ],
+            can_have_children: true,
+        }
+
         this.state = {email:'',error:'', password: ''};
 
         this.formSubmit = this.formSubmit.bind(this);

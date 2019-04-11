@@ -2,11 +2,20 @@ import React, { Component } from 'react';
 import {ajaxWrapper} from 'functions';
 import {Wrapper} from 'library';
 
-import {FormWithChildren, TextInput, Select, PasswordInput, Navbar, Alert, If} from 'library';
+import {FormWithChildren, TextInput, Select, PasswordInput, Navbar, Alert, If, NumberInput, CSSInput} from 'library';
 
 class SignUp extends Component {
     constructor(props) {
         super(props);
+        this.config = {
+            form_components: [
+                <NumberInput label={'order'} name={'order'} />,
+                <TextInput label={'redirectUrl'} name={'redirectUrl'} default={''} />,
+                <CSSInput label={'css'} name={'style'} default={{}} />,
+            ],
+            can_have_children: true,
+        }
+
         this.state = {'error':null, 'first_name':'','last_name':'', 'email':'', 'password':'','type':'User'}
         this.logIn = this.logIn.bind(this);
     }

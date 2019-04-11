@@ -10,7 +10,7 @@ import PomodoroCard from 'projectLibrary/pomodoroCard.js';
 import Nav from 'projectLibrary/nav.js';
 
 
-let ComponentDict = [
+let ComponentList = [
     Paragraph,
     Header,
     Container,
@@ -24,7 +24,16 @@ let ComponentDict = [
     If,
     PomodoroCard,
     Alarm,
+    LogInForm,
+    SignUpForm,
+    Nav,
 ];
+
+var ComponentDict = {}
+for (var i in ComponentList){
+    var value = ComponentList[i];
+    ComponentDict[value.name] = value;
+}
 
 function sorter(a,b) {
   if (a[1].order > b[1].order) {
@@ -79,9 +88,9 @@ class AddChildComponent extends Component {
 
   render() {
     var addable_components = [];
-    for (var index in ComponentDict) {
-        var component = ComponentDict[index];
-        addable_components.push(<AddComponent name={component} addComponent={this.addComponent} />)
+    for (var key in ComponentDict) {
+        var component = ComponentDict[key];
+        addable_components.push(<AddComponent name={component} addComponent={this.addComponent} />);
     }
 
     return (
@@ -166,19 +175,31 @@ class PageBuilder extends Component {
         ajaxWrapper('GET','/api/modelWebsite/page/?url=' + this.props.route, {}, this.load)
       }
       else {
-        this.setState({loaded:true})
+        this.setState({loaded:true});
       }
     }
 
     load(result) {
       var page = result[0]['page'];
-      var components = JSON.parse(page['components'])
-      var componentProps = JSON.parse(page['componentProps'])
-      this.setState({components: components, componentProps:componentProps, name:page.name, url: page.url, loaded:true})
+      var components = JSON.parse(page['components']);
+      for (var i in components){
+          var component = components[i];
+          component['class'] = ComponentDict[component['type']];
+      }
+
+
+      var componentProps = JSON.parse(page['componentProps']);
+      this.setState({
+          components: components,
+          componentProps:componentProps,
+          name:page.name,
+          url: page.url,
+          loaded:true
+      });
     }
 
     setGlobalStateName(name,state) {
-      this.setState(state)
+      this.setState(state);
     }
 
     setGlobalState(name, state) {
@@ -195,7 +216,7 @@ class PageBuilder extends Component {
 
     addComponent(reference, parent = null) {
       var components = this.state.components;
-      var component = {type: reference, props: {}, parent:parent, order: components.length}
+      var component = {type: reference.name, class: reference, props: {}, parent:parent, order: components.length}
       components.push(component)
       this.setState({components: components})
     }
@@ -209,7 +230,13 @@ class PageBuilder extends Component {
       if (this.props.page_id) {
         submitUrl += this.props.page_id + '/'
       }
-      var data = {'components':JSON.stringify(this.state.components), componentProps: JSON.stringify(this.state.componentProps), name: this.state.name, url: this.state.url}
+
+      var components = this.state.components.slice(0);
+      for (var i in components){
+          delete components[i]['class'];
+      }
+
+      var data = {'components':JSON.stringify(components), componentProps: JSON.stringify(this.state.componentProps), name: this.state.name, url: this.state.url}
       console.log("Data", data)
       ajaxWrapper('POST',submitUrl, data, this.reload)
 
@@ -232,7 +259,7 @@ class PageBuilder extends Component {
       var componentList = [];
       for (var index in top_level) {
         var component = top_level[index]
-        componentList.push(<ComponentInstance name={component['type']} index={component['key']}
+        componentList.push(<ComponentInstance name={component['class']} index={component['key']}
           setComponent={this.setComponent} selectedComponent={this.state.selectedComponent} />)
         if (lookup[component['key']].length > 0) {
           componentList.push(<div style={{marginLeft:'15px'}}>
@@ -249,7 +276,7 @@ class PageBuilder extends Component {
       console.log("Top Level", top_level)
       for (var index in top_level) {
         var component = top_level[index]
-        var TempComponent = component['type'];
+        var TempComponent = component['class'];
         var props = {...component['props']};
         if (props['children']) {
           props['children'] = sort_objects(this.displayCreator(lookup[component['key']], lookup), ['props','content','props','order'])
@@ -321,16 +348,19 @@ class PageBuilder extends Component {
 
       if (this.state.selectedComponent > -1) {
         var selected_component = this.state.components[this.state.selectedComponent]
-        var components = selected_component['type'].config['form_components'];
+        var components = new selected_component['class']().config['form_components'];
 
+        var new_components = [];
         for (var index in components) {
             var component = components[index];
-            component = <ChildComponent component={component} newProps={{'parentIndex': this.state.selectedComponent, 'addComponent': this.addComponent}} />;
+            var value = selected_component['props'][component.props['name']];
+            component = React.cloneElement(component, {'default': value, 'parentIndex': this.state.selectedComponent, 'addComponent': this.addComponent});
+            new_components.push(component);
         }
 
-        var componentPropsForm = <FormWithChildren autoSetGlobalState={true} setGlobalState={this.setGlobalState}
+        var componentPropsForm = <FormWithChildren key={this.state.selectedComponent} autoSetGlobalState={true} setGlobalState={this.setGlobalState}
             globalStateName={'form'}>
-            {components}
+            {new_components}
         </FormWithChildren>
       }
 
@@ -338,8 +368,8 @@ class PageBuilder extends Component {
       var componentList = this.componentListCreator(topLevelComponents, component_parent_dict)
 
       var addable_components = [];
-      for (var index in ComponentDict) {
-          var component = ComponentDict[index];
+      for (var key in ComponentDict) {
+          var component = ComponentDict[key];
         addable_components.push(<AddComponent name={component} addComponent={this.addComponent} />)
       }
 

@@ -5,16 +5,16 @@ import settings from 'base/settings.js';
 
 
 class Alarm extends React.Component {
-    static config = {
-        form_components: [
-            <NumberInput label={'order'} name={'order'} />,
-            <FileInput label={'audioUrl'} name={'audioUrl'} />,
-            <CSSInput label={'css'} name={'style'} default={{}} />,
-        ],
-    }
-
     constructor(props) {
       super(props);
+      this.config = {
+          form_components: [
+              <NumberInput label={'order'} name={'order'} />,
+              <FileInput label={'audioUrl'} name={'audioUrl'} />,
+              <CSSInput label={'css'} name={'style'} default={{}} />,
+          ],
+      }
+      
       this.state = {seconds: props.seconds}
       this.tick = this.tick.bind(this);
     }

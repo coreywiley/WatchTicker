@@ -3,12 +3,15 @@ import {resolveVariables} from 'functions';
 import {NumberInput, TextInput, AddChildComponent} from 'library';
 
 class If extends Component {
-    static config = {
-        form_components: [
-            <NumberInput label={'order'} name={'order'} />,
-            <TextInput label={'logic'} name={'logic'} />,
-        ],
-        can_have_children: true,
+    constructor(props) {
+        super(props);
+        this.config = {
+            form_components: [
+                <NumberInput label={'order'} name={'order'} />,
+                <TextInput label={'logic'} name={'logic'} />,
+            ],
+            can_have_children: true,
+        }
     }
 
     render() {

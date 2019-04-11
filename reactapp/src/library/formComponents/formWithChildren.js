@@ -9,19 +9,19 @@ Example
 */
 
 class FormWithChildren extends Component {
-    static config = {
-        form_components: [
-            <NumberInput label={'order'} name={'order'} />,
-            <TextInput label={'submitUrl'} name={'submitUrl'} />,
-            <TextInput label={'redirectUrl'} name={'redirectUrl'} />,
-            <TextInput label={'deleteUrl'} name={'deleteUrl'} />,
-            <CSSInput label={'css'} name={'style'} default={{}} />,
-        ],
-        can_have_children: true,
-    }
-
     constructor(props) {
         super(props);
+        this.config = {
+            form_components: [
+                <NumberInput label={'order'} name={'order'} />,
+                <TextInput label={'submitUrl'} name={'submitUrl'} />,
+                <TextInput label={'redirectUrl'} name={'redirectUrl'} />,
+                <TextInput label={'deleteUrl'} name={'deleteUrl'} />,
+                <CSSInput label={'css'} name={'style'} default={{}} />,
+            ],
+            can_have_children: true,
+        }
+
         var defaults = {};
         if (this.props.defaults) {
           defaults = resolveVariables(this.props.defaults, window.cmState.getGlobalState())
@@ -78,9 +78,16 @@ class FormWithChildren extends Component {
 
 
     componentWillReceiveProps(nextProps) {
-        var defaults = nextProps.defaults || {};
+        var new_defaults = nextProps.defaults || {};
         if (nextProps.defaults) {
-          defaults = resolveVariables(nextProps.defaults, window.cmState.getGlobalState())
+          new_defaults = resolveVariables(nextProps.defaults, window.cmState.getGlobalState())
+        }
+
+        var defaults = {}
+        for (var key in new_defaults){
+            if (!(key in this.state)){
+                defaults[key] = new_defaults[key];
+            }
         }
 
         var children = [];
@@ -91,7 +98,7 @@ class FormWithChildren extends Component {
             for (var index in this.props.children) {
                 var child = this.props.children[index];
                 children.push(child)
-                if (child.props.default) {
+                if (child.props.default && !(child.props.name in this.state)) {
                   defaults[child.props.name] = child.props.default;
                 }
             }
@@ -100,16 +107,16 @@ class FormWithChildren extends Component {
             var child = this.props.children
             console.log("Child", child)
             if (child.length != 0) {
-              if (child.props.default) {
+              if (child.props.default && !(child.props.name in this.state)) {
                 defaults[child.props.name] = child.props.default;
               }
               children.push(child);
             }
           }
         }
-        defaults['children'] = children
+        defaults['children'] = children;
 
-        this.setState(defaults)
+        this.setState(defaults);
     }
 
 

@@ -1,4 +1,3 @@
-window.cmState = {'test':'test'}
 
 function setGlobalState(name, state) {
   window.cmState[name] = state;
@@ -9,7 +8,7 @@ function setGlobalState(name, state) {
       component.forceUpdate();
     }
   }
-  
+
   return true
 }
 
@@ -33,7 +32,7 @@ function subscribe(component) {
 Put the following in your react component constructor or really anywhere that runs
 window.cmState.subscribe(this);
 */
-
+window.cmState = {};
 window.cmState['subscribe'] = subscribe;
 
 window.cmState['setGlobalState'] = setGlobalState;

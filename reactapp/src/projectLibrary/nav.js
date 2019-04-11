@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import {ajaxWrapper} from 'functions';
 import settings from 'base/settings.js';
-import {Navbar} from 'library';
+import {Navbar, NumberInput} from 'library';
 
 class Nav extends React.Component {
+    constructor(props) {
+        super(props);
+        this.config = {
+            form_components: [
+                <NumberInput label={'order'} name={'order'} />,
+            ],
+            can_have_children: true,
+        }
+    }
+
     render() {
         var name = <div><img style={{'marginRight':'10px'}} src='/static/images/logo.png' height="125" /></div>;
         if (this.props.user_id) {

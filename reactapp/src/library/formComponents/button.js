@@ -30,22 +30,21 @@ var BUTTON_TYPES = [
 
 
 class Button extends React.Component {
-    static config = {
-        form_components: [
-            <NumberInput label={'order'} name={'order'} />,
-            <TextInput label={'text'} name={'text'} default={'Default Text'} />,
-            <Select label={'type'} name={'type'} options={BUTTON_TYPES} />,
-            <TextInput label={'href'} name={'href'} />,
-            <TextInput label={'class'} name={'className'} />,
-            <CSSInput label={'css'} name={'style'} default={{}} />,
-            <Select label={'hover'} name={'hover'} options={BOOLEANS} />,
-            <Select label={'disabled'} name={'disabled'} options={BOOLEANS} />,
-            <Select label={'deleteType'} name={'deleteType'} options={BOOLEANS} />,
-        ],
-    }
-
     constructor(props) {
       super(props);
+      this.config = {
+          form_components: [
+              <NumberInput label={'order'} name={'order'} />,
+              <TextInput label={'text'} name={'text'} default={'Default Text'} />,
+              <Select label={'type'} name={'type'} options={BUTTON_TYPES} />,
+              <TextInput label={'href'} name={'href'} />,
+              <TextInput label={'class'} name={'className'} />,
+              <CSSInput label={'css'} name={'style'} default={{}} />,
+              <Select label={'hover'} name={'hover'} options={BOOLEANS} />,
+              <Select label={'disabled'} name={'disabled'} options={BOOLEANS} />,
+              <Select label={'deleteType'} name={'deleteType'} options={BOOLEANS} />,
+          ],
+      }
 
       this.state = {
           modal: false,
@@ -74,9 +73,16 @@ class Button extends React.Component {
         else if (this.props.onClick) {
             this.props.onClick(e);
         }
+        else if (this.props.parent_functions) {
+            for (var i in this.props.parent_functions){
+                this.props.parent_functions[i](e);
+            }
+        }
         else if (this.props.functions) {
           run_functions(this.props.functions, this.setState, this.props.setGlobalState)
         }
+
+
     }
 
     render() {

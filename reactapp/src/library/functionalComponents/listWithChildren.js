@@ -3,22 +3,22 @@ import {resolveVariables, ajaxWrapper} from 'functions';
 import {Wrapper, ChildComponent, NumberInput, TextInput, TextArea, CSSInput, AddChildComponent} from 'library';
 
 class ListWithChildren extends Component {
-    static config = {
-        form_components: [
-            <NumberInput label={'order'} name={'order'} />,
-            <TextInput label={'class'} name={'class'} />,
-            <TextArea label={'dataList'} name={'dataList'} />,
-            <TextInput label={'dataUrl'} name={'dataUrl'} />,
-            <TextArea label={'dataMapping'} name={'dataMapping'} />,
-            <TextInput label={'noDataMessage'} name={'noDataMessage'} />,
-            <TextArea label={'lastInstanceData'} name={'lastInstanceData'} />,
-            <CSSInput label={'css'} name={'style'} default={{}} />,
-        ],
-        can_have_children: true,
-    }
-
     constructor(props) {
         super(props);
+        this.config = {
+            form_components: [
+                <NumberInput label={'order'} name={'order'} />,
+                <TextInput label={'class'} name={'class'} />,
+                <TextArea label={'dataList'} name={'dataList'} />,
+                <TextInput label={'dataUrl'} name={'dataUrl'} />,
+                <TextArea label={'dataMapping'} name={'dataMapping'} />,
+                <TextInput label={'noDataMessage'} name={'noDataMessage'} />,
+                <TextArea label={'lastInstanceData'} name={'lastInstanceData'} />,
+                <CSSInput label={'css'} name={'style'} default={{}} />,
+            ],
+            can_have_children: true,
+        }
+
         this.state = {
             componentData: [],
             loaded:false,

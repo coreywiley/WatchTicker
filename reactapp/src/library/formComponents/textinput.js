@@ -8,17 +8,20 @@ var BOOLEANS = [
 ];
 
 class TextInput extends Component {
-    static config = {
-        form_components: [
-            <NumberInput label={'order'} name={'order'} />,
-            <TextInput label={'name'} name={'name'} default={'Default Text'} />,
-            <TextInput label={'default'} name={'default'} />,
-            <TextInput label={'placeholder'} name={'placeholder'} />,
-            <TextInput label={'label'} name={'label'} />,
-            <Select label={'required'} name={'required'} options={BOOLEANS} />,
-            <TextInput label={'class'} name={'className'} />,
-            <CSSInput label={'css'} name={'style'} default={{}} />,
-        ],
+    constructor(props) {
+        super(props);
+        this.config = {
+            form_components: [
+                <NumberInput label={'order'} name={'order'} />,
+                <TextInput label={'name'} name={'name'} default={'Default Text'} />,
+                <TextInput label={'default'} name={'default'} />,
+                <TextInput label={'placeholder'} name={'placeholder'} />,
+                <TextInput label={'label'} name={'label'} />,
+                <Select label={'required'} name={'required'} options={BOOLEANS} />,
+                <TextInput label={'class'} name={'className'} />,
+                <CSSInput label={'css'} name={'style'} default={{}} />,
+            ],
+        }
     }
 
     render() {

@@ -3,8 +3,7 @@ import {resolveVariables} from 'functions';
 
 class ChildComponent extends React.Component {
     render() {
-        var child = React.cloneElement(this.props.component, this.props.newProps)
-
+        var child = React.cloneElement(this.props.component, this.props.newProps);
         return (child);
     }
 }

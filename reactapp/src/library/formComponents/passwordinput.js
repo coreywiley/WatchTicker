@@ -8,20 +8,21 @@ var BOOLEANS = [
 ];
 
 class PasswordInput extends Component {
-    static config = {
-        form_components: [
-            <NumberInput label={'order'} name={'order'} />,
-            <TextInput label={'name'} name={'name'} />,
-            <TextInput label={'placeholder'} name={'placeholder'} />,
-            <Select label={'Confirm Password?'} name={'confirm_password'} options={BOOLEANS} />,
-            <Select label={'required'} name={'required'} options={BOOLEANS} />,
-            <TextInput label={'class'} name={'className'} />,
-            <CSSInput label={'css'} name={'style'} default={{}} />,
-        ],
-    }
 
     constructor(props) {
         super(props);
+        this.config = {
+            form_components: [
+                <NumberInput label={'order'} name={'order'} />,
+                <TextInput label={'name'} name={'name'} />,
+                <TextInput label={'placeholder'} name={'placeholder'} />,
+                <Select label={'Confirm Password?'} name={'confirm_password'} options={BOOLEANS} />,
+                <Select label={'required'} name={'required'} options={BOOLEANS} />,
+                <TextInput label={'class'} name={'className'} />,
+                <CSSInput label={'css'} name={'style'} default={{}} />,
+            ],
+        }
+        
         this.state = {password:'',password_confirm:''};
         this.verifyPassword = this.verifyPassword.bind(this);
 
