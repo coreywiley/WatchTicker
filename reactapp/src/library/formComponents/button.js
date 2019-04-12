@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {ajaxWrapper, resolveVariables, run_functions} from 'functions';
-import {Modal, NumberInput, TextInput, Select, CSSInput} from 'library'
+import {Modal, NumberInput, TextInput, Select, CSSInput, Function_Input} from 'library'
 //<Button type={'success'} text={'Add New Event'} href={'/newEvent/'} />
 
 var BOOLEANS = [
@@ -43,6 +43,7 @@ class Button extends React.Component {
               <Select label={'hover'} name={'hover'} options={BOOLEANS} />,
               <Select label={'disabled'} name={'disabled'} options={BOOLEANS} />,
               <Select label={'deleteType'} name={'deleteType'} options={BOOLEANS} />,
+              <Function_Input label={'Add Function'} default={''} name={'functions'} />,
           ],
       }
 
@@ -74,7 +75,7 @@ class Button extends React.Component {
             this.props.onClick(e);
         }
         else if (this.props.parent_functions) {
-            for (var i in this.props.parent_functions){
+            for (var i in this.props.parent_functions) {
                 this.props.parent_functions[i](e);
             }
         }

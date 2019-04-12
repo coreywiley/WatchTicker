@@ -4,7 +4,7 @@ import {Wrapper} from 'library';
 
 import {FormWithChildren, TextInput, Select, PasswordInput, Navbar, Alert, If, NumberInput, CSSInput} from 'library';
 
-class SignUp extends Component {
+class SignUpForm extends Component {
     constructor(props) {
         super(props);
         this.config = {
@@ -16,7 +16,7 @@ class SignUp extends Component {
             can_have_children: true,
         }
 
-        this.state = {'error':null, 'first_name':'','last_name':'', 'email':'', 'password':'','type':'User'}
+        this.state = {'error':'', 'first_name':'','last_name':'', 'email':'', 'password':'','type':'User'}
         this.logIn = this.logIn.bind(this);
     }
 
@@ -61,4 +61,4 @@ class SignUp extends Component {
         );
     }
 }
-export default SignUp;
+export default SignUpForm;

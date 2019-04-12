@@ -11,6 +11,7 @@ class ListWithChildren extends Component {
                 <TextInput label={'class'} name={'class'} />,
                 <TextArea label={'dataList'} name={'dataList'} />,
                 <TextInput label={'dataUrl'} name={'dataUrl'} />,
+                <TextInput label={'object name'} name={'objectName'} />,
                 <TextArea label={'dataMapping'} name={'dataMapping'} />,
                 <TextInput label={'noDataMessage'} name={'noDataMessage'} />,
                 <TextArea label={'lastInstanceData'} name={'lastInstanceData'} />,

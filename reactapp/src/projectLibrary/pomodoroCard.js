@@ -87,7 +87,7 @@ class PomodoroCard extends Component {
         return (
             <Card name={this.props.name}
                 description={
-                    <Icons num_icons={this.props.icons}
+                    <Icons num_icons={this.props.pomodoros}
                     icon={<img src='https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png' style={{width:'40px'}} />} />
                     }
                 buttons={buttons}

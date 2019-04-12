@@ -236,8 +236,8 @@ class PageBuilder extends Component {
       var components = this.state.components.slice(0);
       for (var i in components){
           delete components[i]['class'];
+          delete components[i]['props']['children']
       }
-
       var data = {'components':JSON.stringify(components), componentProps: JSON.stringify(this.state.componentProps), name: this.state.name, url: this.state.url}
       console.log("Data", data)
       ajaxWrapper('POST',submitUrl, data, this.reload)
@@ -254,6 +254,9 @@ class PageBuilder extends Component {
       console.log("Result", result)
       if (!this.props.page_id) {
         window.location.href = '/pagebuilder/' + result[0]['page']['id'] + '/'
+      }
+      else {
+        ajaxWrapper('GET','/api/modelWebsite/page/' + this.props.page_id + '/', {}, this.load)
       }
     }
 
@@ -280,10 +283,9 @@ class PageBuilder extends Component {
         var component = top_level[index]
         var TempComponent = component['class'];
         var props = {...component['props']};
-        if (props['children']) {
+        if (new TempComponent().config['can_have_children']) {
           props['children'] = sort_objects(this.displayCreator(lookup[component['key']], lookup), ['props','content','props','order'])
         }
-        console.log("Props", props)
         if (this.state.selectedComponent == component['key']) {
           display.push(<DisplayInstance show={this.props.show} content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} style={{'border':'2px solid #0f0'}} />)
         }
@@ -350,7 +352,10 @@ class PageBuilder extends Component {
 
       if (this.state.selectedComponent > -1) {
         var selected_component = this.state.components[this.state.selectedComponent]
-        var components = new selected_component['class']().config['form_components'];
+        var config = new selected_component['class']().config
+        var components = config['form_components'];
+
+
 
         var new_components = [];
         for (var index in components) {
@@ -360,14 +365,21 @@ class PageBuilder extends Component {
             new_components.push(component);
         }
 
+        if (config['can_have_children']) {
+            new_components.push(<AddChildComponent label="Add Child" name="children" parentIndex={this.state.selectedComponent} addComponent={this.addComponent} default={""} />)
+        }
+
+        new_components.push(<Button default={''} name='delete' deleteType={true} text={'Delete'} onClick={this.removeComponent} type='danger' />)
+
         var componentPropsForm = <FormWithChildren key={this.state.selectedComponent} autoSetGlobalState={true} setGlobalState={this.setGlobalState}
             globalStateName={'form'}>
             {new_components}
         </FormWithChildren>
+
       }
 
 
-      var componentList = this.componentListCreator(topLevelComponents, component_parent_dict)
+    var componentList = this.componentListCreator(topLevelComponents, component_parent_dict)
 
       var addable_components = [];
       for (var key in ComponentDict) {
