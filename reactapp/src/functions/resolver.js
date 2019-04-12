@@ -17,15 +17,17 @@ function fillDict(dict, data) {
     for (var k in info) {
         console.log("K", k, info, info[k], typeof info[k])
         //Broad Detection of React.Element type and probably other things.
-        if (typeof info[k].type == "function") {
-          console.log("React.Component")
-        }
-        else if (typeof info[k] == 'object') {
-            info[k] = fillDict(info[k], data);
-        }
-        else {
-            var tempStr = info[k];
-            info[k] = fillData(tempStr, data);
+        if (info[k]) {
+            if (typeof info[k].type == "function") {
+              console.log("React.Component")
+            }
+            else if (typeof info[k] == 'object') {
+                info[k] = fillDict(info[k], data);
+            }
+            else {
+                var tempStr = info[k];
+                info[k] = fillData(tempStr, data);
+            }
         }
     }
 
