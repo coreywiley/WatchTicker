@@ -166,9 +166,6 @@ class App extends Component {
           else if (route == "instance") {
               content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token}/>;
           }
-          else if (route == "passwordresetrequest") {
-              content = <PasswordResetRequest />;
-          }
           else if (route == "test") {
               content = <Test id={params[1]} />;
           }

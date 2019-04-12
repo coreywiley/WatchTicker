@@ -9,6 +9,13 @@ class PasswordResetRequest extends Component {
         super(props);
         this.state = {'email':'', 'error':false, 'sent':false, 'loaded':true}
 
+        this.config = {
+            form_components: [
+                <NumberInput label={'order'} name={'order'} />,
+            ],
+            can_have_children: true,
+        }
+
         this.userLookup = this.userLookup.bind(this);
         this.emailCallback = this.emailCallback.bind(this);
         this.email = this.email.bind(this);

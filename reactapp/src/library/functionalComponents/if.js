@@ -22,7 +22,7 @@ class If extends Component {
       var logic_check = logic_list[index][0]
       var logic_value = logic_list[index][1];
       if (logic_check == 'exists') {
-        if (logicValue && logic_value != '') {
+        if (logic_value && logic_value != '') {
           logic = true;
         }
       }

@@ -27,6 +27,7 @@ let ComponentList = [
     LogInForm,
     SignUpForm,
     Nav,
+    PasswordResetRequest,
 ];
 
 var ComponentDict = {}
@@ -138,7 +139,6 @@ class DisplayInstance extends Component {
   }
 
   render() {
-    console.log("Content", this.props.content)
     return (
       <div onClick={this.setComponent} style={this.props.style}>
         <ChildComponent component={this.props.content} newProps={this.props} />
