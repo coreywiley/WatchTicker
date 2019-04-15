@@ -19,12 +19,12 @@ class PomodoroCard extends Component {
     render () {
 
         return (
-            		<CardWithChildren name={resolveVariables(resolveVariables({"text":"{props.name}"}, this), window.cmState.getGlobalState(this))["text"]} required={resolveVariables(resolveVariables({"text":""}, this), window.cmState.getGlobalState(this))["text"]} >
-			<Icons src={resolveVariables(resolveVariables({"text":"https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png"}, this), window.cmState.getGlobalState(this))["text"]} num_icons={resolveVariables(resolveVariables({"text":"{props.task_pomodoros}"}, this), window.cmState.getGlobalState(this))["text"]} width={resolveVariables(resolveVariables({"text":"40px"}, this), window.cmState.getGlobalState(this))["text"]} required={resolveVariables(resolveVariables({"text":""}, this), window.cmState.getGlobalState(this))["text"]} >
+            		<CardWithChildren name={resolveVariables({"text":"{props.name}"}, this)} required={""} >
+			<Icons src={"https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png"} num_icons={resolveVariables({"text":"{props.task_pomodoros}"}, this)} width={"40px"} required={""} >
 </Icons>
-			<Button text={resolveVariables(resolveVariables({"text":"Start Pomodoro"}, this), window.cmState.getGlobalState(this))["text"]} type={resolveVariables(resolveVariables({"text":"primary"}, this), window.cmState.getGlobalState(this))["text"]} required={resolveVariables(resolveVariables({"text":""}, this), window.cmState.getGlobalState(this))["text"]} functions={resolveVariables(resolveVariables({"text":[['ajaxWrapper', ''], ['ajaxWrapper', ''], ['setGlobalState', {'alarm': true}]]}, this), window.cmState.getGlobalState(this))["text"]} >
+			<Button text={"Start Pomodoro"} type={"primary"} required={""} functions={[['ajaxWrapper', ''], ['ajaxWrapper', ''], ['setGlobalState', {'alarm': true}]]} >
 </Button>
-			<Button text={resolveVariables(resolveVariables({"text":"Complete"}, this), window.cmState.getGlobalState(this))["text"]} type={resolveVariables(resolveVariables({"text":"success"}, this), window.cmState.getGlobalState(this))["text"]} required={resolveVariables(resolveVariables({"text":""}, this), window.cmState.getGlobalState(this))["text"]} functions={resolveVariables(resolveVariables({"text":[['ajaxWrapper', {'type': 'POST', 'url': '/api/home/task/{props.task_id}/', 'data': {'completed': true}}], ['setGlobalState', {'refresh': true}]]}, this), window.cmState.getGlobalState(this))["text"]} >
+			<Button text={"Complete"} type={"success"} required={""} functions={resolveVariables({"text":[['ajaxWrapper', {'type': 'POST', 'url': '/api/home/task/{props.task_id}/', 'data': {'completed': true}}], ['setGlobalState', {'refresh': true}]]}, this)} >
 </Button>
 </CardWithChildren>
         )
