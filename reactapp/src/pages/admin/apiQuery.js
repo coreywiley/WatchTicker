@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import {ajaxWrapper} from 'functions';
-import {Wrapper} from 'library';
-import {Form, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button} from 'library';
+import {ajaxWrapper} from "functions";
+import {Wrapper, Form, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button} from 'library';
 
 
 let ComponentDict = {
@@ -20,7 +19,7 @@ class APIQuery extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {url: '/api/' + this.props.app + '/' + this.props.model.toLowerCase() + '/', result: '', loaded:false, fields:[]};
+        this.state = {url: '/api/' + this.props.app + '/' + this.props.model.toLowerCase() + '/', result: '', loaded:false, fields:[], post_data:'{}', request_type:'GET'};
 
         this.setGlobalState = this.setGlobalState.bind(this);
         this.query = this.query.bind(this);
@@ -41,7 +40,7 @@ class APIQuery extends Component {
     }
 
     query() {
-      ajaxWrapper('GET',this.state.url, {}, this.queryCallback)
+      ajaxWrapper(this.state.request_type,this.state.url, JSON.parse(this.state.post_data), this.queryCallback)
     }
 
     queryCallback(result) {
@@ -50,10 +49,12 @@ class APIQuery extends Component {
 
     render() {
 
-        var Components = [TextInput]
+        var Components = [TextInput, TextInput, Select]
 
         var url = {'value':'/api/home/', 'placeholder':'/api/home/', 'name':'url', 'label':'URL Query'}
-        var ComponentProps = [url]
+        var post_data = {'value': '', 'placeholder':'{}', 'name':'post_data', label:'post_data'}
+        var request_type = {'value':'', defaultOption:'GET', name:'request_type', options:[{'text':'GET','value':'GET'}, {'text':'POST','value':'POST'}]}
+        var ComponentProps = [url, post_data, request_type]
 
         var fields = [];
 
@@ -78,6 +79,7 @@ class APIQuery extends Component {
 
           {normForm}
           <Button text={'Query'} type={'success'} onClick={this.query} />
+          <Button text={'Clear'} type={'info'} onClick={() => this.setState({result: ''})} />
           <p>Result:</p>
           <p>{this.state.result}</p>
         </div>

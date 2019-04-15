@@ -8,7 +8,7 @@ class Nav extends React.Component {
         super(props);
         this.config = {
             form_components: [
-                <NumberInput label={'order'} name={'order'} />,
+                
             ],
             can_have_children: true,
         }

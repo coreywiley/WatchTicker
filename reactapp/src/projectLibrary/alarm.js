@@ -9,7 +9,7 @@ class Alarm extends React.Component {
       super(props);
       this.config = {
           form_components: [
-              <NumberInput label={'order'} name={'order'} />,
+              
               <FileInput label={'audioUrl'} name={'audioUrl'} />,
               <CSSInput label={'css'} name={'style'} default={{}} />,
           ],
