@@ -3,7 +3,6 @@ import {ajaxWrapper, sort_objects} from 'functions';
 import {Wrapper, NumberInput, Button, FormWithChildren, EmptyModal, TextInput, If} from 'library';
 import ComponentDict from './componentDict.js';
 import AddChildComponent from './addChildComponent.js';
-import AddComponent from './addComponent.js';
 import ComponentInstance from './componentInstance.js';
 import DisplayInstance from './displayInstance.js';
 
@@ -12,9 +11,8 @@ class PageBuilder extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {components: [], selectedComponent: -1, loaded: false, adding:false};
+        this.state = {components: [], selectedComponent: -1, loaded: false};
 
-        this.addingComponent = this.addingComponent.bind(this);
         this.addComponent = this.addComponent.bind(this);
         this.setComponent = this.setComponent.bind(this);
         this.setGlobalState = this.setGlobalState.bind(this);
@@ -26,6 +24,28 @@ class PageBuilder extends Component {
         this.setGlobalStateName = this.setGlobalStateName.bind(this);
         this.removeComponent = this.removeComponent.bind(this);
         this.componentsToRemove = this.componentsToRemove.bind(this);
+        this.addBuildingBlock = this.addBuildingBlock.bind(this);
+    }
+
+    addBuildingBlock (building_block, parent_index) {
+        console.log("Building Block", building_block, parent_index)
+        var components = this.state.components
+        var next_key = components.length;
+        var new_components = JSON.parse(building_block['components'])
+        var parent_key_map = {null: parent_index}
+        for (var index in new_components) {
+            var new_component = new_components[index]
+            parent_key_map[new_component['key']] = next_key;
+            new_component['key'] = next_key;
+            if (parent_key_map[new_component['parent']]) {
+                new_component['parent'] = parent_key_map[new_component['parent']]
+            }
+
+            new_component['class'] = ComponentDict[new_component['type']];
+            components.push(new_component);
+            next_key += 1;
+        }
+        this.setState({components:components})
     }
 
     componentDidMount() {
@@ -71,10 +91,6 @@ class PageBuilder extends Component {
       }
 
       this.setState({components:components})
-    }
-
-    addingComponent() {
-      this.setState({'adding':!this.state.adding})
     }
 
     addComponent(reference, parent = null) {
@@ -227,7 +243,7 @@ class PageBuilder extends Component {
         }
 
         if (config['can_have_children']) {
-            new_components.push(<AddChildComponent label="Add Child" name="children" parentIndex={this.state.selectedComponent} addComponent={this.addComponent} default={""} />)
+            new_components.push(<AddChildComponent label="Add Child" name="children" parentIndex={this.state.selectedComponent} addComponent={this.addComponent} default={""} addBuildingBlock={this.addBuildingBlock} />)
         }
 
         new_components.push(<Button default={''} name='delete' deleteType={true} text={'Delete'} onClick={this.removeComponent} type='danger' />)
@@ -242,19 +258,10 @@ class PageBuilder extends Component {
 
     var componentList = this.componentListCreator(topLevelComponents, component_parent_dict)
 
-      var addable_components = [];
-      for (var key in ComponentDict) {
-          var component = ComponentDict[key];
-        addable_components.push(<AddComponent name={component} addComponent={this.addComponent} />)
-      }
-
       var componentColumn = <div>
         <h1>Component List</h1>
-        <Button text={'Add Component'} type={'success'} onClick={this.addingComponent} />
+        <AddChildComponent label="Add Component" name="children" parentIndex={null} addComponent={this.addComponent} default={""} addBuildingBlock={this.addBuildingBlock} />
         {componentList}
-        <EmptyModal show={this.state.adding} onHide={this.addingComponent}>
-          {addable_components}
-        </EmptyModal>
       </div>;
 
       var nameComponents = [TextInput, TextInput]
