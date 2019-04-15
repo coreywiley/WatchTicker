@@ -4,10 +4,8 @@ import {ajaxWrapper, setGlobalState} from "functions";
 import {Wrapper} from 'library';
 
 //Component Madness
-import ComponentList from './pages/admin/componentList.js';
-import ComponentManager from './pages/admin/componentManager.js';
-import PageList from './pages/admin/pageList.js';
-import PageManager from './pages/admin/pageManager.js';
+import PageList from './pages/page_builder/pageList.js';
+import PageBuilder from './pages/page_builder/pageBuilder.js';
 
 //Admin
 import AppList from './pages/admin/appList.js';
@@ -32,7 +30,6 @@ import ModelMaker from 'djangoModelMaker.js';
 import APIDocs from './pages/admin/apiDocs.js';
 
 import Test from './pages/modelEditAndView/WYSIWYG.js';
-import PageBuilder from './pages/admin/pageBuilder.js';
 import TaskList from './pages/listTask.js';
 import EditTask from './pages/editTask.js';
 import Analytics from './pages/pomodorosByDay.js';
@@ -144,10 +141,6 @@ class App extends Component {
               //List components
               content = <Home admin={'admin'} />;
           }
-           else if (route === "components") {
-              //List components
-              content = <ComponentList />;
-          }
           else if (route == "applist") {
               content = <AppList user_id={this.state.token}/>;
           }
@@ -173,7 +166,7 @@ class App extends Component {
             content = <APIDocs />
           }
           else if (route == 'pagebuilder') {
-            content = <PageBuilder page_id={params[1]} />
+            content = <PageBuilder page_id={params[2]} page_group_id={params[1]} />
           }
           else if (route == 'pagelist') {
             content = <PageList />

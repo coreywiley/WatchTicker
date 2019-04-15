@@ -23,7 +23,9 @@ from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, 
 from user.permissions import staff_required
 from modelWebsite.helpers.databaseOps import insert
 from modelWebsite.models import ModelConfig, Page
-
+import copy
+import re
+from modelWebsite.helpers.page_builder import componentTree, componentPrint
 
 def CSRFMiddlewareToken(request):
     # Gather context and send it to React
@@ -775,3 +777,69 @@ def PhotoUpload(request):
         uploaded_files.append({'url': url, 'order': i, 'filename': name + '_' + file.name})
     #return url to file
     return JsonResponse({'uploaded_files':uploaded_files})
+
+def exportProjectComponent(request):
+    filepath = os.path.join(os.getcwd(), "..", "reactapp", "src", "pages", "page_builder")
+    dictTemplatePath = os.path.join(filepath, "componentDictTemplate.js")
+
+    library_imports = ["FormWithChildren", "LogInForm", "SignUpForm", "ListWithChildren", "Div", "If", "Break", "NumberInput",
+        "BooleanInput", "TextInput", "Select", "TextArea", "FileInput", "Button", "Header", "Paragraph", "CSSInput",
+        "Container", "EmptyModal", "PasswordInput", "ChildComponent", "Json_Input", "Function_Input", "PasswordResetRequest",
+        "CardWithChildren", "Icons"]
+    project_library_imports = []
+    all_imports = copy.deepcopy(library_imports)
+
+    project_components = Page.objects.filter(pagegroup='0294d7d0-f9cf-457c-83d7-4632682934da')
+    for component in project_components:
+        capital_name = component.name.replace(' ', '')
+
+        all_imports.append(capital_name)
+        project_library_imports.append("import %s from 'projectLibrary/%s.js';" % (capital_name, capital_name))
+
+        component_library_imports = ['TextInput']
+        form_components = []
+        search = re.compile('{props.[^}]*}')
+
+        component_list = json.loads(component.components)
+        for item in component_list:
+            if item['type'] not in component_library_imports:
+                component_library_imports.append(item['type'])
+            for key in item['props']:
+                print (type(item['props'][key]))
+                required_props = search.findall(str(item['props'][key]))
+                print ("Required Props", required_props, "\n")
+                if len(required_props) > 0:
+                    for prop in required_props:
+                        prop_name = prop.replace('{props.', '')
+                        prop_name = prop_name.replace('}', '')
+                        form_components.append("<TextInput name={'%s'} label={'%s'} />" % (prop_name, prop_name))
+
+        component_tree = componentTree(component_list, None)
+        components = componentPrint(component_tree, 2)
+        can_have_children = 'false'
+
+        component_filepath = os.path.join(os.getcwd(), "..", "reactapp", "src", "projectLibrary")
+        projectTemplatePath = os.path.join(component_filepath, "template.js")
+        projectTemplate = open(projectTemplatePath, "r").read()
+        projectTemplate = projectTemplate.replace("*component_library_imports*", ', '.join(component_library_imports))
+        projectTemplate = projectTemplate.replace("*CapitalName*", capital_name)
+        projectTemplate = projectTemplate.replace("*form_components*", ',\n'.join(form_components))
+        projectTemplate = projectTemplate.replace("*can_have_children*", can_have_children)
+        projectTemplate = projectTemplate.replace("*components*", '\n'.join(components))
+
+        newComponentTemplate = os.path.join(component_filepath, "%s.js" % (capital_name))
+        with open(newComponentTemplate, "w") as file:
+            file.write(projectTemplate)
+
+    dictTemplate = open(dictTemplatePath, "r").read()
+    dictTemplate = dictTemplate.replace("*library_imports*", ', '.join(library_imports))
+    dictTemplate = dictTemplate.replace("*project_library_imports*", '\n'.join(project_library_imports))
+    dictTemplate = dictTemplate.replace("*all_imports*", ', '.join(all_imports))
+
+    newDictTemplate = os.path.join(filepath, "testDict.js")
+
+    with open(newDictTemplate, "w") as file:
+        file.write(dictTemplate)
+
+
+    return JsonResponse({'success':True})

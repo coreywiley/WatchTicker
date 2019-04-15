@@ -1,5 +1,6 @@
 
 import Card_ from './displayComponents/card.js';
+import CardWithChildren_ from './displayComponents/cardWithChildren.js';
 import Header_ from './displayComponents/header.js';
 import Icon_ from './displayComponents/icon.js';
 import Image_ from './displayComponents/image.js';
@@ -14,6 +15,7 @@ import PageBreak_ from './displayComponents/pageBreak.js';
 import Small_ from './displayComponents/small.js';
 import Stars_ from './displayComponents/stars.js';
 import HTMLInputDisplay_ from './displayComponents/htmlInputDisplay.js';
+import Icons_ from './displayComponents/icons.js';
 
 import BooleanInput_ from './formComponents/booleaninput.js';
 import Button_ from './formComponents/button.js';
@@ -50,6 +52,7 @@ import Json_Input_ from './formComponents/json_input.js';
 import Function_Input_ from './formComponents/function_input.js';
 import PasswordResetRequest_ from './formComponents/formExtensions/passwordResetRequest.js';
 
+
 import Accordion_ from './functionalComponents/accordion.js';
 import LineBreak_ from './functionalComponents/lineBreak.js';
 import Link_ from './functionalComponents/link.js';
@@ -73,6 +76,7 @@ import Break_ from './layoutComponents/br.js';
 export const Button = Button_;
 export const ButtonGroup = ButtonGroup_;
 export const Card = Card_;
+export const CardWithChildren = CardWithChildren_;
 export const Header = Header_;
 export const Icon = Icon_;
 export const Image = Image_;
@@ -137,3 +141,4 @@ export const SignUpForm = SignUpForm_;
 export const Json_Input = Json_Input_;
 export const Function_Input = Function_Input_;
 export const PasswordResetRequest = PasswordResetRequest_;
+export const Icons = Icons_;

@@ -3,7 +3,7 @@ from django.conf.urls import url
 from modelWebsite.views import getModels, getModelInstanceJson, \
     deleteModelInstance, getApps, getModelFieldsJson, writeComponents, \
     writeModelPageTemplates, CSRFMiddlewareToken, SendEmail, PhotoUpload, \
-    modelConfig, modelPrint, writePage
+    modelConfig, modelPrint, writePage, exportProjectComponent
 
 app_name = 'api'
 
@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^writeTemplates/$', writeModelPageTemplates, name = "writeModelPageTemplates"),
     url(r'^email/$', SendEmail, name='email'),
     url(r'^photoUpload/$', PhotoUpload, name='photoUpload'),
-    url(r'^writePage/(?P<page_id>[0-9]+)/$', writePage, name="writePage")
+    url(r'^writePage/(?P<page_id>[0-9]+)/$', writePage, name="writePage"),
+    url(r'^exportComponents/', exportProjectComponent, name="exportComponents"),
 
 ]
