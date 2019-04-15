@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {ajaxWrapper} from 'functions';
 import {Wrapper} from 'library';
 
-import {FormWithChildren, If, TextInput, Alert, Header, Button, NumberInput} from 'library';
+import {FormWithChildren, If, TextInput, Alert, Header, Button} from 'library';
 
 class PasswordResetRequest extends Component {
     constructor(props) {
@@ -11,7 +11,7 @@ class PasswordResetRequest extends Component {
 
         this.config = {
             form_components: [
-                
+
             ],
             can_have_children: true,
         }

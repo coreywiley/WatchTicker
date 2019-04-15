@@ -51,7 +51,6 @@ function ajaxWrapper(type, url, data, returnFunc){
 function refreshToken(type, url, data, returnFunc){
       var refreshData = {};
       refreshData["csrfmiddlewaretoken"] = window.secretReactVars["csrfmiddlewaretoken"];
-      var refresh_token = localStorage.getItem('refresh_token')
 
       refreshData['refresh'] = '';
       if (localStorage.getItem('refresh_token')) {

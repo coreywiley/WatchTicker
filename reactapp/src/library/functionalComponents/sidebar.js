@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import {
-    Image
-} from 'library';
 import {Wrapper} from 'library';
 
 class Sidebar extends Component {

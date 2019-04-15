@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import {resolveVariables} from 'functions';
-import {NumberInput, Json_Input, AddChildComponent} from 'library';
+import {Json_Input} from 'library';
 
 class If extends Component {
     constructor(props) {
         super(props);
         this.config = {
             form_components: [
-                
                 <Json_Input label={'logic'} name={'logic'} />,
             ],
             can_have_children: true,
@@ -16,13 +15,12 @@ class If extends Component {
 
     render() {
       var logic = false;
+      var logic_list;
       if (this.props.logic) {
-        console.log("Logic", this.props.logic, window.cmState.getGlobalState(this))
-        var logic_list = resolveVariables(this.props.logic, window.cmState.getGlobalState(this))
-        console.log("Logic List", logic_list)
+        logic_list = resolveVariables(this.props.logic, window.cmState.getGlobalState(this))
       }
       else {
-        var logic_list = []
+        logic_list = []
       }
 
       for (var index in logic_list) {

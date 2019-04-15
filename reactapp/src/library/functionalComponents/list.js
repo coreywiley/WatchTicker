@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {resolveVariables} from 'functions';
-import {ajaxWrapper} from 'functions';
+import {resolveVariables, ajaxWrapper} from 'functions';
 import {Wrapper} from 'library';
+
 //Example
 //var lastInstanceData = {'name':"Something New?", 'description':"Add A New Component", 'link':"/component/", 'button':"Create New", 'button_type':"success"};
 //var dataMapping = {'button_type':'primary', 'button':'Edit', 'link':'/component/{id}/'};
@@ -48,12 +48,13 @@ class List extends Component {
     render() {
         let Component = this.props.component;
         var content = [];
+        var componentInstance;
 
         if (this.state.componentData.length > 0) {
             for (var i = 0; i < this.state.componentData.length; i++) {
                 var data = this.state.componentData[i][this.props.objectName];
                 console.log("Data",data, this.props.objectName);
-                var componentInstance;
+
                 if (this.props.dataMapping) {
                     var dataMapping = {...this.props.dataMapping};
                     dataMapping = resolveVariables(dataMapping, data);
@@ -75,7 +76,7 @@ class List extends Component {
         }
 
         if (this.props.lastInstanceData) {
-            var componentInstance = <Component {...this.props.lastInstanceData} refreshData={this.refreshData} setGlobalState={this.props.setGlobalState} />;
+            componentInstance = <Component {...this.props.lastInstanceData} refreshData={this.refreshData} setGlobalState={this.props.setGlobalState} />;
             content.push(componentInstance);
         }
 

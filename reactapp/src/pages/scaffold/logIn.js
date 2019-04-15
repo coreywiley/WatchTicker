@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 
-import {Wrapper} from 'library';
-
-import {
-    Container, Button, Image, TextInput,
-    List, Link, Accordion, Paragraph, RadioButton,
-    TextArea, Header, LogInForm, PasswordInput
-} from 'library';
+import {Wrapper, LogInForm} from 'library';
 
 class LogIn extends Component {
     constructor(props) {

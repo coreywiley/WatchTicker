@@ -2,13 +2,6 @@ import React, { Component } from 'react';
 import {Image} from 'library';
 
 class Wrapper extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    componentDidMount() {
-    }
-
     render() {
         var loading = <div style={{'textAlign':'center'}}> <Image css={{'width':'100px'}} src={'../../static/images/loading.gif'} /></div>;
         var css = {'paddingLeft':'2px','paddingRight':'2px'};

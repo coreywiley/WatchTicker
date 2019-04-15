@@ -63,7 +63,7 @@ class AddChildComponent extends Component {
       building_block_callback(result) {
           var building_blocks = []
           for (var index in result) {
-              building_blocks.push(result[0]['page'])
+              building_blocks.push(result[index]['page'])
           }
           this.setState({building_blocks: building_blocks})
       }

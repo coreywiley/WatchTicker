@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {ajaxWrapper, sort_objects} from 'functions';
-import {Wrapper, NumberInput, Button, FormWithChildren, EmptyModal, TextInput, If} from 'library';
+import {Wrapper, NumberInput, Button, FormWithChildren, TextInput, If} from 'library';
 import ComponentDict from './componentDict.js';
 import AddChildComponent from './addChildComponent.js';
 import ComponentInstance from './componentInstance.js';
@@ -28,7 +28,6 @@ class PageBuilder extends Component {
     }
 
     addBuildingBlock (building_block, parent_index) {
-        console.log("Building Block", building_block, parent_index)
         var components = this.state.components
         var next_key = components.length;
         var new_components = JSON.parse(building_block['components'])
@@ -84,7 +83,6 @@ class PageBuilder extends Component {
     }
 
     setGlobalState(name, state) {
-      console.log("Set Global State", state)
       var components = this.state.components;
       if (components[this.state.selectedComponent]) {
         components[this.state.selectedComponent]['props'] = state;
@@ -116,7 +114,6 @@ class PageBuilder extends Component {
           delete components[i]['props']['children']
       }
       var data = {'components':JSON.stringify(components), componentProps: JSON.stringify(this.state.componentProps), name: this.state.name, url: this.state.url, pagegroup: this.props.page_group_id}
-      console.log("Data", data)
       ajaxWrapper('POST',submitUrl, data, this.reload)
 
     }
@@ -128,7 +125,6 @@ class PageBuilder extends Component {
     }
 
     reload(result) {
-      console.log("Result", result)
       if (!this.props.page_id) {
         window.location.href = '/pagebuilder/' + this.props.page_group_id + '/' + result[0]['page']['id'] + '/'
       }
@@ -155,7 +151,6 @@ class PageBuilder extends Component {
     displayCreator(top_level, lookup) {
       var display = [];
       top_level = sort_objects(top_level, ['props','order'])
-      console.log("Top Level", top_level)
       for (var index in top_level) {
         var component = top_level[index]
         var TempComponent = component['class'];
@@ -188,12 +183,12 @@ class PageBuilder extends Component {
     }
 
     removeComponent() {
-      console.log("Remove Component", this.state.selectedComponent);
+
       var components = this.state.components;
       var componentProps = this.state.componentProps;
       var componentsToRemove = this.componentsToRemove(this.state.selectedComponent);
       componentsToRemove.push(this.state.selectedComponent);
-      console.log("Components To Remove", componentsToRemove)
+
 
       var new_components = [];
       var new_component_props = [];

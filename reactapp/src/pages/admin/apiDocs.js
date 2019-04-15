@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {ajaxWrapper} from 'functions';
-import {Wrapper} from 'library';
-import {Form, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header} from 'library';
+import {Wrapper, Header} from 'library';
 import APIQuery from './apiQuery.js';
 
 let ComponentDict = {
