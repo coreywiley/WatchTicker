@@ -9,7 +9,7 @@ class SignUpForm extends Component {
         super(props);
         this.config = {
             form_components: [
-                <NumberInput label={'order'} name={'order'} />,
+                
                 <TextInput label={'redirectUrl'} name={'redirectUrl'} default={''} />,
                 <CSSInput label={'css'} name={'style'} default={{}} />,
             ],

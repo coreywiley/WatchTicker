@@ -13,7 +13,7 @@ class FormWithChildren extends Component {
         super(props);
         this.config = {
             form_components: [
-                <NumberInput label={'order'} name={'order'} />,
+                
                 <TextInput label={'submitUrl'} name={'submitUrl'} />,
                 <TextInput label={'redirectUrl'} name={'redirectUrl'} />,
                 <TextInput label={'deleteUrl'} name={'deleteUrl'} />,

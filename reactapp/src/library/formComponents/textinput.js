@@ -12,7 +12,7 @@ class TextInput extends Component {
         super(props);
         this.config = {
             form_components: [
-                <NumberInput label={'order'} name={'order'} />,
+                
                 <TextInput label={'name'} name={'name'} default={'Default Text'} />,
                 <TextInput label={'default'} name={'default'} />,
                 <TextInput label={'placeholder'} name={'placeholder'} />,

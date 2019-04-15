@@ -7,7 +7,7 @@ class If extends Component {
         super(props);
         this.config = {
             form_components: [
-                <NumberInput label={'order'} name={'order'} />,
+                
                 <Json_Input label={'logic'} name={'logic'} />,
             ],
             can_have_children: true,

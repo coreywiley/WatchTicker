@@ -7,7 +7,7 @@ class Break extends React.Component {
         super(props);
         this.config = {
             form_components: [
-                <NumberInput label={'order'} name={'order'} />,
+                
                 <CSSInput label={'css'} name={'style'} default={{}} />,
             ],
         }

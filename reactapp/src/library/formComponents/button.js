@@ -34,7 +34,7 @@ class Button extends React.Component {
       super(props);
       this.config = {
           form_components: [
-              <NumberInput label={'order'} name={'order'} />,
+              
               <TextInput label={'text'} name={'text'} default={'Default Text'} />,
               <Select label={'type'} name={'type'} options={BUTTON_TYPES} />,
               <TextInput label={'href'} name={'href'} />,

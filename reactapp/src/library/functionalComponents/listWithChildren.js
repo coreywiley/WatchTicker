@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import {resolveVariables, ajaxWrapper} from 'functions';
-import {Wrapper, ChildComponent, NumberInput, TextInput, TextArea, CSSInput, AddChildComponent} from 'library';
+import {Wrapper, ChildComponent, NumberInput, TextInput, TextArea, CSSInput, AddChildComponent, Json_Input} from 'library';
 
 class ListWithChildren extends Component {
     constructor(props) {
         super(props);
         this.config = {
             form_components: [
-                <NumberInput label={'order'} name={'order'} />,
+
                 <TextInput label={'class'} name={'class'} />,
                 <TextArea label={'dataList'} name={'dataList'} />,
                 <TextInput label={'dataUrl'} name={'dataUrl'} />,
                 <TextInput label={'object name'} name={'objectName'} />,
-                <TextArea label={'dataMapping'} name={'dataMapping'} />,
+                <Json_Input label={'dataMapping'} name={'dataMapping'} />,
                 <TextInput label={'noDataMessage'} name={'noDataMessage'} />,
                 <TextArea label={'lastInstanceData'} name={'lastInstanceData'} />,
                 <CSSInput label={'css'} name={'style'} default={{}} />,

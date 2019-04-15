@@ -7,7 +7,7 @@ class Paragraph extends React.Component {
         super(props);
         this.config = {
             form_components: [
-                <NumberInput label={'order'} name={'order'} />,
+                
                 <TextInput label={'text'} name={'text'} default={'Default Text'} />,
                 <CSSInput label={'css'} name={'style'} default={{}} />
             ],

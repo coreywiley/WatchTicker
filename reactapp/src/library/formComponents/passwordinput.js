@@ -13,7 +13,7 @@ class PasswordInput extends Component {
         super(props);
         this.config = {
             form_components: [
-                <NumberInput label={'order'} name={'order'} />,
+                
                 <TextInput label={'name'} name={'name'} />,
                 <TextInput label={'placeholder'} name={'placeholder'} />,
                 <Select label={'Confirm Password?'} name={'confirm_password'} options={BOOLEANS} />,
