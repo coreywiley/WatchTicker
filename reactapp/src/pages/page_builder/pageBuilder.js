@@ -67,11 +67,8 @@ class PageBuilder extends Component {
           component['class'] = ComponentDict[component['type']];
       }
 
-
-      var componentProps = JSON.parse(page['componentProps']);
       this.setState({
           components: components,
-          componentProps:componentProps,
           name:page.name,
           url: page.url,
           loaded:true
@@ -108,14 +105,14 @@ class PageBuilder extends Component {
         submitUrl += this.props.page_id + '/'
       }
 
+      //copy list
       var components = this.state.components.slice(0);
       for (var i in components){
           delete components[i]['class'];
           delete components[i]['props']['children']
       }
-      var data = {'components':JSON.stringify(components), componentProps: JSON.stringify(this.state.componentProps), name: this.state.name, url: this.state.url, pagegroup: this.props.page_group_id}
+      var data = {'components':JSON.stringify(components), name: this.state.name, url: this.state.url, pagegroup: this.props.page_group_id}
       ajaxWrapper('POST',submitUrl, data, this.reload)
-
     }
 
     delete() {
@@ -133,6 +130,8 @@ class PageBuilder extends Component {
       }
     }
 
+    //creates the list on the left side of the page
+    //lookup is a dictionary of keys with their children keys in a list as a key
     componentListCreator(top_level, lookup) {
       var componentList = [];
       for (var index in top_level) {
@@ -148,7 +147,9 @@ class PageBuilder extends Component {
       return componentList
     }
 
-    displayCreator(top_level, lookup) {
+    //creates a rendering for the preview on pagebuilder or the real deal if show = true
+    //lookup is a dictionary of keys with their children keys in a list as a key
+    displayCreator(top_level, lookup, show) {
       var display = [];
       top_level = sort_objects(top_level, ['props','order'])
       for (var index in top_level) {
@@ -158,7 +159,11 @@ class PageBuilder extends Component {
         if (new TempComponent().config['can_have_children']) {
           props['children'] = sort_objects(this.displayCreator(lookup[component['key']], lookup), ['props','content','props','order'])
         }
-        if (this.state.selectedComponent == component['key']) {
+
+        if (!this.props.show) {
+            display.push(<TempComponent {...props} setGlobalState={this.setGlobalState} />)
+        }
+        else if (this.state.selectedComponent == component['key']) {
           display.push(<DisplayInstance show={this.props.show} content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} style={{'border':'2px solid #0f0'}} />)
         }
         else {
@@ -183,7 +188,6 @@ class PageBuilder extends Component {
     }
 
     removeComponent() {
-
       var components = this.state.components;
       var componentProps = this.state.componentProps;
       var componentsToRemove = this.componentsToRemove(this.state.selectedComponent);
@@ -218,49 +222,7 @@ class PageBuilder extends Component {
         }
       }
 
-      var display = this.displayCreator(topLevelComponents, component_parent_dict);
-
-      var componentPropsForm = null;
-
-      if (this.state.selectedComponent > -1) {
-        var selected_component = this.state.components[this.state.selectedComponent]
-        var config = new selected_component['class']().config
-        var components = config['form_components'];
-
-
-
-        var new_components = [<NumberInput label={'order'} name={'order'} />];
-        for (var index in components) {
-            var component = components[index];
-            var value = selected_component['props'][component.props['name']];
-            component = React.cloneElement(component, {'default': value, 'parentIndex': this.state.selectedComponent, 'addComponent': this.addComponent});
-            new_components.push(component);
-        }
-
-        if (config['can_have_children']) {
-            new_components.push(<AddChildComponent label="Add Child" name="children" parentIndex={this.state.selectedComponent} addComponent={this.addComponent} default={""} addBuildingBlock={this.addBuildingBlock} />)
-        }
-
-        new_components.push(<Button default={''} name='delete' deleteType={true} text={'Delete'} onClick={this.removeComponent} type='danger' />)
-
-        var componentPropsForm = <FormWithChildren key={this.state.selectedComponent} autoSetGlobalState={true} setGlobalState={this.setGlobalState}
-            globalStateName={'form'}>
-            {new_components}
-        </FormWithChildren>
-
-      }
-
-
-    var componentList = this.componentListCreator(topLevelComponents, component_parent_dict)
-
-      var componentColumn = <div>
-        <h1>Component List</h1>
-        <AddChildComponent label="Add Component" name="children" parentIndex={null} addComponent={this.addComponent} default={""} addBuildingBlock={this.addBuildingBlock} />
-        {componentList}
-      </div>;
-
-      var nameComponents = [TextInput, TextInput]
-      var nameComponentProps = [{'name':'name', label:'name', placeholder:'Page Name'}, {'name':'url', label:'url', 'placeholder':'/'}]
+      var display = this.displayCreator(topLevelComponents, component_parent_dict, this.props.show);
 
       if (this.props.show) {
         var content = <div>
@@ -268,40 +230,82 @@ class PageBuilder extends Component {
         </div>
       }
       else {
-        var content =
-        <div>
-        <a href='/pageList/'>Page List</a>
-        <div className="container">
-           <a href='/pageList/'>See All Pages</a>
-           <FormWithChildren defaults={this.state} autoSetGlobalState={true} setGlobalState={this.setGlobalStateName} globalStateName={'form'}>
-                <TextInput name='name' label='Name' placeholder='Page Name' />
-                <TextInput name="url" label="URL" placeholder="/" />
-           </FormWithChildren>
-         </div>
-          <div className="row">
+          var componentPropsForm = null;
 
-            <div className="col-2">
-              {componentColumn}
-              <Button text={'save'} type={'success'} onClick={this.save} />
-              <If logic={[['exists', this.props.page_id]]} >
-                <Button text={'delete'} type={'danger'} onClick={this.delete} deleteType={true} />
-              </If>
-              <If logic={[['0294d7d0-f9cf-457c-83d7-4632682934da',this.props.page_group_id]]}>
-                <Button text={'Export'} type={'outline-danger'} onClick={this.export} deleteType={true} />
-              </If>
-            </div>
-            <div className="col-8">
-              {display}
-            </div>
-            <div className="col-2">
-              <h1>Edit Props</h1>
-              {componentPropsForm}
-            </div>
+          //if component is selected make the props form
+          if (this.state.selectedComponent > -1) {
+            var selected_component = this.state.components[this.state.selectedComponent]
+            var config = new selected_component['class']().config
+            var components = config['form_components'];
 
-          </div>
+            var new_components = [<NumberInput label={'order'} name={'order'} />];
+            for (var index in components) {
+                var component = components[index];
+                var value = selected_component['props'][component.props['name']];
+                component = React.cloneElement(component, {'default': value, 'parentIndex': this.state.selectedComponent, 'addComponent': this.addComponent});
+                new_components.push(component);
+            }
 
-        </div>;
-      }
+            if (config['can_have_children']) {
+                new_components.push(<AddChildComponent label="Add Child" name="children" parentIndex={this.state.selectedComponent} addComponent={this.addComponent} default={""} addBuildingBlock={this.addBuildingBlock} />)
+            }
+
+            new_components.push(<Button default={''} name='delete' deleteType={true} text={'Delete'} onClick={this.removeComponent} type='danger' />)
+
+            var componentPropsForm = <FormWithChildren key={this.state.selectedComponent} autoSetGlobalState={true} setGlobalState={this.setGlobalState}
+                globalStateName={'form'}>
+                {new_components}
+            </FormWithChildren>
+
+          }
+
+
+        var componentList = this.componentListCreator(topLevelComponents, component_parent_dict)
+
+          var componentColumn = <div>
+            <h1>Component List</h1>
+            <AddChildComponent label="Add Component" name="children" parentIndex={null} addComponent={this.addComponent} default={""} addBuildingBlock={this.addBuildingBlock} />
+            {componentList}
+          </div>;
+
+          var nameComponents = [TextInput, TextInput]
+          var nameComponentProps = [{'name':'name', label:'name', placeholder:'Page Name'}, {'name':'url', label:'url', 'placeholder':'/'}]
+
+
+            var content =
+            <div>
+            <a href='/pageList/'>Page List</a>
+            <div className="container">
+               <a href='/pageList/'>See All Pages</a>
+               <FormWithChildren defaults={this.state} autoSetGlobalState={true} setGlobalState={this.setGlobalStateName} globalStateName={'form'}>
+                    <TextInput name='name' label='Name' placeholder='Page Name' />
+                    <TextInput name="url" label="URL" placeholder="/" />
+               </FormWithChildren>
+             </div>
+              <div className="row">
+
+                <div className="col-2">
+                  {componentColumn}
+                  <Button text={'save'} type={'success'} onClick={this.save} />
+                  <If logic={[['exists', this.props.page_id]]} >
+                    <Button text={'delete'} type={'danger'} onClick={this.delete} deleteType={true} />
+                  </If>
+                  <If logic={[['0294d7d0-f9cf-457c-83d7-4632682934da',this.props.page_group_id]]}>
+                    <Button text={'Export'} type={'outline-danger'} onClick={this.export} deleteType={true} />
+                  </If>
+                </div>
+                <div className="col-8">
+                  {display}
+                </div>
+                <div className="col-2">
+                  <h1>Edit Props</h1>
+                  {componentPropsForm}
+                </div>
+
+              </div>
+
+            </div>;
+          }
 
         return (
             <div className="container-fluid">

@@ -7,9 +7,7 @@ class DisplayInstance extends Component {
   }
 
   setComponent() {
-    if (!this.props.show) {
       this.props.setComponent(this.props.index)
-    }
   }
 
   render() {
