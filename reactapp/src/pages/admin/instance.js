@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {ajaxWrapper} from 'functions';
 import {Wrapper} from 'library';
-import {Form, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput} from 'library';
+import {FormWithChildren, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput} from 'library';
 
 
 let ComponentDict = {
@@ -39,7 +39,7 @@ class Instance extends Component {
 
     fieldSubmitCallback(value) {
         var Components = [];
-        var ComponentProps = [];
+
         var defaults = {};
         var fields = value;
         for (var index in value) {
@@ -56,26 +56,6 @@ class Instance extends Component {
                 auto_created = value[index][4]
             }
             if (!auto_created) {
-                if (typeof(ComponentDict[fieldType]) == "undefined") {
-                    console.log("FIELD TYPE NOT FOUND!!!!!!! " + fieldType);
-                }
-
-                if (ComponentDict[fieldType] == 'NumberInput') {
-                    Components.push(NumberInput);
-                }
-                else if (ComponentDict[fieldType] == 'BooleanInput') {
-                    Components.push(BooleanInput)
-                }
-                else if (ComponentDict[fieldType] == 'TextInput') {
-                    Components.push(TextInput);
-                }
-                else if (ComponentDict[fieldType] == 'Select') {
-                  Components.push(Select);
-                }
-                else if (ComponentDict[fieldType] == 'TextArea') {
-                  Components.push(TextArea);
-                }
-
 
                 var props;
                 if (fieldType == 'ForeignKey') {
@@ -101,11 +81,29 @@ class Instance extends Component {
                     defaults[fieldName] = '';
                 }
 
-                ComponentProps.push(props);
+                if (typeof(ComponentDict[fieldType]) == "undefined") {
+                    console.log("FIELD TYPE NOT FOUND!!!!!!! " + fieldType);
+                }
+
+                if (ComponentDict[fieldType] == 'NumberInput') {
+                    Components.push(<NumberInput {...props} />);
+                }
+                else if (ComponentDict[fieldType] == 'BooleanInput') {
+                    Components.push(<BooleanInput {...props} />)
+                }
+                else if (ComponentDict[fieldType] == 'TextInput') {
+                    Components.push(<TextInput {...props} />);
+                }
+                else if (ComponentDict[fieldType] == 'Select') {
+                  Components.push(<Select {...props} />);
+                }
+                else if (ComponentDict[fieldType] == 'TextArea') {
+                  Components.push(<TextArea {...props} />);
+                }
+
             }
         }
-        console.log(Components, ComponentProps)
-        this.setState({Components:Components, ComponentProps:ComponentProps, defaults:defaults, loaded:true, fields:fields})
+        this.setState({Components:Components, defaults:defaults, loaded:true, fields:fields})
     }
 
     render() {
@@ -113,11 +111,15 @@ class Instance extends Component {
         if (this.props.id) {
           var submitUrl = "/api/" + this.props.app + "/" + this.props.model + "/" + this.props.id + "/";
           var deleteUrl = submitUrl + "delete/";
-          var normForm = <Form components={this.state.Components} first={true} objectName={this.props.model} dataUrl={submitUrl} componentProps={this.state.ComponentProps} submitUrl={submitUrl} deleteUrl={deleteUrl} defaults={this.state.defaults} />
+          var normForm = <FormWithChildren first={true} objectName={this.props.model} dataUrl={submitUrl} submitUrl={submitUrl} deleteUrl={deleteUrl} defaults={this.state.defaults}>
+            {this.state.Components}
+          </FormWithChildren>
         }
         else {
           var submitUrl = "/api/" + this.props.app + "/" + this.props.model + "/";
-          var normForm = <Form components={this.state.Components} first={true} componentProps={this.state.ComponentProps} submitUrl={submitUrl} defaults={this.state.defaults} />
+          var normForm = <FormWithChildren first={true} submitUrl={submitUrl} defaults={this.state.defaults}>
+            {this.state.Components}
+          </FormWithChildren>
         }
 
         var FileComponents = [FileInput]

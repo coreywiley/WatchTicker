@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {ajaxWrapper} from 'functions';
 import {Wrapper} from 'library';
 
-import {Form, TextInput, Select, PasswordInput} from 'library';
+import {FormWithChildren, TextInput, Select, PasswordInput} from 'library';
 
 class PasswordReset extends Component {
     constructor(props) {
@@ -10,17 +10,15 @@ class PasswordReset extends Component {
     }
 
     render() {
-        var Components = [PasswordInput];
-        var password_props = {'confirm_password':true};
-
-        var ComponentProps = [password_props];
         var defaults = {'password':''};
 
         var submitUrl = "/users/resetPassword/" + this.props.user_id + "/";
 
         var content = <div className="container">
                 <h2>Reset Password</h2>
-                <Form components={Components} redirectUrl={'/login/'} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
+                <FormWithChildren redirectUrl={'/login/'} submitUrl={submitUrl} defaults={defaults}>
+                    <PasswordInput confirm_password={true} />
+                </FormWithChildren>
         </div>;
 
 

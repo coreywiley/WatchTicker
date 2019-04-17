@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {ajaxWrapper} from 'functions';
 import {Wrapper} from 'library';
 
-import {Form, TextInput, Select, PasswordInput, Header, TextArea, NumberInput, DateTimePicker} from 'library';
+import {FormWithChildren, TextInput, Select, PasswordInput, Header, TextArea, NumberInput, DateTimePicker} from 'library';
 
 class Edit*CapitalObject* extends Component {
     constructor(props) {
@@ -30,10 +30,6 @@ class Edit*CapitalObject* extends Component {
 
     render() {
 
-*FormComponentList*
-
-*FormComponentProps*
-
         var defaults = this.state;
 
         var submitUrl = "/api/*App*/*Object*/";
@@ -55,7 +51,9 @@ class Edit*CapitalObject* extends Component {
 
         var content = <div className="container">
                 {title}
-                <Form components={Components} redirectUrl={"/*Object*/{id}/"} objectName={'*Object*'} componentProps={ComponentProps} deleteUrl={deleteUrl} submitUrl={submitUrl} defaults={defaults} />
+                <FormWithChildren redirectUrl={"/*Object*/{id}/"} objectName={'*Object*'} deleteUrl={deleteUrl} submitUrl={submitUrl} defaults={defaults}>
+                *FormComponentList*
+                </FormWithChildren>
                 <br />
         </div>;
 

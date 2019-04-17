@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import {Wrapper} from 'library';
 import {ajaxWrapper, consolidate} from 'functions';
-import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Card, MultiLineText} from 'library';
+import {Container, Button, Image, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Card, MultiLineText} from 'library';
 
 class TableRows extends Component {
   render() {

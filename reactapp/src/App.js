@@ -28,9 +28,6 @@ import ModelMaker from 'djangoModelMaker.js';
 //API Querying
 import APIDocs from './pages/admin/apiDocs.js';
 
-import Test from './pages/modelEditAndView/WYSIWYG.js';
-import TaskList from './pages/listTask.js';
-import EditTask from './pages/editTask.js';
 import Analytics from './pages/pomodorosByDay.js';
 
 
@@ -157,9 +154,6 @@ class App extends Component {
           }
           else if (route == "instance") {
               content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token}/>;
-          }
-          else if (route == "test") {
-              content = <Test id={params[1]} />;
           }
           else if (route == 'apidocs') {
             content = <APIDocs />
