@@ -63,7 +63,6 @@ import Navbar_ from './functionalComponents/navbar.js';
 import ReactRender_ from './functionalComponents/reactrender.js';
 import Sidebar_ from './functionalComponents/sidebar.js';
 import MapEmbed_ from './functionalComponents/mapembed.js';
-import ChildComponent_ from './functionalComponents/childComponent.js';
 import If_ from './functionalComponents/if.js';
 
 import Container_ from './layoutComponents/container.js';
@@ -133,7 +132,6 @@ export const Section = Section_;
 export const CSSInput = CSSInput_;
 export const Div = Div_;
 export const Break = Break_;
-export const ChildComponent = ChildComponent_;
 export const FormWithChildren = FormWithChildren_;
 export const ListWithChildren = ListWithChildren_;
 export const If = If_;

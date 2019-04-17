@@ -1,6 +1,6 @@
 import {FormWithChildren, LogInForm, SignUpForm, ListWithChildren, Div, If, Break, NumberInput,
         BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput,
-        Container, EmptyModal, PasswordInput, ChildComponent, Json_Input, Function_Input, PasswordResetRequest,
+        Container, EmptyModal, PasswordInput, Json_Input, Function_Input, PasswordResetRequest,
         CardWithChildren, Icons} from 'library';
 import Alarm from 'projectLibrary/alarm.js';
 import PomodoroCard from 'projectLibrary/pomodoroCard.js';

@@ -784,7 +784,7 @@ def exportProjectComponent(request):
 
     library_imports = ["FormWithChildren", "LogInForm", "SignUpForm", "ListWithChildren", "Div", "If", "Break", "NumberInput",
         "BooleanInput", "TextInput", "Select", "TextArea", "FileInput", "Button", "Header", "Paragraph", "CSSInput",
-        "Container", "EmptyModal", "PasswordInput", "ChildComponent", "Json_Input", "Function_Input", "PasswordResetRequest",
+        "Container", "EmptyModal", "PasswordInput", "Json_Input", "Function_Input", "PasswordResetRequest",
         "CardWithChildren", "Icons"]
     project_library_imports = []
     all_imports = copy.deepcopy(library_imports)

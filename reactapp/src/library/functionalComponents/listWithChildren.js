@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {resolveVariables, ajaxWrapper} from 'functions';
-import {Wrapper, ChildComponent, NumberInput, TextInput, TextArea, CSSInput, AddChildComponent, Json_Input} from 'library';
+import {Wrapper, NumberInput, TextInput, TextArea, CSSInput, Json_Input} from 'library';
 
 class ListWithChildren extends Component {
     constructor(props) {

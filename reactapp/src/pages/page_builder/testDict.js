@@ -1,10 +1,10 @@
-import {FormWithChildren, LogInForm, SignUpForm, ListWithChildren, Div, If, Break, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput, Container, EmptyModal, PasswordInput, ChildComponent, Json_Input, Function_Input, PasswordResetRequest, CardWithChildren, Icons} from 'library';
+import {FormWithChildren, LogInForm, SignUpForm, ListWithChildren, Div, If, Break, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput, Container, EmptyModal, PasswordInput, Json_Input, Function_Input, PasswordResetRequest, CardWithChildren, Icons} from 'library';
 import PomodoroCard from 'projectLibrary/PomodoroCard.js';
 import Alarm from 'projectLibrary/alarm.js';
 import Nav from 'projectLibrary/nav.js';
 
 let ComponentList = [
-    FormWithChildren, LogInForm, SignUpForm, ListWithChildren, Div, If, Break, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput, Container, EmptyModal, PasswordInput, ChildComponent, Json_Input, Function_Input, PasswordResetRequest, CardWithChildren, Icons, PomodoroCard
+    FormWithChildren, LogInForm, SignUpForm, ListWithChildren, Div, If, Break, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput, Container, EmptyModal, PasswordInput, Json_Input, Function_Input, PasswordResetRequest, CardWithChildren, Icons, PomodoroCard
 ];
 
 var ComponentDict = {}

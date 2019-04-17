@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {resolveVariables, ajaxWrapper, run_functions} from 'functions';
-import {Alert, Button, ChildComponent, TextInput, NumberInput, CSSInput, AddChildComponent} from 'library';
+import {Alert, Button, TextInput, NumberInput, CSSInput} from 'library';
 
 /*
 Example
@@ -303,7 +303,7 @@ class FormWithChildren extends Component {
               newProps['autoFocus'] = true;
             }
 
-            components.push(<ChildComponent component={child} newProps={newProps} />)
+            components.push(React.cloneElement(child,newProps))
         }
 
 
