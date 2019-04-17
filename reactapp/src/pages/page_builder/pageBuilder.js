@@ -152,10 +152,12 @@ class PageBuilder extends Component {
     displayCreator(top_level, lookup, show) {
       var display = [];
       top_level = sort_objects(top_level, ['props','order'])
+      console.log("Top Level", top_level)
       for (var index in top_level) {
         var component = top_level[index]
         var TempComponent = component['class'];
         var props = {...component['props']};
+        console.log("Component Name", component['type'])
         if (new TempComponent().config['can_have_children']) {
           props['children'] = sort_objects(this.displayCreator(lookup[component['key']], lookup), ['props','content','props','order'])
         }

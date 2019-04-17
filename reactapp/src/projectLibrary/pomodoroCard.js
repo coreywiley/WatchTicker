@@ -19,12 +19,12 @@ class PomodoroCard extends Component {
     render () {
 
         return (
-            		<CardWithChildren name={resolveVariables({"text":"{props.name}"}, this)} required={""} >
-			<Icons src={"https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png"} num_icons={resolveVariables({"text":"{props.task_pomodoros}"}, this)} width={"40px"} required={""} >
+            		<CardWithChildren name={resolveVariables({"text":"{props.name}"}, this)["text"]} required={""} >
+			<Icons src={"https://cdn4.iconfinder.com/data/icons/food-drink-14/24/Tomato-512.png"} num_icons={resolveVariables({"text":"{props.task_pomodoros}"}, this)["text"]} width={"40px"} required={""} >
 </Icons>
 			<Button text={"Start Pomodoro"} type={"primary"} required={""} functions={[['ajaxWrapper', ''], ['ajaxWrapper', ''], ['setGlobalState', {'alarm': true}]]} >
 </Button>
-			<Button text={"Complete"} type={"success"} required={""} functions={resolveVariables({"text":[['ajaxWrapper', {'type': 'POST', 'url': '/api/home/task/{props.task_id}/', 'data': {'completed': true}}], ['setGlobalState', {'refresh': true}]]}, this)} >
+			<Button text={"Complete"} type={"success"} required={""} functions={resolveVariables({"text":[['ajaxWrapper', {'type': 'POST', 'url': '/api/home/task/{props.task_id}/', 'data': {'completed': true}}], ['setGlobalState', {'refresh': true}]]}, this)["text"]} >
 </Button>
 </CardWithChildren>
         )

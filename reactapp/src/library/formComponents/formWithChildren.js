@@ -8,12 +8,41 @@ Example
 
 */
 
+function get_children(obj, defaults) {
+    var children = [];
+    var children_props = [];
+
+    if (obj.props.children != undefined) {
+        //weirdly enough this means more than one child
+        if (obj.props.children.length > 0) {
+            children_props = obj.props.children
+        }
+        else {
+            children_props = [obj.props.children]
+        }
+    }
+
+    for (var index in children_props) {
+        var child = children_props[index];
+        children.push(child)
+        if (child.props.default) {
+          console.log("Default Setting", child.props.name, child.props.default)
+          defaults[child.props.name] = child.props.default;
+        }
+    }
+
+    defaults['required'] = '';
+    defaults['children'] = children;
+
+    return [children, defaults]
+}
+
 class FormWithChildren extends Component {
     constructor(props) {
         super(props);
         this.config = {
             form_components: [
-                
+
                 <TextInput label={'submitUrl'} name={'submitUrl'} />,
                 <TextInput label={'redirectUrl'} name={'redirectUrl'} />,
                 <TextInput label={'deleteUrl'} name={'deleteUrl'} />,
@@ -27,34 +56,9 @@ class FormWithChildren extends Component {
           defaults = resolveVariables(this.props.defaults, window.cmState.getGlobalState())
         }
 
-        var children = [];
-        if (this.props.children != undefined) {
-          //weirdly enough this means more than one child
-          if (this.props.children.length > 0) {
-            for (var index in this.props.children) {
-                var child = this.props.children[index];
-                children.push(child)
-                if (child.props.default) {
-                  console.log("Default Setting", child.props.name, child.props.default)
-                  defaults[child.props.name] = child.props.default;
-                }
-            }
-          }
-          else {
-            var child = this.props.children;
-            console.log("Child", child)
-            if (child.length != 0) {
-              children.push(child);
-              if (child.props.default) {
-                defaults[child.props.name] = child.props.default;
-              }
-            }
-          }
-        }
-
-        defaults['required'] = '';
-        defaults['children'] = children;
-        console.log("Final Default", defaults)
+        var childrendefaults = get_children(this, defaults)
+        var children = childrendefaults[0];
+        defaults = childrendefaults[1];
 
         this.state = defaults;
 
@@ -90,31 +94,10 @@ class FormWithChildren extends Component {
             }
         }
 
-        var children = [];
+        var childrendefaults = get_children(this, defaults)
+        var children = childrendefaults[0];
+        defaults = childrendefaults[1];
 
-        if (this.props.children != undefined) {
-          //weirdly enough this means more than one child
-          if (this.props.children.length > 0) {
-            for (var index in this.props.children) {
-                var child = this.props.children[index];
-                children.push(child)
-                if (child.props.default && !(child.props.name in this.state)) {
-                  defaults[child.props.name] = child.props.default;
-                }
-            }
-          }
-          else {
-            var child = this.props.children
-            console.log("Child", child)
-            if (child.length != 0) {
-              if (child.props.default && !(child.props.name in this.state)) {
-                defaults[child.props.name] = child.props.default;
-              }
-              children.push(child);
-            }
-          }
-        }
-        defaults['children'] = children;
 
         this.setState(defaults);
     }

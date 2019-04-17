@@ -35,7 +35,7 @@ def componentPrint(component_tree, depth = 0):
                     props += '%s={resolveVariables(resolveVariables({"text":"%s"}, this), window.cmState.getGlobalState(this))["text"]} ' % (
                         key, item['props'][key].replace('True','true'))
                 elif resolve_props:
-                    props += '%s={resolveVariables({"text":"%s"}, this)} ' % (
+                    props += '%s={resolveVariables({"text":"%s"}, this)["text"]} ' % (
                         key, item['props'][key].replace('True', 'true'))
                 elif resolve_global:
                     props += '%s={resolveVariables({"text":"%s"}, window.cmState.getGlobalState(this))["text"]} ' % (
@@ -48,7 +48,7 @@ def componentPrint(component_tree, depth = 0):
                     props += '%s={resolveVariables(resolveVariables({"text":%s}, this), window.cmState.getGlobalState(this))["text"]} ' % (
                         key, str(item['props'][key]).replace('True', 'true'))
                 elif resolve_props:
-                    props += '%s={resolveVariables({"text":%s}, this)} ' % (
+                    props += '%s={resolveVariables({"text":%s}, this)["text"]} ' % (
                         key, str(item['props'][key]).replace('True', 'true'))
                 elif resolve_global:
                     props += '%s={resolveVariables({"text":%s}, window.cmState.getGlobalState(this))["text"]} ' % (

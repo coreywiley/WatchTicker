@@ -12,6 +12,12 @@ class PasswordResetRequest extends Component {
         this.userLookup = this.userLookup.bind(this);
         this.emailCallback = this.emailCallback.bind(this);
         this.email = this.email.bind(this);
+
+        this.config = {
+            form_components: [
+            ],
+            can_have_children: true,
+        }
     }
 
     userLookup() {
