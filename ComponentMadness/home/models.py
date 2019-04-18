@@ -19,14 +19,3 @@ class CMModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
-class Task(CMModel):
-    name = models.CharField(max_length=1000)
-    expected_pomodoros = models.IntegerField(default = 0)
-    pomodoros = models.IntegerField(default = 0)
-    parent_task = models.ForeignKey("Task", null=True, on_delete=models.CASCADE, related_name="sub_tasks")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tasks")
-    completed = models.BooleanField(default=False)
-
-class Pomodoro(CMModel):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="pomodoro_objects")

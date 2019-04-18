@@ -283,11 +283,6 @@ class ConfigForm extends Component {
 
         if ('id' in this.props.config){
             Components.push(<TextInput name='id' layout='hidden' />);
-            'name': 'order', 'label': 'Order',
-            'placeholder': 'Order', 'value': '', 'layout': 'col-6 inlineField'
-        });
-
-        if ('id' in this.props.config){
         }
 
         if (config['data']){
@@ -317,10 +312,6 @@ class ConfigForm extends Component {
                 Components.push(<Button type='danger' text='X' num={j} onClick={this.removeField} />);
 
                 Components.push(<LineBreak />);
-                    text:'X',
-                    num:j,
-                    onClick:this.removeField
-                });
 
             }
 
