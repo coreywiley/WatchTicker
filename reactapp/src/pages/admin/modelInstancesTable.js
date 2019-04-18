@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {List, Link, Button, Table} from 'library';
+import {Link, Button, Table} from 'library';
 import {ajaxWrapper} from 'functions';
 
 class InstanceTable extends Component {
@@ -60,7 +60,7 @@ class InstanceTable extends Component {
       else {
         return (
             <div>
-              
+
             </div>
         );
       }

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import {Wrapper} from 'library';
 import {ajaxWrapper} from 'functions';
-import {Container, Button, Image, TextInput, If, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Card, MultiLineText} from 'library';
+import {Container, Button, Image, TextInput, If, Navbar, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Card, MultiLineText} from 'library';
 import Alarm from 'projectLibrary/alarm.js';
 import PomodoroCard from 'projectLibrary/pomodoroCard.js';
 

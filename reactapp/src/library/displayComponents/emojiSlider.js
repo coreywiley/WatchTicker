@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Wrapper} from 'library';
 
-import {Container, Button, Image, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Select, ColorPicker, EmojiList} from 'library';
+import {Container, Button, Image, TextInput, Navbar, Link, Accordion, Paragraph, RadioButton, TextArea, Header, Select, ColorPicker, EmojiList} from 'library';
 
 import Draggable, {DraggableCore} from 'react-draggable'; // Both at the same time
 

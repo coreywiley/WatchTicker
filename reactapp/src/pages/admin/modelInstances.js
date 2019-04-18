@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {List, Link, Button} from 'library';
+import {ListWithChildren, Link, Button} from 'library';
 
 
 class InstanceList extends Component {
@@ -9,7 +9,9 @@ class InstanceList extends Component {
 
         return (
             <div className="container list-group">
-              <List dataUrl={"/api/" + this.props.app + "/" + this.props.model + "/"} title={'Instances: ' + this.props.app + '/' + this.props.model} component={Link} objectName={this.props.model} dataMapping={dataMapping} />
+              <ListWithChildren dataUrl={"/api/" + this.props.app + "/" + this.props.model + "/"} title={'Instances: ' + this.props.app + '/' + this.props.model} objectName={this.props.model} dataMapping={dataMapping}>
+                <Link />
+              </ListWithChildren>
               <Button type={'success'} text={'Add New'} href={"/instance/" + this.props.app + "/" + this.props.model + "/"} />
             </div>
         );

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {resolveVariables} from 'functions';
-import Checkbox from './checkbox.js';
-import List from '../functionalComponents/list.js';
+import {Checkbox, ListWithChildren} from 'library';
 
 class Checklist extends Component {
     constructor(props) {
@@ -50,7 +49,9 @@ class Checklist extends Component {
 
         return (
             <div className="form-group">
-                <List component={Checkbox} {...this.props} />
+                <ListWithChildren {...this.props}>
+                    <Checkbox />
+                </ListWithChildren>
             </div>
         )
     }

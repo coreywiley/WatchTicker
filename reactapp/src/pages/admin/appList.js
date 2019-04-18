@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {List, Link, Navbar} from 'library';
+import {ListWithChildren, Link, Navbar} from 'library';
 
 class AppList extends Component {
 
@@ -9,7 +9,9 @@ class AppList extends Component {
         return (
           <div>
             <div className="container list-group">
-                <List dataUrl={"/api/getApps/"} title={'Apps'} component={Link} objectName={'app'} dataMapping={dataMapping} />
+                <ListWithChildren dataUrl={"/api/getApps/"} title={'Apps'} objectName={'app'} dataMapping={dataMapping}>
+                    <Link />
+                </ListWithChildren>
             </div>
           </div>
         );
