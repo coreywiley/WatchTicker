@@ -33,6 +33,7 @@ function sort_by_keys(array, keys) {
 }
 
 function sort_objects(array, keys, order=false) {
+    console.log("Array", array, keys)
   if (typeof(keys) != 'string') {
     return sort_by_keys(array, keys);
   }
