@@ -1,33 +1,38 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
-import ajaxWrapper from "base/ajax.js";
+import {ajaxWrapper, resolveVariables} from 'functions';
+import {FormWithChildren, TextInput, Button, PasswordInput, Alert, If, NumberInput, CSSInput} from 'library';
 
 class LogInForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {email:'',error:''};
+        this.config = {
+            form_components: [
+                
+                <TextInput label={'redirectUrl'} name={'redirectUrl'} default={''} />,
+                <CSSInput label={'css'} name={'style'} default={{}} />,
+            ],
+            can_have_children: true,
+        }
 
-        this.handleChange = this.handleChange.bind(this);
+        this.state = {email:'',error:'', password: ''};
+
         this.formSubmit = this.formSubmit.bind(this);
         this.formSubmitCallback = this.formSubmitCallback.bind(this);
+        this.setGlobalState = this.setGlobalState.bind(this);
 
     }
 
-    handleChange = (e) => {
-
-       var name = e.target.getAttribute("name");
-       var newState = {};
-       newState[name] = e.target.value;
-       console.log("handlechange",name,newState)
-        this.setState(newState);
+    setGlobalState(name, state) {
+      this.setState(state)
     }
 
 
     formSubmit() {
-        console.log("Submitting", this.state, this.props.submitUrl);
-        var data = this.state;
+        console.log("Submitting", this.state, '/users/token/');
+        var data = Object.assign({},this.state);
+        delete data['children']
         data['email'] = data['email'].toLowerCase()
-        ajaxWrapper("POST",this.props.submitUrl, data, this.formSubmitCallback);
+        ajaxWrapper("POST", '/users/token/', data, this.formSubmitCallback);
     }
 
     formSubmitCallback (value) {
@@ -63,32 +68,19 @@ class LogInForm extends Component {
             classCss ="form-row";
         }
 
-        let components = [];
-        console.log("Component Info", this.props.components, this.props.componentProps);
-        for (var index in this.props.components) {
-            var Component = this.props.components[index];
-            var props = this.props.componentProps[index];
-            components.push(<Component {...props} handlechange={this.handleChange} value={this.state[props['name']]} />)
-        }
-
-        var buttons = [];
-        var submitButton = <button style={{'width':'100%'}} className="btn btn-success" onClick={this.formSubmit}>Log In</button>
-        buttons.push(submitButton);
-
-        var error = <div></div>
-        if (this.state.error != '') {
-            error = <div className="alert alert-danger" role="alert">
-                          {this.state.error}
-                        </div>
-        }
         //need to add in formsubmit, delete, and handle change functions to components.
         return(
             <div className={classCss}>
-                {components}
-                {buttons}
+              <FormWithChildren defaults={this.state} autoSetGlobalState={true} setGlobalState={this.setGlobalState} globalStateName={'login'}>
+                <TextInput label="Email" placeholder="jeremy@pomodoro.com" name="email" />
+                <PasswordInput label="Password" name="password" />
+                <Button type='success' text='Log In' onClick={this.formSubmit} name="login"/>
+              </FormWithChildren>
                 <small className="form-text">Not a user yet? <a href="/signUp/">Sign Up Here</a></small>
                 <small className="form-text">Forgot your password? <a href="/passwordResetRequest/">Reset Password</a></small>
-                {error}
+                <If logic={this.state.error != ''}>
+                  <Alert type='danger' text={this.state.error} />
+                </If>
             </div>
         )
     }

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Wrapper from 'base/wrapper.js';
+import {Wrapper} from 'library';
 import MetaTags from 'react-meta-tags';
 
-import {Container, Button, Image, Form, TextInput, Navbar, List, Link, Accordion, Paragraph, RadioButton, TextArea, Header} from 'library';
+import {Container, Button, Image, TextInput, Navbar, Link, Accordion, Paragraph, RadioButton, TextArea, Header, ListWithChildren} from 'library';
 
 class Home extends Component {
     constructor(props) {
@@ -14,18 +14,21 @@ class Home extends Component {
     }
 
     setGlobalState() {
-        
+
     }
 
     render() {
+
       var content =
         <div className='container'>
             <br/><br/>
             <div style={{textAlign:"center"}}>
-                <h1>Welcome to your new project</h1>
+                <h1>Welcome to your task tracker</h1>
                 <br/>
 
+
                 <Button href={'/signUp/'} text={"Sign Up"} type={'success'} />
+                <Button href={'/logIn/'} text={"Log In"} type={'outline-success'} />
             </div>
         </div>;
 

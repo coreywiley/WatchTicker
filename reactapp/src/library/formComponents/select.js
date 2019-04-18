@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
-import ajaxWrapper from "base/ajax.js";
+import {resolveVariables} from 'functions';
+import {ajaxWrapper} from 'functions';
 import {Button} from 'library';
 
 
@@ -13,7 +13,7 @@ class Select extends Component {
         this.state = {options:[]}
 
         this.optionsCallback = this.optionsCallback.bind(this);
-        this.handlechange = this.handlechange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.removeSelection = this.removeSelection.bind(this);
     }
 
@@ -44,7 +44,7 @@ class Select extends Component {
         this.setState({options:options})
     }
 
-    handlechange = (e) => {
+    handleChange = (e) => {
 
       var selection = e.target.value;
       var newState = {}
@@ -127,7 +127,7 @@ class Select extends Component {
             <div className={"form-group " + this.props.layout}>
                 <label>{this.props.label}</label><br />
                 {multipleSelections}
-                <select className="form-control" name={this.props.name} onChange={this.handlechange} value={value}>
+                <select className="form-control" name={this.props.name} onChange={this.handleChange} value={value}>
                     {options}
                 </select>
             </div>

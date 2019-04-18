@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
+import {resolveVariables} from 'functions';
 
 //Example
 //var questionName = 'Question: ' + this.state.question.name;

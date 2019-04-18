@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-import ajaxWrapper from "./base/ajax.js";
+import {ajaxWrapper, setGlobalState} from "functions";
+import {Wrapper} from 'library';
 
 //Component Madness
-import ComponentList from './pages/admin/componentList.js';
-import ComponentManager from './pages/admin/componentManager.js';
-import PageList from './pages/admin/pageList.js';
-import PageManager from './pages/admin/pageManager.js';
+import PageList from './pages/page_builder/pageList.js';
+import PageBuilder from './pages/page_builder/pageBuilder.js';
 
 //Admin
 import AppList from './pages/admin/appList.js';
@@ -16,11 +15,8 @@ import Instance from './pages/admin/instance.js';
 import InstanceTable from './pages/admin/modelInstancesTable.js';
 
 //Scaffolding
-import Header from './base/header.js';
-import Wrapper from './base/wrapper.js';
 import LogIn from './pages/scaffold/logIn.js';
 import SignUp from './pages/scaffold/signUp.js';
-import LoggedIn from './pages/scaffold/loggedIn.js';
 import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
 import PasswordReset from './pages/scaffold/passwordReset.js';
 
@@ -32,8 +28,8 @@ import ModelMaker from 'djangoModelMaker.js';
 //API Querying
 import APIDocs from './pages/admin/apiDocs.js';
 
-import Test from './pages/modelEditAndView/WYSIWYG.js';
-import PageBuilder from './pages/admin/pageBuilder.js';
+import Analytics from './pages/pomodorosByDay.js';
+
 
 class App extends Component {
     constructor(props) {
@@ -73,6 +69,7 @@ class App extends Component {
 
     loadUser(result){
       console.log("Load User Result", result)
+      window.cmState.setGlobalState('user',result)
         this.setState({
             user: result, loaded: true,
         });
@@ -105,9 +102,12 @@ class App extends Component {
     }
 
     render() {
-        console.log(this.props);
         var params = this.getURL();
-        console.log("Params", params);
+        var param_dict = {};
+        for (var index in params) {
+          param_dict[index.toString()] = params[index]
+        }
+        window.cmState.setGlobalState('params',param_dict)
 
         var adminPages = [
             'applist','models','modelinstances',
@@ -130,18 +130,12 @@ class App extends Component {
               //window.location = '/login/';
               console.log("Need to be logged in");
           }
-          else if (params[0] === ""){
-              //Home page
-              content = <Home />;
-
+          else if (route == 'logout') {
+            this.logOut();
           }
           else if (route === "admin") {
               //List components
               content = <Home admin={'admin'} />;
-          }
-           else if (route === "components") {
-              //List components
-              content = <ComponentList />;
           }
           else if (route == "applist") {
               content = <AppList user_id={this.state.token}/>;
@@ -155,37 +149,30 @@ class App extends Component {
           else if (route == "modelinstancestable") {
               content = <InstanceTable app={params[1]} model={params[2]}/>;
           }
-
           else if (route == "modelmaker") {
               content = <ModelMaker user_id={this.state.token}/>;
           }
-
           else if (route == "instance") {
               content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token}/>;
-          }
-          else if (route == "login") {
-              content = <LogIn />;
-          }
-          else if (route == "signup") {
-              content = <SignUp />;
-          }
-          else if (route == "loggedin") {
-              content = <LoggedIn  />;
-          }
-          else if (route == "passwordresetrequest") {
-              content = <PasswordResetRequest />;
-          }
-          else if (route == "passwordreset") {
-              content = <PasswordReset  user_id={params[1]} />;
-          }
-          else if (route == "test") {
-              content = <Test id={params[1]} />;
           }
           else if (route == 'apidocs') {
             content = <APIDocs />
           }
           else if (route == 'pagebuilder') {
-            content = <PageBuilder page_id={params[1]} />
+            content = <PageBuilder page_id={params[2]} page_group_id={params[1]} />
+          }
+          else if (route == 'pagelist') {
+            content = <PageList />
+          }
+          else if (route == 'analytics') {
+            content = <Analytics user={this.state.user} />
+          }
+          else {
+            var formatRoute = "/" + route + "/"
+            if (route == "") {
+              formatRoute = "/"
+            }
+            content = <PageBuilder show={true} route={formatRoute} />
           }
         }
 
@@ -203,8 +190,6 @@ class App extends Component {
                   {navbar}
                   <Wrapper style={{paddingTop: '60px'}} content={content} loaded={this.state.loaded} />
                   <br />
-                  <br />
-                  <Footer />
             </div>
           );
         }

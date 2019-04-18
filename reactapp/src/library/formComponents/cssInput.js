@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
-import {Form, TextInput, Button} from 'library';
+import {resolveVariables} from 'functions';
+import {FormWithChildren, TextInput, Button} from 'library';
 
 class CSSInput extends Component {
     constructor(props) {
@@ -44,12 +44,10 @@ class CSSInput extends Component {
         var defaults = {}
         var i = 0;
         for (var index in this.props.value) {
-          components.push(TextInput)
-          componentProps.push({'name':'name_' + i,'layout':'col-6', style:{'width':'100%'}})
+          components.push(<TextInput name={'name_' + i} layout={'col-6'} style={{width:'100%'}} />)
           defaults['name_' + i] = index;
 
-          components.push(TextInput)
-          componentProps.push({'name':'value_' + i,'layout':'col-6', style:{'width':'100%'}})
+          components.push(<TextInput name={'value_' + i} layout={'col-6'} style={{width:'100%'}} />)
           defaults['value_' + i] = this.props.value[index];
           i += 1
         }
@@ -61,7 +59,9 @@ class CSSInput extends Component {
                 <br />
                 <Button type={'primary'} text={'Add CSS Field'} onClick={this.addCSSField} />
                 <br />
-                <Form layout={'form-inline'} components={components} componentProps={componentProps} defaults={defaults} autoSetGlobalState={true} setGlobalState={this.setGlobalState} globalStateName={'form'} />
+                <FormWithChildren layout={'form-inline'} defaults={defaults} autoSetGlobalState={true} setGlobalState={this.setGlobalState} globalStateName={'form'}>
+                    {components}
+                </FormWithChildren>
               </div>
         )
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-places-autocomplete';
 import TextInput from './textinput.js';
 import Select from './select.js';
-import ajaxWrapper from "base/ajax.js";
+import {ajaxWrapper} from 'functions';
 
 
 class GoogleAddress extends Component {
@@ -23,7 +23,7 @@ class GoogleAddress extends Component {
        var name = e.target.getAttribute("name");
        var newState = {};
        newState[name] = e.target.value;
-       console.log("handlechange",name,newState)
+       console.log("handleChange",name,newState)
         var currentState = this.state;
         currentState[name] = newState[name];
 
@@ -130,14 +130,14 @@ class GoogleAddress extends Component {
     var extras = null;
     if (this.props.extras != false) {
       extras = <div>
-      <TextInput name={'street2'} handlechange={this.props.handlechange} placeholder={'Apt/Bldg/Suite Number'} label={'Apt/Bldg/Suite Number'} value={this.props.street2} />
-      <TextInput name={'city'} handlechange={this.props.handlechange} placeholder={'City'} label={'City'} value={this.props.city} />
+      <TextInput name={'street2'} handleChange={this.props.handleChange} placeholder={'Apt/Bldg/Suite Number'} label={'Apt/Bldg/Suite Number'} value={this.props.street2} />
+      <TextInput name={'city'} handleChange={this.props.handleChange} placeholder={'City'} label={'City'} value={this.props.city} />
       <div className="row container">
       <div className="col-sm-6">
-        <Select value={this.props.state} handlechange={this.props.handlechange} defaultoption={'State'} label={'State'} layout={'row'} options={stateOptions} name={'state'} />
+        <Select value={this.props.state} handleChange={this.props.handleChange} defaultoption={'State'} label={'State'} layout={'row'} options={stateOptions} name={'state'} />
       </div>
       <div className="col-sm-6">
-        <TextInput name={'zipcode'} label={'Zip Code'} handlechange={this.props.handlechange} placeholder={'Zip Code'} value={this.props.zipcode} layout={'row'} />
+        <TextInput name={'zipcode'} label={'Zip Code'} handleChange={this.props.handleChange} placeholder={'Zip Code'} value={this.props.zipcode} layout={'row'} />
       </div>
       </div>
       </div>

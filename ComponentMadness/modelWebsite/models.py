@@ -9,6 +9,19 @@ from user.models import User
 # Create your models here.
 
 
+class CMModel(models.Model):
+    class Meta:
+        abstract = True
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    GET_STAFF = False
+    POST_STAFF = False
+    DELETE_STAFF = False
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 class ModelConfig(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=120, blank=True, default="")
@@ -51,6 +64,9 @@ class ComponentRequirement(models.Model):
     def __str__(self):
         return u"{}".format(self.importStatement)
 
+class PageGroup(CMModel):
+    name = models.CharField(max_length=1200, blank=True, default="")
+
 
 class Page(models.Model):
     GET_STAFF = False
@@ -62,6 +78,7 @@ class Page(models.Model):
     url = models.CharField(max_length=120, blank=True, default="")
     components = models.TextField(default = "[]")
     componentProps = models.TextField(default = "[]")
+    pagegroup = models.ForeignKey(PageGroup, default='e10b45fa-e37a-41b5-a003-86728149bc90', on_delete=models.CASCADE, related_name='pages')
 
     def __str__(self):
         return u"{}".format(self.name)

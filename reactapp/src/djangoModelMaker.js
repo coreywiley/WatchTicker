@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import ajaxWrapper from "base/ajax.js";
-import Wrapper from 'base/wrapper.js';
+import {ajaxWrapper} from 'functions';
 
 import {
-  Form, TextInput, Select, PasswordInput,
+  FormWithChildren, TextInput, Select, PasswordInput,
   Header, TextArea, NumberInput, DateTimePicker,
-  ButtonGroup, Button, Accordion, LineBreak, Alert
+  ButtonGroup, Button, Accordion, LineBreak, Alert, Wrapper
 } from 'library';
 
 
@@ -278,25 +277,17 @@ class ConfigForm extends Component {
         var config = this.state;
         var defaults = this.state.modelForm;
 
-        var name = {
-            'name': 'name', 'label': 'Name',
-            'placeholder': 'Name', 'value': '',
-            'layout': 'col-6 inlineField'
-        };
+        var Components = [<TextInput name='name' label='Name' placeholder='Name' value='' layout='col-6 inlineField' />];
 
-        var Components = [TextInput];
-        var ComponentProps = [name];
+        Components.push(<NumberInput name='order' label='Order' placeholder='Order' value='' layout='col-6 inlineField' />);
 
-        Components.push(NumberInput);
-        ComponentProps.push({
+        if ('id' in this.props.config){
+            Components.push(<TextInput name='id' layout='hidden' />);
             'name': 'order', 'label': 'Order',
             'placeholder': 'Order', 'value': '', 'layout': 'col-6 inlineField'
         });
 
         if ('id' in this.props.config){
-            var id = {'name': 'id', 'layout': 'hidden'};
-            Components.push(TextInput);
-            ComponentProps.push(id);
         }
 
         if (config['data']){
@@ -311,45 +302,34 @@ class ConfigForm extends Component {
                 //Components.push(Header);
                 //ComponentProps.push({'text': 'Field Config', 'size': 5, 'layout': 'fieldStyle inlineField'});
 
-                Components.push(TextInput);
-                ComponentProps.push({'name': "field_name" + "_" + j, 'label': 'Name', 'placeholder': 'Name', 'value': '', 'layout': 'fieldStyle inlineField'});
+                Components.push(<TextInput name={'field_name_' + j} label='Name' placeholder='Name' value='' layout='fieldStyle inlineField' />);
 
-                Components.push(Select);
-                ComponentProps.push({'name': 'field_type' + "_" + j, 'label': 'Type', 'options': MODEL_TYPES, 'layout': 'fieldStyle inlineField'});
+                Components.push(<Select name={'field_type_' + j} label='Type' options={MODEL_TYPES} layout='fieldStyle inlineField' />);
 
-                Components.push(TextInput);
-                ComponentProps.push({'name': "field_default" + "_" + j, 'label': 'Default', 'placeholder': 'Default', 'value': '', 'layout': 'fieldStyle inlineField'});
+                Components.push(<TextInput name={'field_default_' + j} label='Default' placeholder='Default' value='' layout='fieldStyle inlineField' />);
 
-                Components.push(ButtonGroup);
-                ComponentProps.push({'name': 'field_blank' + "_" + j, 'label': 'Blank', 'options': ['True', 'False'], 'type': 'secondary', 'layout': 'fieldStyle inlineField'});
+                Components.push(<ButtonGroup name={'field_blank_' + j} label='Blank' options={['True', 'False']} type='secondary' layout='fieldStyle inlineField' />);
 
                 if (this.state.modelForm['field_type' + "_" + j] == "Char"){
-                    Components.push(NumberInput);
-                    ComponentProps.push({'name': 'field_limit' + "_" + j, 'label': 'Max Length', 'layout': 'fieldStyle inlineField'});
+                    Components.push(<NumberInput name={'field_limit_' + j} label='Max Length' layout='fieldStyle inlineField' />);
                 }
 
-                Components.push(Button);
-                ComponentProps.push({
-                    type:'danger',
+                Components.push(<Button type='danger' text='X' num={j} onClick={this.removeField} />);
+
+                Components.push(<LineBreak />);
                     text:'X',
                     num:j,
                     onClick:this.removeField
                 });
 
-                Components.push(LineBreak);
-                ComponentProps.push({});
             }
 
-            Components.push(Button);
-            ComponentProps.push({
-                type:'success',
-                text:'Add New Field',
-                onClick:this.addField
-            });
-            Components.push(LineBreak);
-            ComponentProps.push({});
-            Components.push(LineBreak);
-            ComponentProps.push({});
+            Components.push(<Button type='success' text='Add New Field' onClick={this.addField} />);
+
+            Components.push(<LineBreak />);
+            Components.push(<LineBreak />);
+
+
 
             var related = [];
             if (config['data']['related']){
@@ -357,36 +337,31 @@ class ConfigForm extends Component {
             }
 
             if (related.length > 0){
-                Components.push(Header);
-                ComponentProps.push({'text': 'Related Config', 'size': 5, 'layout': 'fieldStyle'});
+                Components.push(<Header text='Related Config' size={5} layout='fieldStyle' />);
             }
 
             for (var j=0; j < related.length; j++){
                 var field = related[j];
                 var fieldStyle = {'marginLeft': '25px'};
 
-                Components.push(TextInput);
-                ComponentProps.push({'name': "related_name" + "_" + j, 'label': 'Name', 'placeholder': 'Name', 'value': '', 'layout': 'fieldStyle inlineField'});
+                Components.push(<TextInput name={'related_name_' + j} label='Name' placeholder='Name' value='' layout='fieldStyle inlineField' />);
 
-                Components.push(Select);
-                ComponentProps.push({'name': 'related_model' + "_" + j, 'label': 'Model', 'options': this.props.relatedNames, 'layout': 'fieldStyle inlineField'});
+                Components.push(<Select name={'related_model_' + j} label='Model' options={this.props.relatedNames} layout='fieldStyle inlineField' />);
 
-                Components.push(TextInput);
-                ComponentProps.push({'name': "related_alias" + "_" + j, 'label': 'Related Name', 'placeholder': 'Alias', 'value': '', 'layout': 'fieldStyle inlineField'});
+                Components.push(<TextInput name={'related_alias_' + j} label='Related Name' placeholder='Alias' value='' layout='fieldStyle inlineField' />);
 
-                Components.push(LineBreak);
-                ComponentProps.push({});
+                Components.push(<LineBreak />);
             }
-            Components.push(Button);
-            ComponentProps.push({
-                type:'success',
-                text:'Add New Relation',
-                onClick:this.addRelated
-            });
-            Components.push(LineBreak);
-            ComponentProps.push({});
-            Components.push(LineBreak);
-            ComponentProps.push({});
+            Components.push(<Button type='success' text='Add New Relation' onClick={this.addRelated} />);
+
+            Components.push(<LineBreak />);
+            Components.push(<LineBreak />);
+
+        }
+
+        var deleteUrl = undefined;
+        if ('id' in this.props.config) {
+          deleteUrl = "/api/modelConfig/" + this.props.config.id + "/delete/";
 
         }
 
@@ -397,10 +372,11 @@ class ConfigForm extends Component {
 
         return (
             <div style={{padding:'5px'}}>
-                <Form components={Components}  componentProps={ComponentProps}
-                    defaults={defaults} submitUrl={this.props.submitUrl} redirect={this.props.refreshData}
+                <FormWithChildren defaults={defaults} submitUrl={this.props.submitUrl} redirect={this.props.refreshData}
                     autoSetGlobalState={true} globalStateName={'modelForm'} setGlobalState={this.updateState}
-                    submit={this.props.saveModel} deleteUrl={deleteUrl} />
+                    submit={this.props.saveModel} deleteUrl={deleteUrl}>
+                    {Components}
+                </FormWithChildren>
                 <br/>
             </div>
         );

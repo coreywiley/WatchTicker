@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
+import {resolveVariables} from 'functions';
 import Datetime from 'react-datetime';
 
 class DateTimePicker extends Component {
   constructor(props) {
     super(props);
 
-    this.handlechange = this.handlechange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-    handlechange(e) {
+    handleChange(e) {
       var value = '';
 
       if (this.props.display_time == false) {
@@ -33,7 +33,7 @@ class DateTimePicker extends Component {
         if (this.props.layout) {
             layout = this.props.layout;
         }
-        //<input type="text" className="form-control" name={this.props.name} onChange={this.props.handlechange} value={this.props.value} placeholder={this.props.placeholder} />
+        //<input type="text" className="form-control" name={this.props.name} onChange={this.props.handleChange} value={this.props.value} placeholder={this.props.placeholder} />
 
         var display_time = true;
         console.log("Display Time", this.props.display_time)
@@ -50,7 +50,7 @@ class DateTimePicker extends Component {
         return (
               <div className={"form-group " + this.props.layout}>
                 <label>{this.props.label}</label>
-                <Datetime timeFormat={display_time} dateFormat={display_date}  onChange={this.handlechange} defaultValue={this.props.value}/>
+                <Datetime timeFormat={display_time} dateFormat={display_date}  onChange={this.handleChange} defaultValue={this.props.value}/>
 
               </div>
         )

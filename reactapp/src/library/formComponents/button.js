@@ -1,11 +1,51 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
-import {Modal} from 'library'
+import {ajaxWrapper, resolveVariables, run_functions} from 'functions';
+import {Modal, NumberInput, TextInput, Select, CSSInput, Function_Input} from 'library'
 //<Button type={'success'} text={'Add New Event'} href={'/newEvent/'} />
+
+var BOOLEANS = [
+  {'text':'True', value:true},
+  {'text':'False', value:false},
+];
+
+var BUTTON_TYPES = [
+  {'text': 'primary', value: 'primary'},
+  {'text': 'secondary', value: 'secondary'},
+  {'text': 'success', value: 'success'},
+  {'text': 'danger', value: 'danger'},
+  {'text': 'warning', value: 'warning'},
+  {'text': 'info', value: 'info'},
+  {'text': 'light', value: 'light'},
+  {'text': 'dark', value: 'dark'},
+  {'text': 'link', value: 'link'},
+  {'text': 'outline-primary', value: 'outline-primary'},
+  {'text': 'outline-secondary', value: 'outline-secondary'},
+  {'text': 'outline-success', value: 'outline-success'},
+  {'text': 'outline-danger', value: 'outline-danger'},
+  {'text': 'outline-warning', value: 'outline-warning'},
+  {'text': 'outline-info', value: 'outline-info'},
+  {'text': 'outline-light', value: 'outline-light'},
+  {'text': 'outline-dark', value: 'outline-dark'},
+];
+
 
 class Button extends React.Component {
     constructor(props) {
       super(props);
+      this.config = {
+          form_components: [
+              
+              <TextInput label={'text'} name={'text'} default={'Default Text'} />,
+              <Select label={'type'} name={'type'} options={BUTTON_TYPES} />,
+              <TextInput label={'href'} name={'href'} />,
+              <TextInput label={'class'} name={'className'} />,
+              <CSSInput label={'css'} name={'style'} default={{}} />,
+              <Select label={'hover'} name={'hover'} options={BOOLEANS} />,
+              <Select label={'disabled'} name={'disabled'} options={BOOLEANS} />,
+              <Select label={'deleteType'} name={'deleteType'} options={BOOLEANS} />,
+              <Function_Input label={'Add Function'} default={''} name={'functions'} />,
+          ],
+      }
 
       this.state = {
           modal: false,
@@ -34,16 +74,27 @@ class Button extends React.Component {
         else if (this.props.onClick) {
             this.props.onClick(e);
         }
+        else if (this.props.parent_functions) {
+            for (var i in this.props.parent_functions) {
+                this.props.parent_functions[i](e);
+            }
+        }
+        else if (this.props.functions) {
+          run_functions(this.props.functions, this.setState, this.props.setGlobalState)
+        }
+
+
     }
 
     render() {
-        var type = "btn-" + this.props.type;
-      var css = {}
-      if (this.props.css) {
-        css = this.props.css;
+      var type = "btn-" + this.props.type;
+      var style = {}
+      if (this.props.style) {
+        style = this.props.style;
       }
+
         var hover = null;
-        if (this.props.hover){
+        if (this.props.hover) {
             var hoverCSS = {
                 position: 'absolute',
                 top:'0px',
@@ -65,22 +116,22 @@ class Button extends React.Component {
         }
 
         if (this.props.disabled) {
-        var content = <button className={"btn " + type} onClick={this.click} style={css} disabled>{this.props.text}</button>
+        var content = <button className={"btn " + type} onClick={this.click} style={style} disabled>{this.props.text}</button>
       }
       else {
-        var content = <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>
+        var content = <button className={"btn " + type} onClick={this.click} style={style}>{this.props.text}</button>
       }
 
         if (this.props.deleteType == true && this.state.modal == false) {
             console.log("I am here");
             return (
                 <button className={"btn " + type} onClick={this.showModal}
-                num={this.props.num} style={css}>{this.props.text}</button>
+                num={this.props.num} style={style}>{this.props.text}</button>
             );
 
         } else if (this.props.deleteType == true && this.state.modal == true) {
             var alt = <button className={"btn btn-success"} onClick={this.hideModal} style={{'margin':'15px'}}>Dont Delete</button>;
-            var button = <button className={"btn " + type} onClick={this.click} style={css}>{this.props.text}</button>;
+            var button = <button className={"btn " + type} onClick={this.click} style={style}>{this.props.text}</button>;
             return (
                 <Modal content={[alt,button]} show={true} title={'Are you sure?'} onHide={this.hideModal} />
             );
@@ -88,7 +139,7 @@ class Button extends React.Component {
         } else {
             return (
                 <button className={"btn " + type} onClick={this.click}
-                num={this.props.num} style={css}>{this.props.text}</button>
+                num={this.props.num} style={style}>{this.props.text}</button>
             );
         }
 

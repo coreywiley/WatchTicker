@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
-import ajaxWrapper from "base/ajax.js";
+import {resolveVariables} from 'functions';
+import {ajaxWrapper} from 'functions';
 import {Button, Header, TextInput} from 'library';
 
 class EmojiDisplay extends Component {
@@ -33,12 +33,12 @@ class EmojiSelect extends Component {
         super(props);
         this.state = {search:''}
 
-        this.handlechange = this.handlechange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.setFormState = this.setFormState.bind(this);
 
     }
 
-    handlechange = (e) => {
+    handleChange = (e) => {
       this.setState({'search':e.target.value})
     }
 
@@ -67,7 +67,7 @@ class EmojiSelect extends Component {
         return (
             <div>
               <Header size={4} text={'Emojis'} />
-              <TextInput name={'emoji-search'} value={this.state.search} handlechange={this.handlechange} placeholder={'Search For An Emoji (Most Are Hidden Before Search)'} />
+              <TextInput name={'emoji-search'} value={this.state.search} handleChange={this.handleChange} placeholder={'Search For An Emoji (Most Are Hidden Before Search)'} />
               <div className='row'>
               {emojiList}
               </div>

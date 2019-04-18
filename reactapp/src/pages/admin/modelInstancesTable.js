@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {List, Link, Button, Table} from 'library';
-import ajaxWrapper from 'base/ajax.js';
+import {Link, Button, Table} from 'library';
+import {ajaxWrapper} from 'functions';
 
 class InstanceTable extends Component {
     constructor(props) {
@@ -60,7 +60,7 @@ class InstanceTable extends Component {
       else {
         return (
             <div>
-              
+
             </div>
         );
       }

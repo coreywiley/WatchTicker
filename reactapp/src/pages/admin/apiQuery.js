@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import ajaxWrapper from "base/ajax.js";
-import Wrapper from 'base/wrapper.js';
-import {Form, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button} from 'library';
+import {ajaxWrapper} from "functions";
+import {Wrapper, FormWithChildren, Json_Input, NumberInput, BooleanInput, TextInput, Select, TextArea, FileInput, Button} from 'library';
 
 
 let ComponentDict = {
@@ -20,7 +19,7 @@ class APIQuery extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {url: '/api/' + this.props.app + '/' + this.props.model.toLowerCase() + '/', result: '', loaded:false, fields:[]};
+        this.state = {url: '/api/' + this.props.app + '/' + this.props.model.toLowerCase() + '/', result: '', loaded:false, fields:[], post_data:{}, request_type:'GET'};
 
         this.setGlobalState = this.setGlobalState.bind(this);
         this.query = this.query.bind(this);
@@ -41,7 +40,7 @@ class APIQuery extends Component {
     }
 
     query() {
-      ajaxWrapper('GET',this.state.url, {}, this.queryCallback)
+      ajaxWrapper(this.state.request_type,this.state.url, JSON.parse(this.state.post_data), this.queryCallback)
     }
 
     queryCallback(result) {
@@ -49,12 +48,6 @@ class APIQuery extends Component {
     }
 
     render() {
-
-        var Components = [TextInput]
-
-        var url = {'value':'/api/home/', 'placeholder':'/api/home/', 'name':'url', 'label':'URL Query'}
-        var ComponentProps = [url]
-
         var fields = [];
 
         for (var index in this.state.fields) {
@@ -62,8 +55,11 @@ class APIQuery extends Component {
           fields.push(<tr><th>{field[0]}</th><td>{field[1]}</td></tr>);
         }
 
-
-        var normForm = <Form components={Components} autoSetGlobalState={true} setGlobalState={this.setGlobalState} globalStateName={'form'} componentProps={ComponentProps} defaults={this.state} />
+        var normForm = <FormWithChildren autoSetGlobalState={true} setGlobalState={this.setGlobalState} globalStateName={'form'} defaults={this.state}>
+            <TextInput value='/api/home/' name='url' placeholder='/api/home/' label='URL Query' />
+            <Json_Input value={{}} name='post_data' label='Post Data' />
+            <Select value='' defaultOption='GET' name='request_type' options={[{'text':'GET','value':'GET'}, {'text':'POST','value':'POST'}]} />
+        </FormWithChildren>
 
 
         var content =
@@ -77,7 +73,8 @@ class APIQuery extends Component {
           </table>
 
           {normForm}
-          <Button text={'Query'} type={'success'} clickHandler={this.query} />
+          <Button text={'Query'} type={'success'} onClick={this.query} />
+          <Button text={'Clear'} type={'info'} onClick={() => this.setState({result: ''})} />
           <p>Result:</p>
           <p>{this.state.result}</p>
         </div>

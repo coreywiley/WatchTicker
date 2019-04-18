@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import ajaxWrapper from "base/ajax.js";
-import Wrapper from 'base/wrapper.js';
+import {ajaxWrapper} from 'functions';
+import {Wrapper} from 'library';
 
-import {Form, TextInput, Select, PasswordInput, Navbar, Alert} from 'library';
+import {FormWithChildren, TextInput, Select, PasswordInput, Navbar, Alert, If} from 'library';
 
 class SignUp extends Component {
     constructor(props) {
         super(props);
-        this.state = {'error':null}
+        this.state = {'error':null, 'first_name':'','last_name':'', 'email':'', 'password':'','type':'User'}
         this.logIn = this.logIn.bind(this);
     }
 
@@ -32,21 +32,6 @@ class SignUp extends Component {
     }
 
     render() {
-        var Components = [TextInput,TextInput,TextInput, PasswordInput];
-        var first_name_props = {'value':'','name':'first_name','label':'First Name:','placeholder': 'First Name'}
-        var last_name_props = {'value':'','name':'last_name','label':'Last Name:','placeholder': 'Last Name'}
-        var email_props = {'value':'','name':'email','label':'Email:','placeholder': 'component@madness.com'}
-        var password_props = {'confirm_password':true};
-
-        var ComponentProps = [first_name_props, last_name_props, email_props, password_props];
-        var defaults = {'first_name':'','last_name':'', 'email':'', 'password':'','type':'User'};
-
-        var submitUrl = "/users/signup/";
-
-        var error = null;
-        if (this.state.error) {
-          error = <Alert type={'danger'} text={this.state.error} />
-        }
 
         var content =
         <div className="container">
@@ -54,8 +39,15 @@ class SignUp extends Component {
                 <div className="col-md-4"></div>
                 <div className="col-md-4">
                     <h2>Sign Up</h2>
-                    <Form components={Components} redirect={this.logIn} componentProps={ComponentProps} submitUrl={submitUrl} defaults={defaults} />
-                    {error}
+                    <FormWithChildren submitUrl="/users/signup" defaults={this.state} redirect={this.logIn}>
+                      <TextInput name="first_name" label="First Name" />
+                      <TextInput name="last_name" label="Last Name" />
+                      <TextInput name="email" label="Email" />
+                      <PasswordInput name="password" label="Password" confirm_password={true} />
+                    </FormWithChildren>
+                    <If logic={this.state.error}>
+                      <Alert type={'danger'} text={this.state.error} />
+                    </If>
                 </div>
                 <div className="col-md-4"></div>
             </div>

@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
-import ajaxWrapper from "base/ajax.js";
-import Wrapper from 'base/wrapper.js';
+import {ajaxWrapper} from 'functions';
+import {Wrapper} from 'library';
 
-import {Form, TextInput, Select, PasswordInput, Alert, Header, Button} from 'library';
+import {FormWithChildren, If, TextInput, Alert, Header, Button} from 'library';
 
 class PasswordResetRequest extends Component {
     constructor(props) {
         super(props);
         this.state = {'email':'', 'error':false, 'sent':false, 'loaded':true}
+
+        this.config = {
+            form_components: [
+
+            ],
+            can_have_children: true,
+        }
+
+        this.userLookup = this.userLookup.bind(this);
         this.emailCallback = this.emailCallback.bind(this);
         this.email = this.email.bind(this);
-        this.userLookup = this.userLookup.bind(this);
-    }
-
-    handleChange = (e) => {
-       var name = e.target.getAttribute("name");
-       var newState = {};
-       newState[name] = e.target.value;
-
-        var newCompleteState = this.state;
-        newCompleteState[name] = e.target.value;
-       this.setState(newState);
     }
 
     userLookup() {
@@ -44,24 +42,18 @@ class PasswordResetRequest extends Component {
     }
 
     render() {
-        var email_props = {'value':this.state.email,'name':'email','label':'Email:','placeholder': 'component@madness.com', 'handlechange':this.handleChange}
-
-        var alert = <div></div>;
-        if (this.state.error == true) {
-          alert = <Alert text={'No user found with that email.'} type={'danger'} />
-        }
-
-        var sent = <div></div>;
-        if (this.state.sent == true) {
-          sent = <Alert text={'Your password reset email has been sent.'} type={'success'} />
-        }
-
         var content = <div className="container">
                 <Header size={2} text={"Add your email and we'll send you a link to reset your password."} />
-                <TextInput {...email_props} />
+                <FormWithChildren autoSetGlobalState={true} setGlobalState={this.setGlobalState} globalStateName={'form'}>
+                  <TextInput default={this.state.email} name="email" label="Email" placeholder="component@madness.com" />
+                </FormWithChildren>
                 <Button type={'success'} text={'Reset Password'} clickHandler={this.userLookup} />
-                {alert}
-                {sent}
+                <If logic={this.state.sent}>
+                  <Alert text={'Your password reset email has been sent.'} type={'success'} />
+                </If>
+                <If logic={this.state.error}>
+                  <Alert text={'No user found with that email.'} type={'danger'} />
+                </If>
         </div>;
 
         return (

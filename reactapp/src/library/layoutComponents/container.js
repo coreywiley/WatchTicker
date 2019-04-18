@@ -1,13 +1,29 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
+import {resolveVariables} from 'functions';
+import {Div, NumberInput, CSSInput, AddChildComponent} from 'library';
 
 class Container extends React.Component {
-          render() {
+    constructor(props) {
+        super(props);
+        this.config = {
+            form_components: [
+                
+                <CSSInput label={'css'} name={'style'} default={{}} />,
+            ],
+            can_have_children: true,
+        }
+    }
+    
+    render() {
+                var className = "container ";
+                if (this.props.className) {
+                  className += this.props.className;
+                }
 
                 return (
-                    <div className="container" style={this.props.style}>
+                    <Div className={className} style={this.props.style}>
                       {this.props.children}
-                    </div>
+                    </Div>
                 );
             }
 }

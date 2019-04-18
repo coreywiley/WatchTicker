@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
+import {resolveVariables} from 'functions';
 import Image from '../displayComponents/image.js';
-import ajaxWrapperFile from 'base/ajaxFile.js';
-import ajaxWrapper from "base/ajax.js";
+import {ajaxWrapper, ajaxWrapperFile} from 'functions';
 
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 import {Card, Button} from 'library';

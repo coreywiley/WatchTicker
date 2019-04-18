@@ -1,7 +1,21 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
+import {resolveVariables} from 'functions';
+import {NumberInput, TextInput, CSSInput} from 'library';
 
 class Header extends React.Component {
+    constructor(props) {
+        super(props);
+        this.config = {
+            form_components: [
+                
+                <TextInput label={'text'} name={'text'} />,
+                <NumberInput label={'size'} name={'size'} />,
+                <CSSInput label={'css'} name={'style'} />
+            ],
+        }
+    }
+
+
     render() {
         var style = this.props.style || {};
 
@@ -23,9 +37,7 @@ class Header extends React.Component {
                 header = <h6 style={style}>{this.props.text}</h6>;
             }
         }
-        return (
-            <div className={this.props.layout}>{header}</div>
-        );
+        return (header);
     }
 }
 

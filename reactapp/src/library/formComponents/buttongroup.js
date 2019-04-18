@@ -27,7 +27,7 @@ class ButtonGroup extends React.Component {
 	        buttons.push(
                 <label style={css} className={"btn" + active + type}>
                     <input type="radio" name={this.props.name} value={this.props.options[index]}
-                        onClick={this.props.handlechange} id={this.props.options[index]} />{this.props.options[index]}
+                        onClick={this.props.handleChange} id={this.props.options[index]} />{this.props.options[index]}
                 </label>
             );
     	}

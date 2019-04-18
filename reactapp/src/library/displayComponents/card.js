@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
+import {resolveVariables} from 'functions';
 
 class Card extends React.Component {
 
@@ -18,7 +18,7 @@ class Card extends React.Component {
         console.log("Buttons!",this.props.buttons);
 
         return (
-            <div className="card" style={this.props.css} data-id={this.props.data_id} >
+            <div className={"card " + this.props.className || ''} style={this.props.css} data-id={this.props.data_id} >
               {image}
               <div className="card-body">
                 <h5 className="card-title">{this.props.name}</h5>

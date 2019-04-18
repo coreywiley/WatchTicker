@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
+import {resolveVariables} from 'functions';
 
 class TextArea extends Component {
     render() {
@@ -19,7 +19,7 @@ class TextArea extends Component {
                 {label}
                 <textarea className="form-control" name={this.props.name}
                     rows={this.props.rows}
-                    onChange={this.props.handlechange}
+                    onChange={this.props.handleChange}
                     onBlur={this.props.onBlur}
                     value={this.props.value}
                     placeholder={this.props.placeholder}>

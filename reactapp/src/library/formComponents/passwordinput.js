@@ -1,9 +1,28 @@
 import React, { Component } from 'react';
-import resolveVariables from 'base/resolver.js';
+import {resolveVariables} from 'functions';
+import {NumberInput, TextInput, Select, CSSInput} from 'library'
+
+var BOOLEANS = [
+  {'text':'True', value:true},
+  {'text':'False', value:false},
+];
 
 class PasswordInput extends Component {
+
     constructor(props) {
         super(props);
+        this.config = {
+            form_components: [
+                
+                <TextInput label={'name'} name={'name'} />,
+                <TextInput label={'placeholder'} name={'placeholder'} />,
+                <Select label={'Confirm Password?'} name={'confirm_password'} options={BOOLEANS} />,
+                <Select label={'required'} name={'required'} options={BOOLEANS} />,
+                <TextInput label={'class'} name={'className'} />,
+                <CSSInput label={'css'} name={'style'} default={{}} />,
+            ],
+        }
+        
         this.state = {password:'',password_confirm:''};
         this.verifyPassword = this.verifyPassword.bind(this);
 
@@ -15,7 +34,7 @@ class PasswordInput extends Component {
        var name = e.target.getAttribute("name");
        var newState = {};
        newState[name] = e.target.value;
-       console.log("handlechange", name, newState)
+       console.log("handleChange", name, newState)
 
         this.setState(newState);
     }
@@ -66,7 +85,7 @@ class PasswordInput extends Component {
             <div>
               <div className={"form-group " + this.props.layout}>
                 <label>Password</label>
-                <input type="password" className="form-control" name="password" placeholder={this.props.placeholder} onChange={(e) => {this.verifyPassword(e); this.props.handlechange(e)}} value={this.state.password} />
+                <input type="password" className="form-control" name="password" placeholder={this.props.placeholder} onChange={(e) => {this.verifyPassword(e); this.props.handleChange(e)}} value={this.state.password} />
               </div>
               {passwordConfirm}
             </div>
