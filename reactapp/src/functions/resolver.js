@@ -15,7 +15,6 @@ function fillDict(dict, data) {
     if (Array.isArray(dict)) {info = Object.assign([], dict);}
 
     for (var k in info) {
-        console.log("K", k, info, info[k], typeof info[k])
         //Broad Detection of React.Element type and probably other things.
         if (info[k]) {
             if (typeof info[k].type == "function") {
@@ -36,11 +35,9 @@ function fillDict(dict, data) {
 
 
 function fillData(tempStr, data) {
-    console.log("TempStr", tempStr, typeof tempStr);
     if (typeof tempStr != 'string') {
         return tempStr;
     }
-    console.log("Data", data)
 
     var dataSplit = tempStr.split('{');
     //Add initial text to output
