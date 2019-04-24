@@ -10,8 +10,13 @@ class Icon extends React.Component {
 
        var icon = 'fa-' + this.props.icon;
 
+       var type = this.props.type || 'fas';
+       if (this.props.list_icon) {
+           type += ' fa-li'
+       }
+
         return (
-            <i style={this.props.style} className={"fa " + size + " " + icon}></i>
+            <i style={this.props.style} className={type + " " + size + " " + icon}></i>
         );
     }
 }

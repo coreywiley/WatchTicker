@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import {resolveVariables} from 'functions';
-import {NumberInput, TextInput, CSSInput, AddChildComponent} from 'library';
+import {TextInput, CSSInput} from 'library';
 
-class Div extends React.Component {
+class UnorderedList extends React.Component {
     constructor(props) {
         super(props);
         this.config = {
             form_components: [
-                <TextInput label={'class'} name={'className'} default={''} />,
+                <TextInput label={'Class'} name={'class'} />,
                 <CSSInput label={'css'} name={'style'} default={{}} />,
             ],
             can_have_children: true,
@@ -15,13 +15,14 @@ class Div extends React.Component {
     }
 
     render() {
+        var css = this.props.css || {};
         return (
-            <div className={this.props.className || ''} style={this.props.style || {}}>
+            <ul style={css} className={this.props.class}>
                 {this.props.children}
-            </div>
+            </ul>
         );
     }
 }
 
 
-export default Div;
+export default UnorderedList;

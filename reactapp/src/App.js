@@ -22,13 +22,12 @@ import PasswordReset from './pages/scaffold/passwordReset.js';
 
 import Home from './pages/scaffold/home.js';
 import Nav from 'projectLibrary/nav.js';
-import Footer from 'projectLibrary/footer.js';
+//import Footer from 'projectLibrary/footer.js';
 import ModelMaker from 'djangoModelMaker.js';
 
 //API Querying
 import APIDocs from './pages/admin/apiDocs.js';
 
-import Analytics from './pages/pomodorosByDay.js';
 
 
 class App extends Component {
@@ -164,9 +163,6 @@ class App extends Component {
           else if (route == 'pagelist') {
             content = <PageList />
           }
-          else if (route == 'analytics') {
-            content = <Analytics user={this.state.user} />
-          }
           else {
             var formatRoute = "/" + route + "/"
             if (route == "") {
@@ -184,12 +180,11 @@ class App extends Component {
               </div>
           );
         }
+
         else {
           return (
               <div className="App">
-                  {navbar}
                   <Wrapper style={{paddingTop: '60px'}} content={content} loaded={this.state.loaded} />
-                  <br />
             </div>
           );
         }

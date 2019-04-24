@@ -1,25 +1,51 @@
 import React, { Component } from 'react';
 import {resolveVariables} from 'functions';
-import {Button} from 'library';
+import {Button, Json_Input} from 'library';
 
 class NavBar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.config = {
+            form_components: [
+                <Json_Input label={'Logged Out Links'} placeholder={'[["/","Home"],["/link","Link Name"]]'} name="logged_out_links" />,
+                <Json_Input label={'Logged In Links'} placeholder={'[["/","Home"],["/link","Link Name"]]'} name="logged_in_links" />,
+                <Json_Input label={'Admin Only Links'} placeholder={'[["/","Home"],["/link","Link Name"]]'} name="admin_links" />,
+
+            ],
+            can_have_children: true,
+        }
+    }
 
     render() {
+        var user = window.cmState.getGlobalState(this, 'user')
+
         var classes = 'navbar navbar-expand-lg navbar-light bg-light';
         if (this.props.fixed){ classes += ' fixed-top';}
 
         var links = [];
-        if (this.props.links) {
-            for (var index in this.props.links) {
-                links.push(<li key={index} className="nav-item"><a className="nav-link" href={this.props.links[index][0]}>{this.props.links[index][1]}</a></li>)
-            }
-        }
 
-        var logOut = <div></div>;
-        if (this.props.logOut) {
-          logOut = <div className="form-inline">
-            <Button type={'danger'} text={'Log Out'} clickHandler={this.props.logOut} />
-          </div>
+        console.log("User", user)
+
+        if (user) {
+            if (user.is_staff == true) {
+                for (var index in this.props.admin_links) {
+                    links.push(<li key={index} className="nav-item"><a className="nav-link" href={this.props.admin_links[index][0]}>{this.props.admin_links[index][1]}</a></li>)
+                }
+            }
+            if (this.props.logged_in_links) {
+                console.log("Logged In Links", this.props.logged_in_links)
+                for (var index in this.props.logged_in_links) {
+                    links.push(<li key={index} className="nav-item"><a className="nav-link" href={this.props.logged_in_links[index][0]}>{this.props.logged_in_links[index][1]}</a></li>)
+                }
+            }
+            links.push(<li key={index} className="nav-item"><a className="nav-link" href={'/logOut/'}>Log Out</a></li>)
+        }
+        else {
+            if (this.props.logged_out_links) {
+                for (var index in this.props.logged_out_links) {
+                    links.push(<li key={index} className="nav-item"><a className="nav-link" href={this.props.logged_out_links[index][0]}>{this.props.logged_out_links[index][1]}</a></li>)
+                }
+            }
         }
 
         return (
@@ -33,9 +59,6 @@ class NavBar extends React.Component {
                   {links}
                 </ul>
               </div>
-              <a href={'/appList'} style={{'marginRight':'25px', 'color':'darkblue'}}>Admin</a>
-              {logOut}
-
             </nav>
         );
     }

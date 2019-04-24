@@ -16,6 +16,8 @@ import Small_ from './displayComponents/small.js';
 import Stars_ from './displayComponents/stars.js';
 import HTMLInputDisplay_ from './displayComponents/htmlInputDisplay.js';
 import Icons_ from './displayComponents/icons.js';
+import UnorderedList_ from './displayComponents/UnorderedList.js';
+import ListItem_ from './displayComponents/ListItem.js';
 
 import BooleanInput_ from './formComponents/booleaninput.js';
 import Button_ from './formComponents/button.js';
@@ -136,3 +138,5 @@ export const Json_Input = Json_Input_;
 export const Function_Input = Function_Input_;
 export const PasswordResetRequest = PasswordResetRequest_;
 export const Icons = Icons_;
+export const ListItem = ListItem_;
+export const UnorderedList = UnorderedList_;
