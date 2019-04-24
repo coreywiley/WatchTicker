@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('modelWebsite', '0006_pagegroup'),
+        ('modelWebsite', '0007_make_groups'),
     ]
 
     operations = [

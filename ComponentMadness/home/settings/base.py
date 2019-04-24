@@ -110,6 +110,15 @@ DATABASES = {
     'default': {
         'CONN_MAX_AGE': 0,
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'heather',
+        'USER': 'heather',
+        'PASSWORD': '9dK6cX@C@ascYZMz',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
+    },
+    'cm': {
+        'CONN_MAX_AGE': 0,
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'pomodoro',
         'USER': 'pomodoro',
         'PASSWORD': 'Pczx5&DKdKnN4+*a',

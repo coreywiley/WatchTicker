@@ -23,4 +23,9 @@ class Migration(migrations.Migration):
                 'abstract': False,
             },
         ),
+        migrations.AddField(
+            model_name='modelconfig',
+            name='order',
+            field=models.IntegerField(default=0),
+        ),
     ]
