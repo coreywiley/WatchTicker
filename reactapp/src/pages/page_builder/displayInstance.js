@@ -12,13 +12,12 @@ class DisplayInstance extends Component {
 
   render() {
 
-    var child_component = React.cloneElement(this.props.content, this.props)
+    var style = this.props.style;
+    var passedData = {...this.props};
+    delete passedData['style']
+    var child_component = React.cloneElement(this.props.content, passedData)
 
-    return (
-      <div onClick={this.setComponent} style={this.props.style}>
-        {child_component}
-      </div>
-    )
+    return (child_component)
   }
 }
 

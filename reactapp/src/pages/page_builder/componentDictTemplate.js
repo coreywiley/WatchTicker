@@ -1,7 +1,5 @@
 import {*library_imports*} from 'library';
 *project_library_imports*
-import Alarm from 'projectLibrary/alarm.js';
-import Nav from 'projectLibrary/nav.js';
 
 let ComponentList = [
     *all_imports*

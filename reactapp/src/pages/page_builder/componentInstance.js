@@ -18,11 +18,17 @@ class ComponentInstance extends Component {
       type = 'primary'
     }
 
-    return (
-      <div>
-        <Button onClick={this.setComponent} text={this.props.name.name} type={type}/>
-      </div>
-    )
+    if (this.props.name) {
+        return (
+          <div>
+            <Button onClick={this.setComponent} text={this.props.name.name} type={type}/>
+          </div>
+        )
+    }
+    else {
+        return (null)
+    }
+
   }
 }
 

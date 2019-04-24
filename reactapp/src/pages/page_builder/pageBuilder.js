@@ -135,23 +135,29 @@ class PageBuilder extends Component {
     componentListCreator(top_level, lookup) {
       var componentList = [];
       for (var index in top_level) {
-        var component = top_level[index]
-        componentList.push(<ComponentInstance name={component['class']} index={component['key']}
-          setComponent={this.setComponent} selectedComponent={this.state.selectedComponent} />)
-        if (lookup[component['key']].length > 0) {
-          componentList.push(<div style={{marginLeft:'15px'}}>
-            {this.componentListCreator(lookup[component['key']], lookup)}
-        </div>)
+            try {
+                var component = top_level[index]
+                componentList.push(<ComponentInstance name={component['class']} index={component['key']}
+                  setComponent={this.setComponent} selectedComponent={this.state.selectedComponent} />)
+                if (lookup[component['key']].length > 0) {
+                  componentList.push(<div style={{marginLeft:'15px'}}>
+                    {this.componentListCreator(lookup[component['key']], lookup)}
+                </div>)
+            }
         }
-      }
+            catch (error) {
+                console.log("Error likely due to missing or not imported component.", error)
+            }
+        }
+
       return componentList
     }
 
     //creates a rendering for the preview on pagebuilder or the real deal if show = true
     //lookup is a dictionary of keys with their children keys in a list as a key
-    displayCreator(top_level, lookup, show) {
+    displayCreator(top_level, lookup) {
       var display = [];
-      console.log("Top Level", top_level)
+
       if (this.props.show) {
         top_level = sort_objects(top_level, ['order'])
       }
@@ -164,23 +170,36 @@ class PageBuilder extends Component {
         var TempComponent = component['class'];
         var props = {...component['props']};
 
-        if (new TempComponent().config['can_have_children']) {
-          if (this.props.show) {
-            props['children'] = sort_objects(this.displayCreator(lookup[component['key']], lookup), ['props','order'])  
-          }
-          else {
-            props['children'] = sort_objects(this.displayCreator(lookup[component['key']], lookup), ['props','content','props','order'])
-          }
-        }
+        try {
+            if (new TempComponent().config['can_have_children']) {
+              if (this.props.show) {
+                  console.log("1")
+                props['children'] = sort_objects(this.displayCreator(lookup[component['key']], lookup), ['props','order'])
+                console.log("2")
+              }
+              else {
 
-        if (this.props.show) {
-            display.push(<TempComponent {...props} setGlobalState={this.setGlobalState} />)
+                props['children'] = sort_objects(this.displayCreator(lookup[component['key']], lookup), ['props','content','props','order'])
+
+              }
+            }
+            console.log("3")
+            //display.push(<TempComponent {...props} setGlobalState={this.setGlobalState} />)
+            console.log("4")
+
+            if (this.props.show) {
+                display.push(<TempComponent {...props} setGlobalState={this.setGlobalState} />)
+            }
+            else if (this.state.selectedComponent == component['key']) {
+              display.push(<DisplayInstance show={this.props.show} content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} style={{'border':'2px solid #0f0'}} />)
+            }
+            else {
+              display.push(<DisplayInstance show={this.props.show} content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} />)
+            }
+            
         }
-        else if (this.state.selectedComponent == component['key']) {
-          display.push(<DisplayInstance show={this.props.show} content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} style={{'border':'2px solid #0f0'}} />)
-        }
-        else {
-          display.push(<DisplayInstance show={this.props.show} content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} />)
+        catch(error) {
+            console.log("Error likely caused by a component that doesn't exist or isn't imported", error)
         }
       }
       return display
@@ -202,21 +221,18 @@ class PageBuilder extends Component {
 
     removeComponent() {
       var components = this.state.components;
-      var componentProps = this.state.componentProps;
       var componentsToRemove = this.componentsToRemove(this.state.selectedComponent);
       componentsToRemove.push(this.state.selectedComponent);
 
 
       var new_components = [];
-      var new_component_props = [];
       for (var index in components) {
         if (componentsToRemove.indexOf(index) == -1) {
           new_components.push(components[index]);
-          new_component_props.push(componentProps[index]);
         }
       }
 
-      this.setState({components: new_components, componentProps:new_component_props, selectedComponent: -1});
+      this.setState({components: new_components, selectedComponent: -1});
     }
 
     render() {
@@ -235,7 +251,7 @@ class PageBuilder extends Component {
         }
       }
 
-      var display = this.displayCreator(topLevelComponents, component_parent_dict, this.props.show);
+      var display = this.displayCreator(topLevelComponents, component_parent_dict);
 
       if (this.props.show) {
         var content = <div>
@@ -255,7 +271,11 @@ class PageBuilder extends Component {
             for (var index in components) {
                 var component = components[index];
                 var value = selected_component['props'][component.props['name']];
-                component = React.cloneElement(component, {'default': value, 'parentIndex': this.state.selectedComponent, 'addComponent': this.addComponent});
+                var passedData = {parentIndex: this.state.selectedComponent, 'addComponent': this.addComponent};
+                if (value) {
+                    passedData['default'] = value;
+                }
+                component = React.cloneElement(component, passedData);
                 new_components.push(component);
             }
 
@@ -287,7 +307,6 @@ class PageBuilder extends Component {
 
             var content =
             <div>
-            <a href='/pageList/'>Page List</a>
             <div className="container">
                <a href='/pageList/'>See All Pages</a>
                <FormWithChildren defaults={this.state} autoSetGlobalState={true} setGlobalState={this.setGlobalStateName} globalStateName={'form'}>

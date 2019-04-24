@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {ajaxWrapper} from 'functions';
-import {Button, EmptyModal, PageBreak} from 'library';
+import {Button, EmptyModal, PageBreak, Header} from 'library';
 import ComponentDict from './componentDict.js';
 
 class AddBuildingBlock extends Component {
@@ -88,6 +88,7 @@ class AddChildComponent extends Component {
     }
 
     addable_components.push(<PageBreak />)
+    addable_components.push(<Header size={3} text='Building Blocks' />)
 
     for (var index in this.state.building_blocks) {
         var building_block = this.state.building_blocks[index];
