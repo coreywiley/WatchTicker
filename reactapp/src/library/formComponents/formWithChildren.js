@@ -12,7 +12,7 @@ function get_children(obj, defaults) {
     var children = [];
     var children_props = [];
 
-    if (obj.props.children != undefined) {
+    if (obj.props && obj.props.children != undefined) {
         //weirdly enough this means more than one child
         if (obj.props.children.length > 0) {
             children_props = obj.props.children
@@ -25,9 +25,11 @@ function get_children(obj, defaults) {
     for (var index in children_props) {
         var child = children_props[index];
         children.push(child)
-        if (child.props.default) {
+        if (child.props && child.props.default) {
           console.log("Default Setting", child.props.name, child.props.default)
-          defaults[child.props.name] = child.props.default;
+          if (!obj.state || !obj.state[child.props.name]) {
+              defaults[child.props.name] = child.props.default;
+          }
         }
     }
 
@@ -52,7 +54,7 @@ class FormWithChildren extends Component {
         }
 
         var defaults = {};
-        if (this.props.defaults) {
+        if (this.props && this.props.defaults) {
           defaults = resolveVariables(this.props.defaults, window.cmState.getGlobalState())
         }
 
@@ -87,6 +89,8 @@ class FormWithChildren extends Component {
           new_defaults = resolveVariables(nextProps.defaults, window.cmState.getGlobalState())
         }
 
+        console.log("Component Will Receive Props Called", nextProps.defaults, new_defaults)
+
         var defaults = {}
         for (var key in new_defaults){
             if (!(key in this.state)){
@@ -98,7 +102,7 @@ class FormWithChildren extends Component {
         var children = childrendefaults[0];
         defaults = childrendefaults[1];
 
-
+        console.log("Setting State", new_defaults, defaults)
         this.setState(defaults);
     }
 
@@ -117,6 +121,7 @@ class FormWithChildren extends Component {
 
         var newCompleteState = this.state;
         newCompleteState[name] = e.target.value;
+        console.log("Different States", newState, newCompleteState)
        this.setState(newState, this.setGlobalState(newCompleteState));
     }
 
@@ -298,12 +303,14 @@ class FormWithChildren extends Component {
         for (var index in this.state.children) {
             var child = this.state.children[index];
 
-            var newProps = {value: this.state[child.props.name], setFormState:this.setFormState, handleChange:this.handleChange, handleKeyPress: this.handleKeyPress}
-            if (index == 0) {
-              newProps['autoFocus'] = true;
-            }
+            if (child.props) {
+                var newProps = {value: this.state[child.props.name], setFormState:this.setFormState, handleChange:this.handleChange, handleKeyPress: this.handleKeyPress}
+                if (index == 0 && this.props.autoFocus) {
+                  newProps['autoFocus'] = true;
+                }
 
-            components.push(React.cloneElement(child,newProps))
+                components.push(React.cloneElement(child,newProps))
+            }
         }
 
 

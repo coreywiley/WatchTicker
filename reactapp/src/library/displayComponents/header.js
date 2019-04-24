@@ -7,10 +7,10 @@ class Header extends React.Component {
         super(props);
         this.config = {
             form_components: [
-                
-                <TextInput label={'text'} name={'text'} />,
-                <NumberInput label={'size'} name={'size'} />,
-                <CSSInput label={'css'} name={'style'} />
+
+                <TextInput label={'text'} name={'text'} default='' />,
+                <NumberInput label={'size'} name={'size'} default={3} />,
+                <CSSInput label={'css'} name={'style'} default={{}} />
             ],
         }
     }

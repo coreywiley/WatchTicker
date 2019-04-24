@@ -2,6 +2,16 @@ import React, { Component } from 'react';
 import {resolveVariables} from 'functions';
 import {FormWithChildren, TextInput, Button} from 'library';
 
+function makeid(length) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < length; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
 class CSSInput extends Component {
     constructor(props) {
         super(props);
@@ -44,6 +54,7 @@ class CSSInput extends Component {
         var defaults = {}
         var i = 0;
         for (var index in this.props.value) {
+            console.log("In CSS INput Loop")
           components.push(<TextInput name={'name_' + i} layout={'col-6'} style={{width:'100%'}} />)
           defaults['name_' + i] = index;
 
@@ -51,6 +62,8 @@ class CSSInput extends Component {
           defaults['value_' + i] = this.props.value[index];
           i += 1
         }
+
+        var key = makeid(5);
 
 
         return (
