@@ -18,6 +18,7 @@ import HTMLInputDisplay_ from './displayComponents/htmlInputDisplay.js';
 import Icons_ from './displayComponents/icons.js';
 import UnorderedList_ from './displayComponents/UnorderedList.js';
 import ListItem_ from './displayComponents/ListItem.js';
+import Span_ from './displayComponents/span.js';
 
 import BooleanInput_ from './formComponents/booleaninput.js';
 import Button_ from './formComponents/button.js';
@@ -52,7 +53,6 @@ import CSSInput_ from './formComponents/cssInput.js';
 import Json_Input_ from './formComponents/json_input.js';
 import Function_Input_ from './formComponents/function_input.js';
 import PasswordResetRequest_ from './formComponents/formExtensions/passwordResetRequest.js';
-
 
 import Accordion_ from './functionalComponents/accordion.js';
 import LineBreak_ from './functionalComponents/lineBreak.js';
@@ -140,3 +140,4 @@ export const PasswordResetRequest = PasswordResetRequest_;
 export const Icons = Icons_;
 export const ListItem = ListItem_;
 export const UnorderedList = UnorderedList_;
+export const Span = Span_;
