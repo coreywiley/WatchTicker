@@ -48,7 +48,7 @@ class AddComponent extends Component {
 class AddChildComponent extends Component {
       constructor(props) {
         super(props);
-        this.state = {adding: false, building_blocks:[]}
+        this.state = {adding: false, building_blocks:[], selectedList: null}
 
         this.addComponent = this.addComponent.bind(this);
         this.addingComponent = this.addingComponent.bind(this);
@@ -82,24 +82,43 @@ class AddChildComponent extends Component {
 
   render() {
     var addable_components = [];
-    for (var key in ComponentDict) {
-        var component = ComponentDict[key];
-        addable_components.push(<AddComponent name={component} addComponent={this.addComponent} />);
+
+    if (this.state.selectedList == 'Basic') {
+
+        addable_components.push(<Header size={3} text='Basic Components' />)
+        addable_components.push(<Button onClick={() => this.setState({selectedList:null})} text={'Go Back'} type={'outline-primary'} />)
+
+        for (var key in ComponentDict) {
+            var component = ComponentDict[key];
+            addable_components.push(<AddComponent name={component} addComponent={this.addComponent} />);
+        }
+
+    }
+    //addable_components.push(<PageBreak />)
+
+    else if (this.state.selectedList == 'Building Blocks') {
+
+        addable_components.push(<Header size={3} text='Building Blocks' />)
+        addable_components.push(<Button onClick={() => this.setState({selectedList:null})} text={'Go Back'} type={'outline-primary'} />)
+
+        for (var index in this.state.building_blocks) {
+            var building_block = this.state.building_blocks[index];
+            addable_components.push(<AddBuildingBlock building_block={building_block} addBuildingBlock={this.addBuildingBlock} />)
+        }
     }
 
-    addable_components.push(<PageBreak />)
-    addable_components.push(<Header size={3} text='Building Blocks' />)
-
-    for (var index in this.state.building_blocks) {
-        var building_block = this.state.building_blocks[index];
-        addable_components.push(<AddBuildingBlock building_block={building_block} addBuildingBlock={this.addBuildingBlock} />)
+    else {
+        addable_components.push(<Button onClick={() => this.setState({selectedList:'Basic'})} text={'Basic Components'} type={'outline-primary'} />)
+        addable_components.push(<Button onClick={() => this.setState({selectedList:'Building Blocks'})} text={'Building Blocks'} type={'outline-primary'} />)
     }
 
     return (
       <div>
             <Button type={'primary'} text={this.props.label} onClick={this.addingComponent} />
             <EmptyModal show={this.state.adding} onHide={this.addingComponent}>
-                {addable_components}
+                <div style={{maxHeight:'800px', overflowY:'scroll'}}>
+                    {addable_components}
+                </div>
             </EmptyModal>
       </div>
     )

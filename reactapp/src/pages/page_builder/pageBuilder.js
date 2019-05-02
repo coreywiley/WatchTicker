@@ -7,6 +7,38 @@ import ComponentInstance from './componentInstance.js';
 import DisplayInstance from './displayInstance.js';
 
 
+class DuplicateComponent extends Component {
+    constructor(props) {
+        super(props);
+
+        this.duplicate = this.duplicate.bind(this);
+    }
+
+    componentWithChildren(top_level, parent_index) {
+        for (var index in this.props.components) {
+            var component = this.props.components[index];
+            if (component.parent == parent_index) {
+                var new_component = JSON.parse(JSON.stringify(component))
+                var child_list = this.componentWithChildren([new_component], index)
+                //console.log("Child List", child_list)
+                top_level.push(...child_list)
+            }
+        }
+        return top_level
+    }
+
+    duplicate() {
+        var selectedComponent = JSON.parse(JSON.stringify(this.props.components[this.props.selectedComponent]));
+        var componentWithChildren = this.componentWithChildren([selectedComponent], this.props.selectedComponent);
+        console.log("Component With Children", componentWithChildren)
+        this.props.addBuildingBlock({'components':componentWithChildren}, selectedComponent.parent, true)
+    }
+
+    render() {
+        return (<Button text={'Duplicate'} type={'primary'} onClick={this.duplicate} />)
+    }
+}
+
 class PageBuilder extends Component {
 
     constructor(props) {
@@ -27,10 +59,16 @@ class PageBuilder extends Component {
         this.addBuildingBlock = this.addBuildingBlock.bind(this);
     }
 
-    addBuildingBlock (building_block, parent_index) {
+    addBuildingBlock (building_block, parent_index, parsed=false) {
         var components = this.state.components
         var next_key = components.length;
-        var new_components = JSON.parse(building_block['components'])
+        console.log("Building Block",building_block, components)
+        if (!parsed) {
+            var new_components = JSON.parse(building_block['components'])
+        }
+        else {
+            var new_components = building_block['components']
+        }
         var parent_key_map = {null: parent_index}
         for (var index in new_components) {
             var new_component = new_components[index]
@@ -41,9 +79,12 @@ class PageBuilder extends Component {
             }
 
             new_component['class'] = ComponentDict[new_component['type']];
+            console.log("New Component", new_component)
             components.push(new_component);
+            console.log("Components After Push", JSON.stringify(components))
             next_key += 1;
         }
+        console.log("Components", components)
         this.setState({components:components})
     }
 
@@ -167,6 +208,7 @@ class PageBuilder extends Component {
 
       for (var index in top_level) {
         var component = top_level[index]
+        console.log("Component", component)
         var TempComponent = component['class'];
         var props = {...component['props']};
 
@@ -196,7 +238,7 @@ class PageBuilder extends Component {
             else {
               display.push(<DisplayInstance show={this.props.show} content={<TempComponent {...props} setGlobalState={this.setGlobalState} />} index={index} setComponent={this.setComponent} />)
             }
-            
+
         }
         catch(error) {
             console.log("Error likely caused by a component that doesn't exist or isn't imported", error)
@@ -282,6 +324,8 @@ class PageBuilder extends Component {
             if (config['can_have_children']) {
                 new_components.push(<AddChildComponent label="Add Child" name="children" parentIndex={this.state.selectedComponent} addComponent={this.addComponent} default={""} addBuildingBlock={this.addBuildingBlock} />)
             }
+
+            new_components.push(<DuplicateComponent addBuildingBlock={this.addBuildingBlock} components={this.state.components} selectedComponent={this.state.selectedComponent} />)
 
             new_components.push(<Button default={''} name='delete' deleteType={true} text={'Delete'} onClick={this.removeComponent} type='danger' />)
 

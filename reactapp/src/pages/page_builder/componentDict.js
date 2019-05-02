@@ -21,16 +21,17 @@ let ComponentList = [
     ListItem,
     Span,
     Icon,
+    LogInForm,
+    PasswordInput,
+    ListWithChildren,
+    If,
+    LogInForm,
+    SignUpForm,
+    PasswordResetRequest,
 ];
 
-/*
-PasswordInput,
-ListWithChildren,
-If,
-LogInForm,
-SignUpForm,
-PasswordResetRequest,
-*/
+
+
 
 var ComponentDict = {}
 for (var i in ComponentList){
