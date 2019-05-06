@@ -54,6 +54,8 @@ function fillData(tempStr, dataValues) {
     var resolvedValue = dataSplit[0];
 
     //Search through string pieces to find closing tag
+    // This loop is essential to resolving more than one variable in
+    // a single string
     for (var i=1; i<dataSplit.length; i++){
         var innerSplit = dataSplit[i].split('}');
 
