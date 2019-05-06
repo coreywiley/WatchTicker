@@ -3,79 +3,97 @@ import React, {Component, Element} from 'react';
 //using datamapping in list or form you can pass a dictionary like so dataMapping={'name':'Bob', 'id':'{id}', 'children':'{children.length}'}
 // in this case, name will always be bob, id will resolve to the id of the data and children will resolve to the length of data.children
 
-function resolveVariables(dataMapping, data){
-    var mappedData = fillDict(dataMapping, data);
+function resolveVariables(dataMapping, dataValues){
+    var mappedData = fillDict(dataMapping, dataValues);
 
     return mappedData;
 }
 
 
-function fillDict(dict, data) {
-    var info = Object.assign({},dict);
-    if (Array.isArray(dict)) {info = Object.assign([], dict);}
+function fillDict(dataMapping, dataValues) {
+    // A copy of the incoming mapping needs to be made in order to ensure
+    // changes are made an saved safely
+    var popupatedData = Object.assign({}, dataMapping);
+    if (Array.isArray(dataMapping)) {
+        popupatedData = Object.assign([], dataMapping);
+    }
 
-    for (var k in info) {
-        //Broad Detection of React.Element type and probably other things.
-        if (info[k]) {
-            if (typeof info[k].type == "function") {
-              console.log("React.Component")
+    for (var key in popupatedData) {
+        // Broad Detection of React.Element type and probably other things.
+        if (popupatedData[key]) {
+            // Depending on the type of value stored in the key, either
+            // Pass over functions
+            // Repeat this function one level deeper
+            // Map data into the value
+
+            if (typeof popupatedData[key].type == "function") {
+              console.log("React.Component");
             }
-            else if (typeof info[k] == 'object') {
-                info[k] = fillDict(info[k], data);
+            else if (typeof popupatedData[key] == 'object') {
+                popupatedData[key] = fillDict(popupatedData[key], dataValues);
             }
             else {
-                var tempStr = info[k];
-                info[k] = fillData(tempStr, data);
+                var tempStr = popupatedData[key];
+                popupatedData[key] = fillData(tempStr, dataValues);
             }
+
         }
     }
 
-    return info
+    return popupatedData
 }
 
 
-function fillData(tempStr, data) {
+function fillData(tempStr, dataValues) {
     if (typeof tempStr != 'string') {
         return tempStr;
     }
 
     var dataSplit = tempStr.split('{');
     //Add initial text to output
-    var cleaned = dataSplit[0];
+    var resolvedValue = dataSplit[0];
+
     //Search through string pieces to find closing tag
     for (var i=1; i<dataSplit.length; i++){
         var innerSplit = dataSplit[i].split('}');
-        if (innerSplit.length > 1){
-            var variable = innerSplit[0].split('.');
-            var value = data;
 
-            for (var j in variable){
-                var miniVar = variable[j];
-                if (miniVar == 'length') {
+        if (innerSplit.length > 1){
+            // Split the variable into however many different levels
+            // have been included
+            var variableNames = innerSplit[0].split('.');
+            var value = dataValues;
+
+            for (var j in variableNames){
+                var variableName = variableNames[j];
+
+                if (variableName == 'length') {
                   value = value.length;
                 }
-                else {
-                  if (value) {
-                    value = value[miniVar];
-                  }
+
+                else if (value) {
+                    value = value[variableName];
                 }
             }
 
+            // If the resolved value cannot be simply repesented as a string
+            // convert it to JSON first
             if (typeof value == 'object') {
-                cleaned += JSON.stringify(value) + innerSplit[1];
-            } else {
-                cleaned += value + innerSplit[1];
+                resolvedValue += JSON.stringify(value) + innerSplit[1];
+            }
+            else {
+                resolvedValue += value + innerSplit[1];
             }
 
         } else {
-            cleaned += innerSplit[0];
+            resolvedValue += innerSplit[0];
         }
     }
 
-    return cleaned;
+    return resolvedValue;
 }
 
 
+// A simple brute force test to ensure an object is JSON compatible
 function isJsonable(v) {
     try{
         return JSON.stringify(v) === JSON.stringify(JSON.parse(JSON.stringify(v)));
