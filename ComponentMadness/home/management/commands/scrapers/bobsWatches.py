@@ -67,7 +67,7 @@ class BobsWatches():
         return details
 
 
-source = BobsWatches()
+#source = BobsWatches()
 #print (source.getWatchDetails('https://www.bobswatches.com/rolex-gmt-master-ii-ceramic-116710.html'))
 
 #print (source.getWatchUrls())

@@ -1,12 +1,20 @@
 import pandas as pd
 
-table = pd.read_html('https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vQhzAp8r-Po0KalE6Te3kpZ0ZKByk4LT_cA6PfgESjh6YN5gzW4RpjwrFEhWwZwxBy5CnAJuNZdUCN6/pubhtml?gid=735652720&single=true')[0]
+class WeLoveWatches():
 
-table.columns = table.iloc[1,:]
-table = table.iloc[3:,3:-1]
-table = table.dropna(how="all")
+    def getWatches(self):
+        return []
 
-table.to_csv("stock_available.csv", index=False)
+    def getWatchDetail(self, row):
+        return {}
+
+        table = pd.read_html('https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vQhzAp8r-Po0KalE6Te3kpZ0ZKByk4LT_cA6PfgESjh6YN5gzW4RpjwrFEhWwZwxBy5CnAJuNZdUCN6/pubhtml?gid=735652720&single=true')[0]
+
+        table.columns = table.iloc[1,:]
+        table = table.iloc[3:,3:-1]
+        table = table.dropna(how="all")
+
+        table.to_csv("stock_available.csv", index=False)
 
 
 '''
