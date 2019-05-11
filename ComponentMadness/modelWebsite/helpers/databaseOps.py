@@ -20,10 +20,17 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
         if field.name in ["id","password"]:
             continue
 
-
         if field.get_internal_type() == 'TextField' and field.name == "data":
             try:
                 data = json.loads(requestFields[field.name])
+                setattr(instance, field.name, data)
+            except:
+                print ("No Valid JSON data found!")
+                continue
+        if field.get_internal_type() == 'JsonField':
+            try:
+                data = json.loads(requestFields[field.name])
+                print ("\n\n\n\n", "JsonField", "\n",field.name, "\n",requestFields[field.name], "\n",data, "\n\n\n\n")
                 setattr(instance, field.name, data)
             except:
                 print ("No Valid JSON data found!")

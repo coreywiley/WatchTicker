@@ -110,9 +110,9 @@ DATABASES = {
     'default': {
         'CONN_MAX_AGE': 0,
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'heather',
-        'USER': 'heather',
-        'PASSWORD': '9dK6cX@C@ascYZMz',
+        'NAME': 'watch_ticker',
+        'USER': 'tick_tock',
+        'PASSWORD': '8-5f&nQ@^wF8$uYA',
         'HOST': '127.0.0.1',
         'PORT': '5432'
     },

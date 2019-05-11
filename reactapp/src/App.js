@@ -23,7 +23,7 @@ import PasswordReset from './pages/scaffold/passwordReset.js';
 import Home from './pages/scaffold/home.js';
 import Nav from 'projectLibrary/nav.js';
 //import Footer from 'projectLibrary/footer.js';
-import ModelMaker from 'djangoModelMaker.js';
+import ModelMaker from './pages/model_builder/djangoModelMaker.js';
 
 //API Querying
 import APIDocs from './pages/admin/apiDocs.js';
@@ -50,7 +50,7 @@ class App extends Component {
 
         var token = localStorage.getItem('token');
 
-        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset', 'admin'];
+        var loginNoRedirects = ['login','signup','passwordresetrequest', 'passwordreset', 'admin', 'modelmaker'];
 
         if (token) {
             ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));

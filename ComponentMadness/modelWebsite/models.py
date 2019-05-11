@@ -22,11 +22,9 @@ class CMModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-class ModelConfig(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class ModelConfig(CMModel):
     name = models.CharField(max_length=120, blank=True, default="")
     data = JSONField(default = {})
-
     order = models.IntegerField(default = 0)
 
 

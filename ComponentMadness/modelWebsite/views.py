@@ -8,7 +8,7 @@ import sendgrid
 from sendgrid.helpers.mail import *
 
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from django.shortcuts import render
 from django.apps import apps
@@ -56,91 +56,8 @@ def getModels(request,appLabel):
     return JsonResponse(models, safe=False)
 
 
-@api_view(['GET', 'POST'])
-def modelConfig(request):
-    data = []
-    if request.method == "GET":
-        configs = ModelConfig.objects.all()
-        for config in configs:
-            data.append({
-                'id': config.id,
-                'name': config.name,
-                'data': config.data,
-                'order': config.order,
-            })
-
-    elif request.method == "POST":
-        print (request.POST)
-        postData = request.POST
-
-        existingModels = ModelConfig.objects.all()
-        nameMap = {}
-        for model in existingModels:
-            nameMap[model.name] = model
-        print ("EXISTING NAMES %s" % (nameMap.keys()))
-
-        modelMap = {
-            'Binary': 'models.BinaryField(',
-            'Boolean': 'models.BooleanField(',
-            'Date': 'models.DateField(',
-            'Time': 'models.TimeField(',
-            'Datetime': 'models.DateTimeField(',
-            'Elapsed': 'models.DurationField(',
-            'Big Number': 'models.BigIntegerField(',
-            'Decimal': 'models.DecimalField(',
-            'Float': 'models.FloatField(',
-            'Integer': 'models.IntegerField(',
-            'Char': 'models.CharField(',
-            'Text': 'models.TextField(',
-        }
-
-        if 'id' in postData:
-            model = get_object_or_404(ModelConfig, pk = postData['id'])
-
-            print ('Found MODEL!!!!')
-
-        else:
-            model = ModelConfig()
-
-        model.name = postData['name']
-        model.order = int(postData['order'])
-
-        data = {'fields': [], 'related': []}
-        for key in postData.keys():
-            if 'field_name' in key:
-                num = key.split('_')[-1]
-                blank = False
-                if 'field_blank_' + num in postData:
-                    blank = postData['field_blank_' + num]
-
-                field = {
-                    'name': postData['field_name_' + num],
-                    'type': postData['field_type_' + num],
-                    'default': postData['field_default_' + num],
-                    'blank': blank,
-                }
-                data['fields'].append(field)
-
-            elif 'related_model' in key:
-                num = key.split('_')[-1]
-                relatedModel = nameMap[postData[key]]
-                related = {
-                    'name': postData['related_name_' + num],
-                    'model': postData['related_model_' + num],
-                    'alias': postData['related_alias_' + num],
-                }
-                data['related'].append(related)
-
-        model.data = data
-        model.save()
-
-    else:
-        pass
-
-    return JsonResponse(data, safe=False)
-
-
 @api_view(['GET'])
+@permission_classes((AllowAny, ))
 def modelPrint(request):
     content = ''
 
@@ -150,12 +67,32 @@ def modelPrint(request):
     content += "from django.contrib.postgres.fields import JSONField\n"
     content += "from django.utils import timezone\n\n"
     content += "from user.models import User\n\n"
+    content += ""
+    content += "class CMModel(models.Model):\n"
+    content += "    class Meta:\n"
+    content += "        abstract = True\n"
+    content += "    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)\n"
+    content += "\n"
+    content += "    GET_STAFF = False\n"
+    content += "    POST_STAFF = False\n"
+    content += "    DELETE_STAFF = False\n"
+    content += "\n"
+    content += "    created_at = models.DateTimeField(auto_now_add=True)\n"
+    content += "    updated_at = models.DateTimeField(auto_now=True)\n"
 
     configs = ModelConfig.objects.all()
     for config in configs:
-        content += "\nclass %s(models.Model):\n" % (config.name)
+        content += "\nclass %s(CMModel):\n" % (config.name)
 
-        for field in config.data['fields']:
+        try:
+            data = json.loads(json.loads(config.data))
+        except:
+            data = json.loads(config.data)
+
+        for field in data['fields']:
+            if 'model' in field:
+                continue
+            print ("Field", field)
             blank = False
             if field['blank'] == 'True':
                 blank = True
@@ -169,7 +106,7 @@ def modelPrint(request):
             params = "blank=%s, default=%s" % (blank, field['default'])
             content += "    %s = models.%sField(%s)\n" % (field['name'], field['type'], params)
 
-        for related in config.data['related']:
+        for related in data['related']:
             params = ''
             content += "    %s = models.ForeignKey(%s, on_delete=models.CASCADE, related_name='%s')\n" % (
                 related['name'], related['model'], params
@@ -177,9 +114,11 @@ def modelPrint(request):
 
     content += '\n\n'
 
-    print (content)
+    f = open(settings.STATIC_ROOT + '../models.py', 'w+')
+    f.write(content)
+    f.close()
 
-    return HttpResponse("")
+    return JsonResponse({'success':True})
 
 
 @api_view(['GET'])
@@ -227,10 +166,6 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             parameters[user_field] = request.user.id
         else:
             return JsonResponse({'error':'You are not authorized to view this.'})
-
-
-
-
 
     related = []
     if 'related' in parameters:
@@ -359,8 +294,6 @@ def createAndUpdateModel(request, appLabel, modelName, related, id=None):
     else:
         requestFields = request.POST
 
-    print ("POST Payload:", requestFields)
-
     if 'multiple' in requestFields:
         instances = []
         items = json.loads(requestFields[requestFields['multiple']])
@@ -425,7 +358,7 @@ def addOrFilter(orFilters, key, value):
     return orFilters
 
 @api_view(['POST'])
-@permission_classes((IsAuthenticated, ))
+@permission_classes((AllowAny, ))
 def deleteModelInstance(request,appLabel,modelName,id):
     print ('DELETING', appLabel, modelName, id)
 

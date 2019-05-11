@@ -22,11 +22,13 @@ function ajaxWrapper(type, url, data, returnFunc){
         }
     }
 
+    console.log("Making an Ajax Request", type, url, beforeSend, data)
     $.ajax({
         type: type,
         url: url,
         beforeSend: beforeSend,
         data: data,
+        dataType: 'json',
         statusCode: {
             200: function(value) {
                 if (typeof(value) === "object" && "redirect" in value) {
