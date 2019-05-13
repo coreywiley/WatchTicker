@@ -3,31 +3,32 @@ from bs4 import BeautifulSoup
 
 class CrownAndCaliber():
 
-    def getWatchUrls(self):
+    def getWatches(self):
         brand_page = requests.get('https://www.crownandcaliber.com/pages/brands')
         brand_soup = BeautifulSoup(brand_page.text, features='html.parser')
 
         brand_links = brand_soup.find("div", {"class":"brand-listing"}).findAll("a")
-
+        watch_list = []
         brand_urls = []
         for brand_link in brand_links:
             brand_urls.append([brand_link['href'], brand_link.getText().strip()])
 
         for brand_url in brand_urls:
             brand = brand_url[1]
-
-
+            print (brand)
             added = True
             i = 1
             while added:
+                print (i)
                 url = 'https://www.crownandcaliber.com%s?page=%s' % (brand_url[0], i)
-                r = requests.get(url)
-                print (r.text)
-                added = False
+                try:
+                    r = requests.get(url)
+                except:
+                    added = False
+                    continue
 
                 soup = BeautifulSoup(r.text, features='html.parser')
 
-                watch_list = []
                 watches = soup.findAll("div", {"class": "itemBox"})
                 added = False
                 for watch in watches:
@@ -57,9 +58,9 @@ class CrownAndCaliber():
         description = soup.find("div",{"class":"more-detail"}).find("div", {"itemprop":"description"}).findAll("span")
         print (len(description))
 
-        details['papers'] = description[31].getText().strip()
-        details['box'] = description[29].getText().strip()
-        details['manual'] = description[33].getText().strip()
+        details['papers'] = description[31].getText().strip() == 'Yes'
+        details['box'] = description[29].getText().strip() == 'Yes'
+        details['manual'] = description[33].getText().strip() == 'Yes'
         condition = description[7].getText().strip()
         condition = condition[:condition.find(' ')]
 
@@ -69,10 +70,10 @@ class CrownAndCaliber():
         return details
 
 
-source = CrownAndCaliber()
-print (source.getWatchDetails('https://www.crownandcaliber.com/collections/a-lange-sohne-watches/products/a-lange-sohne-1815-rose-gold-235-032-10-10-als-659v7h'))
+#source = CrownAndCaliber()
+#print (source.getWatchDetails('https://www.crownandcaliber.com/collections/a-lange-sohne-watches/products/a-lange-sohne-1815-rose-gold-235-032-10-10-als-659v7h'))
 
-#print (source.getWatchUrls())
+#print (source.getWatches())
 
 
 

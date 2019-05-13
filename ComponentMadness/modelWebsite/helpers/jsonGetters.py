@@ -11,7 +11,7 @@ def getInstanceJson(appLabel, modelName, instance, related = []):
 
 def getInstancesJson(appLabel, modelName, related = [], only=[], instanceQuery=None):
     # page for adding a new instance
-    model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
+    model = apps.get_model(app_label=appLabel, model_name=modelName)
     fields = getModelFields(model)
 
     instances = []

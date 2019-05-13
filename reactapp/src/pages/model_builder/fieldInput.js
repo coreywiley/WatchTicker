@@ -10,7 +10,7 @@ import {
 
 var MODEL_TYPES = [
     {'text':'Boolean', 'value':'Boolean'},
-    {'text':'Datetime', 'value':'Datetime'},
+    {'text':'DateTime', 'value':'DateTime'},
     {'text':'Decimal', 'value':'Decimal'},
     {'text':'Integer', 'value':'Integer'},
     {'text':'Char', 'value':'Char'},

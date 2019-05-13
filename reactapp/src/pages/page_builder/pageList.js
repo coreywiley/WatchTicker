@@ -35,7 +35,7 @@ class PageList extends Component {
           var pages = [];
           for (var page_index in page_group['pages']) {
             var page = page_group['pages'][page_index]['page'];
-            pages.push(<Card key={index} className={'col-3'} name={page['name']} description={page['url']} buttons={[<Button type={'primary'} href={'/pagebuilder/' + page_group['id'] + '/' + page['id'] + '/'} text={'Edit'} />]} />)
+            pages.push(<Card key={index} className={'col-3'} name={page['name']} description={page['url']} buttons={[<Button type={'primary'} href={'/pagebuilder/' + page_group['id'] + '/' + page['id'] + '/'} text={'Edit'} />, <Button type={'danger'} href={'/api/modelWebsite/page/' + page['id'] + '/delete/'} text={'Delete'} />]} />)
           }
 
           var page_group_html = <div>

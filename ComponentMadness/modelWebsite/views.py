@@ -97,7 +97,7 @@ def modelPrint(request):
             if field['blank'] == 'True':
                 blank = True
 
-            if field['type'] == 'Datetime':
+            if field['type'] == 'DateTime':
                 field['default'] = 'timezone.now'
             else:
                 field['default'] = "'%s'" % (field['default'])
@@ -131,8 +131,7 @@ def getModelFieldsJson(request,appLabel,modelName):
 
 def getModelInstanceJson(request, appLabel, modelName, id=None):
     print ("Request : %s" % (request.GET))
-    model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
-
+    model = apps.get_model(app_label=appLabel, model_name=modelName)
 
     parameters = request.GET.dict()
 
@@ -357,7 +356,7 @@ def addOrFilter(orFilters, key, value):
 
     return orFilters
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 @permission_classes((AllowAny, ))
 def deleteModelInstance(request,appLabel,modelName,id):
     print ('DELETING', appLabel, modelName, id)

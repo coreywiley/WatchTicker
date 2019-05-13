@@ -63,5 +63,3 @@ for idx_sub, sub_category in enumerate(rolex_sub_categories):
 
 
 watches_df.to_csv("Rolex_Boneta.csv", index=False)
-
-table = pd.read_html('https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vQhzAp8r-Po0KalE6Te3kpZ0ZKByk4LT_cA6PfgESjh6YN5gzW4RpjwrFEhWwZwxBy5CnAJuNZdUCN6/pubhtml?gid=735652720&single=true')[0]

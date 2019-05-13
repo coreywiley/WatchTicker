@@ -4,18 +4,20 @@ import re
 
 class BobsWatches():
 
-    def getWatchUrls(self):
+    def getWatches(self):
         added = True
         i = 1
+        watch_list = []
         while added:
+            print (i)
             url = 'https://www.bobswatches.com/luxury-watches/?p=%s' % (i)
             r = requests.get(url)
+            if 'Recently Sold' in r.text:
+                break
 
             soup = BeautifulSoup(r.text, features='html.parser')
 
-            print (r.text)
 
-            watch_list = []
             watches = soup.find("div", {"class": "itemResults"}).findAll("div", {"class": "item"})
             added = False
             for watch in watches:
@@ -25,14 +27,14 @@ class BobsWatches():
 
                 reference_number = False
                 description = watch.find("h2").find("span").find("span").getText()
-                print ("\n", "Description", description)
+
                 for s in description.split(" "):
                     if s.isdigit():
                         reference_number = s
 
                 if not reference_number:
                     description = watch.find("h2").getText().strip()
-                    print("\n", "Description2", description)
+
 
                     j = 0
                     d_split = description.split(" ")
@@ -61,7 +63,12 @@ class BobsWatches():
         details['brand'] = desc_table[1].getText().strip()
         details['model'] = desc_table[3].getText().strip()
         details['serial_year'] = desc_table[5].getText().strip()
-        details['papers'] = desc_table[17].getText().strip()
+
+        paper_details = desc_table[17].getText().strip().lower()
+
+        details['papers'] = 'paper' in paper_details
+        details['box'] = 'box' in paper_details
+        details['manual'] = 'manual' in paper_details
         details['image'] = 'https://www.bobswatches.com/' + soup.find("img", {"class":"photo"})['src']
 
         return details
@@ -70,5 +77,5 @@ class BobsWatches():
 #source = BobsWatches()
 #print (source.getWatchDetails('https://www.bobswatches.com/rolex-gmt-master-ii-ceramic-116710.html'))
 
-#print (source.getWatchUrls())
+#print (source.getWatches())
 

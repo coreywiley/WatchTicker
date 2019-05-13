@@ -3,16 +3,18 @@ from bs4 import BeautifulSoup
 
 class HouseOfTime():
 
-    def getWatchUrls(self):
+    def getWatches(self):
         added = True
         i = 1
+        watch_list = []
         while added:
+            print (i)
             url = 'http://houseoftime1.com/product-category/view-all/page/%s/' % (i)
             r = requests.get(url)
 
             soup = BeautifulSoup(r.text, features='html.parser')
 
-            watch_list = []
+
             watches = soup.findAll("div", {"class": "product"})
             added = False
             for watch in watches:
@@ -34,13 +36,13 @@ class HouseOfTime():
 
         details['price'] = soup.find("span", {"class": "woocommerce-Price-amount"}).getText().strip().replace('$','').replace(',','')
         details['serial_year'] = soup.find("li", {"class": "serial-year"}).find("span", {"class":"attribute-value"}).getText().strip()
-        details['papers'] = soup.find("li", {"class":"papers"}).find("span", {"class":"attribute-value"}).getText().strip()
+        details['papers'] = soup.find("li", {"class":"papers"}).find("span", {"class":"attribute-value"}).getText().strip() == 'Yes'
         details['image'] = soup.find("img", {"class":"wp-post-image"})['src']
 
         return details
 
 
-source = HouseOfTime()
-print (source.getWatchDetails('http://houseoftime1.com/product/16233-30/'))
+#source = HouseOfTime()
+#print (source.getWatchDetails('http://houseoftime1.com/product/16233-30/'))
 
-#print (getWatchUrls())
+#print (source.getWatches())
