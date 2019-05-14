@@ -32,6 +32,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-       watches = Watch.objects.all()
+       watches = Watch_Instance.objects.all()
        for watch in watches:
            watch.delete()

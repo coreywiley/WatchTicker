@@ -22,13 +22,7 @@ LOGGING = {
             'formatter': 'verbose'
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'propagate': True,
-            'level': 'DEBUG',
-        },
-    },
+
 }
 
 STATIC_URL = '/static/'

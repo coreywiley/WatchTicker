@@ -32,7 +32,7 @@ class Source(CMModel):
 class Watch_Instance(CMModel):
     price = models.FloatField(blank=False, default=0.0)
     condition = models.CharField(max_length=1000, blank=False, default='')
-    sold_time = models.DateTimeField(blank=False, default=timezone.now)
+    sold_time = models.DateTimeField(blank=True, null=True, default=None)
     watch = models.ForeignKey(Watch, on_delete=models.CASCADE, related_name='watch_instances')
     condition = models.CharField(max_length=1000, blank=False, default='')
     box = models.BooleanField(default=False)
@@ -43,7 +43,7 @@ class Watch_Instance(CMModel):
     url = models.CharField(db_index=True,max_length=1000, blank=False, default='')
 
 class HistoricPrice(CMModel):
-    price = models.FloatField(blank=False, default='')
+    price = models.FloatField(blank=False, default=0.0)
     watch = models.ForeignKey(Watch, on_delete=models.CASCADE, related_name='historical_prices')
     watch_instance = models.ForeignKey(Watch_Instance, on_delete=models.CASCADE, related_name='historical_prices', db_index=True)
 

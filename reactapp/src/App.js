@@ -28,6 +28,7 @@ import ModelMaker from './pages/model_builder/djangoModelMaker.js';
 //API Querying
 import APIDocs from './pages/admin/apiDocs.js';
 
+import EditWatch from './pages/modelEditAndView/EditTemplate0.js';
 
 
 class App extends Component {
@@ -162,6 +163,9 @@ class App extends Component {
           }
           else if (route == 'pagelist') {
             content = <PageList />
+          }
+          else if (route == 'editwatch') {
+              content = <EditWatch id={params[1]} />
           }
           else {
             var formatRoute = "/" + route + "/"

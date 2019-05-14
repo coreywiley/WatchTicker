@@ -32,17 +32,17 @@ class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
 
     def handle(self, *args, **options):
-        #"Bob's Watches":BobsWatches(),"We Love Watches":WeLoveWatches(), 'House Of Time':HouseOfTime(),, 'Crown And Caliber':CrownAndCaliber(),
-        watch_websites = {"Watch Box":WatchBox()}
-        '''
+        #"Bob's Watches":BobsWatches(), 'House Of Time':HouseOfTime(),, 'Crown And Caliber':CrownAndCaliber(), "Watch Box":WatchBox()
+        watch_websites = {"We Love Watches":WeLoveWatches()}
+
         for source in watch_websites:
             print ('\n\n\n\n', source, '\n')
             instance = watch_websites[source]
 
             try:
-                #watches = instance.getWatches()
+                watches = instance.getWatches()
                 #pickle.dump(watches, open('watches2.p','wb'))
-                watches = pickle.load(open('watches.p','rb'))
+                #watches = pickle.load(open('watches.p','rb'))
             except Exception as e:
                 print (str(e))
                 sendErrorEmail(source, 'getWatches', str(e))
@@ -58,6 +58,7 @@ class Command(BaseCommand):
             source_instance.save()
 
             for watch in watches:
+                print ("\n\n\n","Watch", watch, "\n\n\n")
                 #check for watch reference number
                 watch_instance = Watch.objects.filter(reference_number=watch['reference_number']).first()
                 if watch_instance:
@@ -80,10 +81,16 @@ class Command(BaseCommand):
                         brand = watch['brand']
 
                     watch_instance = Watch(reference_number = watch['reference_number'], model = model, brand = brand)
+                    print ("\n\n\n", "Saving New Watch", watch, "\n\n\n")
                     watch_instance.save()
+
+
                 try:
                     check = Watch_Instance.objects.filter(watch_id=watch_instance.id, source_id=source_instance.id, url=watch['url']).first()
+
                     if not check:
+
+                        print ("\n\n\n", "Watch Instance", watch_instance.reference_number, source_instance.name, watch['url'], watch, "\n\n\n")
                         new_instance = Watch_Instance(watch=watch_instance, source=source_instance, url=watch['url'])
                         new_instance.save()
                 except Exception as e:
@@ -92,7 +99,7 @@ class Command(BaseCommand):
 
 
 
-        '''
+
         for source in watch_websites:
             print ('\n\n\n\n', source, '\n')
             instance = watch_websites[source]
@@ -120,7 +127,8 @@ class Command(BaseCommand):
 
                 check = HistoricPrice.objects.filter(watch_instance_id=watch.id).order_by('-created_at').first()
                 if check:
-                    if check.price != watch_details['price']:
+                    if float(check.price) != float(watch_details['price']) and float(watch_details['price']) > 0:
+                        print ("Check Price", check.price, "Watch Price", watch_details['price'])
                         new_price = HistoricPrice(watch_instance_id=watch.id, watch_id=watch.watch_id, price=watch_details['price'])
                         new_price.save()
                 else:

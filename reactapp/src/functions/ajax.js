@@ -42,7 +42,10 @@ function ajaxWrapper(type, url, data, returnFunc){
             },
             401: function(xhr) {
                 refreshToken(type,url,data,returnFunc);
-            }
+            },
+            500: function(value) {
+                returnFunc({'error':'Server Error'})
+            },
         },
     });
 

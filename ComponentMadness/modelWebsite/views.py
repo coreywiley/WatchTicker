@@ -22,7 +22,7 @@ from django.shortcuts import get_object_or_404
 from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, getModelFields
 from user.permissions import staff_required
 from modelWebsite.helpers.databaseOps import insert
-from modelWebsite.models import ModelConfig, Page
+from modelWebsite.models import ModelConfig, Page, PageGroup
 import copy
 import re
 from modelWebsite.helpers.page_builder import componentTree, componentPrint
@@ -31,7 +31,6 @@ def CSRFMiddlewareToken(request):
     # Gather context and send it to React
     csrfmiddlewaretoken = django.middleware.csrf.get_token(request)
     return JsonResponse({'csrfmiddlewaretoken':csrfmiddlewaretoken}, status=200)
-
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
@@ -241,7 +240,7 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
             if isinstance(id, str) and id.startswith("{{"):
                 instance = model.objects.filter().first()
             else:
-                instance = model.objects.filter(id=int(id)).prefetch_related(*relatedClean).first()
+                instance = model.objects.filter(id=id).prefetch_related(*relatedClean).first()
 
             instances = getInstanceJson(appLabel, modelName, instance, related=related)
 
@@ -473,6 +472,187 @@ def writeModelPageTemplates(request):
     viewTemplatePath = os.path.join(filepath, "viewTemplate.js")
     listTemplatePath = os.path.join(filepath, "listTemplate.js")
     models = apps.get_models()
+
+    models = apps.get_models()
+    djangoApps = []
+    for app in apps.get_app_configs():
+        appName = app.name
+        if appName != 'home':
+            continue
+
+        for model in models:
+            if model._meta.app_label == appName:
+                modelName = model.__name__
+                print (modelName)
+
+                componentListString = ""
+                formComponentListString = "\t\t\t\tvar Components = ["
+                componentPropsString = ''
+                formComponentPropsString = ''
+                defaults = "{"
+                listString = '\t\t\tvar ComponentProps = ['
+                i = 0
+                for field in model._meta.get_fields():
+                    fieldName = field.name.lower()
+                    if fieldName == 'id' or field.auto_created:
+                        continue
+
+                    fieldLabel = fieldName.title()
+                    fieldType = field.get_internal_type()
+
+                    try:
+                        fieldDefault = field.get_default()
+                    except:
+                        fieldDefault = ''
+
+                    if fieldType in ['ForeignKey', 'ManyToManyField']:
+                        relatedApp = field.related_model._meta.app_label
+                        relatedModel = field.related_model._meta.object_name.lower()
+
+                    #defaults
+                    if fieldDefault == True:
+                        fieldDefault = 'true'
+                    elif fieldDefault == False:
+                        fieldDefault = 'false'
+                    elif isinstance(fieldDefault, datetime.datetime):
+                        fieldDefault = fieldDefault.strftime('%m/%d/%Y')
+                    elif isinstance(fieldDefault, dict):
+                        fieldDefault = json.dumps(fieldDefault)
+                    elif fieldDefault != None:
+                        fieldDefault = fieldDefault
+                    else:
+                        fieldDefault = ''
+
+
+                    #components and their props
+                    if fieldType == 'AutoField':
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName,fieldName)
+                        formComponentListString += "TextInput"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': ''};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
+
+                    elif fieldType == 'CharField':
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "TextInput"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': ''};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
+
+                    elif fieldType == 'TextField':
+                        componentListString += "\t\t\t\t\t\t<MultiLineText {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "TextArea"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': ''};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
+
+                    elif fieldType in ['DecimalField','FloatField','IntegerField']:
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "NumberInput"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': 0, 'value': 0};\n" % (fieldName, fieldName, fieldLabel)
+
+                    elif fieldType == 'BooleanField':
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "Select"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'options': [{'value':true,'text':'True'},{'value':false,'text':'False'}]};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
+
+                    elif fieldType == 'DateField':
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "DateTimePicker"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'display_time': false};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
+
+                    elif fieldType == 'DateTimeField':
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "DateTimePicker"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'display_time': true};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
+
+                    elif fieldType == 'ForeignKey':
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "Select"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': '', 'optionsUrl': '/api/%s/%s/', 'optionsUrlMap': {'text':'{%s.unicode}','value':'{%s.id}'}};\n" % (fieldName, fieldName, fieldLabel, fieldLabel, relatedApp,relatedModel, relatedModel, relatedModel)
+
+                    elif fieldType == 'ManyToManyField':
+                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
+                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
+                        formComponentListString += "Select"
+                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': '', 'optionsUrl': '/api/%s/%s/', 'optionsUrlMap': {'text':'{%s.unicode}','value':'{%s.id}'}, 'multiple':true};\n" % (fieldName, fieldName, fieldLabel, fieldLabel, relatedApp,relatedModel, relatedModel, relatedModel)
+
+
+                    formComponentListString += ", "
+                    if i != 0:
+                        listString += ", "
+                        defaults += ", '%s' : '%s'" % (fieldName, str(fieldDefault))
+                    else:
+                        defaults += "'%s' : '%s'" % (fieldName, str(fieldDefault))
+
+                    i += 1
+                    listString += fieldName
+
+                defaults += "}"
+                listString += "];"
+
+                formComponentListString += "];"
+
+                componentPropsString += listString
+                formComponentPropsString += listString
+
+                editTemplate = open(editTemplatePath, "r").read()
+                viewTemplate = open(viewTemplatePath, "r").read()
+                listTemplate = open(listTemplatePath, "r").read()
+
+                editTemplate = editTemplate.replace("*App*", appName)
+                editTemplate = editTemplate.replace("*Object*", modelName.lower())
+                editTemplate = editTemplate.replace("*CapitalObject*", modelName.title())
+                editTemplate = editTemplate.replace("*Defaults*", defaults)
+                editTemplate = editTemplate.replace("*ComponentProps*", componentPropsString)
+                editTemplate = editTemplate.replace("*ComponentList*", componentListString)
+                editTemplate = editTemplate.replace("*FormComponentList*", formComponentListString)
+                editTemplate = editTemplate.replace("*FormComponentProps*", formComponentPropsString)
+
+                viewTemplate = viewTemplate.replace("*App*", appName)
+                viewTemplate = viewTemplate.replace("*Object*", modelName.lower())
+                viewTemplate = viewTemplate.replace("*CapitalObject*", modelName.title())
+                viewTemplate = viewTemplate.replace("*Defaults*", defaults)
+                viewTemplate = viewTemplate.replace("*ComponentProps*", componentPropsString)
+                viewTemplate = viewTemplate.replace("*ComponentList*", componentListString)
+                viewTemplate = viewTemplate.replace("*FormComponentList*", formComponentListString)
+                viewTemplate = viewTemplate.replace("*FormComponentProps*", formComponentPropsString)
+
+                listTemplate = listTemplate.replace("*App*", appName)
+                listTemplate = listTemplate.replace("*Object*", modelName.lower())
+                listTemplate = listTemplate.replace("*CapitalObject*", modelName.title())
+
+                newEditTemplate = os.path.join(filepath, "edit" + modelName + ".js")
+                newViewTemplate = os.path.join(filepath, modelName + ".js")
+                newListTemplate = os.path.join(filepath, "list" + modelName + ".js")
+
+                with open(newEditTemplate, "w") as file:
+                    file.write(editTemplate)
+
+                with open(newViewTemplate, "w") as file:
+                    file.write(viewTemplate)
+
+                with open(newListTemplate, "w") as file:
+                    file.write(listTemplate)
+
+
+
+    return JsonResponse({'success':True})
+
+def writeModelPageObjects(request):
+    #28a48d9e-5bb2-4be0-8ae2-44b94553778d
+    page_group = PageGroup.objects.filter(id='28a48d9e-5bb2-4be0-8ae2-44b94553778d').first()
+    if not page_group:
+        page_group = PageGroup(name='Made From Models', id='28a48d9e-5bb2-4be0-8ae2-44b94553778d')
+        page_group.save()
+
+
+    filepath = os.path.join(os.getcwd(), "..", "reactapp", "src", "pages", "modelEditAndView")
+    editTemplatePath = os.path.join(filepath, "editTemplate.js")
+    viewTemplatePath = os.path.join(filepath, "viewTemplate.js")
+    listTemplatePath = os.path.join(filepath, "listTemplate.js")
 
     models = apps.get_models()
     djangoApps = []
