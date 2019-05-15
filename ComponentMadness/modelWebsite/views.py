@@ -25,7 +25,7 @@ from modelWebsite.helpers.databaseOps import insert
 from modelWebsite.models import ModelConfig, Page, PageGroup
 import copy
 import re
-from modelWebsite.helpers.page_builder import componentTree, componentPrint
+from modelWebsite.helpers.page_builder import componentTree, componentPrint, pluralize
 
 def CSRFMiddlewareToken(request):
     # Gather context and send it to React
@@ -467,192 +467,25 @@ def writeComponents(request):
     return HttpResponse("")
 
 def writeModelPageTemplates(request):
-    filepath = os.path.join(os.getcwd(), "..", "reactapp", "src", "pages", "modelEditAndView")
-    editTemplatePath = os.path.join(filepath, "editTemplate.js")
-    viewTemplatePath = os.path.join(filepath, "viewTemplate.js")
-    listTemplatePath = os.path.join(filepath, "listTemplate.js")
-    models = apps.get_models()
-
-    models = apps.get_models()
-    djangoApps = []
-    for app in apps.get_app_configs():
-        appName = app.name
-        if appName != 'home':
-            continue
-
-        for model in models:
-            if model._meta.app_label == appName:
-                modelName = model.__name__
-                print (modelName)
-
-                componentListString = ""
-                formComponentListString = "\t\t\t\tvar Components = ["
-                componentPropsString = ''
-                formComponentPropsString = ''
-                defaults = "{"
-                listString = '\t\t\tvar ComponentProps = ['
-                i = 0
-                for field in model._meta.get_fields():
-                    fieldName = field.name.lower()
-                    if fieldName == 'id' or field.auto_created:
-                        continue
-
-                    fieldLabel = fieldName.title()
-                    fieldType = field.get_internal_type()
-
-                    try:
-                        fieldDefault = field.get_default()
-                    except:
-                        fieldDefault = ''
-
-                    if fieldType in ['ForeignKey', 'ManyToManyField']:
-                        relatedApp = field.related_model._meta.app_label
-                        relatedModel = field.related_model._meta.object_name.lower()
-
-                    #defaults
-                    if fieldDefault == True:
-                        fieldDefault = 'true'
-                    elif fieldDefault == False:
-                        fieldDefault = 'false'
-                    elif isinstance(fieldDefault, datetime.datetime):
-                        fieldDefault = fieldDefault.strftime('%m/%d/%Y')
-                    elif isinstance(fieldDefault, dict):
-                        fieldDefault = json.dumps(fieldDefault)
-                    elif fieldDefault != None:
-                        fieldDefault = fieldDefault
-                    else:
-                        fieldDefault = ''
-
-
-                    #components and their props
-                    if fieldType == 'AutoField':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName,fieldName)
-                        formComponentListString += "TextInput"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': ''};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
-
-                    elif fieldType == 'CharField':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "TextInput"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': ''};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
-
-                    elif fieldType == 'TextField':
-                        componentListString += "\t\t\t\t\t\t<MultiLineText {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "TextArea"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': ''};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
-
-                    elif fieldType in ['DecimalField','FloatField','IntegerField']:
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "NumberInput"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': 0, 'value': 0};\n" % (fieldName, fieldName, fieldLabel)
-
-                    elif fieldType == 'BooleanField':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "Select"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'options': [{'value':true,'text':'True'},{'value':false,'text':'False'}]};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
-
-                    elif fieldType == 'DateField':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "DateTimePicker"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'display_time': false};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
-
-                    elif fieldType == 'DateTimeField':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "DateTimePicker"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'display_time': true};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
-
-                    elif fieldType == 'ForeignKey':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "Select"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': '', 'optionsUrl': '/api/%s/%s/', 'optionsUrlMap': {'text':'{%s.unicode}','value':'{%s.id}'}};\n" % (fieldName, fieldName, fieldLabel, fieldLabel, relatedApp,relatedModel, relatedModel, relatedModel)
-
-                    elif fieldType == 'ManyToManyField':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "Select"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': '', 'optionsUrl': '/api/%s/%s/', 'optionsUrlMap': {'text':'{%s.unicode}','value':'{%s.id}'}, 'multiple':true};\n" % (fieldName, fieldName, fieldLabel, fieldLabel, relatedApp,relatedModel, relatedModel, relatedModel)
-
-
-                    formComponentListString += ", "
-                    if i != 0:
-                        listString += ", "
-                        defaults += ", '%s' : '%s'" % (fieldName, str(fieldDefault))
-                    else:
-                        defaults += "'%s' : '%s'" % (fieldName, str(fieldDefault))
-
-                    i += 1
-                    listString += fieldName
-
-                defaults += "}"
-                listString += "];"
-
-                formComponentListString += "];"
-
-                componentPropsString += listString
-                formComponentPropsString += listString
-
-                editTemplate = open(editTemplatePath, "r").read()
-                viewTemplate = open(viewTemplatePath, "r").read()
-                listTemplate = open(listTemplatePath, "r").read()
-
-                editTemplate = editTemplate.replace("*App*", appName)
-                editTemplate = editTemplate.replace("*Object*", modelName.lower())
-                editTemplate = editTemplate.replace("*CapitalObject*", modelName.title())
-                editTemplate = editTemplate.replace("*Defaults*", defaults)
-                editTemplate = editTemplate.replace("*ComponentProps*", componentPropsString)
-                editTemplate = editTemplate.replace("*ComponentList*", componentListString)
-                editTemplate = editTemplate.replace("*FormComponentList*", formComponentListString)
-                editTemplate = editTemplate.replace("*FormComponentProps*", formComponentPropsString)
-
-                viewTemplate = viewTemplate.replace("*App*", appName)
-                viewTemplate = viewTemplate.replace("*Object*", modelName.lower())
-                viewTemplate = viewTemplate.replace("*CapitalObject*", modelName.title())
-                viewTemplate = viewTemplate.replace("*Defaults*", defaults)
-                viewTemplate = viewTemplate.replace("*ComponentProps*", componentPropsString)
-                viewTemplate = viewTemplate.replace("*ComponentList*", componentListString)
-                viewTemplate = viewTemplate.replace("*FormComponentList*", formComponentListString)
-                viewTemplate = viewTemplate.replace("*FormComponentProps*", formComponentPropsString)
-
-                listTemplate = listTemplate.replace("*App*", appName)
-                listTemplate = listTemplate.replace("*Object*", modelName.lower())
-                listTemplate = listTemplate.replace("*CapitalObject*", modelName.title())
-
-                newEditTemplate = os.path.join(filepath, "edit" + modelName + ".js")
-                newViewTemplate = os.path.join(filepath, modelName + ".js")
-                newListTemplate = os.path.join(filepath, "list" + modelName + ".js")
-
-                with open(newEditTemplate, "w") as file:
-                    file.write(editTemplate)
-
-                with open(newViewTemplate, "w") as file:
-                    file.write(viewTemplate)
-
-                with open(newListTemplate, "w") as file:
-                    file.write(listTemplate)
-
-
-
-    return JsonResponse({'success':True})
-
-def writeModelPageObjects(request):
-    #28a48d9e-5bb2-4be0-8ae2-44b94553778d
     page_group = PageGroup.objects.filter(id='28a48d9e-5bb2-4be0-8ae2-44b94553778d').first()
     if not page_group:
         page_group = PageGroup(name='Made From Models', id='28a48d9e-5bb2-4be0-8ae2-44b94553778d')
         page_group.save()
 
+    field_type_dict = {
+        'AutoField': ['Paragraph', 'TextInput'],
+        'CharField': ['Paragraph', 'TextInput'],
+        'TextField': ['MultiLineText', 'TextArea'],
+        'DecimalField': ['Paragraph', 'NumberInput'],
+        'FloatField': ['Paragraph', 'NumberInput'],
+        'IntegerField': ['Paragraph', 'NumberInput'],
+        'BooleanField': ['Paragraph', 'Select'],
+        'DateField': ['Paragraph', 'DateTimePicker'],
+        'DateTimeField': ['Paragraph', 'DateTimePicker'],
+        'ForeignKey': ['Paragraph', 'Select'],
+        'ManyToManyField': ['Paragraph', 'Select'],
+    }
 
-    filepath = os.path.join(os.getcwd(), "..", "reactapp", "src", "pages", "modelEditAndView")
-    editTemplatePath = os.path.join(filepath, "editTemplate.js")
-    viewTemplatePath = os.path.join(filepath, "viewTemplate.js")
-    listTemplatePath = os.path.join(filepath, "listTemplate.js")
 
     models = apps.get_models()
     djangoApps = []
@@ -664,15 +497,28 @@ def writeModelPageObjects(request):
         for model in models:
             if model._meta.app_label == appName:
                 modelName = model.__name__
-                print (modelName)
 
-                componentListString = ""
-                formComponentListString = "\t\t\t\tvar Components = ["
-                componentPropsString = ''
-                formComponentPropsString = ''
-                defaults = "{"
-                listString = '\t\t\tvar ComponentProps = ['
+                base_url = "/api/" + appName.lower() + "/" + modelName.lower() + "/"
+
+                create_json = [{"type":"FormWithChildren","props":{"style":{},"required":"","submitUrl":base_url,"objectName":modelName.lower(),"redirectUrl":"/"+ modelName.lower() + "/{id}/"},"parent":None,"order":1,"key":"1"}]
+
+                edit_json = [{"type":"Instance","props":{"style":{},"required":"","dataUrl":base_url + "{params.1}/","objectName":modelName.lower()},"parent":None,"order":0,"key":"0"}]
+
+
+                view_json = [{"type":"Instance","props":{"style":{},"required":"","dataUrl":base_url + "{params.1}/","objectName":modelName.lower()},"parent":None,"order":0,"key":"0"}]
+                view_json.append({"type":"Header","props":{"size":3,"style":{},"required":"","text": modelName + ": {props.unicode}"},"parent":"0","order":1,"key":"1"})
+
+                list_json = [{"type":"ListWithChildren","props":{"style":{},"required":"","dataUrl":base_url,"objectName":modelName.lower()},"parent":None,"order":0,"key":"0"}]
+                list_json.append({"type":"Header","props":{"size":3,"style":{},"required":"","text": modelName + ": {props.unicode}"},"parent":"0","order":1,"key":"1"})
+                list_json.append({"type":"Button","props":{"type":"primary", "text":"Edit","style":{},"required":"","href":"/edit" + modelName + "/{props.id}/"},"parent":"0","order":2,"key":"2"})
+                list_json.append({"type":"Button","props":{"type":"primary", "text":"View","style":{},"required":"","href":"/" + modelName.lower() + "/{props.id}/"},"parent":"0","order":3,"key":"3"})
+
                 i = 0
+                defaults = {}
+                view_list = []
+                create_list = []
+                edit_list = []
+
                 for field in model._meta.get_fields():
                     fieldName = field.name.lower()
                     if fieldName == 'id' or field.auto_created:
@@ -691,11 +537,8 @@ def writeModelPageObjects(request):
                         relatedModel = field.related_model._meta.object_name.lower()
 
                     #defaults
-                    if fieldDefault == True:
-                        fieldDefault = 'true'
-                    elif fieldDefault == False:
-                        fieldDefault = 'false'
-                    elif isinstance(fieldDefault, datetime.datetime):
+
+                    if isinstance(fieldDefault, datetime.datetime):
                         fieldDefault = fieldDefault.strftime('%m/%d/%Y')
                     elif isinstance(fieldDefault, dict):
                         fieldDefault = json.dumps(fieldDefault)
@@ -704,119 +547,85 @@ def writeModelPageObjects(request):
                     else:
                         fieldDefault = ''
 
+                    defaults[fieldName] = '{props.%s}' % (fieldName)
 
-                    #components and their props
-                    if fieldType == 'AutoField':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName,fieldName)
-                        formComponentListString += "TextInput"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': ''};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
+                    view_list.append({"type":field_type_dict[fieldType][0],"props":{"text": "%s: {props.%s}" % (fieldName, fieldName.lower()),"style":{},"required":""}, "parent":"0","order":i + 2,"key": str(i + 2)})
 
-                    elif fieldType == 'CharField':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "TextInput"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': ''};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
-
-                    elif fieldType == 'TextField':
-                        componentListString += "\t\t\t\t\t\t<MultiLineText {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "TextArea"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': ''};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
-
-                    elif fieldType in ['DecimalField','FloatField','IntegerField']:
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "NumberInput"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': 0, 'value': 0};\n" % (fieldName, fieldName, fieldLabel)
-
-                    elif fieldType == 'BooleanField':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "Select"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'options': [{'value':true,'text':'True'},{'value':false,'text':'False'}]};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
-
-                    elif fieldType == 'DateField':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "DateTimePicker"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'display_time': false};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
-
-                    elif fieldType == 'DateTimeField':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "DateTimePicker"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': false, 'display_time': true};\n" % (fieldName, fieldName, fieldLabel, fieldLabel)
-
+                    props = {"name":fieldName.lower(), "label":fieldName}
+                    if fieldType == 'DateField':
+                        props['display_date'] = False
+                    elif fieldType == 'Boolean':
+                        props['options'] = [{'text':'True','value':True},{'text':'False', 'value':False}]
+                        props['defaultoption'] = fieldDefault
                     elif fieldType == 'ForeignKey':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "Select"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': '', 'optionsUrl': '/api/%s/%s/', 'optionsUrlMap': {'text':'{%s.unicode}','value':'{%s.id}'}};\n" % (fieldName, fieldName, fieldLabel, fieldLabel, relatedApp,relatedModel, relatedModel, relatedModel)
-
+                        props['optionsUrl'] = "/api/%s/%s/" % (relatedApp, relatedModel)
+                        props['optionsUrlMap'] = {'text':'{%s.unicode}' % (relatedModel.lower()), "value":'{%s.id}' % (relatedModel.lower())}
                     elif fieldType == 'ManyToManyField':
-                        componentListString += "\t\t\t\t\t\t<Paragraph {...ComponentProps[%s]} />\n" % (str(i))
-                        componentPropsString += "\t\t\tvar %s = {'text': this.state.%s};\n" % (fieldName, fieldName)
-                        formComponentListString += "Select"
-                        formComponentPropsString += "\t\t\tvar %s = {'name': '%s', 'label': '%s', 'placeholder': '%s', 'value': '', 'optionsUrl': '/api/%s/%s/', 'optionsUrlMap': {'text':'{%s.unicode}','value':'{%s.id}'}, 'multiple':true};\n" % (fieldName, fieldName, fieldLabel, fieldLabel, relatedApp,relatedModel, relatedModel, relatedModel)
+                        props['optionsUrl'] = "/api/%s/%s/" % (relatedApp, relatedModel)
+                        props['optionsUrlMap'] = {'text': '{%s.unicode}' % (relatedModel.lower()),
+                                                  "value": '{%s.id}' % (relatedModel.lower())}
+                        props['multiple'] = True
 
-
-                    formComponentListString += ", "
-                    if i != 0:
-                        listString += ", "
-                        defaults += ", '%s' : '%s'" % (fieldName, str(fieldDefault))
-                    else:
-                        defaults += "'%s' : '%s'" % (fieldName, str(fieldDefault))
+                    create_list.append({"type":field_type_dict[fieldType][1], "parent": "0", "order": i + 2, "key": str(i+2), "props":props})
+                    edit_list.append(
+                        {"type": field_type_dict[fieldType][1], "parent": "1", "order": i + 2, "key": str(i + 2),
+                         "props": props})
 
                     i += 1
-                    listString += fieldName
 
-                defaults += "}"
-                listString += "];"
+                create_json.extend(create_list)
 
-                formComponentListString += "];"
+                view_json.extend(view_list)
+                edit_json.append({"type": "FormWithChildren",
+                                  "props": {"submitUrl": base_url + "{props.id}/",
+                                            "redirectUrl": "/" + modelName.lower() + "/{props.id}/",
+                                            "deleteUrl": base_url + "{props.id}/delete/",
+                                            "deleteRedirectUrl": "/" + pluralize(modelName.lower()) + "/",
+                                            "style": {}, "required": "", "defaults": defaults,
+                                            "objectName": modelName.lower()},
+                                  "parent": "0", "order": 1, "key": "1"})
+                edit_json.extend(edit_list)
 
-                componentPropsString += listString
-                formComponentPropsString += listString
+                #create
+                url = '/create' + modelName + '/'
+                name = 'Create ' + pluralize(modelName)
+                create_page = Page.objects.filter(pagegroup=page_group, url = url).first()
+                if not create_page:
+                    create_page = Page(pagegroup=page_group, url = url, components=create_json, name = name)
+                else:
+                    create_page.components = create_json
+                create_page.save()
 
-                editTemplate = open(editTemplatePath, "r").read()
-                viewTemplate = open(viewTemplatePath, "r").read()
-                listTemplate = open(listTemplatePath, "r").read()
+                #edit
+                url = '/edit' + modelName + '/'
+                name = 'Edit ' + pluralize(modelName)
+                edit_page = Page.objects.filter(pagegroup=page_group, url=url).first()
+                if not edit_page:
+                    edit_page = Page(pagegroup=page_group, url=url, components=edit_json, name=name)
+                else:
+                    edit_page.components = edit_json
+                edit_page.save()
 
-                editTemplate = editTemplate.replace("*App*", appName)
-                editTemplate = editTemplate.replace("*Object*", modelName.lower())
-                editTemplate = editTemplate.replace("*CapitalObject*", modelName.title())
-                editTemplate = editTemplate.replace("*Defaults*", defaults)
-                editTemplate = editTemplate.replace("*ComponentProps*", componentPropsString)
-                editTemplate = editTemplate.replace("*ComponentList*", componentListString)
-                editTemplate = editTemplate.replace("*FormComponentList*", formComponentListString)
-                editTemplate = editTemplate.replace("*FormComponentProps*", formComponentPropsString)
+                #view
+                url = '/' + modelName + '/'
+                name = 'View ' + pluralize(modelName.lower())
+                view_page = Page.objects.filter(pagegroup=page_group, url=url).first()
+                if not view_page:
+                    view_page = Page(pagegroup=page_group, url=url, components=view_json, name=name)
+                else:
+                    view_page.components = view_json
+                view_page.save()
 
-                viewTemplate = viewTemplate.replace("*App*", appName)
-                viewTemplate = viewTemplate.replace("*Object*", modelName.lower())
-                viewTemplate = viewTemplate.replace("*CapitalObject*", modelName.title())
-                viewTemplate = viewTemplate.replace("*Defaults*", defaults)
-                viewTemplate = viewTemplate.replace("*ComponentProps*", componentPropsString)
-                viewTemplate = viewTemplate.replace("*ComponentList*", componentListString)
-                viewTemplate = viewTemplate.replace("*FormComponentList*", formComponentListString)
-                viewTemplate = viewTemplate.replace("*FormComponentProps*", formComponentPropsString)
+                #list
+                url = '/' + pluralize(modelName.lower()) + '/'
+                name = modelName + ' List'
+                list_page = Page.objects.filter(pagegroup=page_group, url=url).first()
+                if not list_page:
+                    list_page = Page(pagegroup=page_group, url=url, components=list_json, name=name)
+                else:
+                    list_page.components = list_json
+                list_page.save()
 
-                listTemplate = listTemplate.replace("*App*", appName)
-                listTemplate = listTemplate.replace("*Object*", modelName.lower())
-                listTemplate = listTemplate.replace("*CapitalObject*", modelName.title())
-
-                newEditTemplate = os.path.join(filepath, "edit" + modelName + ".js")
-                newViewTemplate = os.path.join(filepath, modelName + ".js")
-                newListTemplate = os.path.join(filepath, "list" + modelName + ".js")
-
-                with open(newEditTemplate, "w") as file:
-                    file.write(editTemplate)
-
-                with open(newViewTemplate, "w") as file:
-                    file.write(viewTemplate)
-
-                with open(newListTemplate, "w") as file:
-                    file.write(listTemplate)
 
 
 

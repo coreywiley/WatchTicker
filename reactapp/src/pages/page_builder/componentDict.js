@@ -1,7 +1,7 @@
 import {FormWithChildren, LogInForm, SignUpForm, ListWithChildren, Div, If, Break, NumberInput,
         BooleanInput, TextInput, Select, TextArea, FileInput, Button, Header, Paragraph, CSSInput,
         Container, EmptyModal, PasswordInput, Json_Input, Function_Input, PasswordResetRequest,
-        CardWithChildren, Icons, Navbar,Link, Image, UnorderedList, ListItem, Span, Icon} from 'library';
+        CardWithChildren, Icons, Navbar,Link, Image, UnorderedList, ListItem, Span, Icon, Instance, DateTimePicker} from 'library';
 
 let ComponentList = [
     Paragraph,
@@ -28,6 +28,8 @@ let ComponentList = [
     LogInForm,
     SignUpForm,
     PasswordResetRequest,
+    Instance,
+    DateTimePicker,
 ];
 
 

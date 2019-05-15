@@ -100,15 +100,24 @@ class Select extends Component {
             optionDict = this.state.options;
         }
 
-        if (this.props.defaultoption in optionDict) {
-            var options = [];
+        var found_default = null;
+        for (var index in optionDict) {
+            if (optionDict[index]['value'] == this.props.defaultoption) {
+                found_default = optionDict[index];
+            }
+        }
+
+        if (found_default) {
+            var options = [<option key={-1} value={found_default['value']}>{found_default['text']}</option>];
         }
         else {
-            var options = [<option key={-1}>{this.props.defaultoption}</option>];
+            var options = [];
         }
 
         for (var index in optionDict) {
-            options.push(<option key={index} value={optionDict[index]['value']}>{optionDict[index]['text']}</option>)
+            if (optionDict[index]['value'] != this.props.defaultoption) {
+                options.push(<option key={index} value={optionDict[index]['value']}>{optionDict[index]['text']}</option>)
+            }
         }
 
         var multipleSelections = []

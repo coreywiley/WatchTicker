@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 import {resolveVariables} from 'functions';
 import Datetime from 'react-datetime';
+import {TextInput, Select} from 'library';
 
 class DateTimePicker extends Component {
   constructor(props) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
+
+    this.config = {
+        form_components: [
+            <TextInput label={'Name'} name={'name'} />,
+            <TextInput label={'redirectUrl'} name={'redirectUrl'} />,
+        ],
+        can_have_children: true,
+    }
+
   }
 
     handleChange(e) {

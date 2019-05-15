@@ -63,3 +63,26 @@ def componentPrint(component_tree, depth = 0):
         components.append("</%s>" % item['type'])
 
     return components
+
+
+def pluralize(config_name):
+
+    if config_name[-1] in ['s','x','z','o'] or config_name[-2:] in ['sh','ch','is']:
+        related_name = config_name + 'es'
+
+    elif config_name[-1] == 'y':
+        if config_name[-2] in ['a','e','i','o','u']:
+            related_name = config_name + 's'
+        else:
+            related_name = config_name[:-1] + 'ies'
+
+    elif config_name[-2:] == 'us':
+        related_name = config_name[:-2] + 'i'
+
+    elif config_name[-2:] == 'on':
+        related_name = config_name[:-2] + 'a'
+
+    else:
+        related_name = config_name + 's'
+
+    return related_name

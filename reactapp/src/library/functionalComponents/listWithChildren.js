@@ -87,17 +87,23 @@ class ListWithChildren extends Component {
                   var componentInstance;
                   if (this.props.dataMapping) {
                       var dataMapping = {...this.props.dataMapping};
-                      dataMapping = resolveVariables(dataMapping, data);
-                      dataMapping['refreshData'] = this.refreshData;
-                      dataMapping['setGlobalState'] = this.props.setGlobalState;
-                      console.log("Datamapping", dataMapping)
-                      componentInstance = React.cloneElement(child, dataMapping);
                   }
                   else {
-                      data['refreshData'] = this.refreshData;
-                      data['setGlobalState'] = this.props.setGlobalState;
-                      componentInstance = React.cloneElement(child, data);
+                      var dataMapping = {}
                   }
+
+                  for (var prop_name in child.props) {
+                      dataMapping[prop_name] = child.props[prop_name];
+                  }
+
+                  console.log("Component Data", data)
+                  dataMapping = resolveVariables(dataMapping, {'props':data});
+        
+                  dataMapping['refreshData'] = this.refreshData;
+                  dataMapping['setGlobalState'] = this.props.setGlobalState;
+                  console.log("Datamapping", dataMapping)
+                  componentInstance = React.cloneElement(child, dataMapping);
+
 
                   content.push(componentInstance);
                 }

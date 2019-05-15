@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {resolveVariables, ajaxWrapper, run_functions} from 'functions';
-import {Alert, Button, TextInput, NumberInput, CSSInput} from 'library';
+import {Alert, Button, TextInput, NumberInput, CSSInput, Json_Input} from 'library';
 
 /*
 Example
@@ -44,10 +44,12 @@ class FormWithChildren extends Component {
         super(props);
         this.config = {
             form_components: [
-
                 <TextInput label={'submitUrl'} name={'submitUrl'} />,
                 <TextInput label={'redirectUrl'} name={'redirectUrl'} />,
                 <TextInput label={'deleteUrl'} name={'deleteUrl'} />,
+                <TextInput label={'deleteRedirectUrl'} name={'deleteRedirectUrl'} />,
+                <Json_Input label={'defaults'} name={'defaults'} />,
+                <TextInput label={'objectName'} name={'objectName'} />,
                 <CSSInput label={'css'} name={'style'} default={{}} />,
             ],
             can_have_children: true,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {ajaxWrapper, sort_objects} from 'functions';
-import {Wrapper, NumberInput, Button, FormWithChildren, TextInput, If} from 'library';
+import {ajaxWrapper, sort_objects, resolveVariables} from 'functions';
+import {Wrapper, NumberInput, Button, FormWithChildren, TextInput, If, Select} from 'library';
 import ComponentDict from './componentDict.js';
 import AddChildComponent from './addChildComponent.js';
 import ComponentInstance from './componentInstance.js';
@@ -102,7 +102,10 @@ class PageBuilder extends Component {
 
     load(result) {
       var page = result[0]['page'];
-      var components = JSON.parse(page['components']);
+      console.log("Loading", page)
+
+      var components = JSON.parse(page['components'].split("'").join('"').split("None").join("null"));
+
       for (var i in components){
           var component = components[i];
           component['class'] = ComponentDict[component['type']];
@@ -356,6 +359,7 @@ class PageBuilder extends Component {
                <FormWithChildren defaults={this.state} autoSetGlobalState={true} setGlobalState={this.setGlobalStateName} globalStateName={'form'}>
                     <TextInput name='name' label='Name' placeholder='Page Name' />
                     <TextInput name="url" label="URL" placeholder="/" />
+                    <Select name="pagegroup" label="Page Group" optionsUrl={'/api/modelWebsite/pagegroup/'} optionsUrlMap={{'text':'{pagegroup.name}', value:'{pagegroup.id}'}} defaultoption={this.props.page_group_id} />
                </FormWithChildren>
              </div>
               <div className="row">

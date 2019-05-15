@@ -51,7 +51,13 @@ class TextInput extends Component {
             ],
         }
 
-        this.state = {focused:false, key_position: -1, suggestion_filters: this.props.suggestions}
+        if (props) {
+            this.state = {focused:false, key_position: -1, suggestion_filters: []}
+        }
+        else {
+            this.state = {focused:false, key_position: -1, suggestion_filters: []}
+        }
+
 
         this.onBlur = this.onBlur.bind(this);
         this.onFocus = this.onFocus.bind(this);
