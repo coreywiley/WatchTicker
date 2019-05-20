@@ -25,7 +25,7 @@ from modelWebsite.helpers.databaseOps import insert
 from modelWebsite.models import ModelConfig, Page, PageGroup
 import copy
 import re
-from modelWebsite.helpers.page_builder import componentTree, componentPrint, pluralize
+from modelWebsite.helpers.page_builder import componentTree, componentPrint, pluralize, componentPrintPage
 
 def CSRFMiddlewareToken(request):
     # Gather context and send it to React
@@ -190,6 +190,11 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
         limit = int(parameters['limit'])
         del parameters['limit']
 
+    offset = 0
+    if 'offset' in parameters:
+        offset = int(parameters['offset'])
+        del parameters['offset']
+
     count = False
     if 'count' in parameters:
         count = True
@@ -258,7 +263,7 @@ def getModelInstanceJson(request, appLabel, modelName, id=None):
                 instanceQuery = instanceQuery.values_list(*values_list, flat=True)
 
             if limit > 0:
-                instanceQuery = instanceQuery[:limit]
+                instanceQuery = instanceQuery[offset:offset + limit]
 
             if count:
                 return JsonResponse({'count': instanceQuery.count()})
@@ -358,12 +363,12 @@ def addOrFilter(orFilters, key, value):
 @api_view(['POST', 'GET'])
 @permission_classes((AllowAny, ))
 def deleteModelInstance(request,appLabel,modelName,id):
-    print ('DELETING', appLabel, modelName, id)
+    print ('DELETING', appLabel, modelName, id, request.user.is_staff)
 
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
 
     if appLabel == 'user' and modelName == 'user' and model.DELETE_STAFF:
-        if id == request.user.id:
+        if id == request.user.id or request.user.is_staff:
             model.objects.filter(id=id).delete()
         else:
             return JsonResponse({'error':'You are not authorized to delete this.'})
@@ -665,6 +670,81 @@ def writePage(request, page_id):
 
 
     return JsonResponse({'success':True})
+
+def exportWebsite(request):
+    pages = Page.objects.all()
+
+    app_imports = ''
+    app_routes = ''
+    for page in pages:
+
+        if str(page.pagegroup_id) == '9ed43f0e-5f4e-4aa3-8303-55a4d32d3f38':
+            continue
+
+        capital_name = page.name.replace(' ','')
+        app_imports += 'import %s from "./pages/folder/%s.js"\n' % (capital_name, capital_name.lower())
+        app_routes += '          else if (route == "%s") {\n             var content = <%s /> \n          }\n' % (page.url.lower()[1:-1], capital_name)
+
+        json_prep = page.components.replace("'",'"').replace("None",'""')
+        component_list = json.loads(json_prep)
+
+        if page.name == 'Home':
+            print (page.name)
+            print ("\n\n", "Component List", component_list, "\n\n\n")
+
+
+        filepath = os.path.join(os.getcwd(), "..", "reactapp", "src", "pages", "folder")
+        new_filepath = os.path.join(filepath, capital_name.lower() + ".js")
+
+        library_imports = ["FormWithChildren", "LogInForm", "SignUpForm", "ListWithChildren", "Div", "If", "Break",
+                           "NumberInput", "BooleanInput", "TextInput", "Select", "TextArea", "FileInput", "Button", "Header",
+                           "Paragraph", "CSSInput", "Container", "EmptyModal", "PasswordInput", "Json_Input", "Function_Input",
+                           "PasswordResetRequest", "CardWithChildren", "Icons"]
+
+        project_library_imports = []
+        all_imports = copy.deepcopy(library_imports)
+
+        all_imports.append(capital_name)
+        project_library_imports.append("import %s from 'projectLibrary/%s.js';" % (capital_name, capital_name))
+
+        component_library_imports = []
+        form_components = []
+        search = re.compile('{props.[^}]*}')
+
+        for item in component_list:
+            if item['type'] not in component_library_imports:
+                component_library_imports.append(item['type'])
+
+        component_tree = componentTree(component_list, "")
+        components = componentPrintPage(component_tree, 2)
+
+        if page.name == 'Home':
+            print("\n\n", "Component Tree", component_tree, "\n\n\n")
+            print ("\n\n", "Components", components, "\n\n\n")
+
+        component_filepath = os.path.join(os.getcwd(), "..", "reactapp", "src", "pages", "folder")
+        projectTemplatePath = os.path.join(component_filepath, "componentTemplate.js")
+        projectTemplate = open(projectTemplatePath, "r").read()
+        projectTemplate = projectTemplate.replace("*component_library_imports*",
+                                                  ', '.join(component_library_imports))
+        projectTemplate = projectTemplate.replace("*ComponentName*", capital_name)
+        projectTemplate = projectTemplate.replace("*components*", '\n'.join(components))
+
+        with open(new_filepath, "w") as file:
+            file.write(projectTemplate)
+
+    appTemplatePath = os.path.join(os.getcwd(), "..", "reactapp", "src", "App_Template.js")
+    appTemplate = open(appTemplatePath, "r").read()
+    appTemplate = appTemplate.replace("*component_imports*", app_imports)
+    appTemplate = appTemplate.replace("*app_routes*", app_routes)
+
+    app_js_path = os.path.join(os.getcwd(), "..", "reactapp", "src", "App.js")
+
+    with open(app_js_path, "w") as file:
+        file.write(appTemplate)
+
+    return JsonResponse({"success":True})
+
 
 def SendEmail(request):
     # using SendGrid's Python Library

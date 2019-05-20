@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "chart.js": "^1.1.1",
+    "chart.js": "^2.3.0",
     "component-playground": "^3.2.1",
     "draft-js": "^0.10.5",
     "google-maps-react": "^2.0.2",
@@ -12,7 +12,7 @@
     "moment": "^2.22.2",
     "react": "^16.3.2",
     "react-bootstrap-table-next": "^1.1.4",
-    "react-chartjs": "^1.2.0",
+    "react-chartjs-2": "^2.7.6",
     "react-color": "^2.14.1",
     "react-datepicker": "^1.6.0",
     "react-datetime": "^2.15.0",

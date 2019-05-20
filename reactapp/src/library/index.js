@@ -19,6 +19,7 @@ import Icons_ from './displayComponents/icons.js';
 import UnorderedList_ from './displayComponents/UnorderedList.js';
 import ListItem_ from './displayComponents/ListItem.js';
 import Span_ from './displayComponents/span.js';
+import TableWithChildren_ from './displayComponents/tableWithChildren.js';
 
 import BooleanInput_ from './formComponents/booleaninput.js';
 import Button_ from './formComponents/button.js';
@@ -143,3 +144,4 @@ export const ListItem = ListItem_;
 export const UnorderedList = UnorderedList_;
 export const Span = Span_;
 export const Instance = Instance_;
+export const TableWithChildren = TableWithChildren_;

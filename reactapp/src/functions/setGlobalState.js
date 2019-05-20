@@ -1,6 +1,7 @@
 window.cmState = {'completed':'False'}
 
 function setGlobalState(name, state) {
+    console.log("Setting Global State", name, state)
   window.cmState[name] = state;
   if (window.cmState.subscribers) {
     for (var index in window.cmState.subscribers) {
@@ -20,7 +21,7 @@ function subscribe(component) {
   if (!window.cmState['subscribers']) {
     window.cmState['subscribers'] = [];
   }
-  
+
   if (window.cmState.subscribers.indexOf(component) == -1) {
     window.cmState['subscribers'].push(component)
   }

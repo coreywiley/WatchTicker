@@ -89,7 +89,6 @@ class Instance extends Component {
               dataMapping = resolveVariables(dataMapping, {'props':data});
               dataMapping['refreshData'] = this.refreshData;
               dataMapping['setGlobalState'] = this.props.setGlobalState;
-              console.log("Datamapping", dataMapping)
               componentInstance = React.cloneElement(child, dataMapping);
 
               content.push(componentInstance);

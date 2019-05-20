@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {resolveVariables} from 'functions';
 import {ajaxWrapper} from 'functions';
-import {Button} from 'library';
+import {Button, TextInput, Json_Input, CSSInput} from 'library';
 
 
 //Example
@@ -11,6 +11,17 @@ class Select extends Component {
     constructor(props) {
         super(props);
         this.state = {options:[]}
+
+        this.config = {
+            form_components: [
+                <TextInput label={'name'} name={'name'} default={'Default Text'} />,
+                <TextInput label={'defaultoption'} name={'defaultoption'} />,
+                <TextInput label={'label'} name={'label'} />,
+                <Select label={'required'} name={'required'} options={[{'text':'True', value:true}, {'text':'False', value:false}]} defaultoption={false} />,
+                <Json_Input label={'options'} name={'options'} />,
+                <CSSInput label={'css'} name={'style'} default={{}} />,
+            ],
+        }
 
         this.optionsCallback = this.optionsCallback.bind(this);
         this.handleChange = this.handleChange.bind(this);

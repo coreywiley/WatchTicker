@@ -43,8 +43,10 @@ class WeLoveWatches():
     def getWatchDetails(self, stock_num):
 
         details = {}
+        found = False
         for index, row in self.table.iterrows():
             if row[0] == stock_num:
+                found = True
                 details['brand'] = brand_reference_dict.get(row[1], row[1])
                 details['reference_number'] = row[2]
                 details['papers'] = row[5] in ['PAPER','CARD']
@@ -53,6 +55,9 @@ class WeLoveWatches():
                     details['price'] = row[9].replace('$','').replace(',','')
                 except:
                     details['price'] = row[9]
+
+        if not found:
+            return {'sold':True}
 
         return details
 

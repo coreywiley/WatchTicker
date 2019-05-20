@@ -184,17 +184,10 @@ prop_list = [
 'zoom',
 ]
 
-for prop in prop_list:
-    prop_split = prop.split('-')
+import json
 
-    react_prop = '"'
-    for i in range(len(prop_split)):
-        if i == 0:
-            react_prop += prop_split[i]
-        else:
-            react_prop += prop_split[i].title()
-    react_prop += '", '
-    print (react_prop)
+json.loads('[{"type": "FormWithChildren", "props": {"style": {}, "required": "", "submitUrl": "/api/home/watch/", "objectName": "watch", "redirectUrl": "/watch/{id}/"}, "parent": "", "order": 1, "key": "1"}]')
+#, {"type": "DateTimePicker", "parent": "0", "order": 2, "key": "2", "props": {"name": "created_at", "label": "created_at"}}, {"type": "DateTimePicker", "parent": "0", "order": 3, "key": "3", "props": {"name": "updated_at", "label": "updated_at"}}, {"type": "TextInput", "parent": "0", "order": 4, "key": "4", "props": {"name": "brand", "label": "brand"}}, {"type": "TextInput", "parent": "0", "order": 5, "key": "5", "props": {"name": "model", "label": "model"}}, {"type": "TextInput", "parent": "0", "order": 6, "key": "6", "props": {"name": "reference_number", "label": "reference_number"}}]')
 
 '''
 Scheduler

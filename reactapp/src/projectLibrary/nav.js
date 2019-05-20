@@ -8,7 +8,7 @@ class Nav extends React.Component {
         super(props);
         this.config = {
             form_components: [
-                
+
             ],
             can_have_children: true,
         }
@@ -16,16 +16,20 @@ class Nav extends React.Component {
 
     render() {
         var name = <div><img style={{'marginRight':'10px'}} src='/static/images/logo.png' height="125" /></div>;
-        if (this.props.user_id) {
-          var links = [['/viewer/', 'Pomodoros'],['/logOut/', 'Log Out']];
+        if (this.props.user) {
+          var links = [['/watches/', 'Watches']];
         }
 
         else {
-          var links = [['/signUp/','Sign Up'], ['/logIn/','Log In']];
+          var links = [['/logIn/','Log In']];
         }
 
-        if (this.props.is_staff == true) {
-          links.push(['/appList/','Admin']);
+        if (this.props.user.is_staff == true) {
+          links.push(['/users/','Users']);
+        }
+
+        if (this.props.user) {
+            links.push(['/logOut/', 'Log Out'])
         }
 
         var linkHTML = [];
@@ -36,19 +40,18 @@ class Nav extends React.Component {
         }
 
         return (
-          <nav className="navbar navbar-expand-lg" style={{padding:'10px'}}>
-            <a className="navbar-brand" href="#" style={{paddingLeft:'10px',paddingRight:'10px'}}>{settings.WEBSITE_NAME}</a>
-
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-
-            <div className="collapse navbar-collapse " id="navbarSupportedContent">
-              <ul className="navbar-nav mr-4">
-                {linkHTML}
-              </ul>
-            </div>
-          </nav>
+            <header class="topbar">
+              <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                  <div class="navbar-header">
+                      <a class="navbar-brand" href="/watches/">Watch Ticker</a>
+                  </div>
+                  <div class="navbar-collapse">
+                      <ul class="navbar-nav mr-auto">
+                         {linkHTML}
+                      </ul>
+                  </div>
+              </nav>
+          </header>
         );
     }
 }

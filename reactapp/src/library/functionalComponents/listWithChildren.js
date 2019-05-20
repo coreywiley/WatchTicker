@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {resolveVariables, ajaxWrapper} from 'functions';
-import {Wrapper, NumberInput, TextInput, TextArea, CSSInput, Json_Input} from 'library';
+import {Wrapper, NumberInput, TextInput, TextArea, CSSInput, Json_Input, Button, Select} from 'library';
 
 class ListWithChildren extends Component {
     constructor(props) {
@@ -13,16 +13,21 @@ class ListWithChildren extends Component {
                 <TextInput label={'dataUrl'} name={'dataUrl'} />,
                 <TextInput label={'object name'} name={'objectName'} />,
                 <Json_Input label={'dataMapping'} name={'dataMapping'} />,
+                <Json_Input label={'filters'} name={'filters'} />,
                 <TextInput label={'noDataMessage'} name={'noDataMessage'} />,
                 <TextArea label={'lastInstanceData'} name={'lastInstanceData'} />,
+                <Select label={'table'} name={'table'} options={[{'text':'True', value:true}, {'text':'False', value:false}]} defaultoption={false} />,
                 <CSSInput label={'css'} name={'style'} default={{}} />,
             ],
             can_have_children: true,
         }
 
+        var limit = this.props.limit || 20;
         this.state = {
             componentData: [],
             loaded:false,
+            limit:limit,
+            offset:0,
         };
 
         this.ajaxCallback = this.ajaxCallback.bind(this);
@@ -40,13 +45,34 @@ class ListWithChildren extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (!this.props.dataList) {
-            this.refreshData();
+            this.setState({offset:0}, this.refreshData)
         }
     }
 
     refreshData() {
+        var limit = this.state.limit;
+        var offset = this.state.offset;
       if (this.props.dataUrl) {
         var dataUrl = resolveVariables({'dataUrl':this.props.dataUrl}, window.cmState.getGlobalState(this))['dataUrl'];
+
+        var filterString = '';
+        var filters = resolveVariables(this.props.filters, window.cmState.getGlobalState(this));
+        if (filters) {
+            for (var index in filters) {
+                var filter = filters[index];
+                if (filter.indexOf("undefined") == -1) {
+                    filterString += '&' + index + '=' + filter;
+                }
+            }
+        }
+
+        if (dataUrl.indexOf('?') == -1) {
+            dataUrl += '?limit=' + limit + '&offset=' + offset + filterString;
+        }
+        else {
+            dataUrl += '&limit=' + limit + '&offset=' + offset + filterString;
+        }
+
         ajaxWrapper("GET", dataUrl, {}, this.ajaxCallback);
       }
     }
@@ -80,6 +106,7 @@ class ListWithChildren extends Component {
 
         if (this.state.componentData.length > 0) {
             for (var i in this.state.componentData) {
+                var table_row = []
                 var data = this.state.componentData[i][this.props.objectName];
 
                 for (var index in children) {
@@ -96,16 +123,23 @@ class ListWithChildren extends Component {
                       dataMapping[prop_name] = child.props[prop_name];
                   }
 
-                  console.log("Component Data", data)
                   dataMapping = resolveVariables(dataMapping, {'props':data});
-        
+
                   dataMapping['refreshData'] = this.refreshData;
                   dataMapping['setGlobalState'] = this.props.setGlobalState;
-                  console.log("Datamapping", dataMapping)
+
                   componentInstance = React.cloneElement(child, dataMapping);
 
+                  if (this.props.table) {
+                      table_row.push(<td>{componentInstance}</td>);
+                  }
+                  else {
+                      content.push(componentInstance);
+                  }
 
-                  content.push(componentInstance);
+                }
+                if (this.props.table) {
+                    content.push(<tr>{table_row}</tr>)
                 }
             }
         }
@@ -126,10 +160,26 @@ class ListWithChildren extends Component {
           }
         }
 
+        content.push(<div style={{height:'50px'}}></div>)
+        if (this.state.offset > 0) {
+            var prev = <Button type={'primary'} text={'Previous'} onClick={() => this.setState({offset:this.state.offset - this.state.limit}, this.refreshData)} />
+            content.push(prev)
+        }
 
-        return (
-            <Wrapper className={this.props.className} loaded={this.state.loaded} content={content} />
-        );
+        if (this.state.componentData.length == this.state.limit) {
+            var next = <Button type={'primary'} text={'Next'} onClick={() => this.setState({offset:this.state.offset + this.state.limit}, this.refreshData)} />
+            content.push(next);
+        }
+
+        if (this.props.table && this.state.loaded) {
+            return (content);
+        }
+        else {
+            return (
+                <Wrapper className={this.props.className} loaded={this.state.loaded} content={content} />
+            );
+        }
+
     }
 }
 

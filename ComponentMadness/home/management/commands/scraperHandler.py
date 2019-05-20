@@ -31,92 +31,92 @@ def sendErrorEmail(source, function, error):
 class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
 
-    def handle(self, *args, **options):
-        #"Bob's Watches":BobsWatches(), 'House Of Time':HouseOfTime(),, 'Crown And Caliber':CrownAndCaliber(), "Watch Box":WatchBox()
-        watch_websites = {"We Love Watches":WeLoveWatches()}
+    def add_arguments(self, parser):
+        parser.add_argument('source', type=str, help='Indicates Source To Be Ran')
 
-        for source in watch_websites:
-            print ('\n\n\n\n', source, '\n')
-            instance = watch_websites[source]
+    def handle(self, *args, **options):
+        source = options['source']
+
+        watch_websites = {"We Love Watches":WeLoveWatches(), "Bob's Watches":BobsWatches(), 'House Of Time':HouseOfTime(), 'Crown And Caliber':CrownAndCaliber(), "Watch Box":WatchBox()}
+
+        print ('\n\n\n\n', source, '\n')
+        instance = watch_websites[source]
+
+        try:
+            watches = instance.getWatches()
+        except Exception as e:
+            print (str(e))
+            sendErrorEmail(source, 'getWatches', str(e))
+            return {'error': str(e)}
+
+        source_instance = Source.objects.filter(name=source).first()
+        if not source_instance:
+            source_instance = Source(name=source)
+            source_instance.save()
+
+        source_instance.last_updated_watch = datetime.datetime.now()
+        source_instance.save()
+
+        for watch in watches:
+            print ("\n\n\n","Watch", watch, "\n\n\n")
+            #check for watch reference number
+            watch_instance = Watch.objects.filter(reference_number=watch['reference_number']).first()
+            if watch_instance:
+                change = False
+                if watch_instance.brand == '' and 'brand' in watch:
+                    change = True
+                    watch_instance.brand = watch['brand']
+                if watch_instance.model == '' and 'model' in watch:
+                    change = True
+                    watch_instance.model = watch['model']
+
+                if change:
+                    watch_instance.save()
+            else:
+                model = ''
+                brand = ''
+                if 'model' in watch:
+                    model = watch['model']
+                if 'brand' in watch:
+                    brand = watch['brand']
+
+                watch_instance = Watch(reference_number = watch['reference_number'], model = model, brand = brand)
+                print ("\n\n\n", "Saving New Watch", watch, "\n\n\n")
+                watch_instance.save()
+
 
             try:
-                watches = instance.getWatches()
-                #pickle.dump(watches, open('watches2.p','wb'))
-                #watches = pickle.load(open('watches.p','rb'))
+                check = Watch_Instance.objects.filter(watch_id=watch_instance.id, source_id=source_instance.id, url=watch['url']).first()
+
+                if not check:
+
+                    print ("\n\n\n", "Watch Instance", watch_instance.reference_number, source_instance.name, watch['url'], watch, "\n\n\n")
+                    new_instance = Watch_Instance(watch=watch_instance, source=source_instance, url=watch['url'])
+                    new_instance.save()
             except Exception as e:
                 print (str(e))
                 sendErrorEmail(source, 'getWatches', str(e))
-                watches = []
-                break
 
-            source_instance = Source.objects.filter(name=source).first()
-            if not source_instance:
-                source_instance = Source(name=source)
-                source_instance.save()
+        print ('\n\n\n\n', source, '\n')
+        instance = watch_websites[source]
+        source_instance = Source.objects.filter(name=source).first()
 
-            source_instance.last_updated_watch = datetime.datetime.now()
-            source_instance.save()
+        all_watches = Watch_Instance.objects.filter(source=source_instance)
+        print (all_watches.count())
+        for watch in all_watches:
 
-            for watch in watches:
-                print ("\n\n\n","Watch", watch, "\n\n\n")
-                #check for watch reference number
-                watch_instance = Watch.objects.filter(reference_number=watch['reference_number']).first()
-                if watch_instance:
-                    change = False
-                    if watch_instance.brand == '' and 'brand' in watch:
-                        change = True
-                        watch_instance.brand = watch['brand']
-                    if watch_instance.model == '' and 'model' in watch:
-                        change = True
-                        watch_instance.model = watch['model']
+            try:
+                watch_details = instance.getWatchDetails(watch.url)
+            except Exception as e:
+                print (str(e))
+                sendErrorEmail(source_instance.name, 'getWatchDetails : ' + watch.url, str(e))
+                continue
 
-                    if change:
-                        watch_instance.save()
-                else:
-                    model = ''
-                    brand = ''
-                    if 'model' in watch:
-                        model = watch['model']
-                    if 'brand' in watch:
-                        brand = watch['brand']
-
-                    watch_instance = Watch(reference_number = watch['reference_number'], model = model, brand = brand)
-                    print ("\n\n\n", "Saving New Watch", watch, "\n\n\n")
-                    watch_instance.save()
-
-
-                try:
-                    check = Watch_Instance.objects.filter(watch_id=watch_instance.id, source_id=source_instance.id, url=watch['url']).first()
-
-                    if not check:
-
-                        print ("\n\n\n", "Watch Instance", watch_instance.reference_number, source_instance.name, watch['url'], watch, "\n\n\n")
-                        new_instance = Watch_Instance(watch=watch_instance, source=source_instance, url=watch['url'])
-                        new_instance.save()
-                except Exception as e:
-                    print (str(e))
-                    sendErrorEmail(source, 'getWatches', str(e))
-
-
-
-
-        for source in watch_websites:
-            print ('\n\n\n\n', source, '\n')
-            instance = watch_websites[source]
-            source_instance = Source.objects.filter(name=source).first()
-
-            all_watches = Watch_Instance.objects.filter(source=source_instance)
-            print (all_watches.count())
-            for watch in all_watches:
-
-                try:
-                    watch_details = instance.getWatchDetails(watch.url)
-                except Exception as e:
-                    print (str(e))
-                    sendErrorEmail(source_instance.name, 'getWatchDetails : ' + watch.url, str(e))
-                    continue
-
-
+            if 'sold' in watch_details and watch_details['sold']:
+                print ("\n\n\n\n", "SOLD", watch.url, "\n\n\n\n")
+                watch.sold_time = datetime.datetime.now()
+                watch.save()
+            else:
                 watch.condition = watch_details.get('condition','')
                 watch.papers = watch_details.get('papers',False)
                 watch.box = watch_details.get('box',False)
@@ -128,7 +128,7 @@ class Command(BaseCommand):
                 check = HistoricPrice.objects.filter(watch_instance_id=watch.id).order_by('-created_at').first()
                 if check:
                     if float(check.price) != float(watch_details['price']) and float(watch_details['price']) > 0:
-                        print ("Check Price", check.price, "Watch Price", watch_details['price'])
+                        print ("\n", "Check Price", check.price, "Watch Price", watch_details['price'], "\n")
                         new_price = HistoricPrice(watch_instance_id=watch.id, watch_id=watch.watch_id, price=watch_details['price'])
                         new_price.save()
                 else:

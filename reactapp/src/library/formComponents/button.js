@@ -34,7 +34,7 @@ class Button extends React.Component {
       super(props);
       this.config = {
           form_components: [
-              
+
               <TextInput label={'text'} name={'text'} default={'Default Text'} />,
               <Select label={'type'} name={'type'} options={BUTTON_TYPES} />,
               <TextInput label={'href'} name={'href'} />,
@@ -80,6 +80,7 @@ class Button extends React.Component {
             }
         }
         else if (this.props.functions) {
+            console.log("Running Functions!", this.props.functions)
           run_functions(this.props.functions, this.setState, this.props.setGlobalState)
         }
 

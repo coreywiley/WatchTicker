@@ -46,7 +46,7 @@ class TextInput extends Component {
                 <TextInput label={'placeholder'} name={'placeholder'} />,
                 <TextInput label={'label'} name={'label'} />,
                 <Select label={'required'} name={'required'} options={BOOLEANS} />,
-                <TextInput label={'class'} name={'className'} />,
+                <TextInput label={'class'} name={'layout'} />,
                 <CSSInput label={'css'} name={'style'} default={{}} />,
             ],
         }

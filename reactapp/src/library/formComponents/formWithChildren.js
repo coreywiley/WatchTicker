@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {resolveVariables, ajaxWrapper, run_functions} from 'functions';
-import {Alert, Button, TextInput, NumberInput, CSSInput, Json_Input} from 'library';
+import {Alert, Button, TextInput, NumberInput, CSSInput, Json_Input, Select, Function_Input} from 'library';
 
 /*
 Example
@@ -50,6 +50,10 @@ class FormWithChildren extends Component {
                 <TextInput label={'deleteRedirectUrl'} name={'deleteRedirectUrl'} />,
                 <Json_Input label={'defaults'} name={'defaults'} />,
                 <TextInput label={'objectName'} name={'objectName'} />,
+                <Select label={'autoSetGlobalState'} name={'autoSetGlobalState'} options={[{'text':'True', value:true}, {'text':'False', value:false}]} defaultoption={false} />,
+                <Select label={'row'} name={'row'} options={[{'text':'True', value:true}, {'text':'False', value:false}]} defaultoption={false} />,
+                <TextInput label={'globalStateName'} name={'globalStateName'} />,
+                <Function_Input label={'Add Function On Submit'} default={''} name={'functions'} />,
                 <CSSInput label={'css'} name={'style'} default={{}} />,
             ],
             can_have_children: true,
@@ -111,7 +115,9 @@ class FormWithChildren extends Component {
 
 
     setGlobalState(state) {
-        if (this.props.autoSetGlobalState == true) {
+        console.log("Set Global State Trigger")
+        if (this.props.autoSetGlobalState == true || this.props.autoSetGlobalState == "true") {
+            window.cmState.setGlobalState(this.props.globalStateName, state);
             this.props.setGlobalState(this.props.globalStateName,state)
         }
     }
@@ -190,7 +196,6 @@ class FormWithChildren extends Component {
     }
 
     refreshDataCallback(value) {
-        console.log("Form Data",value, this.props.objectName)
         var newValue = value;
         if (this.props.first == true) {
             if (this.props.objectName) {
@@ -204,16 +209,13 @@ class FormWithChildren extends Component {
             if (value.length != undefined) {
                 newValue = {'photos[]':[]}
                 for (var index in value) {
-                    console.log("DataMapping",value[index], this.props.dataMapping)
                     var tempValue = resolveVariables(this.props.dataMapping, value[index]);
-                    console.log("temp value",tempValue)
                     newValue['photos[]'].push(tempValue['photos[]']);
                 }
             }
             else {
                 newValue = resolveVariables(this.props.dataMapping, value);
             }
-            console.log("Data Mapped", newValue)
         }
 
 
@@ -290,12 +292,12 @@ class FormWithChildren extends Component {
             layout = this.props.layout
         }
 
-        var classCss = "form";
-        if (this.props.row == true) {
-            classCss ="form-row";
+
+        if (this.props.row == true || this.props.row == "true") {
+            layout +=" form-row row";
         }
-        if (this.props.classCss != undefined) {
-            classCss = this.props.classCss;
+        else {
+            layout += " form";
         }
 
 

@@ -4,7 +4,7 @@ def componentTree(components, parent):
     component_list = []
 
     for component in components:
-        if component['parent'] == parent:
+        if ('parent' in component and component['parent'] == parent) or ('parent' not in component and parent == "") or ('parent' in component and parent == "" and component['parent'] == None):
             children = componentTree(components, component['key'])
             component['children'] = children
             component_list.append(component)
@@ -12,6 +12,7 @@ def componentTree(components, parent):
     return component_list
 
 def componentPrint(component_tree, depth = 0):
+    print ("Print In The Wrong Place")
     components = []
 
     search = re.compile('{[^}:]*}')
@@ -60,6 +61,49 @@ def componentPrint(component_tree, depth = 0):
 
         components.append("%s<%s %s>" % ("\t" * depth, item['type'], props))
         components.extend(componentPrint(item['children'], depth + 1))
+        components.append("</%s>" % item['type'])
+
+    return components
+
+def componentPrintPage(component_tree, depth = 0):
+    print ("Component Print Page")
+    components = []
+
+    search = re.compile('{[^}:]*}')
+
+    for item in component_tree:
+        props = ''
+
+        for key in item['props']:
+            resolve_global = False
+            resolving_props = search.findall(str(item['props'][key]))
+
+            for prop in resolving_props:
+                if 'props.' in prop:
+                    pass
+                elif '.' in prop:
+                    resolve_global = True
+                    print ("\n\n", prop, "\n\n")
+
+
+            if type(item['props'][key]) == str:
+                if resolve_global:
+                    props += '%s={resolveVariables({"text":"%s"}, window.cmState.getGlobalState(this))["text"]} ' % (
+                        key, str(item['props'][key]).replace('True', 'true'))
+                else:
+                    props += '%s={"%s"} ' % (
+                        key, item['props'][key].replace('True', 'true'))
+            else:
+                if resolve_global:
+                    props += '%s={resolveVariables({"text":%s}, window.cmState.getGlobalState(this))["text"]} ' % (
+                        key, str(item['props'][key]).replace('True', 'true'))
+                else:
+                    props += '%s={%s} ' % (
+                        key, str(item['props'][key]).replace('True', 'true'))
+
+
+        components.append("%s<%s %s>" % ("\t" * depth, item['type'], props))
+        components.extend(componentPrintPage(item['children'], depth + 1))
         components.append("</%s>" % item['type'])
 
     return components

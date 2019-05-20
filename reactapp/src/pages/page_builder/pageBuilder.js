@@ -127,6 +127,8 @@ class PageBuilder extends Component {
       var components = this.state.components;
       if (components[this.state.selectedComponent]) {
         components[this.state.selectedComponent]['props'] = state;
+        components[this.state.selectedComponent]['order'] = parseInt(state['order'])
+        components[this.state.selectedComponent]['parent'] = state['parent']
       }
 
       this.setState({components:components})
@@ -269,13 +271,28 @@ class PageBuilder extends Component {
       var componentsToRemove = this.componentsToRemove(this.state.selectedComponent);
       componentsToRemove.push(this.state.selectedComponent);
 
-
+      var parent_dict = {}
       var new_components = [];
+      var found = false;
       for (var index in components) {
         if (componentsToRemove.indexOf(index) == -1) {
+          if (found) {
+              if (components[index]['parent']) {
+                  components[index]['parent'] = parent_dict[parseInt(components[index]['parent'])].toString();
+              }
+              parent_dict[index] = index - componentsToRemove.length;
+          }
+          else {
+              parent_dict[index] = index;
+          }
+
           new_components.push(components[index]);
         }
+        else {
+            found = true;
+        }
       }
+      console.log("new_components", new_components)
 
       this.setState({components: new_components, selectedComponent: -1});
     }
@@ -288,6 +305,10 @@ class PageBuilder extends Component {
         var component = this.state.components[index];
         component['key'] = index
         component_parent_dict[parseInt(index)] = []
+    }
+
+    for (var index in this.state.components) {
+        var component = this.state.components[index];
         if (!component['parent']) {
           topLevelComponents.push(component)
         }
@@ -312,7 +333,9 @@ class PageBuilder extends Component {
             var config = new selected_component['class']().config
             var components = config['form_components'];
 
-            var new_components = [<NumberInput label={'order'} name={'order'} />];
+            console.log("selectedComponent", selected_component)
+            var new_components = [<NumberInput label={'order'} name={'order'} value={selected_component['order']} />];
+            new_components.push(<TextInput label={'parent'} name={'parent'} value={selected_component['parent']} />);
             for (var index in components) {
                 var component = components[index];
                 var value = selected_component['props'][component.props['name']];

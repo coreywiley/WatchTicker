@@ -2,34 +2,27 @@ import React, { Component } from 'react';
 import './App.css';
 import {ajaxWrapper, setGlobalState} from "functions";
 import {Wrapper} from 'library';
+import Nav from './projectLibrary/nav.js';
 
 //Component Madness
 import PageList from './pages/page_builder/pageList.js';
 import PageBuilder from './pages/page_builder/pageBuilder.js';
 
-//Admin
-import AppList from './pages/admin/appList.js';
-import ModelList from './pages/admin/modelsList.js';
-import InstanceList from './pages/admin/modelInstances.js';
-import Instance from './pages/admin/instance.js';
-import InstanceTable from './pages/admin/modelInstancesTable.js';
+import PasswordReset from "./pages/folder/passwordreset.js"
+import LogIn from "./pages/folder/login.js"
+import Home from "./pages/folder/home.js"
+import PasswordResetRequestPage from "./pages/folder/passwordresetrequestpage.js"
+import SignUpFormPage from "./pages/folder/signupformpage.js"
+import ViewWatch from "./pages/folder/viewwatch.js"
+import CreateWatch from "./pages/folder/createwatch.js"
+import EditSources from "./pages/folder/editsources.js"
+import CreateSources from "./pages/folder/createsources.js"
+import Watch_InstanceList from "./pages/folder/watch_instancelist.js"
+import WatchList from "./pages/folder/watchlist.js"
+import EditUser from "./pages/folder/edituser.js"
+import UserList from "./pages/folder/userlist.js"
+import EditWatch from "./pages/folder/editwatch.js"
 
-//Scaffolding
-import LogIn from './pages/scaffold/logIn.js';
-import SignUp from './pages/scaffold/signUp.js';
-import PasswordResetRequest from './pages/scaffold/passwordResetRequest.js';
-import PasswordReset from './pages/scaffold/passwordReset.js';
-
-import Home from './pages/scaffold/home.js';
-import Nav from 'projectLibrary/nav.js';
-//import Footer from 'projectLibrary/footer.js';
-import ModelMaker from './pages/model_builder/djangoModelMaker.js';
-
-//API Querying
-import APIDocs from './pages/admin/apiDocs.js';
-
-import EditWatch from './pages/modelEditAndView/viewTemplate0.js';
-import ListWatch from './pages/modelEditAndView/listTemplate0.js';
 
 class App extends Component {
     constructor(props) {
@@ -57,7 +50,7 @@ class App extends Component {
             ajaxWrapper("GET", "/users/user/", {}, this.loadUser.bind(this));
             this.setState({token: token});
             if (path.indexOf('login') > -1) {
-                window.location.href = '/viewer/';
+                window.location.href = '/watches/';
             }
         } else if (loginNoRedirects.indexOf(path) == -1 && window.location.pathname != "/") {
             window.location.href = '/login/';
@@ -133,37 +126,55 @@ class App extends Component {
           else if (route == 'logout') {
             this.logOut();
           }
-          else if (route === "admin") {
-              //List components
-              content = <Home admin={'admin'} />;
-          }
-          else if (route == "applist") {
-              content = <AppList user_id={this.state.token}/>;
-          }
-          else if (route == "models") {
-              content = <ModelList app={params[1]} user_id={this.state.token}/>;
-          }
-          else if (route == "modelinstances") {
-              content = <InstanceList app={params[1]} model={params[2]} user_id={this.state.token}/>;
-          }
-          else if (route == "modelinstancestable") {
-              content = <InstanceTable app={params[1]} model={params[2]}/>;
-          }
-          else if (route == "modelmaker") {
-              content = <ModelMaker user_id={this.state.token}/>;
-          }
-          else if (route == "instance") {
-              content = <Instance app={params[1]} model={params[2]} id={params[3]} user_id={this.state.token}/>;
-          }
-          else if (route == 'apidocs') {
-            content = <APIDocs />
-          }
           else if (route == 'pagebuilder') {
             content = <PageBuilder page_id={params[2]} page_group_id={params[1]} />
           }
           else if (route == 'pagelist') {
             content = <PageList />
           }
+          else if (route == "passwordreset") {
+             var content = <PasswordReset />
+          }
+          else if (route == "login") {
+             var content = <LogIn />
+          }
+          else if (route == "") {
+             var content = <Home />
+          }
+          else if (route == "passwordresetrequest") {
+             var content = <PasswordResetRequestPage />
+          }
+          else if (route == "signup") {
+             var content = <SignUpFormPage />
+          }
+          else if (route == "watch") {
+             var content = <ViewWatch />
+          }
+          else if (route == "createwatch") {
+             var content = <CreateWatch />
+          }
+          else if (route == "editsource") {
+             var content = <EditSources />
+          }
+          else if (route == "createsource") {
+             var content = <CreateSources />
+          }
+          else if (route == "watchinstances") {
+             var content = <Watch_InstanceList />
+          }
+          else if (route == "watches") {
+             var content = <WatchList />
+          }
+          else if (route == "edituser") {
+             var content = <EditUser />
+          }
+          else if (route == "users") {
+             var content = <UserList />
+          }
+          else if (route == "editwatch") {
+             var content = <EditWatch />
+          }
+
           else {
             var formatRoute = "/" + route + "/"
             if (route == "") {
@@ -185,6 +196,7 @@ class App extends Component {
         else {
           return (
               <div className="App">
+                  <Nav user={this.state.user} />
                   <Wrapper style={{paddingTop: '60px'}} content={content} loaded={this.state.loaded} />
             </div>
           );

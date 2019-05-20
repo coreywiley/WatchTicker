@@ -21,7 +21,7 @@ class ComponentInstance extends Component {
     if (this.props.name) {
         return (
           <div>
-            <Button onClick={this.setComponent} text={this.props.name.name} type={type}/>
+            <Button onClick={this.setComponent} text={this.props.name.name + ' : ' + this.props.index} type={type}/>
           </div>
         )
     }
