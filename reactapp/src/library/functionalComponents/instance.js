@@ -85,7 +85,6 @@ class Instance extends Component {
                   dataMapping[prop_name] = child.props[prop_name];
               }
 
-              console.log("Component Data", data)
               dataMapping = resolveVariables(dataMapping, {'props':data});
               dataMapping['refreshData'] = this.refreshData;
               dataMapping['setGlobalState'] = this.props.setGlobalState;

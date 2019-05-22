@@ -131,7 +131,7 @@ class ListWithChildren extends Component {
                   componentInstance = React.cloneElement(child, dataMapping);
 
                   if (this.props.table) {
-                      table_row.push(<td>{componentInstance}</td>);
+                      table_row.push(<td style={this.props.tableStyle}>{componentInstance}</td>);
                   }
                   else {
                       content.push(componentInstance);

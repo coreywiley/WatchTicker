@@ -144,7 +144,7 @@ class Select extends Component {
         }
 
         return (
-            <div className={"form-group " + this.props.layout}>
+            <div className={"form-group " + this.props.className}>
                 <label>{this.props.label}</label><br />
                 {multipleSelections}
                 <select className="form-control" name={this.props.name} onChange={this.handleChange} value={value}>

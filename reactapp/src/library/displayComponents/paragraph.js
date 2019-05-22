@@ -7,7 +7,7 @@ class Paragraph extends React.Component {
         super(props);
         this.config = {
             form_components: [
-                
+
                 <TextInput label={'text'} name={'text'} default={'Default Text'} />,
                 <CSSInput label={'css'} name={'style'} default={{}} />
             ],
@@ -16,7 +16,7 @@ class Paragraph extends React.Component {
 
     render() {
         return (
-            <p style={this.props.style || {}}>{this.props.text}</p>
+            <p onClick={this.props.onClick} style={this.props.style || {}}>{this.props.text}</p>
         );
     }
 }

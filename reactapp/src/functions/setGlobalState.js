@@ -6,7 +6,7 @@ function setGlobalState(name, state) {
   if (window.cmState.subscribers) {
     for (var index in window.cmState.subscribers) {
       var component = window.cmState.subscribers[index];
-      if (component.constructor.name == 'ListWithChildren') {
+      if (component.refreshData) {
         component.refreshData();
       }
       else {

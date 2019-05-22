@@ -7,7 +7,7 @@ class PasswordResetRequestPage extends Component {
 
     render() {
 
-        return (<div>		<PasswordResetRequest redirectUrl={""} style={{}} >
+        return (<div className="container">		<PasswordResetRequest redirectUrl={""} style={{}} >
 </PasswordResetRequest></div>);
     }
 }

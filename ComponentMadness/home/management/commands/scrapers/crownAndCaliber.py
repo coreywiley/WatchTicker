@@ -1,6 +1,23 @@
 import requests
 from bs4 import BeautifulSoup
 
+import sendgrid
+from sendgrid.helpers.mail import *
+from django.conf import settings
+
+def sendErrorEmail(source, function, error):
+
+    # using SendGrid's Python Library
+    # https://github.com/sendgrid/sendgrid-python
+    sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
+    from_email = Email('jeremy.thiesen1@gmail.com')
+    to_email = Email('jeremy.thiesen1@gmail.com')
+    subject = 'Watch Ticker Scraper Not Operating Correctly'
+    content = Content("text/html", "%s failed during function: %s with error: %s" % (source,function, error))
+
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+
 class CrownAndCaliber():
 
     def getWatches(self):
@@ -13,37 +30,42 @@ class CrownAndCaliber():
         for brand_link in brand_links:
             brand_urls.append([brand_link['href'], brand_link.getText().strip()])
 
+        url = ''
         for brand_url in brand_urls:
-            brand = brand_url[1]
-            print (brand)
-            added = True
-            i = 1
-            while added:
-                print (i)
-                url = 'https://www.crownandcaliber.com%s?page=%s' % (brand_url[0], i)
-                try:
-                    r = requests.get(url)
-                except:
+            try:
+                brand = brand_url[1]
+                print (brand)
+                added = True
+                i = 1
+                while added:
+                    print (i)
+                    url = 'https://www.crownandcaliber.com%s?page=%s' % (brand_url[0], i)
+                    try:
+                        r = requests.get(url)
+                    except:
+                        added = False
+                        continue
+
+                    soup = BeautifulSoup(r.text, features='html.parser')
+
+                    watches = soup.findAll("div", {"class": "itemBox"})
                     added = False
-                    continue
+                    for watch in watches:
+                        added = True
+                        detail = {}
+                        detail['url'] = 'https://www.crownandcaliber.com' + watch.find("a")['href']
+                        detail['reference_number'] = watch.find("div", {"class": "item-barcode"}).getText().strip()
+                        detail['model'] = watch.find("span", {"class":"itemSubTitle"}).getText().strip()
+                        detail['brand'] = brand
+                        yield detail
 
-                soup = BeautifulSoup(r.text, features='html.parser')
-
-                watches = soup.findAll("div", {"class": "itemBox"})
-                added = False
-                for watch in watches:
-                    added = True
-                    detail = {}
-                    detail['url'] = 'https://www.crownandcaliber.com' + watch.find("a")['href']
-                    detail['reference_number'] = watch.find("div", {"class": "item-barcode"}).getText().strip()
-                    detail['model'] = watch.find("span", {"class":"itemSubTitle"}).getText().strip()
-                    detail['brand'] = brand
-                    watch_list.append(detail)
-
-                i += 1
+                    i += 1
+            except Exception as e:
+                print(str(e))
+                sendErrorEmail('Crown And Caliber', 'getWatches: ' + url, str(e))
+                yield {'error': True, 'error_detail': str(e)}
 
 
-        return watch_list
 
 
     def getWatchDetails(self, url):
@@ -63,8 +85,13 @@ class CrownAndCaliber():
         details['manual'] = description[33].getText().strip() == 'Yes'
         condition = description[7].getText().strip()
         condition = condition[:condition.find(' ')]
+        if condition.lower() == 'unworn':
+            details['condition'] = 'New'
+        else:
+            details['condition'] = 'Pre-Owned'
+        details['wholesale'] = False
 
-        details['condition'] = condition
+
         details['image'] = soup.find("img", {"class":"product-featured-img"})['src']
 
         return details

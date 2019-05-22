@@ -7,6 +7,7 @@ import sort_objects_ from './sortObjects.js';
 import format_date_string_ from './dates/format_date_string.js';
 import format_date_ from './dates/format_date.js';
 import run_functions_ from './run_functions.js';
+import format_number_ from './format_number.js';
 
 export const ajaxWrapper = ajaxWrapper_;
 export const ajaxWrapperFile = ajaxWrapperFile_;
@@ -17,3 +18,4 @@ export const sort_objects = sort_objects_;
 export const format_date_string = format_date_string_;
 export const format_date = format_date_;
 export const run_functions = run_functions_;
+export const format_number = format_number_;

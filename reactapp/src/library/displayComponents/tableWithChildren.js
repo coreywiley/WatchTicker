@@ -23,7 +23,8 @@ class TableWithChildren extends React.Component {
         }
 
         return (
-            <table className='table'>
+            <div className="table-responsive">
+            <table className={'table ' + this.props.className} >
               <thead>
                 <tr>
                   {headers}
@@ -33,6 +34,7 @@ class TableWithChildren extends React.Component {
                 {this.props.children}
               </tbody>
             </table>
+            </div>
         );
     }
 }

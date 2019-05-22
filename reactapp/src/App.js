@@ -21,7 +21,8 @@ import Watch_InstanceList from "./pages/folder/watch_instancelist.js"
 import WatchList from "./pages/folder/watchlist.js"
 import EditUser from "./pages/folder/edituser.js"
 import UserList from "./pages/folder/userlist.js"
-import EditWatch from "./pages/folder/editwatch.js"
+import EditWatch from "./pages/folder/editwatch.js";
+import SourceList from './pages/folder/sourceList.js';
 
 
 class App extends Component {
@@ -144,9 +145,6 @@ class App extends Component {
           else if (route == "passwordresetrequest") {
              var content = <PasswordResetRequestPage />
           }
-          else if (route == "signup") {
-             var content = <SignUpFormPage />
-          }
           else if (route == "watch") {
              var content = <ViewWatch />
           }
@@ -173,6 +171,9 @@ class App extends Component {
           }
           else if (route == "editwatch") {
              var content = <EditWatch />
+          }
+          else if (route == 'sources') {
+              var content = <SourceList />
           }
 
           else {

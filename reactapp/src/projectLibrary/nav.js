@@ -16,8 +16,8 @@ class Nav extends React.Component {
 
     render() {
         var name = <div><img style={{'marginRight':'10px'}} src='/static/images/logo.png' height="125" /></div>;
-        if (this.props.user) {
-          var links = [['/watches/', 'Watches']];
+        if (this.props.user.id) {
+          var links = [['/watches/', 'Watches'],['/sources/','Sources']];
         }
 
         else {
@@ -28,7 +28,7 @@ class Nav extends React.Component {
           links.push(['/users/','Users']);
         }
 
-        if (this.props.user) {
+        if (this.props.user.id) {
             links.push(['/logOut/', 'Log Out'])
         }
 
@@ -40,18 +40,21 @@ class Nav extends React.Component {
         }
 
         return (
-            <header class="topbar">
+
               <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                   <div class="navbar-header">
                       <a class="navbar-brand" href="/watches/">Watch Ticker</a>
                   </div>
-                  <div class="navbar-collapse">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
                       <ul class="navbar-nav mr-auto">
                          {linkHTML}
                       </ul>
                   </div>
               </nav>
-          </header>
+          
         );
     }
 }

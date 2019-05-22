@@ -8,6 +8,7 @@ from home.management.commands.scrapers.crownAndCaliber import CrownAndCaliber
 from home.management.commands.scrapers.houseOfTime import HouseOfTime
 from home.management.commands.scrapers.watchBox import WatchBox
 from home.management.commands.scrapers.weLoveWatches import WeLoveWatches
+from home.management.commands.scrapers.bonetawholesale import BonetaWholesale
 
 import sendgrid
 from sendgrid.helpers.mail import *
@@ -37,17 +38,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         source = options['source']
 
-        watch_websites = {"We Love Watches":WeLoveWatches(), "Bob's Watches":BobsWatches(), 'House Of Time':HouseOfTime(), 'Crown And Caliber':CrownAndCaliber(), "Watch Box":WatchBox()}
+        watch_websites = {"We Love Watches":WeLoveWatches, "Bob's Watches":BobsWatches, 'House Of Time':HouseOfTime,
+                          'Crown And Caliber':CrownAndCaliber, "Watch Box":WatchBox, "Boneta Wholesale":BonetaWholesale}
 
         print ('\n\n\n\n', source, '\n')
-        instance = watch_websites[source]
+        instance = watch_websites[source]()
 
-        try:
-            watches = instance.getWatches()
-        except Exception as e:
-            print (str(e))
-            sendErrorEmail(source, 'getWatches', str(e))
-            return {'error': str(e)}
 
         source_instance = Source.objects.filter(name=source).first()
         if not source_instance:
@@ -57,10 +53,16 @@ class Command(BaseCommand):
         source_instance.last_updated_watch = datetime.datetime.now()
         source_instance.save()
 
+
+        watches = instance.getWatches()
         for watch in watches:
+            if 'error' in watch and watch['error'] == True:
+                print ("\n\n\n", watch, "\n\n\n")
+                continue
+
             print ("\n\n\n","Watch", watch, "\n\n\n")
             #check for watch reference number
-            watch_instance = Watch.objects.filter(reference_number=watch['reference_number']).first()
+            watch_instance = Watch.objects.filter(reference_number__iexact=watch['reference_number']).first()
             if watch_instance:
                 change = False
                 if watch_instance.brand == '' and 'brand' in watch:
@@ -98,10 +100,11 @@ class Command(BaseCommand):
                 sendErrorEmail(source, 'getWatches', str(e))
 
         print ('\n\n\n\n', source, '\n')
-        instance = watch_websites[source]
+        #instance = watch_websites[source]()
+
         source_instance = Source.objects.filter(name=source).first()
 
-        all_watches = Watch_Instance.objects.filter(source=source_instance)
+        all_watches = Watch_Instance.objects.filter(source=source_instance, sold_time=None)
         print (all_watches.count())
         for watch in all_watches:
 
@@ -109,6 +112,7 @@ class Command(BaseCommand):
                 watch_details = instance.getWatchDetails(watch.url)
             except Exception as e:
                 print (str(e))
+                print (watch.url)
                 sendErrorEmail(source_instance.name, 'getWatchDetails : ' + watch.url, str(e))
                 continue
 
@@ -123,6 +127,7 @@ class Command(BaseCommand):
                 watch.manual = watch_details.get('manual',False)
                 watch.image = watch_details.get('image','')
                 watch.price = watch_details.get('price','')
+                watch.wholesale = watch_details.get('wholesale',True)
                 watch.save()
 
                 check = HistoricPrice.objects.filter(watch_instance_id=watch.id).order_by('-created_at').first()
@@ -134,6 +139,8 @@ class Command(BaseCommand):
                 else:
                     new_price = HistoricPrice(watch_instance_id=watch.id, watch_id=watch.watch_id, price=watch_details['price'])
                     new_price.save()
+        #source_instance.last_updated_detail = datetime.datetime.now()
+        #source_instance.save()
 
 
 

@@ -9,8 +9,8 @@ class Home extends Component {
 
         return (<div>
                 <Container children={[]} style={{'text-align': 'center', 'margin-top': '20px'}} required={""} >
-		            <Header children={[]} style={{}} required={""} text={"Welcome To Watch Ticker"} size={2} />
-                    <Button children={[]} style={{}} required={""} text={"Log In"} size={2} type={"outline-success"} href={"/login/"} />
+		            <Header children={[]} style={{color:'white'}} required={""} text={"Welcome To Watch Ticker"} size={2} />
+                    <Button children={[]} style={{}} required={""} text={"Log In"} size={2} type={"success"} href={"/login/"} />
                 </Container>
 		</div>);
     }

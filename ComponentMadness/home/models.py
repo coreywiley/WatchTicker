@@ -41,6 +41,7 @@ class Watch_Instance(CMModel):
     image = models.CharField(max_length=1000, blank=False, default='')
     source = models.ForeignKey(Source, related_name='watch_instances', on_delete=models.CASCADE, blank=True, null=True)
     url = models.CharField(db_index=True,max_length=1000, blank=False, default='')
+    wholesale = models.BooleanField(default=True)
 
 class HistoricPrice(CMModel):
     price = models.FloatField(blank=False, default=0.0)

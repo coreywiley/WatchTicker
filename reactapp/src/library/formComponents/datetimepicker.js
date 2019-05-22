@@ -46,9 +46,7 @@ class DateTimePicker extends Component {
         //<input type="text" className="form-control" name={this.props.name} onChange={this.props.handleChange} value={this.props.value} placeholder={this.props.placeholder} />
 
         var display_time = true;
-        console.log("Display Time", this.props.display_time)
         if (this.props.display_time == false) {
-          console.log("Display time false!")
           display_time = false;
         }
 
@@ -58,7 +56,7 @@ class DateTimePicker extends Component {
         }
 
         return (
-              <div className={"form-group " + this.props.layout}>
+              <div className={"form-group " + this.props.className}>
                 <label>{this.props.label}</label>
                 <Datetime timeFormat={display_time} dateFormat={display_date}  onChange={this.handleChange} defaultValue={this.props.value}/>
 

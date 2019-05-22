@@ -15,11 +15,20 @@ function format_date(date, date_format) {
   date_dict['yyyy'] = date.getFullYear().toString();
   date_dict['yy'] = date.getFullYear().toString().substring(2, 4);
 
-  date_dict['HH'] = date.getHours();
-  date_dict['MM'] = date.getMinutes();
+  var temp_hours = date.getHours();
+  if (temp_hours < 10) {
+    temp_hours = '0' + temp_hours;
+  }
+
+  var temp_minutes = date.getMinutes();
+  if (temp_minutes < 10) {
+    temp_minutes = '0' + temp_minutes;
+  }
+  date_dict['HH'] = temp_hours;
+  date_dict['MM'] = temp_minutes;
   date_dict['SSS'] = date.getMilliseconds();
   date_dict['SS'] = date.getSeconds();
-  
+
 
 
   var keys = ['dd','mm','yyyy','yy','HH','MM','SSS','SS', 'P']

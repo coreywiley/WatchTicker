@@ -1,5 +1,22 @@
 import pandas as pd
 
+import sendgrid
+from sendgrid.helpers.mail import *
+from django.conf import settings
+
+def sendErrorEmail(source, function, error):
+
+    # using SendGrid's Python Library
+    # https://github.com/sendgrid/sendgrid-python
+    sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
+    from_email = Email('jeremy.thiesen1@gmail.com')
+    to_email = Email('jeremy.thiesen1@gmail.com')
+    subject = 'Watch Ticker Scraper Not Operating Correctly'
+    content = Content("text/html", "%s failed during function: %s with error: %s" % (source,function, error))
+
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+
 brand_reference_dict = {
             'AP':'Audemars Piguet',
             'BR': 'Breitling',
@@ -37,8 +54,8 @@ class WeLoveWatches():
             watch_detail['url'] = row[0]
 
 
-            watches.append(watch_detail)
-        return watches
+            yield watch_detail
+
 
     def getWatchDetails(self, stock_num):
 
@@ -49,8 +66,11 @@ class WeLoveWatches():
                 found = True
                 details['brand'] = brand_reference_dict.get(row[1], row[1])
                 details['reference_number'] = row[2]
+                details['serial_year'] = row[3]
                 details['papers'] = row[5] in ['PAPER','CARD']
                 details['box'] = row[7] == 'BOX'
+                details['wholesale'] = True
+                details['condition'] = 'Pre-Owned'
                 try:
                     details['price'] = row[9].replace('$','').replace(',','')
                 except:
@@ -65,4 +85,6 @@ class WeLoveWatches():
 
 
 #source = WeLoveWatches()
+
+
 #print (source.getWatches())

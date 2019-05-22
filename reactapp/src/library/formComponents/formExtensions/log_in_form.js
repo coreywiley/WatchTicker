@@ -7,7 +7,7 @@ class LogInForm extends Component {
         super(props);
         this.config = {
             form_components: [
-                
+
                 <TextInput label={'redirectUrl'} name={'redirectUrl'} default={''} />,
                 <CSSInput label={'css'} name={'style'} default={{}} />,
             ],
@@ -72,11 +72,10 @@ class LogInForm extends Component {
         return(
             <div className={classCss}>
               <FormWithChildren defaults={this.state} autoSetGlobalState={true} setGlobalState={this.setGlobalState} globalStateName={'login'}>
-                <TextInput label="Email" placeholder="jeremy@pomodoro.com" name="email" />
+                <TextInput label="Email" placeholder="email@domain.com" name="email" />
                 <PasswordInput label="Password" name="password" />
                 <Button type='success' text='Log In' onClick={this.formSubmit} name="login"/>
               </FormWithChildren>
-                <small className="form-text">Not a user yet? <a href="/signUp/">Sign Up Here</a></small>
                 <small className="form-text">Forgot your password? <a href="/passwordResetRequest/">Reset Password</a></small>
                 <If logic={this.state.error != ''}>
                   <Alert type='danger' text={this.state.error} />
