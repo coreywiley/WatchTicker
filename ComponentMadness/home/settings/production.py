@@ -40,5 +40,5 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/static/images/'
 
 
-STATIC_ROOT = "/home/jthiesen1/webapps/watchticker/ComponentMadness/home/static/"
-MEDIA_ROOT = "/home/jthiesen1/webapps/watchticker/ComponentMadness/home/static/images/"
+STATIC_ROOT = "/home/ComponentMadness/ComponentMadness/home/static/"
+MEDIA_ROOT = "/home/ComponentMadness/ComponentMadness/home/static/images/"
