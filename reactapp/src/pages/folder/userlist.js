@@ -30,7 +30,7 @@ class UserList extends Component {
     form_submit(result) {
         console.log("Form Submitted", result)
         window.cmState.setGlobalState('formSubmitted', {'formSubmitted':true});
-        ajaxWrapper('POST','/api/email/', {'to_email': result[0]['user']['email'], 'from_email':'jeremy.thiesen1@gmail.com', 'subject':'You are invited to Watch Ticker', 'text': "You've been invited to join Watch Ticker. Set up your password <a href='http://watchticker.jthiesen1.webfactional.com/passwordReset/" + result[0]['user']['id'] + "/'>here.</a>"}, console.log)
+        ajaxWrapper('POST','/api/email/', {'to_email': result[0]['user']['email'], 'from_email':'jeremy.thiesen1@gmail.com', 'subject':'You are invited to Watch Ticker', 'text': "You've been invited to join Watch Ticker. Set up your password <a href='http://watchticker.watchchest.com/passwordReset/" + result[0]['user']['id'] + "/'>here.</a>"}, console.log)
     }
 
     delete_user(id) {

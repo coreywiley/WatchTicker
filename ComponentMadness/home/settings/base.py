@@ -119,6 +119,19 @@ DATABASES = {
 }
 
 DATABASE_URL = '127.0.0.1:5432'
+#7hm<[VXHb>B=P9#^
+
+0 0,8,16 * * * cd /root/ComponentMadness/ComponentMadness; python3.6 manage.py scraperHandler "Bob's Watches"
+
+0 0,8,16 * * * cd /root/ComponentMadness/ComponentMadness; python3.6 manage.py scraperHandler "Boneta Wholesale"
+
+5 0,8,16 * * * cd /root/ComponentMadness/ComponentMadness; python3.6 manage.py scraperHandler "Crown And Caliber"
+
+0 0,8,16 * * * cd /root/ComponentMadness/ComponentMadness; python3.6 manage.py scraperHandler "House Of Time"
+
+5 0,8,16 * * * cd /root/ComponentMadness/ComponentMadness; python3.6 manage.py scraperHandler "Watch Box"
+
+0 0,8,16 * * * cd /root/ComponentMadness/ComponentMadness; python3.6 manage.py scraperHandler "We Love Watches"
 '''
 DATABASES = {
     'default': {

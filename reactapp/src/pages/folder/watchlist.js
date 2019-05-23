@@ -31,7 +31,7 @@ class WatchList extends Component {
     constructor(props) {
         super(props);
 
-        var id = '55fc5217-1410-42a0-aebf-5b3f6be19cd0';
+        var id = '96cd97b1-9774-4e0c-abbc-844a0bb21b83';
 
         if (isMobile) {
             id = null;
