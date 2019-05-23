@@ -26,6 +26,5 @@ class Command(BaseCommand):
          'Crown And Caliber': "https://www.crownandcaliber.com", "Watch Box": "https://www.thewatchbox.com/", "Boneta Wholesale": "https://bonetawholesale.com/"}
 
         for source in sources:
-            instance = Source.objects.filter(name=source).first()
-            instance.url = sources[source]
-            instance.save()
+            new_source = Source(name=source, url=sources[source])
+            new_source.save()
