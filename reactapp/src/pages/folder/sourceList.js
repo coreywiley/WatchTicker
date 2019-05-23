@@ -29,7 +29,7 @@ class SourceList extends Component {
         for (var index in this.state.sources) {
             var source = this.state.sources[index];
             source_html.push(<tr>
-                <td>{source.name}</td>
+                <td><a href={source.url} target="_blank">{source.name}</a></td>
                 <td>{format_date_string(source.last_updated_watch, 'mm/dd/yyyy HH:MM')}</td>
                 <td>{format_date_string(source.last_updated_detail, 'mm/dd/yyyy HH:MM')}</td>
             </tr>)

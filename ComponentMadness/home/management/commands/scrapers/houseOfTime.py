@@ -51,7 +51,11 @@ class HouseOfTime():
 
 
     def getWatchDetails(self, url):
+
         r = requests.get(url)
+        if 'Page not found' in r.text:
+            return {'sold':True}
+
         soup = BeautifulSoup(r.text, features='html.parser')
 
         details = {}
@@ -67,6 +71,5 @@ class HouseOfTime():
 
 
 #source = HouseOfTime()
-#print (source.getWatchDetails('http://houseoftime1.com/product/16233-30/'))
-
+#print (source.getWatchDetails('http://houseoftime1.com/product/omega/'))
 #print (source.getWatches())

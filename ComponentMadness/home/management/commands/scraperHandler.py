@@ -128,6 +128,7 @@ class Command(BaseCommand):
                 watch.image = watch_details.get('image','')
                 watch.price = watch_details.get('price','')
                 watch.wholesale = watch_details.get('wholesale',True)
+                watch.info = watch_details.get('serial_year', '')
                 watch.save()
 
                 check = HistoricPrice.objects.filter(watch_instance_id=watch.id).order_by('-created_at').first()
@@ -139,8 +140,8 @@ class Command(BaseCommand):
                 else:
                     new_price = HistoricPrice(watch_instance_id=watch.id, watch_id=watch.watch_id, price=watch_details['price'])
                     new_price.save()
-        #source_instance.last_updated_detail = datetime.datetime.now()
-        #source_instance.save()
+        source_instance.last_updated_detail = datetime.datetime.now()
+        source_instance.save()
 
 
 

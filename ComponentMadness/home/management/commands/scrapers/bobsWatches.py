@@ -75,14 +75,23 @@ class BobsWatches():
 
     def getWatchDetails(self, url):
         r = requests.get(url)
+
+        if 'this item is no longer in stock' in r.text.lower():
+            return {'sold':True}
+
         soup = BeautifulSoup(r.text, features='html.parser')
 
         details = {}
 
         details['price'] = soup.find("span", {"class": "price"}).getText().strip().replace('$','').replace(',','').replace(' Cash Wire Price','')
-        condition = soup.findAll("td", {"class":"condition"})[1].getText().strip()
-        if condition.lower() == 'unworn':
-            details['condition'] = 'New'
+        condition = soup.findAll("td", {"class":"condition"})
+        if condition:
+            condition = condition[1].getText().strip()
+
+            if condition.lower() == 'unworn':
+                details['condition'] = 'New'
+            else:
+                details['condition'] = 'Pre-Owned'
         else:
             details['condition'] = 'Pre-Owned'
         details['wholesale'] = False
@@ -114,7 +123,8 @@ for watch in watches:
     if i == 5:
         break
 '''
-#print (source.getWatchDetails('https://www.bobswatches.com/rolex-gmt-master-ii-ceramic-116710.html'))
+#source = BobsWatches()
+#print (source.getWatchDetails('https://www.bobswatches.com/rolex-gmt-master-ii-116710blnr-black-and-blue.html'))
 
 
 

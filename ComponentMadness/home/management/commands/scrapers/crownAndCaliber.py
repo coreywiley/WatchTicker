@@ -70,15 +70,22 @@ class CrownAndCaliber():
 
     def getWatchDetails(self, url):
         r = requests.get(url)
+
+
+
         soup = BeautifulSoup(r.text, features='html.parser')
+
+        sold = soup.find("label", {"class":"label-newsletter"}).getText().strip().lower()
+        if str(sold[:8]) == 'sold out':
+            return {'sold':True}
 
         details = {}
 
         details['price'] = soup.find("span", {"id": "ProductPrice-product-template"}).getText().strip().replace('$','').replace(',','')
-        #details['serial_year'] = soup.find("li", {"class": "serial-year"}).find("span", {"class":"attribute-value"}).getText().strip()
 
         description = soup.find("div",{"class":"more-detail"}).find("div", {"itemprop":"description"}).findAll("span")
-        print (len(description))
+
+        details['serial_year'] = description[12].getText().strip()
 
         details['papers'] = description[31].getText().strip() == 'Yes'
         details['box'] = description[29].getText().strip() == 'Yes'

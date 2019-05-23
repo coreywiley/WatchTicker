@@ -58,12 +58,9 @@ class ViewWatch extends Component {
     constructor(props) {
         super(props);
 
-        if (isMobile) {
-            var start_date = new Date(Date.now() - 6048e5);
-        }
-        else {
-            var start_date = new Date(Date.now() - 12096e5);
-        }
+
+        var start_date = new Date(Date.now() - 24192e5);
+
 
         var end_date = new Date();
 
@@ -186,17 +183,16 @@ class ViewWatch extends Component {
                 url = 'https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vQhzAp8r-Po0KalE6Te3kpZ0ZKByk4LT_cA6PfgESjh6YN5gzW4RpjwrFEhWwZwxBy5CnAJuNZdUCN6/pubhtml?gid=735652720&single=true';
             }
 
-            
-            watch_instance_rows.push(<tr>
 
-                    <td>{papers}</td>
-                    <td>{box}</td>
+            watch_instance_rows.push(<tr>
                     <td>{instance.source.name}</td>
+                    <td>${format_number(instance.price,2)}</td>
                     <td>{instance.condition}</td>
-                    <td>{instance.serial_year}</td>
-                    <td>${instance.price}</td>
+                    <td>{box}</td>
+                    <td>{papers}</td>
+                    <td>{instance.info}</td>
                     <td>{sold_date}</td>
-                    <td><Button href={url} type={'success'} text={'View'} /></td>
+                    <td><Button href={url} type={'success'} text={'View'} target={'_blank'} /></td>
                 </tr>);
 
             var label = instance.source.name + ' #' + instance_index;
@@ -269,6 +265,7 @@ class ViewWatch extends Component {
         }
 
         var wholesale_current_average = wholesale_data_points[wholesale_data_points.length - 1];
+        var wholesale_pct_diff = 0;
 
         var wholesale_starting_average = wholesale_data_points[wholesale_data_points.length -1];
         for (var average_index in wholesale_data_points) {
@@ -280,12 +277,14 @@ class ViewWatch extends Component {
 
         if (wholesale_starting_average > wholesale_current_average) {
             var wholesale_trend = <Icon icon={'sort-down'} style={{color:'red'}} size={1} />;
+            wholesale_pct_diff = (wholesale_current_average/wholesale_starting_average) * 100 - 100
         }
         else if (wholesale_starting_average == wholesale_current_average) {
             var wholesale_trend = null;
         }
         else {
             wholesale_trend = <Icon icon={'sort-up'} style={{color:'green'}} size={1} />;
+            wholesale_pct_diff = -1 * (100 - (wholesale_current_average/wholesale_starting_average) * 100)
         }
 
 
@@ -312,6 +311,7 @@ class ViewWatch extends Component {
         }
 
         var retail_current_average = retail_data_points[retail_data_points.length - 1];
+        var retail_pct_diff = 0;
 
         var retail_starting_average = retail_data_points[retail_data_points.length -1];
         for (var average_index in retail_data_points) {
@@ -324,12 +324,14 @@ class ViewWatch extends Component {
 
         if (retail_starting_average > retail_current_average) {
             var retail_trend = <Icon icon={'sort-down'} style={{color:'red'}} size={1} />;
+            retail_pct_diff = (retail_current_average/retail_starting_average) * 100 - 100
         }
         else if (retail_starting_average == retail_current_average) {
             var retail_trend = null;
         }
         else {
             retail_trend = <Icon icon={'sort-up'} style={{color:'green'}} size={1} />;
+            retail_pct_diff = -1 * (100 - (retail_current_average/retail_starting_average) * 100)
         }
 
 
@@ -338,9 +340,14 @@ class ViewWatch extends Component {
             {data:retail_data_points, label:'Average Retail Prices',fill:false, borderColor: colors[1], fontColor:'white'},
         ]
 
+        var format_day_list = [];
+        for (var index in dayList) {
+            format_day_list.push(format_date_string(dayList[index], 'mm-dd-yyyy'))
+        }
+
         console.log("datasets", datasets)
         var chart_data = {
-            labels: dayList,
+            labels: format_day_list,
             datasets: datasets,
       }
 
@@ -423,25 +430,32 @@ class ViewWatch extends Component {
         filters = null;
     }
 
+    var col_size = 'col-3'
+    if (isMobile) {
+        var col_size  = 'col-6'
+    }
+
     var average_wholesale = null
     if (wholesale_current_average) {
-        average_wholesale = <div className="col-6">
+        average_wholesale = <div className={col_size}>
             <p style={{color:'#ddd'}}>{this.state.watch_data.brand} {this.state.watch_data.reference_number} Average Wholesale Price</p>
             <div>
-                <h3 style={{color:'#ddd'}}>${format_number(wholesale_current_average, 0)} {wholesale_trend}</h3>
+                <h3 style={{color:'#ddd'}}>${format_number(wholesale_current_average, 2)} {wholesale_trend} ({wholesale_pct_diff.toFixed(2)}%)</h3>
             </div>
         </div>;;
     }
 
     var average_retail = null;
     if (retail_current_average) {
-        average_retail = <div className="col-6">
+        average_retail = <div className={col_size}>
             <p style={{color:'#ddd'}}>{this.state.watch_data.brand} {this.state.watch_data.reference_number} Average Retail Price</p>
             <div>
-                <h3 style={{color:'#ddd'}}>${format_number(retail_current_average,0)} {retail_trend}</h3>
+                <h3 style={{color:'#ddd'}}>${format_number(retail_current_average,2)} {retail_trend} ({retail_pct_diff.toFixed(2)}%)</h3>
             </div>
         </div>;
     }
+
+
 
     var content = <div className="container">
         <MobileView>
@@ -466,7 +480,7 @@ class ViewWatch extends Component {
             </MobileView>
             {filters}
 
-		    <TableWithChildren required={""} headers={['Paper/Card', 'Box', 'Source','Condition','Info','Price','Sold Date','Url']} >
+		    <TableWithChildren required={""} headers={['Source', 'Price', 'Condition','Box','Papers','Info','Sold Date','Url']} >
                 {watch_instance_rows}
             </TableWithChildren>
 

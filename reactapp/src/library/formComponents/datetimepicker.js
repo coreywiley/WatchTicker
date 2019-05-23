@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {resolveVariables} from 'functions';
+import {resolveVariables, format_date_string} from 'functions';
 import Datetime from 'react-datetime';
 import {TextInput, Select} from 'library';
 
@@ -58,7 +58,7 @@ class DateTimePicker extends Component {
         return (
               <div className={"form-group " + this.props.className}>
                 <label>{this.props.label}</label>
-                <Datetime timeFormat={display_time} dateFormat={display_date}  onChange={this.handleChange} defaultValue={this.props.value}/>
+                <Datetime timeFormat={display_time} dateFormat={display_date}  onChange={this.handleChange} defaultValue={format_date_string(this.props.value, 'mm-dd-yyyy')}/>
 
               </div>
         )

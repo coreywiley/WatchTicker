@@ -35,15 +35,15 @@ class Nav extends React.Component {
         var linkHTML = [];
         for (var index in links) {
           linkHTML.push(<li className="nav-item">
-             <a className="nav-link" data-value="about" href={links[index][0]}>{links[index][1]}</a>
+             <a className="nav-link" data-value="about" href={links[index][0]} style={{fontSize:'15px'}}>{links[index][1]}</a>
           </li>)
         }
 
         return (
 
-              <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-                  <div class="navbar-header">
-                      <a class="navbar-brand" href="/watches/">Watch Ticker</a>
+              <nav class="navbar top-navbar navbar-expand-md navbar-dark" style={{marginBottom:'30px'}}>
+                  <div class="navbar-header" style={{margin:'3px'}}>
+                      <a class="navbar-brand" href="/watches/" style={{'fontSize':'25px'}}>Watch Ticker</a>
                   </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -54,7 +54,7 @@ class Nav extends React.Component {
                       </ul>
                   </div>
               </nav>
-          
+
         );
     }
 }

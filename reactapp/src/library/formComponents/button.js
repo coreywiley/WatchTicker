@@ -69,7 +69,12 @@ class Button extends React.Component {
         e.preventDefault();
         console.log("Clicked");
         if (this.props.href) {
-            window.location.href = this.props.href;
+            if (this.props.target == '_blank') {
+                window.open(this.props.href,'_blank');
+            }
+            else {
+                window.location.href = this.props.href;
+            }
         }
         else if (this.props.onClick) {
             this.props.onClick(e);

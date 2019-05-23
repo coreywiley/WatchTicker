@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
+import re
+
 import sendgrid
 from sendgrid.helpers.mail import *
 from django.conf import settings
@@ -240,16 +242,25 @@ class WatchBox():
         r = requests.get(url)
         soup = BeautifulSoup(r.text, features='html.parser')
 
+        sold = soup.find("p", {"class":"outofstock"})
+        if sold:
+            return {'sold':True}
+
         details = {}
 
         details['price'] = soup.find("span", {"itemprop": "price"}).getText().strip().replace('$','').replace(',','')
-        #details['serial_year'] = soup.find("li", {"class": "serial-year"}).find("span", {"class":"attribute-value"}).getText().strip()
+
+
+        about_section = re.search("<p>.*Serial.*</p>", r.text)
+
+        if about_section:
+            details['serial_year'] = about_section.group(0).split('.')[-2].strip()
 
         paper_details = soup.find("table", {"class":"watch-attributes"}).findAll("td")[5].getText().strip().lower()
 
-        details['papers'] = 'paper' in paper_details
-        details['box'] = 'box' in paper_details
-        details['manual'] = 'manual' in paper_details
+        details['papers'] = 'paper' in paper_details and 'no' not in paper_details
+        details['box'] = 'box' in paper_details and 'no' not in paper_details
+        details['manual'] = 'manual' in paper_details and 'no' not in paper_details
         details['image'] = soup.find("img", {"class":"size-wooslider-featured-image"})['src']
         try:
             condition = soup.find("div", {"class":"product-preowned"}).getText().strip().lower()
@@ -265,5 +276,5 @@ class WatchBox():
 #source = WatchBox()
 
 #print (source.getWatches())
-#print (source.getWatchDetails('https://www.thewatchbox.com/shop/pre-owned-rolex-datejust-16233-31/'))
+#print (source.getWatchDetails('https://www.thewatchbox.com/shop/pre-owned-rolex-submariner-116610ln-33/'))
 #print (source.getWatchBrandUrls())

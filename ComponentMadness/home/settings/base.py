@@ -104,7 +104,7 @@ DATABASES = {
     }
 }
 '''
-
+'''
 # Postgres
 DATABASES = {
     'default': {
@@ -116,18 +116,24 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': '5432'
     },
-    'cm': {
-        'CONN_MAX_AGE': 0,
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'pomodoro',
-        'USER': 'pomodoro',
-        'PASSWORD': 'Pczx5&DKdKnN4+*a',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
-    }
 }
 
 DATABASE_URL = '127.0.0.1:5432'
+'''
+DATABASES = {
+    'default': {
+        'CONN_MAX_AGE': 0,
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'defaultdb',
+        'USER': 'doadmin',
+        'PASSWORD': 'gk9wv8qydqjfw4nt',
+        'HOST': 'db-postgresql-nyc1-24557-do-user-228594-0.db.ondigitalocean.com',
+        'PORT': '25060'
+    },
+}
+
+DATABASE_URL = 'db-postgresql-nyc1-24557-do-user-228594-0.db.ondigitalocean.com:25060'
+#PGPASSWORD=gk9wv8qydqjfw4nt pg_restore -U doadmin -h db-postgresql-nyc1-24557-do-user-228594-0.db.ondigitalocean.com -p 25060 -d defaultdb <local-pg-dump-path>
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -171,4 +177,4 @@ LOGGING = {
 }
 
 
-SENDGRID_API_KEY = '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'
+SENDGRID_API_KEY = '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'
