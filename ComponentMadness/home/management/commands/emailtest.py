@@ -21,10 +21,19 @@ class Command(BaseCommand):
         print (brand_options)
         '''
 
-        sources = {"We Love Watches": "https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vQhzAp8r-Po0KalE6Te3kpZ0ZKByk4LT_cA6PfgESjh6YN5gzW4RpjwrFEhWwZwxBy5CnAJuNZdUCN6/pubhtml?gid=735652720&single=true",
-                   "Bob's Watches": "https://www.bobswatches.com/", 'House Of Time': "http://houseoftime1.com/",
-         'Crown And Caliber': "https://www.crownandcaliber.com", "Watch Box": "https://www.thewatchbox.com/", "Boneta Wholesale": "https://bonetawholesale.com/"}
+        watch_ids = {}
 
-        for source in sources:
-            new_source = Source(name=source, url=sources[source])
-            new_source.save()
+        instances = Watch_Instance.objects.all()
+
+        for instance in instances:
+            if instance.watch_id not in watch_ids:
+                watch_ids[instance.watch_id] = 0
+            watch_ids[instance.watch_id] += 1
+
+        max_num = 0
+        max_id = ''
+        for id in watch_ids:
+            if watch_ids[id] > max_num:
+                max_num = watch_ids[id]
+                max_id = id
+        print (id)

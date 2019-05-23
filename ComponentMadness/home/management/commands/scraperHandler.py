@@ -41,7 +41,6 @@ class Command(BaseCommand):
         watch_websites = {"We Love Watches":WeLoveWatches, "Bob's Watches":BobsWatches, 'House Of Time':HouseOfTime,
                           'Crown And Caliber':CrownAndCaliber, "Watch Box":WatchBox, "Boneta Wholesale":BonetaWholesale}
 
-        print ('\n\n\n\n', source, '\n')
         instance = watch_websites[source]()
 
 
@@ -57,10 +56,8 @@ class Command(BaseCommand):
         watches = instance.getWatches()
         for watch in watches:
             if 'error' in watch and watch['error'] == True:
-                print ("\n\n\n", watch, "\n\n\n")
                 continue
 
-            print ("\n\n\n","Watch", watch, "\n\n\n")
             #check for watch reference number
             watch_instance = Watch.objects.filter(reference_number__iexact=watch['reference_number']).first()
             if watch_instance:
@@ -83,7 +80,6 @@ class Command(BaseCommand):
                     brand = watch['brand']
 
                 watch_instance = Watch(reference_number = watch['reference_number'], model = model, brand = brand)
-                print ("\n\n\n", "Saving New Watch", watch, "\n\n\n")
                 watch_instance.save()
 
 
@@ -91,33 +87,27 @@ class Command(BaseCommand):
                 check = Watch_Instance.objects.filter(watch_id=watch_instance.id, source_id=source_instance.id, url=watch['url']).first()
 
                 if not check:
-
-                    print ("\n\n\n", "Watch Instance", watch_instance.reference_number, source_instance.name, watch['url'], watch, "\n\n\n")
                     new_instance = Watch_Instance(watch=watch_instance, source=source_instance, url=watch['url'])
                     new_instance.save()
             except Exception as e:
                 print (str(e))
                 sendErrorEmail(source, 'getWatches', str(e))
 
-        print ('\n\n\n\n', source, '\n')
         #instance = watch_websites[source]()
 
         source_instance = Source.objects.filter(name=source).first()
 
         all_watches = Watch_Instance.objects.filter(source=source_instance, sold_time=None)
-        print (all_watches.count())
         for watch in all_watches:
 
             try:
                 watch_details = instance.getWatchDetails(watch.url)
             except Exception as e:
                 print (str(e))
-                print (watch.url)
                 sendErrorEmail(source_instance.name, 'getWatchDetails : ' + watch.url, str(e))
                 continue
 
             if 'sold' in watch_details and watch_details['sold']:
-                print ("\n\n\n\n", "SOLD", watch.url, "\n\n\n\n")
                 watch.sold_time = datetime.datetime.now()
                 watch.save()
             else:
@@ -134,7 +124,6 @@ class Command(BaseCommand):
                 check = HistoricPrice.objects.filter(watch_instance_id=watch.id).order_by('-created_at').first()
                 if check:
                     if float(check.price) != float(watch_details['price']) and float(watch_details['price']) > 0:
-                        print ("\n", "Check Price", check.price, "Watch Price", watch_details['price'], "\n")
                         new_price = HistoricPrice(watch_instance_id=watch.id, watch_id=watch.watch_id, price=watch_details['price'])
                         new_price.save()
                 else:
