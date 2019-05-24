@@ -14,7 +14,7 @@ class DeleteUser extends Component {
     }
 
     render() {
-        return (<Button text={"Delete"} type={"danger"} style={{}} onClick={this.delete_user} />)
+        return (<Button text={"Delete"} type={"danger"} style={{}} onClick={this.delete_user} deleteType={true} />)
     }
 }
 
@@ -39,7 +39,6 @@ class UserList extends Component {
 
     delete_user_callback(result) {
         window.cmState.setGlobalState('deleted',{'deleted':true})
-
     }
 
     render() {
