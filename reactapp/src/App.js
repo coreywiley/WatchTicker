@@ -134,7 +134,7 @@ class App extends Component {
             content = <PageList />
           }
           else if (route == "passwordreset") {
-             var content = <PasswordReset user_id={this.state.user.id} />
+             var content = <PasswordReset user_id={params[1]} />
           }
           else if (route == "login") {
              var content = <LogIn />
