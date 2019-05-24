@@ -7,12 +7,13 @@ class PasswordReset extends Component {
 
     render() {
 
-        return (<div className="container">		<Header text={"Reset Password"} size={2} style={{}} required={""} >
-</Header>
-		<FormWithChildren text={"Reset Password"} size={2} style={{}} required={""} children={[]} submitUrl={resolveVariables({"text":"/users/resetPassword/{params.1}/"}, window.cmState.getGlobalState(this))["text"]} confirm_password={"true"} name={"password"} redirectUrl={"/login/"} >
-			<PasswordInput text={"Reset Password"} size={2} style={{}} required={"true"} children={[]} submitUrl={resolveVariables({"text":"/users/resetPassword/{user.id}/"}, window.cmState.getGlobalState(this))["text"]} confirm_password={"true"} name={"password"} >
-</PasswordInput>
-</FormWithChildren></div>);
+        return (<div className="container">
+            <Header text={"Reset Password"} size={2} style={{}} required={""} />
+	          <FormWithChildren text={"Reset Password"} size={2} style={{}} required={""} children={[]} submitUrl={"/users/resetPassword/" + this.props.user_id + "/"} confirm_password={"true"} name={"password"} redirectUrl={"/login/"} >
+			<PasswordInput text={"Reset Password"} size={2} style={{}} required={"true"} children={[]} confirm_password={"true"} name={"password"} />
+            </FormWithChildren>
+            </div>);
     }
 }
+
 export default PasswordReset;

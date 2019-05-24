@@ -28,7 +28,7 @@ class PasswordResetRequest extends Component {
       console.log('EMAIL', result);
       if (result.length > 0) {
         var user = result[0]['user']
-        ajaxWrapper('POST','/api/email/', {'to_email':user.email, 'from_email':'jeremy.thiesen1@gmail.com','subject':'Password Reset','text':'You can reset your password at .../passwordReset/' + user.id +'/'}, this.emailCallback)
+        ajaxWrapper('POST','/api/email/', {'to_email':user.email, 'from_email':'jeremy.thiesen1@gmail.com','subject':'Password Reset','text':'You can reset your password <a href="https://watchticker.watchchest.com' + user.id + '/">here</a>'}, this.emailCallback)
       }
       else {
         this.setState({'error':true})
