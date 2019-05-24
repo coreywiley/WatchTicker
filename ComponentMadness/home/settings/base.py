@@ -106,19 +106,7 @@ DATABASES = {
 '''
 '''
 # Postgres
-DATABASES = {
-    'default': {
-        'CONN_MAX_AGE': 0,
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'watch_ticker',
-        'USER': 'tick_tock',
-        'PASSWORD': '8-5f&nQ@^wF8$uYA',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
-    },
-}
 
-DATABASE_URL = '127.0.0.1:5432'
 #7hm<[VXHb>B=P9#^
 
 0 0,8,16 * * * cd /root/ComponentMadness/ComponentMadness; python3.6 manage.py scraperHandler "Bob's Watches"
@@ -133,19 +121,7 @@ DATABASE_URL = '127.0.0.1:5432'
 
 0 0,8,16 * * * cd /root/ComponentMadness/ComponentMadness; python3.6 manage.py scraperHandler "We Love Watches"
 '''
-DATABASES = {
-    'default': {
-        'CONN_MAX_AGE': 0,
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'defaultdb',
-        'USER': 'doadmin',
-        'PASSWORD': 'gk9wv8qydqjfw4nt',
-        'HOST': 'db-postgresql-nyc1-24557-do-user-228594-0.db.ondigitalocean.com',
-        'PORT': '25060'
-    },
-}
 
-DATABASE_URL = 'db-postgresql-nyc1-24557-do-user-228594-0.db.ondigitalocean.com:25060'
 #PGPASSWORD=gk9wv8qydqjfw4nt pg_restore -U doadmin -h db-postgresql-nyc1-24557-do-user-228594-0.db.ondigitalocean.com -p 25060 -d defaultdb <local-pg-dump-path>
 
 # Internationalization

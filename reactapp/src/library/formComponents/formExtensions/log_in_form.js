@@ -77,7 +77,7 @@ class LogInForm extends Component {
                 <Button type='success' text='Log In' onClick={this.formSubmit} name="login"/>
               </FormWithChildren>
                 <small className="form-text">Forgot your password? <a href="/passwordResetRequest/">Reset Password</a></small>
-                <If logic={this.state.error != ''}>
+                <If logic={[['exists', this.state.error]]}>
                   <Alert type='danger' text={this.state.error} />
                 </If>
             </div>

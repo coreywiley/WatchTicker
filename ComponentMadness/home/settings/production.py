@@ -24,6 +24,19 @@ LOGGING = {
     }
 }
 
+DATABASES = {
+    'default': {
+        'CONN_MAX_AGE': 0,
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'defaultdb',
+        'USER': 'doadmin',
+        'PASSWORD': 'gk9wv8qydqjfw4nt',
+        'HOST': 'db-postgresql-nyc1-24557-do-user-228594-0.db.ondigitalocean.com',
+        'PORT': '25060'
+    },
+}
+
+DATABASE_URL = 'db-postgresql-nyc1-24557-do-user-228594-0.db.ondigitalocean.com:25060'
 
 
 ADMINS = [('Jeremy','jeremy.thiesen1@gmail.com'), ('David','dmiller89@gmail.com')]

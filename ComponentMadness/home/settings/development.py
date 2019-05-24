@@ -25,6 +25,20 @@ LOGGING = {
 
 }
 
+DATABASES = {
+    'default': {
+        'CONN_MAX_AGE': 0,
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'watch_ticker',
+        'USER': 'tick_tock',
+        'PASSWORD': '8-5f&nQ@^wF8$uYA',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
+    },
+}
+
+DATABASE_URL = '127.0.0.1:5432'
+
 STATIC_URL = '/static/'
 MEDIA_URL = '/static/images/'
 

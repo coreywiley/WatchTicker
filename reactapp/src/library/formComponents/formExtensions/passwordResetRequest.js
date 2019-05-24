@@ -13,15 +13,15 @@ class PasswordResetRequest extends Component {
         this.emailCallback = this.emailCallback.bind(this);
         this.email = this.email.bind(this);
 
-        this.config = {
-            form_components: [
-            ],
-            can_have_children: true,
-        }
+        this.setGlobalState = this.setGlobalState.bind(this);
     }
 
     userLookup() {
       ajaxWrapper('POST', '/users/userCheck/', {'email':this.state.email}, this.email)
+    }
+
+    setGlobalState(name, state) {
+        this.setState(state)
     }
 
     email(result) {
@@ -46,11 +46,11 @@ class PasswordResetRequest extends Component {
                 <FormWithChildren autoSetGlobalState={true} setGlobalState={this.setGlobalState} globalStateName={'form'}>
                   <TextInput default={this.state.email} name="email" label="Email" placeholder="component@madness.com" />
                 </FormWithChildren>
-                <Button type={'success'} text={'Reset Password'} clickHandler={this.userLookup} />
-                <If logic={this.state.sent}>
+                <Button type={'success'} text={'Reset Password'} onClick={this.userLookup} />
+                <If logic={[[true,this.state.sent]]}>
                   <Alert text={'Your password reset email has been sent.'} type={'success'} />
                 </If>
-                <If logic={this.state.error}>
+                <If logic={[['exists',this.state.error]]}>
                   <Alert text={'No user found with that email.'} type={'danger'} />
                 </If>
         </div>;
