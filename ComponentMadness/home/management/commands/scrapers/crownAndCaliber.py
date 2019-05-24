@@ -104,8 +104,8 @@ class CrownAndCaliber():
         return details
 
 
-source = CrownAndCaliber()
-print (source.getWatchDetails('https://www.crownandcaliber.com/products/breitling-skyracer-raven-a27364-10-10-brt-x8k2sn'))
+#source = CrownAndCaliber()
+#print (source.getWatchDetails('https://www.crownandcaliber.com/products/breitling-skyracer-raven-a27364-10-10-brt-x8k2sn'))
 
 #print (source.getWatches())
 
