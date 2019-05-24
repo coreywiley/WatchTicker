@@ -105,7 +105,7 @@ class CrownAndCaliber():
 
 
 source = CrownAndCaliber()
-print (source.getWatchDetails('https://www.crownandcaliber.com/collections/a-lange-sohne-watches/products/a-lange-sohne-1815-rose-gold-235-032-10-10-als-659v7h'))
+print (source.getWatchDetails('https://www.crownandcaliber.com/products/breitling-skyracer-raven-a27364-10-10-brt-x8k2sn'))
 
 #print (source.getWatches())
 
