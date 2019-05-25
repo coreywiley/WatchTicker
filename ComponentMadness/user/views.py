@@ -40,7 +40,7 @@ def CheckForUser(request):
 @api_view(['POST'])
 @permission_classes((IsPostOrIsAuthenticated, ))
 def ResetPassword(request, user_id):
-    password = request.POST['password'].lower()
+    password = request.POST['password']
     check = User.objects.filter(id=user_id).first()
     if check:
         check.set_password(password)
