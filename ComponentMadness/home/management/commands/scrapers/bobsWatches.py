@@ -97,11 +97,10 @@ class BobsWatches():
         details['wholesale'] = False
 
         desc_table = soup.find("span", {"itemprop":"description"}).find("table").findAll("td")
-        details['brand'] = desc_table[1].getText().strip()
-        details['model'] = desc_table[3].getText().strip()
-        details['serial_year'] = desc_table[5].getText().strip()
+        details['model'] = desc_table[1].getText().strip()
+        details['serial_year'] = desc_table[3].getText().strip()
 
-        paper_details = desc_table[17].getText().strip().lower()
+        paper_details = desc_table[15].getText().strip().lower()
 
         details['papers'] = 'paper' in paper_details or 'card' in paper_details
         details['box'] = 'box' in paper_details
@@ -124,7 +123,7 @@ for watch in watches:
         break
 '''
 #source = BobsWatches()
-#print (source.getWatchDetails('https://www.bobswatches.com/rolex-gmt-master-ii-116710blnr-black-and-blue.html'))
+#print (source.getWatchDetails('https://www.bobswatches.com/pre-owned-rolex-president-18038-champagne-roman.html'))
 
 
 
