@@ -18,6 +18,13 @@ def sendErrorEmail(source, function, error):
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
 
+def getText(soup):
+    try:
+        return soup.getText().strip()
+    except:
+        sendErrorEmail('Crown and Caliber', 'Get Text', 'Failed with following: %s' % (soup))
+        return ''
+
 class CrownAndCaliber():
 
     def getWatches(self):
@@ -81,16 +88,16 @@ class CrownAndCaliber():
 
         details = {}
 
-        details['price'] = soup.find("span", {"id": "ProductPrice-product-template"}).getText().strip().replace('$','').replace(',','')
+        details['price'] = getText(soup.find("span", {"id": "ProductPrice-product-template"})).replace('$','').replace(',','')
 
         description = soup.find("div",{"class":"more-detail"}).find("div", {"itemprop":"description"}).findAll("span")
 
-        details['serial_year'] = description[12].getText().strip()
+        details['serial_year'] = getText(description[12])
 
-        details['papers'] = description[31].getText().strip() == 'Yes'
-        details['box'] = description[29].getText().strip() == 'Yes'
-        details['manual'] = description[33].getText().strip() == 'Yes'
-        condition = description[7].getText().strip()
+        details['papers'] = getText(description[31]) == 'Yes'
+        details['box'] = getText(description[29]) == 'Yes'
+        details['manual'] = getText(description[33]) == 'Yes'
+        condition = getText(description[7])
         condition = condition[:condition.find(' ')]
         if condition.lower() == 'unworn':
             details['condition'] = 'New'
@@ -104,8 +111,8 @@ class CrownAndCaliber():
         return details
 
 
-#source = CrownAndCaliber()
-#print (source.getWatchDetails('https://www.crownandcaliber.com/products/breitling-skyracer-raven-a27364-10-10-brt-x8k2sn'))
+source = CrownAndCaliber()
+print (source.getWatchDetails('https://www.crownandcaliber.com/collections/rolex-watches/products/rolex-yacht-master-16622-10-10-rol-9q60cz'))
 
 #print (source.getWatches())
 
