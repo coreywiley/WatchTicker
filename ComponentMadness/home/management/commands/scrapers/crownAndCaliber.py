@@ -82,7 +82,7 @@ class CrownAndCaliber():
 
         soup = BeautifulSoup(r.text, features='html.parser')
 
-        sold = soup.find("label", {"class":"label-newsletter"}).getText().strip().lower()
+        sold = getText(soup.find("label", {"class":"label-newsletter"})).lower()
         if str(sold[:8]) == 'sold out':
             return {'sold':True}
 

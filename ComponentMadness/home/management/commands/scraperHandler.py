@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.core.mail import EmailMessage
 import datetime
 import pickle
+import traceback
 
 from home.management.commands.scrapers.bobsWatches import BobsWatches
 from home.management.commands.scrapers.crownAndCaliber import CrownAndCaliber
@@ -24,7 +25,10 @@ def sendErrorEmail(source, function, error):
     from_email = Email('jeremy.thiesen1@gmail.com')
     to_email = Email('jeremy.thiesen1@gmail.com')
     subject = 'Watch Ticker Scraper Not Operating Correctly'
-    content = Content("text/html", "%s failed during function: %s with error: %s" % (source,function, error))
+
+
+    content = Content("text/html", "%s failed during function: %s with error: %s \n\n Traceback: %s" % (source,function, error, traceback.format_exc()))
+
 
     mail = Mail(from_email, subject, to_email, content)
     response = sg.client.mail.send.post(request_body=mail.get())
