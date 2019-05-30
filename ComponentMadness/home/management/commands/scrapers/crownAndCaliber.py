@@ -22,7 +22,6 @@ def getText(soup):
     try:
         return soup.getText().strip()
     except:
-        sendErrorEmail('Crown and Caliber', 'Get Text', 'Failed with following: %s' % (soup))
         return ''
 
 class CrownAndCaliber():
