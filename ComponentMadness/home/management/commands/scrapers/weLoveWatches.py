@@ -9,8 +9,8 @@ def sendErrorEmail(source, function, error):
     # using SendGrid's Python Library
     # https://github.com/sendgrid/sendgrid-python
     sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
-    from_email = Email('jeremy.thiesen1@gmail.com')
-    to_email = Email('jeremy.thiesen1@gmail.com')
+    from_email = Email('igugu13@freeuni.edu.ge')
+    to_email = Email('igugu13@freeuni.edu.ge')
     subject = 'Watch Ticker Scraper Not Operating Correctly'
     content = Content("text/html", "%s failed during function: %s with error: %s" % (source,function, error))
 
