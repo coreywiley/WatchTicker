@@ -1,44 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-
+from home.management.commands.scrapers.basicSpider import BasicSpider
 import re
 
-import sendgrid
-from sendgrid.helpers.mail import *
-from django.conf import settings
-
-def sendErrorEmail(source, function, error):
-
-    # using SendGrid's Python Library
-    # https://github.com/sendgrid/sendgrid-python
-    sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
-    from_email = Email('igugu13@freeuni.edu.ge')
-    to_email = Email('igugu13@freeuni.edu.ge')
-    subject = 'Watch Ticker Scraper Not Operating Correctly'
-    content = Content("text/html", "%s failed during function: %s with error: %s" % (source,function, error))
-
-    mail = Mail(from_email, subject, to_email, content)
-    response = sg.client.mail.send.post(request_body=mail.get())
-
-class WatchBox():
-
-    def getWatchBrandUrls(self):
-        links = []
-
-        url = 'https://www.thewatchbox.com/all-brands/'
-        brand_r = requests.get(url)
-        soup = BeautifulSoup(brand_r.text, features='html.parser')
-
-        brand_list = soup.find("div", {"class":"all_brands_list"})
-        brand_links = brand_list.findAll("a", href=True)
-        for link in brand_links:
-            links.append ([link['href'], link.getText().strip()])
-
-        return links
-
-    def getWatches(self):
-        brand_urls = [
+brand_urls = [
             ['https://www.thewatchbox.com/watches/6b-watches/', '6B Watches'],
             ['https://www.thewatchbox.com/watches/a-lange-sohne/', 'A. Lange & Sohne'],
             ['https://www.thewatchbox.com/watches/alain-silberstein/', 'Alain Silberstein'],
@@ -182,11 +148,26 @@ class WatchBox():
         ]
 
 
-        watch_list = []
+class WatchBox(BasicSpider):
+    def getWatchBrandUrls(self):
+        links = []
+
+        url = 'https://www.thewatchbox.com/all-brands/'
+        brand_r = requests.get(url)
+        soup = BeautifulSoup(brand_r.text, features='html.parser')
+
+        brand_list = soup.find("div", {"class": "all_brands_list"})
+        brand_links = brand_list.findAll("a", href=True)
+        for link in brand_links:
+            links.append([link['href'], link.getText().strip()])
+
+        return links
+
+    def getWatches(self):
         for brand_url in brand_urls:
             try:
                 brand = brand_url[1]
-                print (brand)
+                print(brand)
 
                 if not brand_url:
                     continue
@@ -199,71 +180,60 @@ class WatchBox():
 
                 soup = BeautifulSoup(brand_r.text, features='html.parser')
 
-                html_models = soup.find("ul", {"class":"watch-models"}).findAll("li")
+                html_models = soup.find("ul", {"class": "watch-models"}).findAll("li")
                 for html_model in html_models:
-                    model = html_model.find("div", {"class":"model"}).getText().strip()
+                    model = html_model.find("div", {"class": "model"}).getText().strip()
 
                     url = html_model.find("a")['href']
                     try:
                         r = requests.get(url)
                     except Exception as e:
-                        print (e)
+                        print(e)
                         continue
-
 
                     page_text = r.text
                     start = page_text.find('var filters_presets = ')
                     end = page_text.find('var filters_presets_selected = ')
-                    format = page_text[start + 22:end].strip()[1:-2].replace('\\\\\\"',"'").replace("\\","")
+                    page_format = page_text[start + 22:end].strip()[1:-2].replace('\\\\\\"', "'").replace("\\", "")
 
-                    watches = json.loads(format)['products']['list']
+                    watches = json.loads(page_format)['products']['list']
 
-
-                    #soup = BeautifulSoup(r.text, features='html.parser')
-                    #print (soup)
-                    #watches = soup.find("ul", {"class": "products"}).findAll("li", {"class":"product"})
-                    #print ("Watches")
+                    # soup = BeautifulSoup(r.text, features='html.parser')
+                    # print (soup)
+                    # watches = soup.find("ul", {"class": "products"}).findAll("li", {"class":"product"})
+                    # print ("Watches")
                     for watch in watches:
-                        detail = {}
-                        detail['url'] = watch['url']
-                        detail['reference_number'] = watch['mpn']
-                        detail['brand'] = brand
-                        detail['model'] = model
+                        detail = {'url': watch['url'], 'reference_number': watch['mpn'], 'brand': brand, 'model': model}
                         yield detail
             except Exception as e:
                 print(str(e))
-                sendErrorEmail('Watch Box', 'getWatches: ' + brand_url, str(e))
+                self.sendErrorEmail('Watch Box', 'getWatches: ' + brand_url, str(e))
                 yield {'error': True, 'error_detail': str(e)}
-
-
-
 
     def getWatchDetails(self, url):
         r = requests.get(url)
         soup = BeautifulSoup(r.text, features='html.parser')
 
-        sold = soup.find("p", {"class":"outofstock"})
+        sold = soup.find("p", {"class": "outofstock"})
         if sold:
-            return {'sold':True}
+            return {'sold': True}
 
-        details = {}
-
-        details['price'] = soup.find("span", {"itemprop": "price"}).getText().strip().replace('$','').replace(',','')
-
+        details = {
+            'price': soup.find("span", {"itemprop": "price"}).getText().strip().replace('$', '').replace(',', '')}
 
         about_section = re.search("<p>.*Serial.*</p>", r.text)
 
         if about_section:
             details['serial_year'] = about_section.group(0).split('.')[-2].strip()
 
-        paper_details = soup.find("table", {"class":"watch-attributes"}).findAll("td")[5].getText().strip().lower()
+        paper_details = soup.find("table", {"class": "watch-attributes"}).findAll("td")[5].getText().strip().lower()
 
         details['papers'] = 'paper' in paper_details and 'no' not in paper_details
         details['box'] = 'box' in paper_details and 'no' not in paper_details
         details['manual'] = 'manual' in paper_details and 'no' not in paper_details
-        details['image'] = soup.find("img", {"class":"size-wooslider-featured-image"})['src']
+        details['image'] = soup.find("img", {"class": "size-wooslider-featured-image"})['src']
         try:
-            condition = soup.find("div", {"class":"product-preowned"}).getText().strip().lower()
+            soup.find("div", {"class": "product-preowned"}).getText().strip().lower()
             details['condition'] = 'Pre-Owned'
         except:
             details['condition'] = 'New'
@@ -273,8 +243,5 @@ class WatchBox():
         return details
 
 
-#source = WatchBox()
-
-#print (source.getWatches())
-#print (source.getWatchDetails('https://www.thewatchbox.com/shop/pre-owned-rolex-submariner-116610ln-33/'))
-#print (source.getWatchBrandUrls())
+# brand_urls = brand_urls[:2]
+# WatchBox().do_testing()
