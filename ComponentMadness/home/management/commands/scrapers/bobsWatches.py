@@ -49,9 +49,9 @@ class BobsWatches(BasicSpider):
             i += 1
 
     def getWatchDetails(self, url):
-        r = requests.get(url)
+        r = requests.get(url, allow_redirects=False)
 
-        if 'this item is no longer in stock' in r.text.lower():
+        if r.status_code != 200 or 'this item is no longer in stock' in r.text.lower():
             return {'sold': True}
 
         soup = BeautifulSoup(r.text, features='html.parser')
