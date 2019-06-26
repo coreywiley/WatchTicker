@@ -40,10 +40,11 @@ class HouseOfTime(BasicSpider):
 
         soup = BeautifulSoup(r.text, features='html.parser')
 
+        serial_year = soup.find("li", {"class": "serial-year"})
+        serial_year = serial_year.find("span", {"class": "attribute-value"}).getText().strip() if serial_year else ""
         details = {'price': soup.find("span", {"class": "woocommerce-Price-amount"}).getText().strip().replace('$', '').
             replace(
-            ',', ''), 'serial_year': soup.find("li", {"class": "serial-year"}).find("span", {
-                "class": "attribute-value"}).getText().strip(),
+            ',', ''), 'serial_year': serial_year,
             'papers': soup.find("li", {"class": "papers"}).find("span", {
                 "class": "attribute-value"}).getText().strip() == 'Yes',
             'image': soup.find("img", {"class": "wp-post-image"})['src'], 'wholesale': True, 'condition': 'Pre-Owned'}
