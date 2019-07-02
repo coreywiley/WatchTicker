@@ -1,25 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
-from selenium import webdriver
-
-import sendgrid
-from sendgrid.helpers.mail import *
-from django.conf import settings
-
-def sendErrorEmail(source, function, error):
-
-    # using SendGrid's Python Library
-    # https://github.com/sendgrid/sendgrid-python
-    sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
-    from_email = Email('igugu13@freeuni.edu.ge')
-    to_email = Email('igugu13@freeuni.edu.ge')
-    subject = 'Watch Ticker Scraper Not Operating Correctly'
-    content = Content("text/html", "%s failed during function: %s with error: %s" % (source,function, error))
-
-    mail = Mail(from_email, subject, to_email, content)
-    response = sg.client.mail.send.post(request_body=mail.get())
-
+from home.management.commands.scrapers.basicSpider import BasicSpider
 
 brand_urls = [
     'https://bonetawholesale.com/SubCategory/AIR-KING/2974',
@@ -114,11 +95,12 @@ brand_urls = [
     'https://bonetawholesale.com/SubCategory/MISC/3134',
 ]
 
-class BonetaWholesale():
+
+class BonetaWholesale(BasicSpider):
     def __init__(self):
         brand_soup = {}
         for url in brand_urls:
-            print (url)
+            print(url)
             r = requests.get(url)
 
             soup = BeautifulSoup(r.text, features='html.parser')
@@ -126,7 +108,6 @@ class BonetaWholesale():
         self.brand_soup = brand_soup
 
     def getWatches(self):
-
         for url in brand_urls:
             try:
                 soup = self.brand_soup[url]
@@ -135,7 +116,7 @@ class BonetaWholesale():
 
                 for watch in watches:
                     details = {}
-                    desc_table = watch.findAll("div",{"class":"prd-Desc"})
+                    desc_table = watch.findAll("div", {"class": "prd-Desc"})
 
                     details['brand'] = desc_table[0].getText().strip()
                     details['model'] = desc_table[1].getText().strip()
@@ -149,15 +130,14 @@ class BonetaWholesale():
                     else:
                         details['condition'] = 'Pre-Owned'
 
-
-                    details['price'] = desc_table[11].getText().strip().replace('$','').replace(',','')
+                    details['price'] = desc_table[11].getText().strip().replace('$', '').replace(',', '')
                     details['url'] = url + '#' + desc_table[8].getText().strip()
 
                     yield details
 
             except Exception as e:
                 print(str(e))
-                sendErrorEmail('Boneta Wholesale', 'getWatches: ' + url, str(e))
+                self.sendErrorEmail('Boneta Wholesale', 'getWatches: ' + url, str(e))
                 yield {'error': True, 'error_detail': str(e)}
 
     def getWatchDetails(self, url):
@@ -194,20 +174,8 @@ class BonetaWholesale():
 
                 return details
 
-        return {'sold':True}
+        return {'sold': True}
 
-#source = BonetaWholesale()
 
-'''
-watches = source.getWatches()
-
-i = 0
-for watch in watches:
-    i += 1
-    print (watch)
-
-    if i == 5:
-        break
-'''
-
-#print (source.getWatchDetails('https://bonetawholesale.com/SubCategory/AIR-KING/2974#1730297'))
+# brand_urls = brand_urls[:2]
+# BonetaWholesale().do_testing()
