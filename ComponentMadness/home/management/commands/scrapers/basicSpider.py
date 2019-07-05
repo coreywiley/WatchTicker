@@ -25,10 +25,12 @@ class BasicSpider:
                 break
             ind += 1
             all_watches.append(elem)
+        print(len(all_watches))
         print("\n".join([str(elem) for elem in all_watches]))
 
         all_watch_details = list()
-        for cur_watch in all_watches:
+        for ind, cur_watch in enumerate(all_watches):
             watch_details = self.getWatchDetails(cur_watch["url"])
+            watch_details["url"] = all_watches[ind]["url"]
             all_watch_details.append(watch_details)
         print("\n".join([str(elem) for elem in all_watch_details]))
