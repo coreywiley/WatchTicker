@@ -14,22 +14,19 @@ class BobsWatches(BasicSpider):
 
                 soup = BeautifulSoup(response.text, features="html.parser")
 
-                watches = soup.find("div", {"class": "itemResults"}).findAll("div", {"class": "item"})
-                watch_added = False
+                watches = soup.select("div.itemResults div.item")
+                if len(watches) == 0:
+                    break
                 for watch in watches:
-                    watch_added = True
-
-                    watch_url = watch.find("p", {"class": "itemimage"}).find("a")["href"]
-
+                    watch_url = watch.select("p.itemimage a")[0]["href"]
                     reference_number = None
-                    description = watch.find("h2").find("span").find("span").text
-
+                    description = watch.select("h2 span span")[0].text
                     for s in description.split(" "):
                         if s.isdigit():
                             reference_number = s
 
                     if not reference_number:
-                        description = watch.find("h2").text.strip().lower()
+                        description = watch.select("h2")[0].text.strip().lower()
                         description_parts = description.split("ref ")
                         if len(description_parts) > 1:
                             reference_number = description_parts[1].split(" ")[0].split(",")[0]
@@ -46,9 +43,6 @@ class BobsWatches(BasicSpider):
                             (parents_siblings_class is None or parents_siblings_class[0] != "itemWrapper"):
                         return
 
-                if not watch_added:
-                    break
-
             except Exception as e:
                 print(str(e))
                 self.sendErrorEmail("Bobs Watches", "getWatches: " + url, str(e))
@@ -63,16 +57,13 @@ class BobsWatches(BasicSpider):
             return {"sold": True}
 
         soup = BeautifulSoup(response.text, features="html.parser")
-        watch_div = soup.find("div", {"class": "watchdetail"})
+        watch_div = soup.select("div.watchdetail")[0]
+        price = watch_div.select("span.price")[0].text.replace("$", "").replace(",", "").replace(" Cash Wire Price", "")
 
-        price = watch_div.find("span", {"class": "price"}).text.strip()
-        price = price.replace("$", "").replace(",", "").replace(" Cash Wire Price", "")
+        conditions = [condition.text.strip().lower() for condition in watch_div.select("td.condition")]
+        condition = "New" if len(conditions) > 1 and "unworn" in conditions[1] else "Pre-Owned"
 
-        conditions = watch_div.findAll("td", {"class": "condition"})
-        condition = conditions[1].text.strip().lower() if len(conditions) > 1 else None
-        condition = "New" if condition and "unworn"in condition else "Pre-Owned"
-
-        desc_table = watch_div.find("span", {"itemprop": "description"}).find("table").findAll("td")
+        desc_table = watch_div.select("div.descriptioncontainer span table td")
         model = desc_table[1].text.strip()
         serial_year = desc_table[3].text.strip()
 
@@ -80,7 +71,7 @@ class BobsWatches(BasicSpider):
         papers = "paper" in paper_details or "card" in paper_details
         box = "box" in paper_details
         manual = "manual" in paper_details
-        image = "https://www.bobswatches.com/" + watch_div.find("img", {"class": "photo"})["src"]
+        image = "https://www.bobswatches.com/" + watch_div.select("img.photo")[0]["src"]
 
         details = {"price": price,
                    "condition": condition,
