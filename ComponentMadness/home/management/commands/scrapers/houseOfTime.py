@@ -35,12 +35,11 @@ class HouseOfTime(BasicSpider):
                 yield {"error": True, "error_detail": str(e)}
 
     def getWatchDetails(self, url):
-
-        r = requests.get(url)
-        if r.status_code == 404:
+        response = requests.get(url)
+        if response.status_code == 404:
             return {"sold": True}
 
-        soup = BeautifulSoup(r.text, features="html.parser")
+        soup = BeautifulSoup(response.text, features="html.parser")
 
         outer_divs = soup.select("div.product-single")
         if len(outer_divs) == 0:
