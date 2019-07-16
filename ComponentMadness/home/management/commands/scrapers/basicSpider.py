@@ -17,7 +17,7 @@ class BasicSpider:
         mail_client = Mail(from_email, subject, to_email, mail_content)
         sg.client.mail_client.send.post(request_body=mail_client.get())
 
-    def do_testing(self, watch_num=10):
+    def do_testing(self, watch_num=100000):
         all_watches = list()
         ind = 0
         for elem in self.getWatches():
@@ -30,6 +30,8 @@ class BasicSpider:
 
         all_watch_details = list()
         for ind, cur_watch in enumerate(all_watches):
+            if ind % 10 == 0:
+                print(ind)
             watch_details = self.getWatchDetails(cur_watch["url"])
             watch_details["url"] = all_watches[ind]["url"]
             all_watch_details.append(watch_details)
