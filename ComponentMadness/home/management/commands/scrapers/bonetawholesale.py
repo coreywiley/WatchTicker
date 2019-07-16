@@ -121,5 +121,6 @@ class BonetaWholesale(BasicSpider):
             response = self.send_pagination_request(url, page, viewstate)
             page += 1
 
+        return {"sold": True}
 
 # BonetaWholesale().do_testing()
