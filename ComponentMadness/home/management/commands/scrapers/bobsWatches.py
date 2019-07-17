@@ -20,18 +20,16 @@ class BobsWatches(BasicSpider):
                 for watch in watches:
                     watch_url = watch.select("p.itemimage a")[0]["href"]
                     reference_number = None
-                    description = watch.select("h2 span span")[0].text
-                    for s in description.split(" "):
-                        if s.isdigit():
-                            reference_number = s
+                    description = watch.select("h2")[0].text.strip().lower().replace(".", "")
+                    description_parts = description.split("ref ")
+                    if len(description_parts) > 1:
+                        reference_number = description_parts[1].split(" ")[0].split(",")[0]
 
                     if not reference_number:
-                        description = watch.select("h2")[0].text.strip().lower()
-                        description_parts = description.split("ref ")
-                        if len(description_parts) > 1:
-                            reference_number = description_parts[1].split(" ")[0].split(",")[0]
-                            if not reference_number.isdigit():
-                                reference_number = None
+                        description = watch.select("h2 span span")[0].text
+                        possible_reference = description.split(" ")[-1]
+                        if any([ch.isdigit() for ch in possible_reference]) and "mm" not in possible_reference:
+                            reference_number = possible_reference
 
                     if reference_number:
                         detail = {"url": watch_url,
