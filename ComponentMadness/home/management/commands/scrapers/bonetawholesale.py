@@ -9,8 +9,11 @@ class BonetaWholesale(BasicSpider):
     def get_needed_brand_urls():
         response = requests.get("https://bonetawholesale.com/")
         soup = BeautifulSoup(response.text, "html.parser")
-        needed_brand_urls = ["https://bonetawholesale.com" + subcategory["href"].replace(" ", "%20")
-                             for subcategory in soup.select("ul.TreeNodeChild li a")]
+        outer_div = soup.select("ul.TreeNodeParent li")[1]
+        subcategories = [li.select("a")[0]["href"] for li in outer_div.select("li")
+                         if len(li.select(".TreeNodeChild")) == 0]
+        needed_brand_urls = ["https://bonetawholesale.com" + subcategory.replace(" ", "%20")
+                             for subcategory in subcategories]
         return needed_brand_urls
 
     @staticmethod
@@ -122,5 +125,6 @@ class BonetaWholesale(BasicSpider):
             page += 1
 
         return {"sold": True}
+
 
 # BonetaWholesale().do_testing()
