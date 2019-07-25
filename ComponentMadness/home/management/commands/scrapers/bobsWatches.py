@@ -61,14 +61,30 @@ class BobsWatches(BasicSpider):
         conditions = [condition.text.strip().lower() for condition in watch_div.select("td.condition")]
         condition = "New" if len(conditions) > 1 and "unworn" in conditions[1] else "Pre-Owned"
 
-        desc_table = watch_div.select("div.descriptioncontainer span table td")
-        model = desc_table[1].text.strip()
-        serial_year = desc_table[3].text.strip()
+        description_dict = {}
+        descriptions = watch_div.select("div.descriptioncontainer span table tr")
+        for desc in descriptions:
+            parts = desc.select("td")
+            if len(parts) == 0:
+                continue
+            key = parts[0].text.split(":")[0].strip().lower()
+            val = parts[1].text.split("\n")[0].strip().lower()
+            if "model" in key:
+                key = "model"
+            elif "serial" in key:
+                key = "serial_year"
+            elif "box" in key and "paper" in key:
+                key = "box_and_papers"
+            elif "movement" in key:
+                key = "manual"
+            description_dict[key] = val
 
-        paper_details = desc_table[15].text.strip().lower()
-        papers = "paper" in paper_details or "card" in paper_details
-        box = "box" in paper_details
-        manual = "manual" in paper_details
+        model = description_dict["model"]
+        serial_year = description_dict["serial_year"] if "serial_year" in description_dict else ""
+        papers = "box_and_papers" in description_dict and \
+                 ("paper" in description_dict["box_and_papers"] or "card" in description_dict["box_and_papers"])
+        box = "box_and_papers" in description_dict and "box" in description_dict["box_and_papers"]
+        manual = "manual" in description_dict["manual"] if "manual" in description_dict else ""
         image = "https://www.bobswatches.com/" + watch_div.select("img.photo")[0]["src"]
 
         details = {"price": price,
@@ -85,3 +101,4 @@ class BobsWatches(BasicSpider):
 
 
 BobsWatches().do_testing()
+
