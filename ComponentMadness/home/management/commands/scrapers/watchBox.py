@@ -74,8 +74,12 @@ class WatchBox(BasicSpider):
         if len(prices) == 0:
             return {"sold": True}
         price = prices[0].text.strip().replace("$", "").replace(",", "")
-        about = soup.select("div.content")[1].text.lower()
-        condition = "Pre-Owned" if "pre-owned" in about else "New"
+
+        abouts = soup.select("div.value")
+        if len(abouts) == 0:
+            return {"sold": True}
+
+        condition = "Pre-Owned" if "pre-owned" in abouts[0].text.lower() else "New"
         image = soup.select("div.carousel-item img")[0]["src"].replace(" ", "%20")
 
         description_dict = {}
