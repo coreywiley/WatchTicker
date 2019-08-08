@@ -21,25 +21,42 @@ class WatchBox(BasicSpider):
                 print(brand_url)
 
                 response = requests.get(brand_url)
-                brand_soup = BeautifulSoup(response.text, features="html.parser")
+                bs = BeautifulSoup(response.text, features="html.parser")
 
-                brands = brand_soup.select("span.refinementdisplayValue")
+                brands = bs.select("span.refinementdisplayValue")
                 if len(brands) == 0:
                     print("SKIPPING")
                     continue
                 brand = brands[0].text
                 print(brand)
-                models = brand_soup.select("div.product-item")
-                for model in models:
-                    model_info = model.select("div.productname a.link")[0]
-                    model_name = model_info.text
-                    model_url = self.main_url + model_info["href"]
-                    model_reference = model.select("div.productid a.link")[0].text
-                    details = {"brand": brand,
-                               "model": model_name,
-                               "url": model_url,
-                               "reference_number": model_reference}
-                    yield details
+
+                page_urls = bs.select("button.showmorecategorybutton")
+                start = 0
+                size = 16
+                while 1:
+                    if len(page_urls) != 0:
+                        cur_page_url = "&".join(page_urls[0]["data-url"].split("&")[:-2]) + "&start={}&sz={}".format(start, size)
+                        response = requests.get(cur_page_url)
+                        bs = BeautifulSoup(response.text, features="html.parser")
+
+                    models = bs.select("div.product-item")
+                    if len(models) == 0:
+                        break
+                    for model in models:
+                        model_info = model.select("div.productname a.link")[0]
+                        model_name = model_info.text
+                        model_url = self.main_url + model_info["href"]
+                        model_reference = model.select("div.productid a.link")[0].text
+                        details = {"brand": brand,
+                                   "model": model_name,
+                                   "url": model_url,
+                                   "reference_number": model_reference}
+                        yield details
+                    start += size
+
+                    if len(page_urls) == 0:
+                        break
+
             except Exception as e:
                 print(str(e))
                 self.sendErrorEmail("Watch Box", "getWatches: " + brand_url, str(e))
