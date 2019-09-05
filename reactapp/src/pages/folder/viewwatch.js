@@ -66,11 +66,17 @@ class ViewWatch extends Component {
 
         start_date = format_date(start_date, 'yyyy-mm-dd')
         end_date = format_date(end_date, 'yyyy-mm-dd')
+        var favorite = false;
+        if (this.props.favorites && this.props.favorites.indexOf(this.props.watch_id) > -1) {
+            favorite = true;
+        }
 
-        this.state ={watch_instances:[], watch_data: {'brand':'', model:'', reference_number:''}, start_date: start_date, end_date: end_date, condition:'', papers:'', box:'', manual:'', source:'', filters:false, wholesale:''}
+        this.state ={watch_instances:[], watch_data: {'brand':'', model:'', reference_number:''}, start_date: start_date, end_date: end_date, condition:'', papers:'', box:'', manual:'', source:'', filters:false, wholesale:'', favorite: favorite}
         this.priceCallback = this.priceCallback.bind(this);
         this.setGlobalState = this.setGlobalState.bind(this);
         this.watchCallback = this.watchCallback.bind(this);
+        this.favorite = this.favorite.bind(this);
+        this.unfavorite = this.unfavorite.bind(this);
     }
 
     componentDidMount() {
@@ -94,6 +100,16 @@ class ViewWatch extends Component {
 
     setGlobalState(name, state) {
         this.setState(state);
+    }
+
+    favorite() {
+        ajaxWrapper('POST','/api/home/watch/' + this.props.watch_id + '/', {'user_favorites[]': [window.cmState.user.id]}, () => this.setState({favorite: true}))
+        this.props.refreshData();
+    }
+
+    unfavorite() {
+        ajaxWrapper('POST','/api/home/watch/' + this.props.watch_id + '/', {'user_favorites__remove[]':[window.cmState.user.id]}, () => this.setState({favorite: false}))
+        this.props.refreshData();
     }
 
     render() {
@@ -455,7 +471,14 @@ class ViewWatch extends Component {
         </div>;
     }
 
-
+    var favorite = <div onClick={this.favorite} style={{color:'white'}} >
+        <Icon icon='star' size={1} /> Favorite
+    </div>;
+    if (this.state.favorite) {
+        var favorite = <div onClick={this.unfavorite} style={{color:'yellow'}}>
+            <Icon icon='star' size={1}  /> Favorited
+        </div>;
+    }
 
     var content = <div className="container">
         <MobileView>
@@ -466,6 +489,7 @@ class ViewWatch extends Component {
                 {average_wholesale}
                 {average_retail}
             </div>
+            {favorite}
             <Line data={chart_data} options={chart_options} width={width} height={height} />
             <div style={{height:'20px'}}></div>
 

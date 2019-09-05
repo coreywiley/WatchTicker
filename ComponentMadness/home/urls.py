@@ -4,16 +4,16 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 
-from home.views import Index, ReactHotload
+from home.views import Index, ReactHotload, RecommendedPrice
 admin.autodiscover()
 
 urlpatterns = [
+    url(r'^recommendedprice/(?P<reference_number>[A-Za-z0-9-]+)/$', RecommendedPrice),
     #Get avaliable pages
     url(r'^sockjs-node/', ReactHotload, name="dealing_with_react_hotloading"),
     #Get avaliable models
     #modelWesbite app to create rest api
     url(r'^api/', include('modelWebsite.urls', namespace="api")),
-
     #user imports
     url(r'^users/', include('user.urls', namespace="user")),
     #Catch statements for React

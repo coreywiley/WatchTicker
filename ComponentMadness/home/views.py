@@ -14,6 +14,8 @@ import json
 import os
 from django.views.decorators.clickjacking import xframe_options_exempt
 #from user.views import my_login_required
+from home.models import Watch, Watch_Instance, WatchRequest
+import statistics
 
 @xframe_options_exempt
 def Index(request, param = "", param2 = "", param3 = "", param4 = "", param5 = "", param6 = ""):
@@ -42,3 +44,24 @@ def PermissionDenied(request):
 
 def BadRequest(request):
     return JsonResponse({'error':'Bad Request'})
+
+def RecommendedPrice(request, reference_number):
+    watch = Watch.objects.filter(reference_number=reference_number).first()
+    if not watch:
+        return JsonResponse({'error': 'No watch match to that reference number'})
+
+    watch_instances = Watch_Instance.objects.filter(watch=watch, wholesale=False)
+    if watch_instances.count() == 0:
+        return JsonResponse({'error': 'We have no data around that watch.'})
+
+    price_list = []
+    for instance in watch_instances:
+        price_list.append(instance.price)
+
+    first_median = statistics.median(price_list)
+    abs_list = []
+    for price in price_list:
+        abs_list.append(abs(price-first_median))
+    mad = statistics.median(abs_list)
+
+    return JsonResponse({'error':'None', 'median_absolute_deviation': mad, 'median':first_median})

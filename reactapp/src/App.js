@@ -23,7 +23,9 @@ import EditUser from "./pages/folder/edituser.js"
 import UserList from "./pages/folder/userlist.js"
 import EditWatch from "./pages/folder/editwatch.js";
 import SourceList from './pages/folder/sourceList.js';
-
+import RequestList from './pages/folder/watch_requests.js';
+import WatchRequest from './pages/folder/watch_request.js';
+import PriceMoves from './pages/folder/price_moves.js';
 
 class App extends Component {
     constructor(props) {
@@ -94,7 +96,7 @@ class App extends Component {
 
         return url.split('/');
     }
-
+//116234
     render() {
         var params = this.getURL();
         var param_dict = {};
@@ -161,7 +163,7 @@ class App extends Component {
              var content = <Watch_InstanceList />
           }
           else if (route == "watches") {
-             var content = <WatchList />
+             var content = <WatchList id={params[1]} />
           }
           else if (route == "edituser") {
              var content = <EditUser />
@@ -174,6 +176,15 @@ class App extends Component {
           }
           else if (route == 'sources') {
               var content = <SourceList />
+          }
+          else if (route == 'watchrequests') {
+              var content = <RequestList />
+          }
+          else if (route == 'watchrequest') {
+              var content = <WatchRequest id={params[1]} />
+          }
+          else if (route == 'pricemoves') {
+              var content = <PriceMoves />
           }
 
           else {

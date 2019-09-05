@@ -331,7 +331,7 @@ class FormWithChildren extends Component {
 
         if (this.props.deleteUrl) {
             var float = {'float':'right'}
-            var deleteButton = <Button css={float} type={"danger"} clickHandler={this.formDelete} deleteType={true} text={"Delete"} />
+            var deleteButton = <Button css={float} type={"danger"} onClick={this.formDelete} deleteType={true} text={"Delete"} />
             buttons.push(deleteButton);
         }
 

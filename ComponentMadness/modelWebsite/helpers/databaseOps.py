@@ -1,9 +1,10 @@
 import json
 from django.apps import apps
 from modelWebsite.helpers.jsonGetters import getInstanceJson, getInstancesJson, getModelFields
+import math
 
 def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]):
-    print ('::databaseOps:insert')
+    print ('::databaseOps:insert', requestFields)
 
     model = apps.get_model(app_label=appLabel, model_name=modelName.replace('_', ''))
     instance = model()
@@ -84,6 +85,11 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
                 else:
                     getattr(instance, field.name).remove(foreignInstance)
 
+        elif field.get_internal_type() == 'FloatField':
+            value = float(requestFields[field.name])
+            if math.isnan(value):
+                continue
+
     if 'password' in requestFields and requestFields['password'] != '':
         instance.set_password(requestFields['password'])
 
@@ -92,18 +98,29 @@ def insert(appLabel, modelName, modelFields,requestFields, id = None, related=[]
 
     #This section needs __remove and __clear included
     for field in modelFields:
-        print ("Found M2M Field:", field)
+        print ("Found M2M Field:", field.name, field.name + "[]" in requestFields)
 
-        if field.get_internal_type() == 'ManyToManyField' and field.name + "[]" in requestFields:
-            print ('Woohoo!')
-            #getattr(instance, field.name).clear()
-            print(field.name, requestFields[field.name+'[]'])
-            items = json.loads(requestFields[field.name + '[]'])
-            print (items)
-            foreignKeyIds = [int(id) for id in items]
-            print (foreignKeyIds)
-            getattr(instance, field.name).add(
-                *list(field.related_model.objects.filter(id__in=foreignKeyIds)))
+        if field.get_internal_type() == 'ManyToManyField':
+            add = True
+            if field.name + '[]' in requestFields:
+                items = [requestFields[field.name + '[]']]
+            elif field.name + '__remove[]' in requestFields:
+                items = [requestFields[field.name + '__remove[]']]
+                add = False
+
+            foreignModel = apps.get_model(app_label=field.related_model._meta.app_label,
+                                          model_name=field.related_model._meta.object_name)
+
+            if field.name + '__clear' in requestFields:
+                print('clear!')
+                getattr(instance, field.name).clear()
+
+            for item in items:
+                foreignInstance = foreignModel.objects.filter(id=item).first()
+                if add:
+                    getattr(instance, field.name).add(foreignInstance)
+                else:
+                    getattr(instance, field.name).remove(foreignInstance)
 
     print ("Related : %s" % (related))
     instances = getInstanceJson(appLabel, modelName, instance, related=related)

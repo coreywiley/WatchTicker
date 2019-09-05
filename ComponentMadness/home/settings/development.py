@@ -29,11 +29,11 @@ DATABASES = {
     'default': {
         'CONN_MAX_AGE': 0,
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'watch_ticker',
-        'USER': 'tick_tock',
-        'PASSWORD': '8-5f&nQ@^wF8$uYA',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
+        'NAME': 'defaultdb',
+        'USER': 'doadmin',
+        'PASSWORD': 'gk9wv8qydqjfw4nt',
+        'HOST': 'db-postgresql-nyc1-24557-do-user-228594-0.db.ondigitalocean.com',
+        'PORT': '25060'
     },
 }
 

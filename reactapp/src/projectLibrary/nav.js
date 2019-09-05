@@ -17,9 +17,8 @@ class Nav extends React.Component {
     render() {
         var name = <div><img style={{'marginRight':'10px'}} src='/static/images/logo.png' height="125" /></div>;
         if (this.props.user.id) {
-          var links = [['/watches/', 'Watches'],['/sources/','Sources']];
+          var links = [['/watches/', 'Watches'],['/sources/','Sources'], ['/watchrequests/','Watch Requests'],['/pricemoves/','Price Moves']];
         }
-
         else {
           var links = [['/logIn/','Log In']];
         }

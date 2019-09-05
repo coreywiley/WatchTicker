@@ -23,6 +23,7 @@ class Watch(CMModel):
     brand = models.CharField(max_length=1000, blank=False, default='')
     model = models.CharField(max_length=1000, blank=False, default='')
     reference_number = models.CharField(db_index=True, max_length=1000, blank=False, default='')
+    user_favorites = models.ManyToManyField(User, related_name='watches')
 
 class Source(CMModel):
     name = models.CharField(max_length=1000, blank=False, default='')
@@ -49,5 +50,20 @@ class HistoricPrice(CMModel):
     price = models.FloatField(blank=False, default=0.0)
     watch = models.ForeignKey(Watch, on_delete=models.CASCADE, related_name='historical_prices')
     watch_instance = models.ForeignKey(Watch_Instance, on_delete=models.CASCADE, related_name='historical_prices', db_index=True)
+
+class WatchRequest(CMModel):
+    name = models.CharField(max_length=1000, blank=False, default='')
+    phone = models.CharField(max_length=1000, blank=False, default='')
+    email = models.CharField(max_length=1000, blank=False, default='')
+    reference_number = models.CharField(max_length=1000, blank=False, default='')
+    watch = models.ForeignKey(Watch, related_name="watch_request", on_delete=models.PROTECT)
+    min_price = models.FloatField(blank=False, default=0.0)
+    max_price = models.FloatField(blank=False, default=0.0)
+    notes = models.TextField(default="")
+
+class PriceMove(CMModel):
+    watch = models.ForeignKey(Watch, related_name="price_move", on_delete=models.PROTECT)
+    previous_average_price = models.FloatField(default=0.0)
+    current_average_price = models.FloatField(default=0.0)
 
 

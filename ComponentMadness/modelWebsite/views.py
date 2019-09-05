@@ -129,10 +129,11 @@ def getModelFieldsJson(request,appLabel,modelName):
     return JsonResponse(modelFields, safe=False)
 
 def getModelInstanceJson(request, appLabel, modelName, id=None):
-    print ("Request : %s" % (request.GET))
+    print ("Request : %s" % (request.POST))
     model = apps.get_model(app_label=appLabel, model_name=modelName)
 
     parameters = request.GET.dict()
+    print ("Request", parameters)
 
     #model security
     if request.method == "GET" and appLabel == 'user' and modelName == 'user' and model.GET_STAFF:
@@ -296,6 +297,8 @@ def createAndUpdateModel(request, appLabel, modelName, related, id=None):
         requestFields = request.PUT
     else:
         requestFields = request.POST
+        print("request fields post", requestFields)
+
 
     if 'multiple' in requestFields:
         instances = []
