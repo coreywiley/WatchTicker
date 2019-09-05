@@ -1,75 +1,74 @@
 import requests
 from bs4 import BeautifulSoup
+from home.management.commands.scrapers.basicSpider import BasicSpider
 
-import sendgrid
-from sendgrid.helpers.mail import *
-from django.conf import settings
 
-def sendErrorEmail(source, function, error):
-
-    # using SendGrid's Python Library
-    # https://github.com/sendgrid/sendgrid-python
-    sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
-    from_email = Email('igugu13@freeuni.edu.ge')
-    to_email = Email('igugu13@freeuni.edu.ge')
-    subject = 'Watch Ticker Scraper Not Operating Correctly'
-    content = Content("text/html", "%s failed during function: %s with error: %s" % (source,function, error))
-
-    mail = Mail(from_email, subject, to_email, content)
-    response = sg.client.mail.send.post(request_body=mail.get())
-
-class HouseOfTime():
+class HouseOfTime(BasicSpider):
 
     def getWatches(self):
-        added = True
         i = 1
-        watch_list = []
-        url = ''
-        while added:
+        url = ""
+        while 1:
             try:
-                print (i)
-                url = 'http://houseoftime1.com/product-category/view-all/page/%s/' % (i)
+                print(i)
+                url = "http://houseoftime1.com/product-category/view-all/page/%s/" % i
+
                 r = requests.get(url)
 
-                soup = BeautifulSoup(r.text, features='html.parser')
+                soup = BeautifulSoup(r.text, features="html.parser")
 
-
-                watches = soup.findAll("div", {"class": "product"})
-                added = False
+                watches = soup.select("div.product")
+                if len(watches) == 0:
+                    break
                 for watch in watches:
-                    added = True
-                    detail = {}
-                    detail['url'] = watch.find("a", {"class": "woocommerce-LoopProduct-link"})['href']
-                    detail['reference_number'] = watch.find("li", {"class": "reference"}).find("span", {"class": "attribute-value"}).getText().strip()
+                    url = watch.select("a.woocommerce-LoopProduct-link")[0]["href"]
+                    reference_number = watch.select("li.reference span.attribute-value")[0].text.strip()
+
+                    detail = {"url": url,
+                              "reference_number": reference_number}
                     yield detail
 
                 i += 1
             except Exception as e:
                 print(str(e))
-                sendErrorEmail('House Of Time', 'getWatches: ' + url, str(e))
-                yield {'error': True, 'error_detail': str(e)}
-
+                self.sendErrorEmail("House Of Time", "getWatches: " + url, str(e))
+                yield {"error": True, "error_detail": str(e)}
 
     def getWatchDetails(self, url):
+        response = requests.get(url)
+        if response.status_code == 404:
+            return {"sold": True}
 
-        r = requests.get(url)
-        if 'Page not found' in r.text:
-            return {'sold':True}
+        soup = BeautifulSoup(response.text, features="html.parser")
 
-        soup = BeautifulSoup(r.text, features='html.parser')
+        outer_divs = soup.select("div.product-single")
+        if len(outer_divs) == 0:
+            return {"sold": True}
+        else:
+            outer_div = outer_divs[0]
 
-        details = {}
+        serial_years = [serial_year.text.strip() for serial_year in
+                        outer_div.select("li.serial-year span.attribute-value")]
+        serial_year = serial_years[0] if len(serial_years) > 0 else ""
 
-        details['price'] = soup.find("span", {"class": "woocommerce-Price-amount"}).getText().strip().replace('$','').replace(',','')
-        details['serial_year'] = soup.find("li", {"class": "serial-year"}).find("span", {"class":"attribute-value"}).getText().strip()
-        details['papers'] = soup.find("li", {"class":"papers"}).find("span", {"class":"attribute-value"}).getText().strip() == 'Yes'
-        details['image'] = soup.find("img", {"class":"wp-post-image"})['src']
-        details['wholesale'] = True
-        details['condition'] = 'Pre-Owned'
+        prices = [price.text.strip().replace("$", "").replace(",", "") for price in
+                  outer_div.select("span.woocommerce-Price-amount")]
+        price = prices[0] if len(prices) > 0 else ""
+
+        papers = [paper.text.strip().lower() for paper in outer_div.select("li.papers span.attribute-value")]
+        paper = papers[0] == "True" or "card" in papers[0] if len(papers) > 0 else False
+
+        images = [image["src"] for image in outer_div.select("img.wp-post-image")]
+        image = images[0] if len(images) > 0 else ""
+
+        details = {"price": price,
+                   "serial_year": serial_year,
+                   "papers": paper,
+                   "image": image,
+                   "wholesale": True,
+                   "condition": "Pre-Owned"}
 
         return details
 
 
-#source = HouseOfTime()
-#print (source.getWatchDetails('http://houseoftime1.com/product/omega/'))
-#print (source.getWatches())
+HouseOfTime().do_testing()

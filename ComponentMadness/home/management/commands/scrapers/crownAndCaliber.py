@@ -1,120 +1,98 @@
 import requests
 from bs4 import BeautifulSoup
+from home.management.commands.scrapers.basicSpider import BasicSpider
 
-import sendgrid
-from sendgrid.helpers.mail import *
-from django.conf import settings
 
-def sendErrorEmail(source, function, error):
-
-    # using SendGrid's Python Library
-    # https://github.com/sendgrid/sendgrid-python
-    sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
-    from_email = Email('igugu13@freeuni.edu.ge')
-    to_email = Email('igugu13@freeuni.edu.ge')
-    subject = 'Watch Ticker Scraper Not Operating Correctly'
-    content = Content("text/html", "%s failed during function: %s with error: %s" % (source,function, error))
-
-    mail = Mail(from_email, subject, to_email, content)
-    response = sg.client.mail.send.post(request_body=mail.get())
-
-def getText(soup):
-    try:
-        return soup.getText().strip()
-    except:
-        return ''
-
-class CrownAndCaliber():
-
+class CrownAndCaliber(BasicSpider):
     def getWatches(self):
-        brand_page = requests.get('https://www.crownandcaliber.com/pages/brands')
-        brand_soup = BeautifulSoup(brand_page.text, features='html.parser')
+        brand_page = requests.get("https://www.crownandcaliber.com/pages/brands")
+        brand_soup = BeautifulSoup(brand_page.text, features="html.parser")
 
-        brand_links = brand_soup.find("div", {"class":"brand-listing"}).findAll("a")
-        watch_list = []
+        brand_links = brand_soup.select("div.brand-listing a")
         brand_urls = []
         for brand_link in brand_links:
-            brand_urls.append([brand_link['href'], brand_link.getText().strip()])
+            brand_urls.append([brand_link["href"], brand_link.text.strip()])
 
-        url = ''
         for brand_url in brand_urls:
             try:
                 brand = brand_url[1]
-                print (brand)
-                added = True
+                print(brand)
                 i = 1
-                while added:
-                    print (i)
-                    url = 'https://www.crownandcaliber.com%s?page=%s' % (brand_url[0], i)
-                    try:
-                        r = requests.get(url)
-                    except:
-                        added = False
-                        continue
+                while 1:
+                    print(i)
+                    url = "https://www.crownandcaliber.com%s?page=%s" % (brand_url[0], i)
+                    response = requests.get(url)
 
-                    soup = BeautifulSoup(r.text, features='html.parser')
+                    soup = BeautifulSoup(response.text, features="html.parser")
 
-                    watches = soup.findAll("div", {"class": "itemBox"})
-                    added = False
+                    watches = soup.select("div.itemBox")
+                    if len(watches) == 0:
+                        break
                     for watch in watches:
-                        added = True
-                        detail = {}
-                        detail['url'] = 'https://www.crownandcaliber.com' + watch.find("a")['href']
-                        detail['reference_number'] = watch.find("div", {"class": "item-barcode"}).getText().strip()
-                        detail['model'] = watch.find("span", {"class":"itemSubTitle"}).getText().strip()
-                        detail['brand'] = brand
+                        url = "https://www.crownandcaliber.com" + watch.select("a")[0]["href"]
+                        reference_number = watch.select("span.itemSubTitle")[0].text.strip()
+
+                        detail = {"url": url,
+                                  "reference_number": watch.select("div.item-barcode")[0].text.strip(),
+                                  "model": reference_number,
+                                  "brand": brand}
                         yield detail
 
                     i += 1
             except Exception as e:
                 print(str(e))
-                sendErrorEmail('Crown And Caliber', 'getWatches: ' + url, str(e))
-                yield {'error': True, 'error_detail': str(e)}
-
-
-
+                self.sendErrorEmail("Crown And Caliber", "getWatches: " + url, str(e))
+                yield {"error": True, "error_detail": str(e)}
 
     def getWatchDetails(self, url):
-        r = requests.get(url)
+        response = requests.get(url)
 
+        if response.status_code == 404:
+            return {"sold": True}
 
+        soup = BeautifulSoup(response.text, features="html.parser")
 
-        soup = BeautifulSoup(r.text, features='html.parser')
-
-        sold = getText(soup.find("label", {"class":"label-newsletter"})).lower()
-        if str(sold[:8]) == 'sold out':
-            return {'sold':True}
-
-        details = {}
-
-        details['price'] = getText(soup.find("span", {"id": "ProductPrice-product-template"})).replace('$','').replace(',','')
-
-        description = soup.find("div",{"class":"more-detail"}).find("div", {"itemprop":"description"}).findAll("span")
-
-        details['serial_year'] = getText(description[12])
-
-        details['papers'] = getText(description[31]) == 'Yes'
-        details['box'] = getText(description[29]) == 'Yes'
-        details['manual'] = getText(description[33]) == 'Yes'
-        condition = getText(description[7])
-        condition = condition[:condition.find(' ')]
-        if condition.lower() == 'unworn':
-            details['condition'] = 'New'
+        outer_divs = soup.select("div.product-single")
+        if len(outer_divs) == 0:
+            return {"sold": True}
         else:
-            details['condition'] = 'Pre-Owned'
-        details['wholesale'] = False
+            outer_div = outer_divs[0]
 
+        sold = [label.text.lower() for label in soup.select("label.label-newsletter")]
+        if len(sold) > 0 and str(sold[:8]) == "sold out":
+            return {"sold": True}
 
-        details['image'] = soup.find("img", {"class":"product-featured-img"})['src']
+        prices = [price.text.strip().replace("$", "").replace(",", "") for price in
+                  outer_div.select("span#ProductPrice-product-template")]
+        price = prices[0] if len(prices) > 0 else ""
+        image = "https:" + outer_div.find("img", {"class": "product-featured-img"})["src"]
+
+        description_dict = {}
+        descriptions = outer_div.select("div.more-detail ul li")
+        for desc in descriptions:
+            parts = desc.select("span")
+            if len(parts) == 0:
+                continue
+            key = parts[0].text.split(":")[0].strip()
+            val = parts[1].text.split("\n")[0].strip()
+            description_dict[key] = val
+
+        serial_year = description_dict["Approximate Age"] if "Approximate Age" in description_dict else ""
+        papers = description_dict["Papers"] == "Yes"
+        box = description_dict["Box"] == "Yes"
+        manual = description_dict["Manual"] == "Yes"
+        condition = "New" if description_dict["Condition"].lower() == "unworn" else "Pre-Owned"
+
+        details = {"papers": papers,
+                   "serial_year": serial_year,
+                   "price": price,
+                   "box": box,
+                   "manual": manual,
+                   "condition": condition,
+                   "wholesale": False,
+                   "image": image}
 
         return details
 
 
-source = CrownAndCaliber()
-print (source.getWatchDetails('https://www.crownandcaliber.com/collections/rolex-watches/products/rolex-yacht-master-16622-10-10-rol-9q60cz'))
-
-#print (source.getWatches())
-
-
-
-
+CrownAndCaliber().do_testing()

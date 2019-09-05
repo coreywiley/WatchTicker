@@ -1,129 +1,104 @@
 import requests
 from bs4 import BeautifulSoup
-import re
+from home.management.commands.scrapers.basicSpider import BasicSpider
 
-import sendgrid
-from sendgrid.helpers.mail import *
-from django.conf import settings
 
-def sendErrorEmail(source, function, error):
-
-    # using SendGrid's Python Library
-    # https://github.com/sendgrid/sendgrid-python
-    sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
-    from_email = Email('igugu13@freeuni.edu.ge')
-    to_email = Email('igugu13@freeuni.edu.ge')
-    subject = 'Watch Ticker Scraper Not Operating Correctly'
-    content = Content("text/html", "%s failed during function: %s with error: %s" % (source,function, error))
-
-    mail = Mail(from_email, subject, to_email, content)
-    response = sg.client.mail.send.post(request_body=mail.get())
-
-class BobsWatches():
-
+class BobsWatches(BasicSpider):
     def getWatches(self):
-
-        added = True
         i = 1
-        watch_list = []
-        while added:
+        while 1:
             try:
-                print (i)
-                url = 'https://www.bobswatches.com/luxury-watches/?p=%s' % (i)
-                r = requests.get(url)
-                if 'Recently Sold' in r.text:
+                print(i)
+                url = "https://www.bobswatches.com/luxury-watches/?p=%s" % i
+                response = requests.get(url)
+
+                soup = BeautifulSoup(response.text, features="html.parser")
+
+                watches = soup.select("div.itemResults div.item")
+                if len(watches) == 0:
                     break
-
-                soup = BeautifulSoup(r.text, features='html.parser')
-
-
-                watches = soup.find("div", {"class": "itemResults"}).findAll("div", {"class": "item"})
-                added = False
                 for watch in watches:
-                    added = True
-                    detail = {}
-                    detail['url'] = watch.find("p", {"class": "itemimage"}).find("a")['href']
-
-                    reference_number = False
-                    description = watch.find("h2").find("span").find("span").getText()
-
-                    for s in description.split(" "):
-                        if s.isdigit():
-                            reference_number = s
+                    watch_url = watch.select("p.itemimage a")[0]["href"]
+                    reference_number = None
+                    description = watch.select("h2")[0].text.strip().lower().replace(".", "")
+                    description_parts = description.split("ref ")
+                    if len(description_parts) > 1:
+                        reference_number = description_parts[1].split(" ")[0].split(",")[0]
 
                     if not reference_number:
-                        description = watch.find("h2").getText().strip()
-
-
-                        j = 0
-                        d_split = description.split(" ")
-                        for j in range(len(d_split)):
-                            if d_split[j] == 'Ref':
-                                reference_number = d_split[j+1]
+                        description = watch.select("h2 span span")[0].text
+                        possible_reference = description.split(" ")[-1]
+                        if any([ch.isdigit() for ch in possible_reference]) and "mm" not in possible_reference:
+                            reference_number = possible_reference
 
                     if reference_number:
-                        detail['reference_number'] = reference_number
+                        detail = {"url": watch_url,
+                                  "reference_number": reference_number}
                         yield detail
+
+                    parents_siblings_class = watch.parent.nextSibling.get("class")
+                    if ("Recently Sold" in response.text) and \
+                            (parents_siblings_class is None or parents_siblings_class[0] != "itemWrapper"):
+                        return
+
             except Exception as e:
                 print(str(e))
-                sendErrorEmail('Bobs Watches', 'getWatches: ' + url, str(e))
-                yield {'error': True, 'error_detail': str(e)}
+                self.sendErrorEmail("Bobs Watches", "getWatches: " + url, str(e))
+                yield {"error": True, "error_detail": str(e)}
 
             i += 1
 
-
-
     def getWatchDetails(self, url):
-        r = requests.get(url)
+        response = requests.get(url, allow_redirects=False)
 
-        if 'this item is no longer in stock' in r.text.lower():
-            return {'sold':True}
+        if response.status_code != 200 or "this item is no longer in stock" in response.text.lower():
+            return {"sold": True}
 
-        soup = BeautifulSoup(r.text, features='html.parser')
+        soup = BeautifulSoup(response.text, features="html.parser")
+        watch_div = soup.select("div.watchdetail")[0]
+        price = watch_div.select("span.price")[0].text.replace("$", "").replace(",", "").replace(" Cash Wire Price", "")
 
-        details = {}
+        conditions = [condition.text.strip().lower() for condition in watch_div.select("td.condition")]
+        condition = "New" if len(conditions) > 1 and "unworn" in conditions[1] else "Pre-Owned"
 
-        details['price'] = soup.find("span", {"class": "price"}).getText().strip().replace('$','').replace(',','').replace(' Cash Wire Price','')
-        condition = soup.findAll("td", {"class":"condition"})
-        if condition:
-            condition = condition[1].getText().strip()
+        description_dict = {}
+        descriptions = watch_div.select("div.descriptioncontainer span table tr")
+        for desc in descriptions:
+            parts = desc.select("td")
+            if len(parts) == 0:
+                continue
+            key = parts[0].text.split(":")[0].strip().lower()
+            val = parts[1].text.split("\n")[0].strip().lower()
+            if "model" in key:
+                key = "model"
+            elif "serial" in key:
+                key = "serial_year"
+            elif "box" in key and "paper" in key:
+                key = "box_and_papers"
+            elif "movement" in key:
+                key = "manual"
+            description_dict[key] = val
 
-            if condition.lower() == 'unworn':
-                details['condition'] = 'New'
-            else:
-                details['condition'] = 'Pre-Owned'
-        else:
-            details['condition'] = 'Pre-Owned'
-        details['wholesale'] = False
+        model = description_dict["model"]
+        serial_year = description_dict["serial_year"] if "serial_year" in description_dict else ""
+        papers = "box_and_papers" in description_dict and \
+                 ("paper" in description_dict["box_and_papers"] or "card" in description_dict["box_and_papers"])
+        box = "box_and_papers" in description_dict and "box" in description_dict["box_and_papers"]
+        manual = "manual" in description_dict["manual"] if "manual" in description_dict else ""
+        image = "https://www.bobswatches.com/" + watch_div.select("img.photo")[0]["src"]
 
-        desc_table = soup.find("span", {"itemprop":"description"}).find("table").findAll("td")
-        details['model'] = desc_table[1].getText().strip()
-        details['serial_year'] = desc_table[3].getText().strip()
-
-        paper_details = desc_table[15].getText().strip().lower()
-
-        details['papers'] = 'paper' in paper_details or 'card' in paper_details
-        details['box'] = 'box' in paper_details
-        details['manual'] = 'manual' in paper_details
-        details['image'] = 'https://www.bobswatches.com/' + soup.find("img", {"class":"photo"})['src']
+        details = {"price": price,
+                   "condition": condition,
+                   "wholesale": False,
+                   "model": model,
+                   "serial_year": serial_year,
+                   "papers": papers,
+                   "box": box,
+                   "manual": manual,
+                   "image": image}
 
         return details
 
 
-
-
-'''
-source = BobsWatches()
-watches = source.getWatches()
-i = 0
-for watch in watches:
-    i += 1
-    print (watch)
-    if i == 5:
-        break
-'''
-#source = BobsWatches()
-#print (source.getWatchDetails('https://www.bobswatches.com/pre-owned-rolex-president-18038-champagne-roman.html'))
-
-
+BobsWatches().do_testing()
 
