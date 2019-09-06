@@ -19,7 +19,7 @@ import statistics
 
 @xframe_options_exempt
 def Index(request, param = "", param2 = "", param3 = "", param4 = "", param5 = "", param6 = ""):
-    if request.META['HTTP_HOST'] == "localhost:8000":
+    if request.META['HTTP_HOST'] == "localhost:8001":
         # In development mode this connects to the live React Node server
         html = requests.get("http://localhost:3000").content
         html = html.decode()
