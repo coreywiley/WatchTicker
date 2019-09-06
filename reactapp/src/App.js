@@ -26,6 +26,7 @@ import SourceList from './pages/folder/sourceList.js';
 import RequestList from './pages/folder/watch_requests.js';
 import WatchRequest from './pages/folder/watch_request.js';
 import PriceMoves from './pages/folder/price_moves.js';
+import Candlestick from './pages/folder/test_candlestick.js';
 
 class App extends Component {
     constructor(props) {
@@ -185,6 +186,9 @@ class App extends Component {
           }
           else if (route == 'pricemoves') {
               var content = <PriceMoves />
+          }
+          else if (route == 'candlestick') {
+              var content = <Candlestick />
           }
 
           else {

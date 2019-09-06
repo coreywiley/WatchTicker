@@ -4,6 +4,8 @@ import {ajaxWrapper, resolveVariables, sort_objects, format_date_string, format_
 import {Wrapper, Instance, Paragraph, TableWithChildren, ListWithChildren, Button, FormWithChildren, DateTimePicker, Select, Icon} from 'library';
 
 import {Line} from 'react-chartjs-2'
+import CanvasJSReact from '../js/canvasjs.react.js';
+
 
 import {
   BrowserView,
@@ -11,6 +13,10 @@ import {
   isBrowser,
   isMobile
 } from "react-device-detect";
+
+
+var CanvasJS = CanvasJSReact.CanvasJS;
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 function getDates(start_date, end_date) {
   if (start_date == end_date) {
@@ -261,22 +267,40 @@ class ViewWatch extends Component {
 
 
         var wholesale_data_points = []
+        var wholesale_candlestick = [];
+
         for (var temp_index in wholesale_data[0]) {
             var datum = 0;
             var count = 0;
+            var temp_data = [];
             for (var data_index in wholesale_data) {
                 if (wholesale_data[data_index][temp_index]) {
                      datum += wholesale_data[data_index][temp_index]
+                     temp_data.push(datum);
                      count += 1;
                  }
             }
+            console.log("temp_data", temp_data)
 
             if (datum == 0) {
                 wholesale_data_points.push(null);
+                wholesale_candlestick.push([])
             }
             else {
                 var price = Math.round(datum/count)
                 wholesale_data_points.push(price)
+                temp_data = temp_data.sort(function(a,b) {
+                  return (+a) - (+b);
+                });
+
+                if (temp_data.length > 1) {
+                    wholesale_candlestick.push([temp_data[1], temp_data[temp_data.length - 1], temp_data[0], temp_data[temp_data.length - 2]])
+                }
+                else {
+                    wholesale_candlestick.push([temp_data[0], temp_data[0], temp_data[0], temp_data[0]])
+                }
+
+                console.log("wholesale candlestick", wholesale_candlestick)
             }
         }
 
@@ -303,26 +327,39 @@ class ViewWatch extends Component {
             wholesale_pct_diff = -1 * (100 - (wholesale_current_average/wholesale_starting_average) * 100)
         }
 
-
-
-        var retail_data_points = []
+        console.log("Wholesale Candlestick", wholesale_candlestick)
+        var retail_candlestick = [];
+        var retail_data_points = [];
 
         for (var temp_index in retail_data[0]) {
             var datum = 0;
             var count = 0;
+            var temp_data = [];
             for (var data_index in retail_data) {
                 if (retail_data[data_index][temp_index]) {
                      datum += retail_data[data_index][temp_index]
+                     temp_data.push(datum)
                      count += 1;
                  }
             }
 
             if (datum == 0) {
                 retail_data_points.push(null);
+                retail_candlestick.push([])
             }
             else {
                 var price = Math.round(datum/count)
                 retail_data_points.push(price)
+                temp_data = temp_data.sort(function(a,b) {
+                  return (+a) - (+b);
+                });
+
+                if (temp_data.length > 1) {
+                    retail_candlestick.push([temp_data[1], temp_data[temp_data.length - 1], temp_data[0], temp_data[temp_data.length - 2]])
+                }
+                else {
+                    retail_candlestick.push([temp_data[0], temp_data[0], temp_data[0], temp_data[0]])
+                }
             }
         }
 
@@ -349,6 +386,108 @@ class ViewWatch extends Component {
             retail_trend = <Icon icon={'sort-up'} style={{color:'green'}} size={1} />;
             retail_pct_diff = -1 * (100 - (retail_current_average/retail_starting_average) * 100)
         }
+
+
+
+        if (this.state.loaded) {
+            var retail_candle_data = [];
+            var wholesale_candle_data = [];
+            console.log("retail_candlestick", retail_candlestick, wholesale_candlestick)
+            for (var index in dayList) {
+                console.log("daylist index", index, wholesale_candlestick[index])
+                retail_candle_data.push({x: new Date(format_date_string(dayList[index], 'yyyy-mm-dd')), y: retail_candlestick[index]})
+                wholesale_candle_data.push({x: new Date(format_date_string(dayList[index], 'yyyy-mm-dd')), y: wholesale_candlestick[index]})
+            }
+
+            console.log("retail_candle_data", retail_candle_data, wholesale_candle_data)
+
+            var options_retail = {
+    			theme: "dark2", // "light1", "light2", "dark1", "dark2"
+    			animationEnabled: true,
+    			exportEnabled: true,
+    			axisX: {
+    				title: "Date",
+
+    			},
+    			axisY: {
+    				includeZero:false,
+    				prefix: "$",
+    				title: "Price (in USD)"
+    			},
+    			data: [{
+    				type: "candlestick",
+    				showInLegend: true,
+    				name: "Retail",
+                    yValueFormatString: "$###0.00",
+    				xValueFormatString: "MMMM YY",
+    				dataPoints: retail_candle_data
+    			},
+    		  ]
+    		}
+
+            var options_wholesale = {
+    			theme: "dark2", // "light1", "light2", "dark1", "dark2"
+    			animationEnabled: true,
+    			exportEnabled: true,
+    			axisX: {
+    				title: "Date",
+
+    			},
+    			axisY: {
+    				includeZero:false,
+    				prefix: "$",
+    				title: "Price (in USD)"
+    			},
+    			data: [
+                {
+    				type: "candlestick",
+    				showInLegend: true,
+    				name: "Wholesale",
+                    yValueFormatString: "$###0.00",
+    				xValueFormatString: "MMMM YY",
+    				dataPoints: wholesale_candle_data
+    			}
+    		  ]
+    		}
+
+            var options_all = {
+        			theme: "dark2", // "light1", "light2", "dark1", "dark2"
+        			animationEnabled: true,
+        			exportEnabled: true,
+        			axisX: {
+        				title: "Date",
+
+        			},
+        			axisY: {
+        				includeZero:false,
+        				prefix: "$",
+        				title: "Price (in USD)"
+        			},
+        			data: [
+                    {
+        				type: "candlestick",
+        				showInLegend: true,
+        				name: "Wholesale",
+                        yValueFormatString: "$###0.00",
+        				xValueFormatString: "MMMM YY",
+        				dataPoints: wholesale_candle_data
+        			},
+                    {
+        				type: "candlestick",
+        				showInLegend: true,
+        				name: "Retail",
+                        yValueFormatString: "$###0.00",
+        				xValueFormatString: "MMMM YY",
+        				dataPoints: retail_candle_data
+        			},
+        		  ]
+        		}
+
+
+
+        }
+
+
 
 
         datasets = [
@@ -480,6 +619,19 @@ class ViewWatch extends Component {
         </div>;
     }
 
+    var chart = null;
+    if (this.state.loaded) {
+        chart = [<CanvasJSReact.CanvasJSChart options = {options_retail}
+            onRef={ref => this.chart = ref}
+        />,
+        <CanvasJSReact.CanvasJSChart options = {options_wholesale}
+            onRef={ref => this.chart = ref}
+        />,
+        <CanvasJSReact.CanvasJSChart options = {options_all}
+            onRef={ref => this.chart = ref}
+        />];
+    }
+
     var content = <div className="container">
         <MobileView>
             <Button onClick={() => this.props.choose_watch(null)} text={'Go Back'} type='danger' />
@@ -490,7 +642,7 @@ class ViewWatch extends Component {
                 {average_retail}
             </div>
             {favorite}
-            <Line data={chart_data} options={chart_options} width={width} height={height} />
+            {chart}
             <div style={{height:'20px'}}></div>
 
     			<Paragraph text={"Brand: " + this.state.watch_data.brand} style={{display:"inline", marginRight:'20px', color:'white'}} required={""} parent={"0"} className="text-white"/>
