@@ -18,5 +18,5 @@ def get_all_prices():
         yield result
 
 
-all_prices = get_all_prices()
-print("\n".join([str(elem) for elem in all_prices]))
+#all_prices = get_all_prices()
+#print("\n".join([str(elem) for elem in all_prices]))

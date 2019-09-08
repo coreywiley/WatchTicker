@@ -49,7 +49,7 @@ class Command(BaseCommand):
                text = '<p>We found a match for a watch request:</p><p>Name: %s</p><p>Phone: %s</p><p>Email: %s</p><p>Reference Number: %s</p><p>Min Price: %s</p><p>Max Price: %s</p><p>Notes: %s</p><p></p><h5>Links:</h5>%s' % (request.name, request.phone, request.email, request.reference_number, request.min_price, request.max_price, request.notes, links)
                sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
                from_email = Email('jeremy.thiesen1@gmail.com')
-               to_email = Email('jeremy.thiesen1@gmail.com')
+               to_email = Email('corey@watchchest.com')
                subject = 'Watch Ticker Request Match'
                content = Content("text/html", text)
 

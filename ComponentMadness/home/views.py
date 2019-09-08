@@ -14,12 +14,12 @@ import json
 import os
 from django.views.decorators.clickjacking import xframe_options_exempt
 #from user.views import my_login_required
-from home.models import Watch, Watch_Instance, WatchRequest
+from home.models import Watch, Watch_Instance, WatchRequest, InstantQuote
 import statistics
 
 @xframe_options_exempt
 def Index(request, param = "", param2 = "", param3 = "", param4 = "", param5 = "", param6 = ""):
-    if request.META['HTTP_HOST'] == "localhost:8001":
+    if request.META['HTTP_HOST'] == "localhost:8000":
         # In development mode this connects to the live React Node server
         html = requests.get("http://localhost:3000").content
         html = html.decode()
@@ -65,3 +65,11 @@ def RecommendedPrice(request, reference_number):
     mad = statistics.median(abs_list)
 
     return JsonResponse({'error':'None', 'median_absolute_deviation': mad, 'median':first_median})
+
+
+def InstantQuoting(request, reference_number):
+    watch = InstantQuote.objects.filter(reference_number=reference_number).first()
+    if not watch:
+        return JsonResponse({'error': 'No watch match to that reference number'})
+
+    return JsonResponse({'error':'None', 'price': watch.price})

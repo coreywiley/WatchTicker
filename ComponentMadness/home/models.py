@@ -66,4 +66,12 @@ class PriceMove(CMModel):
     previous_average_price = models.FloatField(default=0.0)
     current_average_price = models.FloatField(default=0.0)
 
+class InstantQuote(CMModel):
+    reference_number = models.CharField(db_index=True, max_length=1000, blank=False, default='')
+    gender = models.CharField(max_length=1000, default='')
+    name = models.CharField(max_length=1000, default='')
+    description = models.TextField(default='')
+    price = models.FloatField(default=0.0)
+
+
 

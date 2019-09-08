@@ -4,11 +4,12 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 
-from home.views import Index, ReactHotload, RecommendedPrice
+from home.views import Index, ReactHotload, RecommendedPrice, InstantQuoting
 admin.autodiscover()
 
 urlpatterns = [
     url(r'^recommendedprice/(?P<reference_number>[A-Za-z0-9-]+)/$', RecommendedPrice),
+    url(r'^instantquote/(?P<reference_number>[A-Za-z0-9-]+)/$', InstantQuoting),
     #Get avaliable pages
     url(r'^sockjs-node/', ReactHotload, name="dealing_with_react_hotloading"),
     #Get avaliable models
