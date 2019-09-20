@@ -34,7 +34,6 @@ function format_date(date, date_format) {
   var keys = ['dd','mm','yyyy','yy','HH','MM','SSS','SS', 'P']
   for (var index in keys) {
     var key = keys[index];
-    console.log("Replace", date_format,key, date_dict[key])
     date_format = date_format.replace(key, date_dict[key])
   }
 

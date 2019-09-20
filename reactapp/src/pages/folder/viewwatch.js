@@ -60,6 +60,23 @@ function getDates(start_date, end_date) {
 
 }
 
+
+// Arithmetic mean
+let getMean = function (data) {
+    return data.reduce(function (a, b) {
+        return Number(a) + Number(b);
+    }) / data.length;
+};
+
+
+// Standard deviation
+let getSD = function (data) {
+    let m = getMean(data);
+    return Math.sqrt(data.reduce(function (sq, n) {
+            return sq + Math.pow(n - m, 2);
+        }, 0) / (data.length - 1));
+};
+
 class ViewWatch extends Component {
     constructor(props) {
         super(props);
@@ -73,9 +90,8 @@ class ViewWatch extends Component {
         start_date = format_date(start_date, 'yyyy-mm-dd')
         end_date = format_date(end_date, 'yyyy-mm-dd')
         var favorite = false;
-        if (this.props.favorites && this.props.favorites.indexOf(this.props.watch_id) > -1) {
-            favorite = true;
-        }
+
+
 
         this.state ={watch_instances:[], watch_data: {'brand':'', model:'', reference_number:''}, start_date: start_date, end_date: end_date, condition:'', papers:'', box:'', manual:'', source:'', filters:false, wholesale:'', favorite: favorite}
         this.priceCallback = this.priceCallback.bind(this);
@@ -119,6 +135,7 @@ class ViewWatch extends Component {
     }
 
     render() {
+        console.log("This.props.favorites", this.props.favorites)
 
         var dayList = getDates(this.state.start_date, this.state.end_date)
 
@@ -289,12 +306,15 @@ class ViewWatch extends Component {
             else {
                 var price = Math.round(datum/count)
                 wholesale_data_points.push(price)
-                temp_data = temp_data.sort(function(a,b) {
+                temp_data = wholesale_data_points.sort(function(a,b) {
                   return (+a) - (+b);
                 });
 
+                var mean = getMean(wholesale_data_points);
+                var sd = getSD(wholesale_data_points);
+                console.log("Mean", mean, sd, mean-sd, mean+sd)
                 if (temp_data.length > 1) {
-                    wholesale_candlestick.push([temp_data[1], temp_data[temp_data.length - 1], temp_data[0], temp_data[temp_data.length - 2]])
+                    wholesale_candlestick.push([mean - sd, temp_data[temp_data.length - 1], temp_data[0], mean + sd])
                 }
                 else {
                     wholesale_candlestick.push([temp_data[0], temp_data[0], temp_data[0], temp_data[0]])
@@ -350,12 +370,17 @@ class ViewWatch extends Component {
             else {
                 var price = Math.round(datum/count)
                 retail_data_points.push(price)
-                temp_data = temp_data.sort(function(a,b) {
+                console.log("retail Data points", retail_data_points, temp_data)
+                temp_data = retail_data_points.sort(function(a,b) {
                   return (+a) - (+b);
                 });
 
+                var mean = getMean(retail_data_points);
+                var sd = getSD(retail_data_points);
+                console.log("Mean", mean, sd, mean-sd, mean+sd)
+
                 if (temp_data.length > 1) {
-                    retail_candlestick.push([temp_data[1], temp_data[temp_data.length - 1], temp_data[0], temp_data[temp_data.length - 2]])
+                    retail_candlestick.push([mean-sd, temp_data[temp_data.length - 1], temp_data[0], mean+sd])
                 }
                 else {
                     retail_candlestick.push([temp_data[0], temp_data[0], temp_data[0], temp_data[0]])
@@ -613,7 +638,13 @@ class ViewWatch extends Component {
     var favorite = <div onClick={this.favorite} style={{color:'white'}} >
         <Icon icon='star' size={1} /> Favorite
     </div>;
-    if (this.state.favorite) {
+    console.log("Favorites", this.props.favorites, this.props.watch_id)
+    var favorites_list = [];
+    for (var index in this.props.favorites) {
+        favorites_list.push(this.props.favorites[index]['id'])
+    }
+
+    if (favorites_list.indexOf(this.props.watch_id) > -1) {
         var favorite = <div onClick={this.unfavorite} style={{color:'yellow'}}>
             <Icon icon='star' size={1}  /> Favorited
         </div>;
